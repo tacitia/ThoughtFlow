@@ -1,0 +1,65 @@
+  <div class="column" id="texts-col">
+    <div class="header">
+      <span>Texts</span>
+    </div>
+    <div class="body row">
+      <div class="index col-md-4">
+        <table class="table">
+          <tr ng-repeat="t in texts | filter:filterColumn('text')" ng-class="{active: hover || t.id == selectedEntry['text'].id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
+            <td ng-click="selectEntry(t, 'text')">{{t.title}}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="content col-md-8">
+        <textarea class="form-control" id="textContent" ng-model="activeText" ng-keypress="startMakingChanges()">
+        </textarea>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="btn-group btn-group-sm" role="group">
+        <button class="btn btn-default" ng-click="addTextEntry()">Add</button>
+        <button class="btn btn-primary" ng-disabled="!hasUnsavedChanges" ng-click="saveTextEntry()">Save</button>
+        <button class="btn btn-default" ng-class="{'btn-success': associationSource==='text'}" ng-disabled="associationInactive('text')" ng-click="showAssociation('text')">Associate</button>
+        <button class="btn btn-danger" ng-disabled="selectedEntry['text']===null" ng-click="deleteEntry('text')">Delete</button>
+      </div>
+    </div>
+  </div>
+  <div class="column" id="concepts-col">
+    <div class="header">
+      <span>Concepts</span>
+    </div>
+    <div class="body">
+      <table class="table">
+        <tr ng-repeat="c in concepts | filter:filterColumn('concept')" ng-class="{active: hover || c.id == selectedEntry['concept'].id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
+          <td ng-click="selectEntry(c, 'concept')">{{c.term}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="footer">
+      <div class="btn-group btn-group-sm" role="group">
+        <button class="btn btn-default" ng-click="addConceptEntry()">Add</button>
+        <button class="btn btn-default" ng-class='{"btn-success": associationSource==="concept"}' ng-disabled="associationInactive('concept')" ng-click="showAssociation('concept')">Associate</button>
+        <button class="btn btn-danger" ng-disabled="selectedEntry['concept']===null" ng-click="deleteEntry('concept')">Delete</button>
+      </div>
+    </div>
+  </div>
+  <div class="column" id="evidence-col">
+    <div class="header">
+      <span>Evidence</span>
+    </div>
+    <div class="body">
+      <table class="table">
+        <tr ng-repeat="e in evidence | filter:filterColumn('evidence')" ng-class="{active: hover || e.id == selectedEntry['evidence'].id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
+           <td ng-click="selectEntry(e, 'evidence')">{{e.title}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="footer">
+      <div class="btn-group btn-group-sm" role="group">
+        <button class="btn btn-default" ng-click="addEvidenceEntry()">Add</button>
+        <button class="btn btn-default">Edit</button>
+        <button class="btn btn-default" ng-class="{'btn-success': associationSource==='evidence'}" ng-disabled="associationInactive('evidence')" ng-click="showAssociation('evidence')">Associate</button>
+        <button class="btn btn-danger" ng-disabled="selectedEntry['evidence']===null" ng-click="deleteEntry('evidence')">Delete</button>
+      </div>
+    </div>
+  </div>

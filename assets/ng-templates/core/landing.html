@@ -1,0 +1,10 @@
+<page-meta-data status-code="200">
+	<title>{{ 'meta_title_core' }}</title>
+	<meta name="description" content="{{ 'meta_description_core'}}"/>
+	<meta name="keywords" content="{{ 'meta_keywords_core' }}"/>
+</page-meta-data>
+
+<div data-ng-controller="CoreCtrl">
+    <ng-include src="'core/partials/language-picker.html'"></ng-include>
+    <div ui-view="MainView"></div>
+</div>
