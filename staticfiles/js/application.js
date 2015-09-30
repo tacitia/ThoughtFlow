@@ -6,7 +6,9 @@ angular.module('mainModule', [
   'authentication',
   'exploreModule',
   'coreModule',
+  'utilityModule',
   'angularModalService',
+  'angularFileUpload'
 //  'd3'
 ]);
 (function () {
@@ -23,21 +25,6 @@ angular.module('mainModule', [
 })();
 var myAwesomeJSVariable = "I'm so awesome!!";
 
-/*
-angular.module('mainModule')
-    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
-//        $urlRouterProvider.otherwise("/404.html");
-        $stateProvider
-            .state('404', {
-                url: "/404.html",
-                views: {
-                    "FullContentView": {
-                        templateUrl: 'errors/404.html'
-                    }
-                }
-            })
-    }]);
-    */
 (function () {
   'use strict';
 
@@ -53,6 +40,21 @@ angular.module('mainModule')
   angular
     .module('authentication.services', ['ngCookies']);
 })();
+/*
+angular.module('mainModule')
+    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+//        $urlRouterProvider.otherwise("/404.html");
+        $stateProvider
+            .state('404', {
+                url: "/404.html",
+                views: {
+                    "FullContentView": {
+                        templateUrl: 'errors/404.html'
+                    }
+                }
+            })
+    }]);
+    */
 angular
   .module('coreModule', [
     'core.services',
@@ -118,10 +120,18 @@ angular.module('mainModule')
 angular
   .module('exploreModule', [
     'explore.controllers',
+    'angularFileUpload'
   ]);
 
 angular
-  .module('explore.controllers', []);
+  .module('explore.controllers', ['angularFileUpload']);
+angular
+  .module('utilityModule', [
+    'bibtex.services'
+  ]);
+
+angular
+  .module('bibtex.services', []);
 /**
 * LoginController
 * @namespace authentication.controllers
@@ -492,12 +502,12 @@ function AssociationMap(Core) {
       });
     }
 
-    function postEvidenceByUserId(userId, title, abstract, successFn, errorFn) {
+    function postEvidenceByUserId(userId, title, abstract, metadata, successFn, errorFn) {
       return $http.post('/api/v1/data/evidence/', {
         created_by: userId,
         title: title,
         abstract: abstract,
-        metadata: {}
+        metadata: metadata
       }).then(successFn, errorFn);
     }
 
@@ -528,7 +538,6 @@ function AssociationMap(Core) {
 angular.module('explore.controllers')
   .controller('ExploreController', ['$scope', '$modal', 'Core', 'AssociationMap',
     function($scope, $modal, Core, AssociationMap) {
-
 
     var data = Core.getAllDataForUser(1, function(response) {
       $scope.texts = response.data.texts;
@@ -612,8 +621,9 @@ angular.module('explore.controllers')
         controller: 'EvidenceModalController',
       });
 
-      modalInstance.result.then(function (newEntry) {
-        $scope.evidence.push(newEntry);    
+      modalInstance.result.then(function (newEntries) {
+        $scope.evidence = $scope.evidence.concat(newEntries); 
+        console.log($scope.evidence);   
       });      
     }
 
@@ -706,18 +716,18 @@ angular.module('explore.controllers')
           }
         }
       }
-    }
+    };
 
     function updateAssociationSource(source) {
       _.forOwn($scope.filterSwitches, function(value, key) {
         $scope.filterSwitches[key] = source !== '' && source !== key; 
       });
       $scope.associationSource = source;
-    }
+    };
 
     $scope.associationInactive = function(source) {
       return $scope.selectedEntry[source]===null || ($scope.associationSource !== '' && $scope.associationSource !== source)
-    }
+    };
 
     $scope.filterColumn = function(source) {
       if ($scope.filterSwitches[source]) {
@@ -730,7 +740,7 @@ angular.module('explore.controllers')
           return true;
         }
       }
-    }
+    };
 
   }]);
 
@@ -775,18 +785,17 @@ angular.module('explore.controllers')
 
   }]);
 angular.module('explore.controllers')
-  .controller('EvidenceModalController', ['$scope', '$modalInstance', '$modal', 'Core', 
-    function($scope, $modalInstance, $modal, Core) {
+  .controller('EvidenceModalController', ['$scope', '$modalInstance', '$modal', 'Core', 'Bibtex',
+    function($scope, $modalInstance, $modal, Core, Bibtex) {
 
     $scope.title = "";
-    $scope.abstract = ""; 
+    $scope.abstract = "";
 
     $scope.ok = function () {
-      var newEvidence = Core.postEvidenceByUserId(1, $scope.title, $scope.abstract, 
+      var newEvidence = Core.postEvidenceByUserId(1, $scope.title, $scope.abstract, {},
         function(response) {
-          console.log(response);
           $modalInstance.close(response.data[0]);
-        }, function() {
+        }, function(response) {
           console.log('server error when saving new evidence');
           console.log(response);
         });
@@ -794,6 +803,31 @@ angular.module('explore.controllers')
 
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
+    };
+
+    $scope.processBibtexFile = function() {
+      var selectedFile = document.getElementById('bibtex-input').files[0];
+      var reader = new FileReader();
+      reader.onload = function(file) {
+        var fileContent = file.currentTarget.result;
+        var evidenceList = Bibtex.parseBibtexFile(fileContent);      
+        var storedEvidence = [];        
+        
+        evidenceList.forEach(function(evidence) {
+          Core.postEvidenceByUserId(1, evidence.title, evidence.abstract, evidence.metadata, 
+            function(response) {
+              storedEvidence.push(response.data[0]);
+              if (storedEvidence.length === evidenceList.length) {
+                $modalInstance.close(storedEvidence);                
+              }
+            }, function(response) {
+              console.log('server error when saving new evidence');
+              console.log(response);
+            });
+        });
+
+      };
+      reader.readAsText(selectedFile);
     };
 
   }]);
@@ -903,7 +937,7 @@ angular.module('mainModule').run(['$templateCache', function($templateCache) {
 }]);
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('modal/evidenceModal.html',
-        "<div class=\"modal-header\">\n    <h3>Add new evidence</h3>\n</div>\n<div class=\"modal-body\">\n  <label for=\"title\">Title</label>\n  <input type=\"text\" class=\"form-control\" id=\"title\" ng-model=\"title\"/>\n  <label for=\"abstract\">Abstract</label>  \n  <textarea class=\"form-control\" id=\"abstract\" ng-model=\"abstract\"></textarea>\n</div>\n<div class=\"modal-footer\">\n  <button class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n  <button class=\"btn btn-primary\" ng-click=\"ok()\">Save</button>\n</div>");
+        "<div class=\"modal-header\">\n    <h3>Add new evidence</h3>\n</div>\n<div class=\"modal-body\">\n  <label for=\"title\">Title</label>\n  <input type=\"text\" class=\"form-control\" id=\"title\" ng-model=\"title\"/>\n  <label for=\"abstract\">Abstract</label>  \n  <textarea class=\"form-control\" id=\"abstract\" ng-model=\"abstract\"></textarea>\n  <div class=\"row\">\n    <input type=\"file\" class=\"col-md-6\" id=\"bibtex-input\">\n    <div class=\"col-md-2\"><button class=\"btn btn-default\" ng-click=\"processBibtexFile()\">Upload</button></div>\n  </div>\n</div>\n<div class=\"modal-footer\">\n  <button class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n  <button class=\"btn btn-primary\" ng-click=\"ok()\">Save</button>\n</div>");
 }]);
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('modal/modal.html',
@@ -929,6 +963,57 @@ angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('modal/textsModal.html',
         "<div class=\"modal-header\">\n    <h3>Add new texts</h3>\n</div>\n<div class=\"modal-body\">\n  <label for=\"title\">Title</label>\n  <input type=\"text\" class=\"form-control\" id=\"title\" ng-model=\"textsInfo.title\"/>\n  <label for=\"content\">Content</label>  \n  <textarea class=\"form-control\" id=\"content\" ng-model=\"textsInfo.content\"></textarea>\n  <table class=\"table\">\n    <tr ng-repeat=\"c in concepts | filter:isAssociated('concept')\">\n      <td>{{c.term}}</td>\n    </tr>\n  </table>\n  <select ng-model=\"selectedConcept\" ng-options=\"c.term for c in concepts\">\n    <option value=\"\">-- choose concept --</option>\n  </select>\n  <button class=\"btn btn-xs\" ng-click=\"addAssociatedConceptLocally()\">Add</button>\n  <select ng-model=\"selectedEvidence\" ng-options=\"e.title for e in evidence\">\n    <option value=\"\">-- choose evidence --</option>\n  </select>\n  <button class=\"btn btn-xs\">Add</button>\n</div>\n<div class=\"modal-footer\">\n  <button class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n  <button class=\"btn btn-primary\" ng-click=\"ok()\">Save</button>\n</div>");
 }]);
+angular
+  .module('bibtex.services')
+  .factory('Bibtex', Bibtex);
+
+  function Bibtex($http, $q) {
+    var Bibtex = {
+      parseBibtexFile
+    };
+
+    return Bibtex;
+
+    ////////////////////
+
+    function parseBibtexFile(fileContent) {
+      var evidenceList = [];
+      var lines = fileContent.split('\n');
+
+      lines.reduce(function(prev, curr, index, array) {
+        var cleanLine = curr.trim(); // Wish this is really clean
+        var initial = cleanLine.charAt(0);
+        if (initial === '@') {
+          var newEvidence = [cleanLine];
+          prev.push(newEvidence);
+        }
+        else if (initial.length > 0 && initial !== '%') {
+          var numOfEvidence = prev.length;
+          prev[numOfEvidence-1].push(cleanLine);
+        }
+        return prev;
+      }, evidenceList)
+
+      var results = [];
+
+      evidenceList.forEach(function(evidenceArray) {
+        var evidenceString = evidenceArray.join('\n');
+        var parsedEvidence = parseBibtex(evidenceString);
+        for (var key in parsedEvidence) { // There should be only one key. Any better way to read that only key?
+          var metadata = parsedEvidence[key];
+          if (metadata.TITLE !== undefined) {
+            results.push({
+              title: metadata.TITLE,
+              abstract: metadata.ABSTRACT !== undefined ? metadata.ABSTRACT : '',
+              metadata: _.omit(_.omit(metadata, 'TITLE'), 'ABSTRACT')
+            });
+          }
+        }
+      });      
+
+      return results;
+    }
+  }
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('core/partials/english.html',
         "<p class=\"padding-lg\">\n    <em>\"In the end, it's not going to matter how many breaths you took, but how many moments took your breath away.\"</em>\n</p>");

@@ -6,6 +6,8 @@ angular.module('mainModule', [
   'authentication',
   'exploreModule',
   'coreModule',
+  'utilityModule',
   'angularModalService',
+  'angularFileUpload'
 //  'd3'
 ]);

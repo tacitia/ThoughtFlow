@@ -49,12 +49,12 @@
       });
     }
 
-    function postEvidenceByUserId(userId, title, abstract, successFn, errorFn) {
+    function postEvidenceByUserId(userId, title, abstract, metadata, successFn, errorFn) {
       return $http.post('/api/v1/data/evidence/', {
         created_by: userId,
         title: title,
         abstract: abstract,
-        metadata: {}
+        metadata: metadata
       }).then(successFn, errorFn);
     }
 

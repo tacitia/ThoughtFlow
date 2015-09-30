@@ -2,7 +2,6 @@ angular.module('explore.controllers')
   .controller('ExploreController', ['$scope', '$modal', 'Core', 'AssociationMap',
     function($scope, $modal, Core, AssociationMap) {
 
-
     var data = Core.getAllDataForUser(1, function(response) {
       $scope.texts = response.data.texts;
       $scope.concepts = response.data.concepts;
@@ -85,8 +84,9 @@ angular.module('explore.controllers')
         controller: 'EvidenceModalController',
       });
 
-      modalInstance.result.then(function (newEntry) {
-        $scope.evidence.push(newEntry);    
+      modalInstance.result.then(function (newEntries) {
+        $scope.evidence = $scope.evidence.concat(newEntries); 
+        console.log($scope.evidence);   
       });      
     }
 
@@ -179,18 +179,18 @@ angular.module('explore.controllers')
           }
         }
       }
-    }
+    };
 
     function updateAssociationSource(source) {
       _.forOwn($scope.filterSwitches, function(value, key) {
         $scope.filterSwitches[key] = source !== '' && source !== key; 
       });
       $scope.associationSource = source;
-    }
+    };
 
     $scope.associationInactive = function(source) {
       return $scope.selectedEntry[source]===null || ($scope.associationSource !== '' && $scope.associationSource !== source)
-    }
+    };
 
     $scope.filterColumn = function(source) {
       if ($scope.filterSwitches[source]) {
@@ -203,6 +203,6 @@ angular.module('explore.controllers')
           return true;
         }
       }
-    }
+    };
 
   }]);
