@@ -54,6 +54,11 @@ class Evidence(models.Model):
     return self.title
 
 
+class AssociationManager(models.Manager):
+  def create_association(self, sourceType, targetType, sourceId, targetId, created_by):
+    association = self.create(sourceType=sourceType, targetType=targetType, sourceId=sourceId, targetId=targetId, created_by=created_by)
+    return association
+
 class Association(models.Model):
   TEXT = 'txt'
   CONCEPT = 'cnc'
@@ -71,3 +76,6 @@ class Association(models.Model):
   created_by = models.IntegerField()
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
+
+  objects = AssociationManager()
+

@@ -1,11 +1,12 @@
 angular.module('explore.controllers')
-  .controller('ExploreController', ['$scope', '$modal', 'Core',
-    function($scope, $modal, Core) {
+  .controller('ExploreController', ['$scope', '$modal', 'Core', 'AssociationMap',
+    function($scope, $modal, Core, AssociationMap) {
 
 
     var data = Core.getAllDataForUser(1, function(response) {
       $scope.texts = response.data.texts;
       $scope.concepts = response.data.concepts;
+      $scope.evidence = response.data.evidence;
     }, function(response) {
       console.log('server error when retrieving data for user ' + userId);
       console.log(response);
@@ -29,37 +30,6 @@ angular.module('explore.controllers')
     $scope.associatedIds['concept'] = [];
     $scope.associatedIds['evidence'] = [];
 
-    $scope.texts = data.texts;
-    $scope.concepts = data.concepts;
-    $scope.evidence = data.evidence;
-
-    $scope.associationMap = [
-      {
-        source: 1,
-        sourceType: 'text',
-        target: 1,
-        targetType: 'concept'
-      },
-      {
-        source: 1,
-        sourceType: 'text',
-        target: 1,
-        targetType: 'evidence'
-      },
-      {
-        source: 1,
-        sourceType: 'concept',
-        target: 1,
-        targetType: 'text'
-      },
-      {
-        source: 1,
-        sourceType: 'concept',
-        target: 1,
-        targetType: 'evidence'
-      }      
-
-    ];
 
     $scope.selectEntry = function(elem, type) {
       if (elem === $scope.selectedEntry[type]) {
@@ -76,6 +46,21 @@ angular.module('explore.controllers')
       var modalInstance = $modal.open({
         templateUrl: 'modal/textsModal.html',
         controller: 'TextsModalController',
+        resolve: {
+          textsInfo: function() {
+            return {
+              id: -1,
+              title: "",
+              content: ""
+            }
+          },
+          concepts: function() {
+            return $scope.concepts;
+          },
+          evidence: function() {
+            return $scope.evidence;
+          },
+        }
       });
 
       modalInstance.result.then(function (newEntry) {
@@ -101,8 +86,21 @@ angular.module('explore.controllers')
       });
 
       modalInstance.result.then(function (newEntry) {
-        $scope.concepts.push(newEntry);    
+        $scope.evidence.push(newEntry);    
       });      
+    }
+
+
+    // TODO: fill in
+    $scope.updateTextEntry = function() {
+    }
+
+    // TODO: fill in
+    $scope.updateConceptEntry = function() {
+    }
+
+    // TODO: fill in
+    $scope.updateEvidenceEntry = function() {
     }
 
     $scope.saveTextEntry = function() {
@@ -165,18 +163,18 @@ angular.module('explore.controllers')
         updateAssociationSource(type);
         switch (type) {
           case 'text': {
-            $scope.associatedIds['concept'] = getAssociatedIds('text', 'concept', $scope.selectedEntry['text'].id);
-            $scope.associatedIds['evidence'] = getAssociatedIds('text', 'evidence', $scope.selectedEntry['text'].id);
+            $scope.associatedIds['concept'] = AssociationMap.getAssociatedIds('text', 'concept', $scope.selectedEntry['text'].id);
+            $scope.associatedIds['evidence'] = AssociationMap.getAssociatedIds('text', 'evidence', $scope.selectedEntry['text'].id);
             break;
           }
           case 'concept': {
-            $scope.associatedIds['text'] = getAssociatedIds('concept', 'text', $scope.selectedEntry['concept'].id);
-            $scope.associatedIds['evidence'] = getAssociatedIds('concept', 'evidence', $scope.selectedEntry['concept'].id);
+            $scope.associatedIds['text'] = AssociationMap.getAssociatedIds('concept', 'text', $scope.selectedEntry['concept'].id);
+            $scope.associatedIds['evidence'] = AssociationMap.getAssociatedIds('concept', 'evidence', $scope.selectedEntry['concept'].id);
             break;
           }
           case 'evidence': {
-            $scope.associatedIds['text'] = getAssociatedIds('evidence', 'text', $scope.selectedEntry['evidence'].id);
-            $scope.associatedIds['concept'] = getAssociatedIds('evidence', 'concept', $scope.selectedEntry['evidence'].id);
+            $scope.associatedIds['text'] = AssociationMap.getAssociatedIds('evidence', 'text', $scope.selectedEntry['evidence'].id);
+            $scope.associatedIds['concept'] = AssociationMap.getAssociatedIds('evidence', 'concept', $scope.selectedEntry['evidence'].id);
             break;
           }
         }
@@ -188,15 +186,6 @@ angular.module('explore.controllers')
         $scope.filterSwitches[key] = source !== '' && source !== key; 
       });
       $scope.associationSource = source;
-    }
-
-    function getAssociatedIds(sourceType, targetType, source) {
-      return _.filter($scope.associationMap, function(entry) {
-        return entry.sourceType === sourceType && entry.targetType === targetType && entry.source === source;
-      })
-      .map(function(entry) {
-        return entry.target;
-      });      
     }
 
     $scope.associationInactive = function(source) {

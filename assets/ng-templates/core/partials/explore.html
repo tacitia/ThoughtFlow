@@ -18,6 +18,7 @@
     <div class="footer">
       <div class="btn-group btn-group-sm" role="group">
         <button class="btn btn-default" ng-click="addTextEntry()">Add</button>
+        <button class="btn btn-default" ng-click="updateTextEntry()">Edit</button>
         <button class="btn btn-primary" ng-disabled="!hasUnsavedChanges" ng-click="saveTextEntry()">Save</button>
         <button class="btn btn-default" ng-class="{'btn-success': associationSource==='text'}" ng-disabled="associationInactive('text')" ng-click="showAssociation('text')">Associate</button>
         <button class="btn btn-danger" ng-disabled="selectedEntry['text']===null" ng-click="deleteEntry('text')">Delete</button>

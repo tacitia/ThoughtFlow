@@ -3,9 +3,22 @@
 </div>
 <div class="modal-body">
   <label for="title">Title</label>
-  <input type="text" class="form-control" id="title" ng-model="title"/>
+  <input type="text" class="form-control" id="title" ng-model="textsInfo.title"/>
   <label for="content">Content</label>  
-  <textarea class="form-control" id="content" ng-model="content"></textarea>
+  <textarea class="form-control" id="content" ng-model="textsInfo.content"></textarea>
+  <table class="table">
+    <tr ng-repeat="c in concepts | filter:isAssociated('concept')">
+      <td>{{c.term}}</td>
+    </tr>
+  </table>
+  <select ng-model="selectedConcept" ng-options="c.term for c in concepts">
+    <option value="">-- choose concept --</option>
+  </select>
+  <button class="btn btn-xs" ng-click="addAssociatedConceptLocally()">Add</button>
+  <select ng-model="selectedEvidence" ng-options="e.title for e in evidence">
+    <option value="">-- choose evidence --</option>
+  </select>
+  <button class="btn btn-xs">Add</button>
 </div>
 <div class="modal-footer">
   <button class="btn btn-default" ng-click="cancel()">Cancel</button>

@@ -48,13 +48,24 @@ class ConceptView(View):
 class EvidenceView(View):
     def post(self, request, format=None):
         data = json.loads(request.body)
-        evidence = Text.objects.create_text(data['title'], data['abstract'], data['metadata'], data['created_by'])
+        evidence = Evidence.objects.create_evidence(data['title'], data['abstract'], data['metadata'], data['created_by'])
         print evidence
         serialized_json = serializers.serialize('json', [evidence])
         evidence_json = flattenSerializedJson(serialized_json)
 
         return HttpResponse(evidence_json, status=status.HTTP_201_CREATED)
 
+class AssociationView(View):
+    def post(self, request, format=None):
+        data = json.loads(request.body)
+        association = Association.objects.create_association(data['sourceType'], data['targetType'], data['sourceId'], data['targetId'], data['created_by'])
+        print association
+        serialized_json = serializers.serialize('json', [association])
+        association_json = flattenSerializedJson(serialized_json)
+
+        return HttpResponse(association_json, status=status.HTTP_201_CREATED)
+
+# TODO: delete attached associations as well
 class DeleteEntryView(View):
     def post(self, request, type, format=None):
         print '?'
@@ -96,3 +107,11 @@ class UserDataView(View):
         
         return HttpResponse(json.dumps(output), status=status.HTTP_201_CREATED)
 
+
+class UserAssociationView(View):
+    def get(self, request, user_id, format=None): 
+        associations = Association.objects.filter(created_by=user_id)
+        serialized_json = serializers.serialize('json', associations)
+        associations_json = flattenSerializedJson(serialized_json)
+
+        return HttpResponse(associations_json, status=status.HTTP_201_CREATED)
