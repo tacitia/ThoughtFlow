@@ -8,6 +8,7 @@ function AssociationMap(Core) {
   var associationMap = null;
   Core.getAssociationMap(1, function(response) {
     associationMap = response.data;
+    console.log('user association map retrieved');
   }, function(response) {
     console.log('server error when retrieving association map');
     console.log(response);
@@ -15,6 +16,7 @@ function AssociationMap(Core) {
 
   var AssociationMap = {
     getAssociatedIds: getAssociatedIds,
+    getAssociationsOfType: getAssociationsOfType,
     addAssociation: addAssociation,
   };
 
@@ -29,6 +31,12 @@ function AssociationMap(Core) {
     .map(function(entry) {
       return entry.targetId;
     });      
+  }
+
+  function getAssociationsOfType(sourceType, targetType) {
+    return _.filter(associationMap, function(entry) {
+      return entry.sourceType === sourceType && entry.targetType === targetType;
+    })
   }
 
   function addAssociation(sourceType, targetType, source, target) {

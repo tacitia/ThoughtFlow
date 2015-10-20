@@ -12,7 +12,7 @@
       postEvidenceByUserId: postEvidenceByUserId,
       postAssociationByUserId: postAssociationByUserId,
       getAllDataForUser: getAllDataForUser,
-      getAssociationMap: getAssociationMap
+      getAssociationMap: getAssociationMap    
     };
 
     return Core;
@@ -68,10 +68,10 @@
       }).then(successFn, errorFn)      
     }
 
-    function deleteEntry(id, type, successFn, errorFn) {
+    function deleteEntry(id, type, userId, successFn, errorFn) {
       return $http.post('/api/v1/data/' + type + '/delete/', {
         // switch to using the id of the currently active user
-        user_id: 1,
+        user_id: userId,
         id: id
       }).then(successFn, errorFn);
     }

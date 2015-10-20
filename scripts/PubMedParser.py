@@ -74,7 +74,6 @@ def read_contents(filename, num_pubs):
 			counter += 1
 			if counter > num_pubs:
 				break
-#		print re.match('PMID|TI|AB|DP|FAU|AD|JT|OT', line)
 		if re.match('PMID|TI|AB|DP|FAU|AD|JT|OT|\n', line):
 			contents += line
 	return contents

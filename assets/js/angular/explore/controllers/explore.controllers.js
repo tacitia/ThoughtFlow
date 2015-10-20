@@ -1,208 +1,109 @@
 angular.module('explore.controllers')
-  .controller('ExploreController', ['$scope', '$modal', 'Core', 'AssociationMap',
-    function($scope, $modal, Core, AssociationMap) {
+  .controller('ExploreController', ['$scope', '$modal', 'Core', 'AssociationMap', 'Pubmed',
+    function($scope, $modal, Core, AssociationMap, Pubmed) {
 
     var data = Core.getAllDataForUser(1, function(response) {
-      $scope.texts = response.data.texts;
-      $scope.concepts = response.data.concepts;
-      $scope.evidence = response.data.evidence;
-    }, function(response) {
+      var texts = response.data.texts;
+      var concepts = response.data.concepts;
+      var evidence = response.data.evidence;
+      var conceptAssociations = AssociationMap.getAssociationsOfType('concept', 'concept');
+      console.log(conceptAssociations);
+      var formattedAssociations = [];
+      visualizeGraph(texts, concepts, evidence, formattedAssociations);
+    }, function(errorResponse) {
       console.log('server error when retrieving data for user ' + userId);
-      console.log(response);
+      console.log(errorResponse);
     });
 
-    $scope.selectedEntry = {};
-    $scope.selectedEntry['text'] = null;
-    $scope.selectedEntry['concept'] = null;
-    $scope.selectedEntry['evidence'] = null;
+    $scope.selectedConcepts = [];
 
-    $scope.hasUnsavedChanges = false;
-    $scope.associationSource = '';
+    // Get co-occurred terms and publications with those labels
+    $scope.getNeighborConcepts = function () {
 
-    $scope.filterSwitches = {};
-    $scope.filterSwitches['text'] = false;
-    $scope.filterSwitches['concept'] = false;
-    $scope.filterSwitches['evidence'] = false;
+      Pubmed.findNeighborConcepts($scope.selectedConcepts, 1, function(response) {
+        console.log(response);
+      }, function(errorRespone) {
 
-    $scope.associatedIds = {};
-    $scope.associatedIds['text'] = [];
-    $scope.associatedIds['concept'] = [];
-    $scope.associatedIds['evidence'] = [];
-
-
-    $scope.selectEntry = function(elem, type) {
-      if (elem === $scope.selectedEntry[type]) {
-        $scope.selectedEntry[type] = null;
-        if (type === 'text') $scope.activeText = '';
-      }
-      else {
-        $scope.selectedEntry[type] = elem;
-        if (type === 'text') $scope.activeText = $scope.selectedEntry['text'].content;
-      }
-    } 
-
-    $scope.addTextEntry = function() {
-      var modalInstance = $modal.open({
-        templateUrl: 'modal/textsModal.html',
-        controller: 'TextsModalController',
-        resolve: {
-          textsInfo: function() {
-            return {
-              id: -1,
-              title: "",
-              content: ""
-            }
-          },
-          concepts: function() {
-            return $scope.concepts;
-          },
-          evidence: function() {
-            return $scope.evidence;
-          },
-        }
       });
+    };
 
-      modalInstance.result.then(function (newEntry) {
-        $scope.texts.push(newEntry);  
-      });
-    }
+    function visualizeGraph(texts, concepts, evidence, conceptAssociations) {
 
-    $scope.addConceptEntry = function() {
-      var modalInstance = $modal.open({
-        templateUrl: 'modal/conceptsModal.html',
-        controller: 'ConceptsModalController',
-      });
+      var canvas = d3.select('#graph')
+        .style('width', 400)
+        .style('height', 400);
+      console.log(concepts);
 
-      modalInstance.result.then(function (newEntry) {
-        $scope.concepts.push(newEntry);    
-      });      
-    }
+      // To get the same graph layout every time the page is loaded
+      Math.seedrandom('Chronos');
 
-    $scope.addEvidenceEntry = function() {
-      var modalInstance = $modal.open({
-        templateUrl: 'modal/evidenceModal.html',
-        controller: 'EvidenceModalController',
-      });
+      var links = conceptAssociations;
 
-      modalInstance.result.then(function (newEntries) {
-        $scope.evidence = $scope.evidence.concat(newEntries); 
-        console.log($scope.evidence);   
-      });      
-    }
+      var force = d3.layout.force()
+        .nodes(concepts)
+        .links(links)
+        .size([400, 400])
+        .linkStrength(0.1)
+        .friction(0.9)
+        .linkDistance(50)
+        .charge(-30)
+        .gravity(0.1)
+        .theta(0.8)
+        .alpha(0.1)
+        .start();
 
+      var linkGroup = canvas.selectAll('line')
+        .data(force.links())
+        .enter()
+        .append('line')
+        .attr('stroke', '#ccc')
+        .attr('stroke-width', 3);
 
-    // TODO: fill in
-    $scope.updateTextEntry = function() {
-    }
-
-    // TODO: fill in
-    $scope.updateConceptEntry = function() {
-    }
-
-    // TODO: fill in
-    $scope.updateEvidenceEntry = function() {
-    }
-
-    $scope.saveTextEntry = function() {
-      var modalInstance = $modal.open({
-        templateUrl: 'modal/saveModal.html',
-        controller: 'SaveModalController',
-        resolve: {
-          textEntry: function() {
-            return $scope.selectedEntry['text'];
-          }
-        }
-      });
-
-      modalInstance.result.then(function (newEntry) {
-        $scope.selectedEntry['text'].content = $scope.activeText;
-        $scope.hasUnsavedChanges = false;
-      });      
-    }
-
-    $scope.deleteEntry = function(type) {
-      var modalInstance = $modal.open({
-        templateUrl: 'modal/deleteModal.html',
-        controller: 'DeleteModalController',
-        resolve: {
-          content: function() {
-            switch (type) {
-              case 'text': return $scope.selectedEntry[type].title;
-              case 'concept': return $scope.selectedEntry[type].term;
-              case 'evidence': return $scope.selectedEntry[type].title;
-            }
-          },
-          id: function() {
-            return $scope.selectedEntry[type].id;
-          },
-          type: function() {
-            return type;
-          }
-        }
-      });      
-
-      var target = (type === 'text') 
-        ? $scope.texts 
-        : (type === 'concept' ? $scope.concepts : $scope.evidence)
-      modalInstance.result.then(function (deletedEntryId) {
-        _.remove(target, function(elem) {
-          return elem.id === deletedEntryId;
+      var nodeGroup = canvas.selectAll('rect')
+        .data(force.nodes())
+        .enter()
+        .append('rect')
+        .attr('class', 'node')
+        .attr('width', function(d) {
+          return d.term.length * 10;
         })
-      });
+        .attr('height', 25)
+        .attr('fill', '#b5cfe3')
+        .attr('ry', 5)
+        .on('click', function(d, i) {
+          if ($scope.selectedConcepts.indexOf(d) < 0) {
+            $scope.selectedConcepts.push(d);
+            d3.select(this).classed('selected', true);
+          }
+          else {
+            $scope.selectedConcepts = _.without([$scope.selectedConcepts], d);
+            d3.select(this).classed('selected', false);
+          }
+        });
+
+      var textGroup = canvas.selectAll('text')
+        .data(force.nodes())
+        .enter()
+        .append('text')
+        .text(function(d) {
+          return d.term;
+        })
+        .attr('text-anchor', 'middle')
+
+      force.start();
+      for (var i = 0; i < 1000; ++i) force.tick();
+      force.stop();  
+
+      linkGroup.attr("x1", function(d) { return d.source.x; })
+          .attr("y1", function(d) { return d.source.y; })
+          .attr("x2", function(d) { return d.target.x; })
+          .attr("y2", function(d) { return d.target.y; });
+
+      nodeGroup.attr("x", function(d) { return d.x - d.term.length * 5; })
+          .attr("y", function(d) { return d.y - 18; });
+
+      textGroup.attr("x", function(d) { return d.x; })
+          .attr("y", function(d) { return d.y; });
     }
-
-    $scope.startMakingChanges = function() {
-      $scope.hasUnsavedChanges = true;
-    }
-
-    $scope.showAssociation = function(type) {
-      if ($scope.associationSource === type) {
-        updateAssociationSource('');
-      }
-      else {
-        updateAssociationSource(type);
-        switch (type) {
-          case 'text': {
-            $scope.associatedIds['concept'] = AssociationMap.getAssociatedIds('text', 'concept', $scope.selectedEntry['text'].id);
-            $scope.associatedIds['evidence'] = AssociationMap.getAssociatedIds('text', 'evidence', $scope.selectedEntry['text'].id);
-            break;
-          }
-          case 'concept': {
-            $scope.associatedIds['text'] = AssociationMap.getAssociatedIds('concept', 'text', $scope.selectedEntry['concept'].id);
-            $scope.associatedIds['evidence'] = AssociationMap.getAssociatedIds('concept', 'evidence', $scope.selectedEntry['concept'].id);
-            break;
-          }
-          case 'evidence': {
-            $scope.associatedIds['text'] = AssociationMap.getAssociatedIds('evidence', 'text', $scope.selectedEntry['evidence'].id);
-            $scope.associatedIds['concept'] = AssociationMap.getAssociatedIds('evidence', 'concept', $scope.selectedEntry['evidence'].id);
-            break;
-          }
-        }
-      }
-    };
-
-    function updateAssociationSource(source) {
-      _.forOwn($scope.filterSwitches, function(value, key) {
-        $scope.filterSwitches[key] = source !== '' && source !== key; 
-      });
-      $scope.associationSource = source;
-    };
-
-    $scope.associationInactive = function(source) {
-      return $scope.selectedEntry[source]===null || ($scope.associationSource !== '' && $scope.associationSource !== source)
-    };
-
-    $scope.filterColumn = function(source) {
-      if ($scope.filterSwitches[source]) {
-        return function(entry) {
-          return $scope.associatedIds[source].indexOf(entry.id) > -1;
-        }
-      }
-      else {
-        return function() {
-          return true;
-        }
-      }
-    };
 
   }]);

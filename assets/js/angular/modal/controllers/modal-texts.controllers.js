@@ -1,6 +1,6 @@
-angular.module('explore.controllers')
-  .controller('TextsModalController', ['$scope', '$modalInstance', 'textsInfo', 'concepts', 'evidence', 'Core', 'AssociationMap',
-    function($scope, $modalInstance, textsInfo, concepts, evidence, Core, AssociationMap) {
+angular.module('modal.controllers')
+  .controller('TextsModalController', ['$scope', '$modalInstance', 'textsInfo', 'concepts', 'evidence', 'userId', 'Core', 'AssociationMap',
+    function($scope, $modalInstance, textsInfo, concepts, evidence, userId, Core, AssociationMap) {
 
     $scope.textsInfo = textsInfo;
     $scope.concepts = concepts;
@@ -11,7 +11,7 @@ angular.module('explore.controllers')
     var tempAssociatedEvidenceIds = [];
 
     $scope.ok = function () {
-      var newText = Core.postTextByUserId(1, $scope.textsInfo.title, $scope.textsInfo.content, 
+      var newText = Core.postTextByUserId(userId, $scope.textsInfo.title, $scope.textsInfo.content, 
         function(response) {
           tempAssociatedConceptIds.forEach(function(id) {
             AssociationMap.addAssociation('text', 'concept', response.data[0].id, id);

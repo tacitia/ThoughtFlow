@@ -1,4 +1,4 @@
-angular.module('explore.controllers')
+angular.module('modal.controllers')
   .controller('ConceptsModalController', ['$scope', '$modalInstance', '$modal', 'Core', 
     function($scope, $modalInstance, $modal, Core) {
 

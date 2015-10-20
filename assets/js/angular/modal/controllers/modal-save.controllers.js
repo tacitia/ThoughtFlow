@@ -1,4 +1,4 @@
-angular.module('explore.controllers')
+angular.module('modal.controllers')
   .controller('SaveModalController', function($scope, $modalInstance, textEntry) {
 
     $scope.textEntry = textEntry;

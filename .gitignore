@@ -1,5 +1,8 @@
+project/core/queryresults/
 .sass-cache
 .DS_STORE
 *.log
 bower_components
+assets/js/angular/tmp/
 node_modules
+*.pyc

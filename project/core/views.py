@@ -1,4 +1,6 @@
 import json
+import PubMedQuerier
+import TermExtractor
 
 from django.core import serializers
 from django.shortcuts import render
@@ -115,3 +117,51 @@ class UserAssociationView(View):
         associations_json = flattenSerializedJson(serialized_json)
 
         return HttpResponse(associations_json, status=status.HTTP_201_CREATED)
+
+
+class ConceptGrowthView(View):
+    def post(self, request, format=None):
+        data = json.loads(request.body)
+        print data['concepts']
+        neighbors = PubMedQuerier.find_neighbors_for_terms(data['concepts'], num_neighbors=10, user_id=data['requested_by'])
+        output = {}
+        output['counts'] = {}
+        concepts = []
+        for pairs in neighbors['keywords']:
+            output['counts'][pairs[0]] = pairs[1]
+            concepts.append(Concept.objects.create_concept(pairs[0], data['requested_by']))
+        serialized_json = serializers.serialize('json', concepts)
+        concepts_json = flattenSerializedJson(serialized_json)
+        output['concepts'] = json.loads(concepts_json)
+        return HttpResponse(json.dumps(output), status=status.HTTP_201_CREATED)
+
+class EvidenceSearchView(View):
+    def post(self, request, format=None):
+        print '!!!'
+        terms = json.loads(request.body)['terms']
+        print '~'
+        print json.loads(request.body)
+        evidence = PubMedQuerier.find_evidence_for_terms(terms)
+        serialized_json = serializers.serialize('json', evidence)
+        evidence_json = flattenSerializedJson(serialized_json)
+        return HttpResponse(evidence_json, status=status.HTTP_201_CREATED)
+
+
+class TermExtractionView(View):
+
+    def post(self, request, format=None):
+        
+        text = json.loads(request.body)['text']
+        terms = TermExtractor.run(text)
+        output = []
+        for entry in terms:
+            output.append({
+                'term': entry[0],
+                'frequency': entry[1],
+                'length': entry[2]
+            })
+        return HttpResponse(json.dumps(output), status=status.HTTP_201_CREATED)
+
+
+    
+

@@ -9,20 +9,42 @@ angular.module('mainModule')
                     }
                 }
             })
-            .state('index.explore', {
-                url: "explore/",
+
+        $stateProvider
+            .state('v1', {
+                url: "/v1",
                 views: {
-                    "MainView@index": {
-                        templateUrl: 'core/partials/explore.html',
+                    "FullContentView": {
+                        templateUrl: 'core/v1/landing.v1.html',
+                        controller: 'BaselineController'
+                    }
+                }
+            })
+
+        $stateProvider
+            .state('v2', {
+                url: "/v2",
+                views: {
+                    "FullContentView": {
+                        templateUrl: 'core/v2/landing.v2.html',
+                    }
+                }
+            })       
+            .state('v2.explore', {
+                url: "/explore",
+                views: {
+                    'MainView@v2': {
+                        templateUrl: 'core/v2/explore.v2.html',
                         controller: 'ExploreController'
                     }
                 }
             })
-            .state('index.investigate', {
-                url: "investigate/",
+            .state('v2.focus', {
+                url: "/focus",
                 views: {
-                    "MainView@index": {
-                        templateUrl: 'core/partials/investigate.html'
+                    "MainView@v2": {
+                        templateUrl: 'core/v2/focus.v2.html',
+                        controller: 'FocusController'
                     }
                 }
             });

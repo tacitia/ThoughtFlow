@@ -11,6 +11,9 @@ from time import sleep
 import operator
 import linecache
 
+# Takes the query and 
+# 1) writes the query result into savefile
+# 2) writes information about the requery result (how many results )
 def query_pubmed(param, savefile, logfile):
 	print 'Query: ' + param
 	if os.path.isfile(savefile):
@@ -39,7 +42,7 @@ def download_records(input, prefix):
 	filenames = []
 	for i, t in enumerate(titles):
 		param = convert_title_to_query_param(t)
-		f = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'queryresults', prefix + '_' + str(i) + '.txt')
+		f = os.path.join(os.path.dirname( os.path.realpath(__file__)), 'queryresults', prefix + '_' + str(i) + '.txt')
 		logfile = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'queryresults', prefix + '_' + str(i) + '_log' + '.txt')
 		query_pubmed(param, f, logfile)
 		filenames.append(f)
@@ -55,7 +58,7 @@ def extract_terms_for_titles(titles, min_repeat=0):
 #	keywords = PubMedParser.extract_all_mesh(filenames)
 	return keywords
 
-def find_neighbors_for_terms(terms, num_neighbors=5):
+def find_neighbors_for_terms(terms, num_neighbors=10, user_id=1):
 	query = ''
 	for t in terms:
 		query += t + ' '
@@ -63,14 +66,24 @@ def find_neighbors_for_terms(terms, num_neighbors=5):
 	f = os.path.join(current_dir, 'queryresults', query + '.txt')
 	logfile = os.path.join(current_dir, 'queryresults', query + '_log' + '.txt')
 	query_pubmed(query, f, logfile)
-	keywords = PubMedParser.extract_repeated_keywords([f], 0)
-	keywords = merge_terms(keywords, terms)
+	keywords = PubMedParser.extract_repeated_keywords([f], terms, threshold=10)
+	PubMedParser.load_evidence(f)
 	sorted_keywords = sorted(keywords.items(), key=operator.itemgetter(1), reverse=True)
 	num_keywords_all = len(sorted_keywords)
 	pub_counts = read_counts(logfile)
 	pub_counts['keyword_count'] = num_keywords_all
 	pub_counts['showing_count'] = num_neighbors 
 	return {'keywords': sorted_keywords[:num_neighbors], 'log': pub_counts}
+
+def find_evidence_for_terms(terms, user_id=1):
+	query = ''
+	for t in terms:
+		query += t + ' '
+	current_dir = os.path.dirname(os.path.realpath(__file__))
+	f = os.path.join(current_dir, 'queryresults', query + '.txt')
+	logfile = os.path.join(current_dir, 'queryresults', query + '_log' + '.txt')
+	query_pubmed(query, f, logfile)
+	return PubMedParser.load_evidence(f)
 
 def search_pubs(query, num_pubs=50):
 	f = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'queryresults', query + '.txt')
@@ -86,19 +99,4 @@ def read_counts(logfile):
 	count = linecache.getline(logfile, 2)	
 	return {'orig_count': orig_count, 'count': count}
 
-def merge_terms(terms, source):
-	results = {}
-	for key in terms.keys():
-		newkey = key.lower()
-		toSkip = False
-		for r in source:
-			if r.lower() == newkey:
-				toSkip = True # skip the terms that are the same as the sources
-		if toSkip:
-			continue
-		if newkey in results:
-			results[newkey] += terms[key]
-		else:
-			results[newkey] = terms[key]
-	return results
 

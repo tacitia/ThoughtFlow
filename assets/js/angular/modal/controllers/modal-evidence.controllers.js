@@ -1,4 +1,4 @@
-angular.module('explore.controllers')
+angular.module('modal.controllers')
   .controller('EvidenceModalController', ['$scope', '$modalInstance', '$modal', 'Core', 'Bibtex',
     function($scope, $modalInstance, $modal, Core, Bibtex) {
 

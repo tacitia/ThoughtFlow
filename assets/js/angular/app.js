@@ -5,7 +5,10 @@ angular.module('mainModule', [
   'ngPageHeadMeta',
   'authentication',
   'exploreModule',
+  'focusModule',
   'coreModule',
+  'v1Module',
+  'modalModule',
   'utilityModule',
   'angularModalService',
   'angularFileUpload'
