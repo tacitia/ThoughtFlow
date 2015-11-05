@@ -9,7 +9,7 @@ body, html {
   -webkit-box-orient: vertical;
   -webkit-box-pack: center;
   -webkit-box-align: center;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .full-view {
@@ -53,7 +53,7 @@ body, html {
 }
 
 #texts-col {
-  width: 45%;
+  width: 100%;
 }
 #texts-col .index {
   height: 100%;
@@ -76,8 +76,68 @@ body, html {
   width: 15%;
 }
 
-#evidence-col {
-  width: 30%;
+#v1 .panel {
+  height: 100%;
+  margin: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  vertical-align: top;
+}
+#v1 .panel .header {
+  height: 35px;
+  background: #d0d0d0;
+  padding: 3px 20px 3px 20px;
+  font-size: 18px;
+}
+#v1 .panel .body {
+  padding: 20px;
+  height: 400px;
+}
+#v1 .panel .body .side {
+  overflow-y: scroll;
+}
+#v1 .panel .footer {
+  height: 35px;
+  padding: 3px 20px 3px 20px;
+  background: #d9edf7;
+}
+#v1 .panel .footer .btn-group {
+  float: right;
+}
+#v1 #evidence-col {
+  width: 100%;
+}
+#v1 #evidence-col #topics .topic-container {
+  height: 70px;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 5px;
+}
+#v1 #evidence-col #topics .topic-container.selected {
+  border: 3px solid steelblue;
+}
+#v1 #evidence-col #topics #topic-container-1 {
+  background-color: #fbb4ae;
+}
+#v1 #evidence-col #topics #topic-container-2 {
+  background-color: #b3cde3;
+}
+#v1 #evidence-col #topics #topic-container-3 {
+  background-color: #ccebc5;
+}
+#v1 #evidence-col #topics #topic-container-4 {
+  background-color: #decbe4;
+}
+#v1 #evidence-col #topics #topic-container-5 {
+  background-color: #fed9a6;
+}
+#v1 #evidence-col #documents {
+  overflow-y: scroll;
+  height: 100%;
+}
+#v1 #evidence-col #details {
+  overflow-y: scroll;
+  height: 100%;
 }
 
 #terms-col {

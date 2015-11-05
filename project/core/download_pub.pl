@@ -707,7 +707,8 @@ elsif ($params{batch}) {
    $retmax = $params{batch};
 }
 else {   
-   $retmax = 500;
+   # modified by Hua; original value 500
+   $retmax = 250;
 }
 
 if ($params{retmax}) {
@@ -735,6 +736,7 @@ $params{retmax} = $retmax;
 $orig_count = $count;
 if ($max_count > -1 && $max_count < $count) {
    $count = $max_count;
+   $retmax = $count if ($count < $retmax);
 }
 
 open(my $fh, '>', $countlog) or die "Could not open file '$countlog' $!";
@@ -1534,7 +1536,8 @@ sub elink_out {
 my %params = @_;
 my (%iparams, %sparams, %lparams, %sresults);
 my ($linkouts, $linkurl, $initial, $final, $middle, $tempfile);
-my $batch = 500;
+# modified by Hua; original value 500
+my $batch = 250;
 
 my $ua = new LWP::UserAgent;
 $ua->agent("elink/1.0 " . $ua->agent);

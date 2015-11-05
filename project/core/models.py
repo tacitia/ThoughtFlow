@@ -41,9 +41,10 @@ class EvidenceManager(models.Manager):
       return evidence
 
 class Evidence(models.Model):
-  title = models.CharField(max_length=256) 
+  title = models.CharField(max_length=512) 
   abstract = models.TextField()
   metadata = models.TextField()
+  # evidence retrieved by ThoughtFlow remains to be "created_by=0" until has been selected or annotated by the user
   created_by = models.IntegerField()
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
@@ -58,6 +59,9 @@ class AssociationManager(models.Manager):
   def create_association(self, sourceType, targetType, sourceId, targetId, created_by):
     association, created = self.get_or_create(sourceType=sourceType, targetType=targetType, sourceId=sourceId, targetId=targetId, created_by=created_by)
     return association
+
+  def delete_association(self, sourceType, targetType, sourceId, targetId, created_by):
+    self.filter(sourceType=sourceType, targetType=targetType, sourceId=sourceId, targetId=targetId, created_by=created_by).delete()
 
 class Association(models.Model):
   TEXT = 'txt'
@@ -83,4 +87,15 @@ class Association(models.Model):
   strength = models.IntegerField(default=0)
 
   objects = AssociationManager()
+
+class EvidenceBookmarkManager(models.Manager):
+  def create_entry(self, evidence_id, user_id):
+    entry, created = self.get_or_create(evidence_id=evidence_id, user_id=user_id)
+    return entry
+
+class EvidenceBookmark(models.Model):
+  evidence = models.ForeignKey(Evidence)
+  user_id = models.IntegerField()
+
+  objects = EvidenceBookmarkManager()
 

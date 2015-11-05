@@ -1,3 +1,5 @@
+var myAwesomeJSVariable = "I'm so awesome!!";
+
 angular.module('mainModule', [
   'restangular', 
   'ui.router', 
@@ -26,23 +28,6 @@ angular.module('mainModule', [
       $locationProvider.html5Mode(true);
     }]);
 })();
-var myAwesomeJSVariable = "I'm so awesome!!";
-
-(function () {
-  'use strict';
-
-  angular
-    .module('authentication', [
-      'authentication.controllers',
-      'authentication.services'
-    ]);
-
-  angular
-    .module('authentication.controllers', []);
-
-  angular
-    .module('authentication.services', ['ngCookies']);
-})();
 /*
 angular.module('mainModule')
     .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
@@ -58,6 +43,21 @@ angular.module('mainModule')
             })
     }]);
     */
+(function () {
+  'use strict';
+
+  angular
+    .module('authentication', [
+      'authentication.controllers',
+      'authentication.services'
+    ]);
+
+  angular
+    .module('authentication.controllers', []);
+
+  angular
+    .module('authentication.services', ['ngCookies']);
+})();
 angular
   .module('coreModule', [
     'core.services',
@@ -183,111 +183,6 @@ angular
 
 angular
   .module('v1.controllers', ['modalModule']);
-/**
-* LoginController
-* @namespace authentication.controllers
-*/
-(function () {
-  'use strict';
-
-  angular
-    .module('authentication.controllers')
-    .controller('LoginController', ['$location', '$scope', 'Authentication',
-      function LoginController($location, $scope, Authentication) {
-
-        $scope.login = login;
-
-        activate();
-
-        /**
-        * @name activate
-        * @desc Actions to be performed when this controller is instantiated
-        * @memberOf thinkster.authentication.controllers.LoginController
-        */
-        function activate() {
-          // If the user is authenticated, they should not be here.
-          if (Authentication.isAuthenticated()) {
-            $location.url('/');
-          }
-        }
-
-        /**
-        * @name login
-        * @desc Log the user in
-        * @memberOf thinkster.authentication.controllers.LoginController
-        */
-        function login() {
-          Authentication.login($scope.email, $scope.password);
-        }
-      }]);
-})();
-/**
-* Register controller
-* @namespace authentication.controllers
-*/
-(function () {
-  'use strict';
-
-  angular
-    .module('authentication.controllers')
-    .controller('RegisterController', ['$http', '$location', '$scope', 'Authentication', 
-      function RegisterController($http, $location, $scope, Authentication) {
-        $scope.register = register;
-
-        $scope.email = "hua_guo@brown.edu";
-        $scope.password = "1234";
-        $scope.username = "hua";
-
-        activate();
-
-        /**
-         * @name activate
-         * @desc Actions to be performed when this controller is instantiated
-         * @memberOf thinkster.authentication.controllers.RegisterController
-         */
-        function activate() {
-          // If the user is authenticated, they should not be here.
-          if (Authentication.isAuthenticated()) {
-            $location.url('/');
-          }
-        }
-
-        /**
-        * @name register
-        * @desc Try to register a new user
-        * @param {string} email The email entered by the user
-        * @param {string} password The password entered by the user
-        * @param {string} username The username entered by the user
-        * @returns {Promise}
-        * @memberOf thinkster.authentication.services.Authentication
-        */
-        function register(email, password, username) {
-          console.log(email)
-          console.log($scope.email)
-          return $http.post('/api/v1/accounts/', {
-            username: $scope.username,
-            password: $scope.password,
-            email: $scope.email
-          }).then(registerSuccessFn, registerErrorFn);
-
-          /**
-          * @name registerSuccessFn
-          * @desc Log the new user in
-          */
-          function registerSuccessFn(data, status, headers, config) {
-            Authentication.login(email, password);
-          }
-
-          /**
-          * @name registerErrorFn
-          * @desc Log "Epic failure!" to the console
-          */
-          function registerErrorFn(data, status, headers, config) {
-            console.error('Epic failure!');
-          }
-        }
-    }]); 
-})();
 /**
 * Authentication
 * @namespace authentication.services
@@ -449,191 +344,121 @@ angular
 
   }
 })();
-angular.module('mainModule')
-    .controller('CoreCtrl', ['CoreFactory', function (CoreFactory) {
-        
-    }]);
+/**
+* LoginController
+* @namespace authentication.controllers
+*/
+(function () {
+  'use strict';
+
+  angular
+    .module('authentication.controllers')
+    .controller('LoginController', ['$location', '$scope', 'Authentication',
+      function LoginController($location, $scope, Authentication) {
+
+        $scope.login = login;
+
+        activate();
+
+        /**
+        * @name activate
+        * @desc Actions to be performed when this controller is instantiated
+        * @memberOf thinkster.authentication.controllers.LoginController
+        */
+        function activate() {
+          // If the user is authenticated, they should not be here.
+          if (Authentication.isAuthenticated()) {
+            $location.url('/');
+          }
+        }
+
+        /**
+        * @name login
+        * @desc Log the user in
+        * @memberOf thinkster.authentication.controllers.LoginController
+        */
+        function login() {
+          Authentication.login($scope.email, $scope.password);
+        }
+      }]);
+})();
+/**
+* Register controller
+* @namespace authentication.controllers
+*/
+(function () {
+  'use strict';
+
+  angular
+    .module('authentication.controllers')
+    .controller('RegisterController', ['$http', '$location', '$scope', 'Authentication', 
+      function RegisterController($http, $location, $scope, Authentication) {
+        $scope.register = register;
+
+        $scope.email = "hua_guo@brown.edu";
+        $scope.password = "1234";
+        $scope.username = "hua";
+
+        activate();
+
+        /**
+         * @name activate
+         * @desc Actions to be performed when this controller is instantiated
+         * @memberOf thinkster.authentication.controllers.RegisterController
+         */
+        function activate() {
+          // If the user is authenticated, they should not be here.
+          if (Authentication.isAuthenticated()) {
+            $location.url('/');
+          }
+        }
+
+        /**
+        * @name register
+        * @desc Try to register a new user
+        * @param {string} email The email entered by the user
+        * @param {string} password The password entered by the user
+        * @param {string} username The username entered by the user
+        * @returns {Promise}
+        * @memberOf thinkster.authentication.services.Authentication
+        */
+        function register(email, password, username) {
+          console.log(email)
+          console.log($scope.email)
+          return $http.post('/api/v1/accounts/', {
+            username: $scope.username,
+            password: $scope.password,
+            email: $scope.email
+          }).then(registerSuccessFn, registerErrorFn);
+
+          /**
+          * @name registerSuccessFn
+          * @desc Log the new user in
+          */
+          function registerSuccessFn(data, status, headers, config) {
+            Authentication.login(email, password);
+          }
+
+          /**
+          * @name registerErrorFn
+          * @desc Log "Epic failure!" to the console
+          */
+          function registerErrorFn(data, status, headers, config) {
+            console.error('Epic failure!');
+          }
+        }
+    }]); 
+})();
 angular.module('mainModule')
     .factory('CoreFactory', ['Restangular', function (Restangular) {
         return {
 
         }
     }]);
-angular
-  .module('associationMap.services')
-  .factory('AssociationMap', AssociationMap);
-
-AssociationMap.$inject = ['Core'];
-
-function AssociationMap(Core) {
-  var associationMap = null;
-  Core.getAssociationMap(1, function(response) {
-    associationMap = response.data;
-    console.log('user association map retrieved');
-  }, function(response) {
-    console.log('server error when retrieving association map');
-    console.log(response);
-  });
-
-  var AssociationMap = {
-    getAssociatedIds: getAssociatedIds,
-    getAssociationsOfType: getAssociationsOfType,
-    addAssociation: addAssociation,
-  };
-
-  return AssociationMap;
-
-  ////////////////////
-
-  function getAssociatedIds(sourceType, targetType, sourceId) {
-    return _.filter(associationMap, function(entry) {
-      return entry.sourceType === sourceType && entry.targetType === targetType && entry.sourceId === sourceId;
-    })
-    .map(function(entry) {
-      return entry.targetId;
-    });      
-  }
-
-  function getAssociationsOfType(sourceType, targetType) {
-    return _.filter(associationMap, function(entry) {
-      return entry.sourceType === sourceType && entry.targetType === targetType;
-    })
-  }
-
-  function addAssociation(sourceType, targetType, source, target) {
-    Core.postAssociationByUserId(1, sourceType, targetType, source, target, 
-      function(response) {
-        associationMap.push(response.data[0]);
-      }, function(response) {
-        console.log('server error when saving new concept');
-        console.log(response);        
-      })
-  }
-}
-  angular
-    .module('core.services')
-    .factory('Core', Core);
-
-  Core.$inject = ['$cookies', '$http'];
-
-  function Core($cookies, $http) {
-    var Core = {
-      deleteEntry: deleteEntry,
-      postTextByUserId: postTextByUserId,
-      postConceptByUserId: postConceptByUserId,
-      postEvidenceByUserId: postEvidenceByUserId,
-      postAssociationByUserId: postAssociationByUserId,
-      getAllDataForUser: getAllDataForUser,
-      getAssociationMap: getAssociationMap    
-    };
-
-    return Core;
-
-    ////////////////////
-
-    function getAllDataForUser(userId, successFn, errorFn) {
-      return $http.get('/api/v1/data/user-data/' + userId + '/')
-       .then(successFn, errorFn);
-    }
-
-    function getAssociationMap(userId, successFn, errorFn) {
-      return $http.get('/api/v1/data/user-associations/' + userId + '/')
-        .then(successFn, errorFn);
-    }
-
-    function postTextByUserId(userId, title, content, successFn, errorFn) {
-      return $http.post('/api/v1/data/texts/', {
-        created_by: userId,
-        title: title,
-        content: content
-      }).then(successFn, errorFn);
-    }
-
-    function postConceptByUserId(userId, term) {
-      return $http.post('/api/v1/data/concepts/', {
-        created_by: userId,
-        term: term
-      }).then(function(response) {
-        return response.data[0];
-      }, function(response) {
-        console.log('server error when saving new concept');
-        console.log(response);
-      });
-    }
-
-    function postEvidenceByUserId(userId, title, abstract, metadata, successFn, errorFn) {
-      return $http.post('/api/v1/data/evidence/', {
-        created_by: userId,
-        title: title,
-        abstract: abstract,
-        metadata: metadata
-      }).then(successFn, errorFn);
-    }
-
-    function postAssociationByUserId(userId, sourceType, targetType, sourceId, targetId, successFn, errorFn) {
-      return $http.post('/api/v1/data/association/', {
-        created_by: userId,
-        sourceType: sourceType,
-        targetType: targetType,
-        sourceId: sourceId,
-        targetId: targetId
-      }).then(successFn, errorFn)      
-    }
-
-    function deleteEntry(id, type, userId, successFn, errorFn) {
-      return $http.post('/api/v1/data/' + type + '/delete/', {
-        // switch to using the id of the currently active user
-        user_id: userId,
-        id: id
-      }).then(successFn, errorFn);
-    }
-
-    // TODO: implement
-    function deleteAssociation() {
-
-    }
-
-  }
-  angular
-    .module('pubmed.services')
-    .factory('Pubmed', Pubmed);
-
-  Pubmed.$inject = ['$cookies', '$http'];
-
-  function Pubmed($cookies, $http) {
-    var Pubmed = {
-      findNeighborConcepts: findNeighborConcepts,
-      searchEvidenceForTerms: searchEvidenceForTerms,
-      extractTerms: extractTerms
-    };
-
-    return Pubmed;
-
-    ////////////////////
-
-    function findNeighborConcepts(concepts, userId, successFn, errorFn) {
-      var plainConcepts = concepts.map(function(d) {
-        return d.term;
-      });
-      return $http.post('api/v1/service/growConcept/', {
-        concepts: plainConcepts,
-        requested_by: 1
-      }).then(successFn, errorFn);
-    }
-
-    function searchEvidenceForTerms(terms, userId, successFn, errorFn) {
-      $http.post('api/v1/service/searchEvidenceForTerms/', {
-        terms: terms
-      }).then(successFn, errorFn)
-    }
-
-    function extractTerms(text, userId, successFn, errorFn) {
-      $http.post('api/v1/service/extractTerms/', {
-        text: text
-      }).then(successFn, errorFn);
-    }
-
-  }
+angular.module('mainModule')
+    .controller('CoreCtrl', ['CoreFactory', function (CoreFactory) {
+        
+    }]);
 angular.module('explore.controllers')
   .controller('ExploreController', ['$scope', '$modal', 'Core', 'AssociationMap', 'Pubmed',
     function($scope, $modal, Core, AssociationMap, Pubmed) {
@@ -744,6 +569,230 @@ angular.module('explore.controllers')
 
   }]);
 
+angular
+  .module('associationMap.services')
+  .factory('AssociationMap', AssociationMap);
+
+AssociationMap.$inject = ['Core'];
+
+function AssociationMap(Core) {
+  var associationMap = null;
+
+  var AssociationMap = {
+    initialize: initialize,
+    getAssociatedIdsBySource: getAssociatedIdsBySource,
+    getAssociatedIdsByTarget: getAssociatedIdsByTarget,
+    getAssociationsOfType: getAssociationsOfType,
+    addAssociation: addAssociation,
+    removeAssociation: removeAssociation,
+    hasAssociation: hasAssociation
+  };
+
+  return AssociationMap;
+
+  ////////////////////
+
+  function initialize(userId) {
+    Core.getAssociationMap(userId, function(response) {
+      associationMap = response.data;
+      console.log('>> User association map retrieved...');
+    }, function(response) {
+      console.log('server error when retrieving association map');
+      console.log(response);
+    });
+  }
+
+  function getAssociatedIdsBySource(sourceType, targetType, sourceId) {
+    return _.filter(associationMap, function(entry) {
+      return entry.sourceType === sourceType && entry.targetType === targetType && entry.sourceId === sourceId;
+    })
+    .map(function(entry) {
+      return entry.targetId;
+    });      
+  }
+
+  function getAssociatedIdsByTarget(sourceType, targetType, targetId) {
+    return _.filter(associationMap, function(entry) {
+      return entry.sourceType === sourceType && entry.targetType === targetType && entry.targetId === targetId;
+    })
+    .map(function(entry) {
+      return entry.sourceId;
+    });      
+  }
+
+
+  function getAssociationsOfType(sourceType, targetType) {
+    return _.filter(associationMap, function(entry) {
+      return entry.sourceType === sourceType && entry.targetType === targetType;
+    })
+  }
+
+  function addAssociation(userId, sourceType, targetType, source, target, successFn) {
+    Core.postAssociationByUserId(userId, sourceType, targetType, source, target, 
+      function(response) {
+        console.log(response.data[0])
+        associationMap.push(response.data[0]);
+        successFn();
+      }, function(response) {
+        console.log('server error when saving new association');
+        console.log(response);
+      })
+  }
+
+  function removeAssociation(userId, sourceType, targetType, source, target, successFn) {
+    Core.deleteAssociationByUserId(userId, sourceType, targetType, source, target, 
+      function(response) {
+        _.pull(associationMap, _.findWhere(associationMap, {sourceType: sourceType, targetType: targetType, sourceId: source, targetId: target}));
+        console.log('association map after deleting ' + source + ' ' + target);
+        console.log(associationMap);
+        successFn();
+      }, function(response) {
+        console.log('server error when saving new association');
+        console.log(response);        
+      })
+  }
+
+  function hasAssociation(sourceType, targetType, sourceId, targetId) {
+    return _.findWhere(associationMap, {sourceType: sourceType, targetType: targetType, sourceId: sourceId, targetId: targetId}) != undefined;
+  }
+}
+  angular
+    .module('core.services')
+    .factory('Core', Core);
+
+  Core.$inject = ['$cookies', '$http'];
+
+  function Core($cookies, $http) {
+    var Core = {
+      deleteEntry: deleteEntry,
+      postTextByUserId: postTextByUserId,
+      postConceptByUserId: postConceptByUserId,
+      postEvidenceByUserId: postEvidenceByUserId,
+      postAssociationByUserId: postAssociationByUserId,
+      deleteAssociationByUserId: deleteAssociationByUserId,
+      getAllDataForUser: getAllDataForUser,
+      getAssociationMap: getAssociationMap,
+      getEvidenceTextTopicsForUser: getEvidenceTextTopicsForUser
+    };
+
+    return Core;
+
+    ////////////////////
+
+    function getAllDataForUser(userId, successFn, errorFn) {
+      return $http.get('/api/v1/data/user-data/' + userId + '/')
+       .then(successFn, errorFn);
+    }
+
+    function getAssociationMap(userId, successFn, errorFn) {
+      return $http.get('/api/v1/data/user-associations/' + userId + '/')
+        .then(successFn, errorFn);
+    }
+
+    function postTextByUserId(userId, title, content, successFn, errorFn) {
+      return $http.post('/api/v1/data/texts/', {
+        created_by: userId,
+        title: title,
+        content: content
+      }).then(successFn, errorFn);
+    }
+
+    function postConceptByUserId(userId, term) {
+      return $http.post('/api/v1/data/concepts/', {
+        created_by: userId,
+        term: term
+      }).then(function(response) {
+        return response.data[0];
+      }, function(response) {
+        console.log('server error when saving new concept');
+        console.log(response);
+      });
+    }
+
+    function postEvidenceByUserId(userId, title, abstract, metadata, successFn, errorFn) {
+      return $http.post('/api/v1/data/evidence/', {
+        created_by: userId,
+        title: title,
+        abstract: abstract,
+        metadata: metadata
+      }).then(successFn, errorFn);
+    }
+
+    function postAssociationByUserId(userId, sourceType, targetType, sourceId, targetId, successFn, errorFn) {
+      return $http.post('/api/v1/data/association/', {
+        created_by: userId,
+        sourceType: sourceType,
+        targetType: targetType,
+        sourceId: sourceId,
+        targetId: targetId
+      }).then(successFn, errorFn)      
+    }
+
+    function deleteAssociationByUserId(userId, sourceType, targetType, sourceId, targetId, successFn, errorFn) {
+      return $http.post('/api/v1/data/association/delete/', {
+        created_by: userId,
+        sourceType: sourceType,
+        targetType: targetType,
+        sourceId: sourceId,
+        targetId: targetId
+      }).then(successFn, errorFn)      
+    }
+
+    function deleteEntry(id, type, userId, successFn, errorFn) {
+      return $http.post('/api/v1/data/' + type + '/delete/', {
+        // switch to using the id of the currently active user
+        user_id: userId,
+        id: id
+      }).then(successFn, errorFn);
+    }
+ 
+    function getEvidenceTextTopicsForUser(userId, successFn, errorFn) {
+      return $http.post('/api/v1/service/retrieveEvidenceTextTopics/', {
+        user_id: userId
+      }).then(successFn, errorFn);
+    }
+
+  }
+  angular
+    .module('pubmed.services')
+    .factory('Pubmed', Pubmed);
+
+  Pubmed.$inject = ['$cookies', '$http'];
+
+  function Pubmed($cookies, $http) {
+    var Pubmed = {
+      findNeighborConcepts: findNeighborConcepts,
+      searchEvidenceForTerms: searchEvidenceForTerms,
+      extractTerms: extractTerms
+    };
+
+    return Pubmed;
+
+    ////////////////////
+
+    function findNeighborConcepts(concepts, userId, successFn, errorFn) {
+      var plainConcepts = concepts.map(function(d) {
+        return d.term;
+      });
+      return $http.post('api/v1/service/growConcept/', {
+        concepts: plainConcepts,
+        requested_by: 1
+      }).then(successFn, errorFn);
+    }
+
+    function searchEvidenceForTerms(terms, userId, successFn, errorFn) {
+      $http.post('api/v1/service/searchEvidenceForTerms/', {
+        terms: terms
+      }).then(successFn, errorFn)
+    }
+
+    function extractTerms(text, userId, successFn, errorFn) {
+      $http.post('api/v1/service/extractTerms/', {
+        text: text
+      }).then(successFn, errorFn);
+    }
+
+  }
 angular.module('focus.controllers')
   .controller('FocusController', ['$scope', '$modal', 'Core', 'AssociationMap',
     function($scope, $modal, Core, AssociationMap) {
@@ -1062,8 +1111,8 @@ angular.module('modal.controllers')
     $scope.textsInfo = textsInfo;
     $scope.concepts = concepts;
     $scope.evidence = evidence;
-    var associatedConceptIds = AssociationMap.getAssociatedIds('text', 'concept', textsInfo.id);
-    var associatedEvidenceIds = AssociationMap.getAssociatedIds('text', 'evidence', textsInfo.id);
+    var associatedConceptIds = AssociationMap.getAssociatedIdsBySource('text', 'concept', textsInfo.id);
+    var associatedEvidenceIds = AssociationMap.getAssociatedIdsByTarget('evidence', 'text', textsInfo.id);
     var tempAssociatedConceptIds = [];
     var tempAssociatedEvidenceIds = [];
 
@@ -1171,7 +1220,7 @@ angular.module('mainModule').run(['$templateCache', function($templateCache) {
 }]);
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('modal/textsModal.html',
-        "<div class=\"modal-header\">\n    <h3>Add new texts</h3>\n</div>\n<div class=\"modal-body\">\n  <label for=\"title\">Title</label>\n  <input type=\"text\" class=\"form-control\" id=\"title\" ng-model=\"textsInfo.title\"/>\n  <label for=\"content\">Content</label>  \n  <textarea class=\"form-control\" id=\"content\" ng-model=\"textsInfo.content\"></textarea>\n  <table class=\"table\">\n    <tr ng-repeat=\"c in concepts | filter:isAssociated('concept')\">\n      <td>{{c.term}}</td>\n    </tr>\n  </table>\n  <select ng-model=\"selectedConcept\" ng-options=\"c.term for c in concepts\">\n    <option value=\"\">-- choose concept --</option>\n  </select>\n  <button class=\"btn btn-xs\" ng-click=\"addAssociatedConceptLocally()\">Add</button>\n  <select ng-model=\"selectedEvidence\" ng-options=\"e.title for e in evidence\">\n    <option value=\"\">-- choose evidence --</option>\n  </select>\n  <button class=\"btn btn-xs\">Add</button>\n</div>\n<div class=\"modal-footer\">\n  <button class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n  <button class=\"btn btn-primary\" ng-click=\"ok()\">Save</button>\n</div>");
+        "<div class=\"modal-header\">\n    <h3>Add new texts</h3>\n</div>\n<div class=\"modal-body\">\n  <label for=\"title\">Title</label>\n  <input type=\"text\" class=\"form-control\" id=\"title\" ng-model=\"textsInfo.title\"/>\n  <label for=\"content\">Content</label>  \n  <textarea class=\"form-control\" id=\"content\" ng-model=\"textsInfo.content\"></textarea>\n  <table class=\"table\">\n    <tr ng-repeat=\"c in concepts | filter:isAssociated('concept')\">\n      <td>{{c.term}}</td>\n    </tr>\n  </table>\n<!--  <select ng-model=\"selectedConcept\" ng-options=\"c.term for c in concepts\">\n    <option value=\"\">-- choose concept --</option>\n  </select>\n  <button class=\"btn btn-xs\" ng-click=\"addAssociatedConceptLocally()\">Add</button> -->\n<!--  <select class=\"form-control\" ng-model=\"selectedEvidence\" ng-options=\"e.title for e in evidence\">\n    <option value=\"\">-- choose evidence --</option>\n  </select> \n  <button class=\"btn btn-xs\">Add</button> -->\n</div>\n<div class=\"modal-footer\">\n  <button class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n  <button class=\"btn btn-primary\" ng-click=\"ok()\">Save</button>\n</div>");
 }]);
 angular
   .module('bibtex.services')
@@ -1230,24 +1279,55 @@ angular.module('v1.controllers')
 
     var userId = 101;
 
-    var data = Core.getAllDataForUser(userId, function(response) {
+    Core.getAllDataForUser(userId, function(response) {
       console.log(response.data)
       $scope.texts = response.data.texts;
       $scope.concepts = response.data.concepts;
-      $scope.evidence = response.data.evidence;
     }, function(response) {
       console.log('server error when retrieving data for user ' + userId);
       console.log(response);
     });
+
+    Core.getEvidenceTextTopicsForUser(userId, function(response) {
+      $scope.topics = response.data.topics;
+      $scope.evidence = response.data.evidence;
+      $scope.evidenceTopicMap = _.object(_.map(_.omit(response.data.evidenceTextTopicMap, function(value, key) {
+        return !key.startsWith('e');
+      }), function(value, key) {
+        return [key.split('-')[1], value]
+      }));
+      $scope.textTopicMap = _.object(_.map(_.omit(response.data.evidenceTextTopicMap, function(value, key) {
+        return key.startsWith('t');
+      }), function(value, key) {
+        return [key.split('-')[1], value]
+      }));
+      $scope.evidenceSourceMap = _.object(_.map($scope.evidence, function(e) {
+        return [e.id, 1];
+      }));
+      console.log($scope.evidenceSourceMap);
+    });
+
+    AssociationMap.initialize(userId);
+
+    // TODO: get peronal evidence after being processed by topic modeling; also
+    // throw in user created articles into the topic modeling process; this way, 
+    // personal references are automatically grouped with existing user created 
+    // articles
+
+    // terms extracted from the selected text
     $scope.terms = [];
+    $scope.topics = null;
+    $scope.evidenceSourceMap = {};
 
     $scope.selectedEntry = {};
     $scope.selectedEntry['text'] = null;
     $scope.selectedEntry['evidence'] = null;
     $scope.selectedTerms = [];
+    $scope.selectedTopic = -1;
 
     $scope.hasUnsavedChanges = false;
     $scope.associationSource = '';
+    $scope.evidenceTextAssociated = false;
 
     $scope.filterSwitches = {};
     $scope.filterSwitches['text'] = false;
@@ -1257,6 +1337,12 @@ angular.module('v1.controllers')
     $scope.associatedIds['text'] = [];
     $scope.associatedIds['evidence'] = [];
 
+    $scope.topics = [];
+    $scope.evidence = [];
+    $scope.evidenceTopicMap = {};
+    $scope.textTopicMap = {};
+
+    /* ========== Selector functions Begin ========== */
 
     $scope.selectEntry = function(elem, type) {
       if (elem === $scope.selectedEntry[type]) {
@@ -1266,6 +1352,12 @@ angular.module('v1.controllers')
       else {
         $scope.selectedEntry[type] = elem;
         if (type === 'text') $scope.activeText = $scope.selectedEntry['text'].content;
+      }
+      if ($scope.selectedEntry['evidence'] != null && $scope.selectedEntry['text'] != null) {
+        $scope.evidenceTextAssociated = AssociationMap.hasAssociation('evidence', 'text',
+          $scope.selectedEntry['evidence'].id,
+          $scope.selectedEntry['text'].id
+        );
       }
     } 
 
@@ -1278,9 +1370,13 @@ angular.module('v1.controllers')
       }
     }
 
-    $scope.termSelected = function(term) {
-      return $scope.selectedTerms.indexOf(term) >= 0;
+    $scope.selectTopic = function(topicIndex) {
+      $scope.selectedTopic = ($scope.selectedTopic === topicIndex) ? -1 : topicIndex;
     }
+
+    /* ========== Selector functions End ========== */
+
+    /* ========== Input handling functions Begin ========== */
 
     $scope.addTextEntry = function() {
       var modalInstance = $modal.open({
@@ -1323,10 +1419,6 @@ angular.module('v1.controllers')
       });      
     }
 
-
-    // TODO: fill in
-    $scope.updateTextEntry = function() {
-    }
 
     // TODO: fill in
     $scope.updateEvidenceEntry = function() {
@@ -1381,6 +1473,35 @@ angular.module('v1.controllers')
       });
     }
 
+    /* ========== Input handling functions End ========== */
+
+    /* ========== Boolean functions Begin ========== */
+
+    $scope.termSelected = function(term) {
+      return $scope.selectedTerms.indexOf(term) >= 0;
+    };
+
+    $scope.evidenceTextAssociated = function() {
+      if ($scope.selectedEntry['evidence']===null || $scope.selectedEntry['text']===null) {
+        return false;
+      }
+      return AssociationMap.hasAssociation('evidence', 'text', 
+        $scope.selectedEntry['evidence'].id, 
+        $scope.selectedEntry['text'].id
+      );
+    };
+
+    $scope.isAssociated = function(e, t) {
+      if (t === null) {
+        return false;
+      }
+      return AssociationMap.hasAssociation('evidence', 'text', e.id, t.id);
+    };
+
+    /* ========== Boolean functions En ========== */
+
+    /* ========== Event handling functions Begin ========== */
+
     $scope.startMakingChanges = function() {
       $scope.hasUnsavedChanges = true;
     }
@@ -1393,11 +1514,11 @@ angular.module('v1.controllers')
         updateAssociationSource(type);
         switch (type) {
           case 'text': {
-            $scope.associatedIds['evidence'] = AssociationMap.getAssociatedIds('text', 'evidence', $scope.selectedEntry['text'].id);
+            $scope.associatedIds['evidence'] = AssociationMap.getAssociatedIdsByTarget('evidence', 'text', $scope.selectedEntry['text'].id);
             break;
           }
           case 'evidence': {
-            $scope.associatedIds['text'] = AssociationMap.getAssociatedIds('evidence', 'text', $scope.selectedEntry['evidence'].id);
+            $scope.associatedIds['text'] = AssociationMap.getAssociatedIdsBySource('evidence', 'text', $scope.selectedEntry['evidence'].id);
             break;
           }
         }
@@ -1415,6 +1536,29 @@ angular.module('v1.controllers')
       return $scope.selectedEntry[source]===null || ($scope.associationSource !== '' && $scope.associationSource !== source)
     };
 
+    // Add an association between the selected evidence and the active text
+    $scope.updateEvidenceAssociation = function() {
+      console.log('updare evidence association');
+      var eid = $scope.selectedEntry['evidence'].id;
+      var tid = $scope.selectedEntry['text'].id;
+      console.log('association map shows having association? ' + AssociationMap.hasAssociation('evidence', 'text', eid, tid));
+      if ($scope.evidenceTextAssociated) {
+        AssociationMap.removeAssociation(userId, 'evidence', 'text', eid, tid, function() {
+          $scope.evidenceTextAssociated = false;          
+        });   
+      }
+      else {
+        AssociationMap.addAssociation(userId, 'evidence', 'text', 
+          eid, tid, function() {
+            $scope.evidenceSourceMap[eid] = 1;
+            $scope.evidenceTextAssociated = true;
+          });        
+      }
+    };
+
+    /* ========== Event handling functions End ========== */
+
+    /* ========== Filter functions Begin ========== */
     $scope.filterColumn = function(source) {
       if ($scope.filterSwitches[source]) {
         return function(entry) {
@@ -1434,6 +1578,21 @@ angular.module('v1.controllers')
       };
     };
 
+    $scope.filterEvidence = function() {
+      return function(evidence) {
+        return $scope.selectedTopic === -1 || $scope.evidenceTopicMap[evidence.id] == $scope.selectedTopic;
+      }
+    };
+
+    $scope.evidenceOrder = function(e) {
+      return $scope.isAssociated(e, $scope.selectedEntry['text']) ? 0 : 1;
+    };
+
+
+    /* ========== Filter functions End ========== */
+
+    /* ========== Service requests functions Begin ========== */
+
     $scope.extractTerms = function() {
       var text = $scope.activeText;
       Pubmed.extractTerms(text, userId, function(response) {
@@ -1448,13 +1607,32 @@ angular.module('v1.controllers')
       var terms = $scope.selectedTerms.map(function(d) {
         return d.term;
       })
+
+      // This function is called when the user wants to search the PubMed repo; 
+      // There should be another function to handle search within personal reference
       Pubmed.searchEvidenceForTerms(terms, userId, function(response) {
         console.log(response);
+        // After receiving the response, update the evidence list
+        $scope.topics = response.data.topics;
+        $scope.evidence = response.data.evidence;
+        $scope.evidenceTopicMap = response.data.evidenceTopicMap;
+        // Merge the new evidence into the existing evidenceSourceMap; make sure we don't
+        // overwrite any existing entry
+        var newEvidenceMap = _.object(_.map(_.filter(response.data.evidence, function(e) {
+          return $scope.evidenceSourceMap[e.id] === undefined;
+        }), function(e) {
+          return [e.id, 0];
+        }));
+        _.extend($scope.evidenceSourceMap, newEvidenceMap); 
+        console.log($scope.evidenceSourceMap);
+
       }, function(errorResponse) {
         console.log('error occurred while searching for evidence');
         console.log(errorResponse)        
       });
     }
+
+    /* ========== Service requests functions End ========== */    
 
   }]);
 
@@ -1466,6 +1644,10 @@ angular.module('v1.controllers')
 
   }]);
 
+angular.module('mainModule').run(['$templateCache', function($templateCache) {
+    $templateCache.put('core/v1/landing.v1.html',
+        "<div class=\"center\" id=\"v1\">\n  <!-- List of saved arguments -->\n  <div>\n  </div>\n  <div class=\"panel\" id=\"texts-col\">\n    <div class=\"header\">\n      <span>Texts</span>\n    </div>\n    <div class=\"body row\">\n      <div class=\"index col-md-3\">\n        <table class=\"table\">\n          <tr ng-repeat=\"t in texts | filter:filterColumn('text')\" ng-class=\"{active: hover || t.id == selectedEntry['text'].id}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\">\n            <td ng-click=\"selectEntry(t, 'text')\">{{t.title}}</td>\n          </tr>\n        </table>\n      </div>\n      <!-- Text area for current argument -->\n      <div class=\"content col-md-5\">\n        <textarea class=\"form-control\" id=\"textContent\" ng-model=\"activeText\" ng-keypress=\"startMakingChanges()\">\n        </textarea>\n      </div>\n      <!-- Display of extracted keywords -->\n      <div class=\"side col-md-4\">\n          <div class=\"col-md-6 padding-sm\" ng-repeat=\"t in terms | filter:filterTerms()\">\n            <button class=\"btn btn-default btn\" ng-class=\"{'btn-primary': termSelected(t)}\" ng-click=\"selectTerm(t)\">{{t.term}}</td>\n          </div>\n      </div>   \n    </div>\n    <!-- Controls for the current argument: save and extract keywords -->\n    <div class=\"footer\">\n      <div class=\"btn-group btn-group-sm\" role=\"group\">\n        <button class=\"btn btn-default\" ng-click=\"addTextEntry()\">Add</button>\n        <button class=\"btn btn-primary\" ng-disabled=\"!hasUnsavedChanges\" ng-click=\"saveTextEntry()\">Save</button>\n        <button class=\"btn btn-default\" ng-click=\"extractTerms()\">Extract terms</button>\n        <button class=\"btn btn-default\" ng-class=\"{'btn-success': associationSource==='text'}\" ng-disabled=\"associationInactive('text')\" ng-click=\"showAssociation('text')\">Associate</button>\n        <button class=\"btn btn-danger\" ng-disabled=\"selectedEntry['text']===null\" ng-click=\"deleteEntry('text')\">Delete</button>\n        <button class=\"btn btn-default\" ng-click=\"searchEvidenceForTerms()\">Search evidence</button>\n      </div>  \n    </div> \n  </div>\n  <!-- List of evidence -->\n  <div class=\"panel\" id=\"evidence-col\">\n    <div class=\"header\">\n      <span>Evidence</span>\n    </div>\n    <div class=\"body row\">\n      <div class=\"col-md-3\" id=\"topics\">\n        <div ng-repeat=\"t in topics\" class=\"topic-container\" ng-class=\"{selected: $index == selectedTopic}\" ng-click=\"selectTopic($index)\" ng-attr-id=\"topic-container-{{$index+1}}\">\n          <span ng-repeat=\"w in t\">{{w}}  </span>\n        </div>\n      </div>\n      <div class=\"col-md-5\" id=\"documents\">\n        <table class=\"table\">\n          <tr ng-repeat=\"e in evidence | filter:filterEvidence() | orderBy:evidenceOrder\" ng-class=\"{active: hover || e.id == selectedEntry['evidence'].id, success: isAssociated(e, selectedEntry['text'])}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\">\n             <td ng-click=\"selectEntry(e, 'evidence')\">{{e.title}}</td>\n             <td><span class=\"label\" ng-class=\"{'label-primary': evidenceSourceMap[e.id] === 1}\">{{evidenceSourceMap[e.id] === 1 ? 'Bookmarked' : 'Search result'}}</span></td>\n<!--             <td><input type=\"checkbox\" ng-model=\"evidenceSourceMap[e.id]\"></td> -->\n          </tr>\n        </table>\n      </div>\n      <div class=\"col-md-4\" id=\"details\">\n          <p id=\"abstract\">\n            {{selectedEntry['evidence'].abstract}}\n          </p>\n      </div>\n    </div>\n    <div class=\"footer\">\n      <div class=\"btn-group btn-group-sm\" role=\"group\">\n        <button class=\"btn btn-default\" ng-click=\"addEvidenceEntry()\">Add</button>\n        <button class=\"btn btn-default\">Edit</button>\n        <button class=\"btn btn-default\" ng-class=\"{'btn-success': associationSource==='evidence'}\" ng-disabled=\"associationInactive('evidence')\" ng-click=\"showAssociation('evidence')\">Associate</button>\n        <button class=\"btn btn-primary\" ng-disabled=\"selectedEntry['evidence']===null||selectedEntry['text']===null\" ng-click=\"updateEvidenceAssociation()\" title=\"Mark this publication as relevant to the selected article\">{{evidenceTextAssociated ? 'Mark as irrelevant' : 'Mark as relevant'}}</button>\n        <button class=\"btn btn-danger\" ng-disabled=\"selectedEntry['evidence']===null\" ng-click=\"deleteEntry('evidence')\">Delete</button>\n      </div>\n    </div>\n  </div>\n  <!-- Display of topic modeling results of selected evidence-->\n  <div>\n  </div>\n</div>");
+}]);
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('core/partials/english.html',
         "<p class=\"padding-lg\">\n    <em>\"In the end, it's not going to matter how many breaths you took, but how many moments took your breath away.\"</em>\n</p>");
@@ -1531,8 +1713,8 @@ angular.module('mainModule').run(['$templateCache', function($templateCache) {
         "<div class=\"text-center\">\n<!--    <h2>{{ 'label_which_language_do_you_prefer' | translate }}</h2> -->\n    <button class=\"btn btn-lg btn-default\" ui-sref-active=\"btn-success\" ui-sref=\"index.ver2.explore\">Explore</button>\n    <button class=\"btn btn-lg btn-default\" ui-sref-active=\"btn-success\" ui-sref=\"index.ver2.focus\">Focus</button>\n</div>");
 }]);
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
-    $templateCache.put('core/v1/landing.v1.html',
-        "<div class=\"center\">\n  <!-- List of saved arguments -->\n  <div>\n  </div>\n  <div class=\"column\" id=\"texts-col\">\n    <div class=\"header\">\n      <span>Texts</span>\n    </div>\n    <div class=\"body row\">\n      <div class=\"index col-md-4\">\n        <table class=\"table\">\n          <tr ng-repeat=\"t in texts | filter:filterColumn('text')\" ng-class=\"{active: hover || t.id == selectedEntry['text'].id}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\">\n            <td ng-click=\"selectEntry(t, 'text')\">{{t.title}}</td>\n          </tr>\n        </table>\n      </div>\n      <!-- Text area for current argument -->\n      <div class=\"content col-md-8\">\n        <textarea class=\"form-control\" id=\"textContent\" ng-model=\"activeText\" ng-keypress=\"startMakingChanges()\">\n        </textarea>\n      </div>\n    </div>\n    <!-- Controls for the current argument: save and extract keywords -->\n    <div class=\"footer\">\n      <div class=\"btn-group btn-group-sm\" role=\"group\">\n        <button class=\"btn btn-default\" ng-click=\"addTextEntry()\">Add</button>\n        <button class=\"btn btn-default\" ng-click=\"updateTextEntry()\">Edit</button>\n        <button class=\"btn btn-primary\" ng-disabled=\"!hasUnsavedChanges\" ng-click=\"saveTextEntry()\">Save</button>\n        <button class=\"btn btn-default\" ng-click=\"extractTerms()\">Extract terms</button>\n        <button class=\"btn btn-default\" ng-class=\"{'btn-success': associationSource==='text'}\" ng-disabled=\"associationInactive('text')\" ng-click=\"showAssociation('text')\">Associate</button>\n        <button class=\"btn btn-danger\" ng-disabled=\"selectedEntry['text']===null\" ng-click=\"deleteEntry('text')\">Delete</button>\n      </div>\n    </div>\n    <!-- Display of extracted keywords -->\n    <div id=\"terms-col\">\n        <div class=\"col-md-4 padding-sm\" ng-repeat=\"t in terms | filter:filterTerms()\">\n          <button class=\"btn btn-default btn\" ng-class=\"{'btn-primary': termSelected(t)}\" ng-click=\"selectTerm(t)\">{{t.term}}</td>\n        </div>\n    </div>  \n    <div class=\"footer\">\n      <div class=\"btn-group btn-group-sm\" role=\"group\">\n        <button class=\"btn btn-default\" ng-click=\"searchEvidenceForTerms()\">Search evidence</button>\n      </div>\n    </div>    \n  </div>\n  <!-- List of evidence -->\n  <div class=\"column\" id=\"evidence-col\">\n    <div class=\"header\">\n      <span>Evidence</span>\n    </div>\n    <div class=\"body\">\n      <table class=\"table\">\n        <tr ng-repeat=\"e in evidence | filter:filterColumn('evidence')\" ng-class=\"{active: hover || e.id == selectedEntry['evidence'].id}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\">\n           <td ng-click=\"selectEntry(e, 'evidence')\">{{e.title}}</td>\n        </tr>\n      </table>\n    </div>\n    <div class=\"footer\">\n      <div class=\"btn-group btn-group-sm\" role=\"group\">\n        <button class=\"btn btn-default\" ng-click=\"addEvidenceEntry()\">Add</button>\n        <button class=\"btn btn-default\">Edit</button>\n        <button class=\"btn btn-default\" ng-class=\"{'btn-success': associationSource==='evidence'}\" ng-disabled=\"associationInactive('evidence')\" ng-click=\"showAssociation('evidence')\">Associate</button>\n        <button class=\"btn btn-danger\" ng-disabled=\"selectedEntry['evidence']===null\" ng-click=\"deleteEntry('evidence')\">Delete</button>\n      </div>\n    </div>\n  </div>\n  <!-- Display of topic modeling results of selected evidence-->\n  <div>\n  </div>\n</div>");
+    $templateCache.put('core/v3/view-picker.v3.html',
+        "<div class=\"text-center\">\n<!--    <h2>{{ 'label_which_language_do_you_prefer' | translate }}</h2> -->\n    <button class=\"btn btn-lg btn-default\" ui-sref-active=\"btn-success\" ui-sref=\"index.ver1.explore\">Explore</button>\n    <button class=\"btn btn-lg btn-default\" ui-sref-active=\"btn-success\" ui-sref=\"index.ver1.focus\">Focus</button>\n</div>");
 }]);
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('core/v2/explore.v2.html',
@@ -1549,8 +1731,4 @@ angular.module('mainModule').run(['$templateCache', function($templateCache) {
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('core/v2/view-picker.v2.html',
         "<div class=\"text-center\">\n<!--    <h2>{{ 'label_which_language_do_you_prefer' | translate }}</h2> -->\n    <button class=\"btn btn-lg btn-default\" ui-sref-active=\"btn-success\" ui-sref=\"index.v2.explore\">Explore</button>\n    <button class=\"btn btn-lg btn-default\" ui-sref-active=\"btn-success\" ui-sref=\"index.v2.focus\">Focus</button>\n</div>");
-}]);
-angular.module('mainModule').run(['$templateCache', function($templateCache) {
-    $templateCache.put('core/v3/view-picker.v3.html',
-        "<div class=\"text-center\">\n<!--    <h2>{{ 'label_which_language_do_you_prefer' | translate }}</h2> -->\n    <button class=\"btn btn-lg btn-default\" ui-sref-active=\"btn-success\" ui-sref=\"index.ver1.explore\">Explore</button>\n    <button class=\"btn btn-lg btn-default\" ui-sref-active=\"btn-success\" ui-sref=\"index.ver1.focus\">Focus</button>\n</div>");
 }]);

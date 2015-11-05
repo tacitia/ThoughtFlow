@@ -1,18 +1,20 @@
 import json
 import PubMedQuerier
 import TermExtractor
+import TopicModeler
+from itertools import chain
 
-from django.core import serializers
-from django.shortcuts import render
+from core.models import Association, Concept, Evidence, Text, EvidenceBookmark
+
 from django.conf import settings
+from django.core import serializers
 from django.db.models import Q
-
 from django.http import HttpResponse, JsonResponse
-from rest_framework import status
+from django.shortcuts import render
 
+from rest_framework import status
 from rest_framework.views import View
 
-from core.models import Text, Concept, Evidence, Association
 
 def index(request):
     template = 'core/index.html'
@@ -57,20 +59,10 @@ class EvidenceView(View):
 
         return HttpResponse(evidence_json, status=status.HTTP_201_CREATED)
 
-class AssociationView(View):
-    def post(self, request, format=None):
-        data = json.loads(request.body)
-        association = Association.objects.create_association(data['sourceType'], data['targetType'], data['sourceId'], data['targetId'], data['created_by'])
-        print association
-        serialized_json = serializers.serialize('json', [association])
-        association_json = flattenSerializedJson(serialized_json)
-
-        return HttpResponse(association_json, status=status.HTTP_201_CREATED)
 
 # TODO: delete attached associations as well
 class DeleteEntryView(View):
     def post(self, request, type, format=None):
-        print '?'
         data = json.loads(request.body)
         user_id = data['user_id']
         id = data['id']
@@ -137,20 +129,20 @@ class ConceptGrowthView(View):
 
 class EvidenceSearchView(View):
     def post(self, request, format=None):
-        print '!!!'
         terms = json.loads(request.body)['terms']
-        print '~'
-        print json.loads(request.body)
-        evidence = PubMedQuerier.find_evidence_for_terms(terms)
+        evidence = PubMedQuerier.find_evidence_for_terms(terms, skip_no_abstract=True)
         serialized_json = serializers.serialize('json', evidence)
         evidence_json = flattenSerializedJson(serialized_json)
-        return HttpResponse(evidence_json, status=status.HTTP_201_CREATED)
-
+        # let's provide topic modeling results in addition to the raw evidence
+        output = {}
+        output['evidence'] = json.loads(evidence_json)
+        evidencePks = [e.pk for e in evidence]
+        abstracts = [e.abstract for e in evidence]
+        output['topics'], output['evidenceTopicMap'] = getTopicsForDocuments(evidencePks, abstracts) 
+        return HttpResponse(json.dumps(output), status=status.HTTP_201_CREATED)
 
 class TermExtractionView(View):
-
     def post(self, request, format=None):
-        
         text = json.loads(request.body)['text']
         terms = TermExtractor.run(text)
         output = []
@@ -163,5 +155,67 @@ class TermExtractionView(View):
         return HttpResponse(json.dumps(output), status=status.HTTP_201_CREATED)
 
 
-    
+def association(request):
+    if request.method == 'GET':
+        return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
+    elif request.method == 'POST':
+        data = json.loads(request.body)
+        association = Association.objects.create_association(data['sourceType'], data['targetType'], data['sourceId'], data['targetId'], data['created_by'])
+        print association
+        if (data['sourceType'] == 'evidence' and data['targetType'] == 'text'):
+            EvidenceBookmark.objects.create_entry(data['sourceId'], data['created_by'])
+        serialized_json = serializers.serialize('json', [association])
+        association_json = flattenSerializedJson(serialized_json)
+        return HttpResponse(association_json, status=status.HTTP_201_CREATED)
+
+
+def deleteAssociation(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        Association.objects.delete_association(data['sourceType'], data['targetType'], data['sourceId'], data['targetId'], data['created_by'])
+        return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
+
+def retrieveEvidenceTextTopics(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        user_id = data['user_id']
+
+#        user_id = 101
+
+        texts = Text.objects.filter(created_by=user_id)
+        serialized_json = serializers.serialize('json', texts)
+        texts_json = flattenSerializedJson(serialized_json)
+
+        evidenceCreated = Evidence.objects.filter(created_by=user_id)
+        evidenceBookmarks = EvidenceBookmark.objects.filter(user_id=user_id)
+        evidenceBookmarkedIds = [eb.evidence.pk for eb in evidenceBookmarks]
+        evidenceBookmarked = Evidence.objects.filter(pk__in=evidenceBookmarkedIds)
+
+        evidence = chain(evidenceCreated, evidenceBookmarked)
+
+        serialized_json = serializers.serialize('json', evidence)
+        evidence_json = flattenSerializedJson(serialized_json)
+
+        # let's provide topic modeling results in addition to the raw evidence
+        output = {}
+        output['evidence'] = json.loads(evidence_json)
+
+        contents = [t.content for t in texts]
+        textPks = ['t-'+str(t.pk) for t in texts]
+        abstracts = [e['abstract'] for e in output['evidence']]
+        evidencePks = ['e-'+str(e['id']) for e in output['evidence']]
+
+        output['topics'], output['evidenceTextTopicMap'] = getTopicsForDocuments(evidencePks + textPks, abstracts + contents) 
+        return HttpResponse(json.dumps(output), status=status.HTTP_201_CREATED)
+
+def getTopicsForDocuments(documentIds, documents):
+    topics = []
+    evidenceTopicMap = {}
+    topics, index_topic_map = TopicModeler.run(documents)
+    print index_topic_map
+    id_topic_map = {}
+    for i in range(len(documentIds)):
+        id_topic_map[documentIds[i]] = index_topic_map[i]
+
+    return topics, id_topic_map    
 

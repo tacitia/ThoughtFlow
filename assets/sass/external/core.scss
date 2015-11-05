@@ -9,7 +9,7 @@ body, html {
   -webkit-box-orient: vertical;
   -webkit-box-pack: center;
   -webkit-box-align: center;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .full-view {
@@ -56,8 +56,9 @@ body, html {
   }
 }
 
+
 #texts-col {
-  width: 45%;
+  width: 100%;
   .index {
     height: 100%;
   }
@@ -78,8 +79,78 @@ body, html {
   width: 15%;
 }
 
-#evidence-col {
-  width: 30%;
+#v1 {
+
+  .panel {
+    height: 100%;
+    margin: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    vertical-align: top;
+
+    .header {
+      height: 35px;
+      background: #d0d0d0;
+      padding: 3px 20px 3px 20px;
+      font-size: 18px; 
+    }
+
+    .body {
+      padding: 20px;
+      height: 400px;
+
+      .side {
+        overflow-y: scroll;
+      }
+    }
+
+    .footer {
+      height: 35px;
+      padding: 3px 20px 3px 20px;
+      background: #d9edf7;
+
+      .btn-group {
+        float: right;
+      }
+    }
+  }
+
+  #evidence-col {
+    width: 100%;
+
+    #topics {
+      .topic-container {
+        height: 70px;
+        margin: 5px;
+        padding: 5px;
+        border-radius: 5px;
+      }
+
+      .topic-container.selected {
+        border: 3px solid steelblue;
+      }
+
+      $colors-list: rgb(251, 180, 174) rgb(179, 205, 227) rgb(204, 235, 197) rgb(222, 203, 228) rgb(254, 217, 166);
+      @each $current-color in $colors-list {
+          $i: index($colors-list, $current-color);
+          #topic-container-#{$i} { 
+              background-color: $current-color;
+          }
+      }
+
+    }
+
+    #documents {
+      overflow-y: scroll;
+      height: 100%;
+    }
+
+    #details {
+      overflow-y: scroll;
+      height: 100%;
+    }
+
+  }
 }
 
 #terms-col {

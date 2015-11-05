@@ -85,7 +85,8 @@ def merge_terms(terms, source):
 	return results
 
 # quick and dirty processing of PubMed entries
-def load_evidence(filename):
+def load_evidence(filename, skip_no_abstract=False):
+	print '>> loading evidence...'
 	pubfile = open(filename)
 	prev_field = ''
 	current_entry = {}
@@ -98,17 +99,18 @@ def load_evidence(filename):
 
 		if label =='PMID':
 			if 'PMID' in current_entry:
-				evidence = Evidence.objects.create_evidence(current_entry['TI'], current_entry['AB'], json.dumps({
-					'PMID': current_entry['PMID'],
-					'AUTHOR': ' and '.join(current_entry['AU']),
-					'JOURNAL': current_entry['JT'],
-					'DATE': current_entry['DP'],
-					'AFFILIATION': current_entry['AD']
-				}), 0)
-				loaded_evidence.append(evidence)
-				for k in current_entry['OT']:
-					concept = Concept.objects.create_concept(k, 0)
-					Association.objects.create_association('concept', 'evidence', concept.id, evidence.id, 0)
+				if not skip_no_abstract or current_entry['AB'] != '':
+					evidence = Evidence.objects.create_evidence(current_entry['TI'], current_entry['AB'], json.dumps({
+						'PMID': current_entry['PMID'],
+						'AUTHOR': ' and '.join(current_entry['AU']),
+						'JOURNAL': current_entry['JT'],
+						'DATE': current_entry['DP'],
+						'AFFILIATION': current_entry['AD']
+					}), 0)
+					loaded_evidence.append(evidence)
+					for k in current_entry['OT']:
+						concept = Concept.objects.create_concept(k, 0)
+						Association.objects.create_association('concept', 'evidence', concept.id, evidence.id, 0)
 			current_entry = {}
 			current_entry['PMID'] = content
 			current_entry['AU'] = []

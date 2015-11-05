@@ -20,7 +20,7 @@ def query_pubmed(param, savefile, logfile):
 		print 'file exists, skip query'
 		return
 	perl_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'download_pub.pl')
-	pipe = subprocess.Popen(['perl', perl_path, param, savefile, '500', logfile], stdin=subprocess.PIPE)
+	pipe = subprocess.Popen(['perl', perl_path, param, savefile, '250', logfile], stdin=subprocess.PIPE)
 	pipe.wait()
 	
 # seems like Esearch does search differently from the pubmed search bar. Sometimes a title query yields 
@@ -75,15 +75,15 @@ def find_neighbors_for_terms(terms, num_neighbors=10, user_id=1):
 	pub_counts['showing_count'] = num_neighbors 
 	return {'keywords': sorted_keywords[:num_neighbors], 'log': pub_counts}
 
-def find_evidence_for_terms(terms, user_id=1):
-	query = ''
-	for t in terms:
-		query += t + ' '
+# If skip_no_abstract is True, ask load_evidence to skip publications with no abstract
+def find_evidence_for_terms(terms, skip_no_abstract=False, user_id=1):
+	print '>> finding evidence for terms...'
+	query = ' '.join(terms)
 	current_dir = os.path.dirname(os.path.realpath(__file__))
 	f = os.path.join(current_dir, 'queryresults', query + '.txt')
 	logfile = os.path.join(current_dir, 'queryresults', query + '_log' + '.txt')
 	query_pubmed(query, f, logfile)
-	return PubMedParser.load_evidence(f)
+	return PubMedParser.load_evidence(f, skip_no_abstract)
 
 def search_pubs(query, num_pubs=50):
 	f = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'queryresults', query + '.txt')

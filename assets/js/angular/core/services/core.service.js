@@ -11,8 +11,10 @@
       postConceptByUserId: postConceptByUserId,
       postEvidenceByUserId: postEvidenceByUserId,
       postAssociationByUserId: postAssociationByUserId,
+      deleteAssociationByUserId: deleteAssociationByUserId,
       getAllDataForUser: getAllDataForUser,
-      getAssociationMap: getAssociationMap    
+      getAssociationMap: getAssociationMap,
+      getEvidenceTextTopicsForUser: getEvidenceTextTopicsForUser
     };
 
     return Core;
@@ -68,6 +70,16 @@
       }).then(successFn, errorFn)      
     }
 
+    function deleteAssociationByUserId(userId, sourceType, targetType, sourceId, targetId, successFn, errorFn) {
+      return $http.post('/api/v1/data/association/delete/', {
+        created_by: userId,
+        sourceType: sourceType,
+        targetType: targetType,
+        sourceId: sourceId,
+        targetId: targetId
+      }).then(successFn, errorFn)      
+    }
+
     function deleteEntry(id, type, userId, successFn, errorFn) {
       return $http.post('/api/v1/data/' + type + '/delete/', {
         // switch to using the id of the currently active user
@@ -75,10 +87,11 @@
         id: id
       }).then(successFn, errorFn);
     }
-
-    // TODO: implement
-    function deleteAssociation() {
-
+ 
+    function getEvidenceTextTopicsForUser(userId, successFn, errorFn) {
+      return $http.post('/api/v1/service/retrieveEvidenceTextTopics/', {
+        user_id: userId
+      }).then(successFn, errorFn);
     }
 
   }
