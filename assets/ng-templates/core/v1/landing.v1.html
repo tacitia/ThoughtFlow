@@ -1,80 +1,110 @@
-<div class="center" id="v1">
+<div class="center row" id="v1">
   <!-- List of saved arguments -->
-  <div>
-  </div>
-  <div class="panel" id="texts-col">
-    <div class="header">
-      <span>Texts</span>
-    </div>
-    <div class="body row">
-      <div class="index col-md-3">
-        <table class="table">
-          <tr ng-repeat="t in texts | filter:filterColumn('text')" ng-class="{active: hover || t.id == selectedEntry['text'].id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
-            <td ng-click="selectEntry(t, 'text')">{{t.title}}</td>
-          </tr>
-        </table>
+  <div class="main col-md-10">
+    <div class="panel" id="texts-col">
+      <div class="header">
+        <span>Texts</span>
       </div>
-      <!-- Text area for current argument -->
-      <div class="content col-md-5">
-        <textarea class="form-control" id="textContent" ng-model="activeText" ng-keypress="startMakingChanges()">
-        </textarea>
+      <div class="body row">
+        <div class="index col-md-3">
+          <table class="table">
+            <tr ng-repeat="t in texts | filter:filterColumn('text')" ng-class="{active: hover || t.id == selectedEntry['text'].id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
+              <td ng-click="selectEntry(t, 'text')">
+                <p>{{t.title}}</p>
+                <svg class="topic-info" id="topic-info-{{t.id}}" width="150" height="30"></svg>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <!-- Text area for current argument -->
+        <div class="content col-md-5">
+          <textarea class="form-control" id="textContent" ng-model="activeText" ng-keypress="startMakingChanges()">
+          </textarea>
+        </div>
+        <!-- Display of extracted keywords -->
+        <div class="side col-md-4">
+            <div class="col-md-6 padding-sm" ng-repeat="t in terms | filter:filterTerms()">
+              <button class="btn btn-default btn" ng-class="{'btn-primary': termSelected(t)}" ng-click="selectTerm(t)">{{t.term}}</td>
+            </div>
+        </div>   
       </div>
-      <!-- Display of extracted keywords -->
-      <div class="side col-md-4">
-          <div class="col-md-6 padding-sm" ng-repeat="t in terms | filter:filterTerms()">
-            <button class="btn btn-default btn" ng-class="{'btn-primary': termSelected(t)}" ng-click="selectTerm(t)">{{t.term}}</td>
-          </div>
-      </div>   
+      <!-- Controls for the current argument: save and extract keywords -->
+      <div class="footer">
+        <div class="btn-group btn-group-sm" role="group">
+          <button class="btn btn-default" ng-click="addTextEntry()">Add</button>
+          <button class="btn btn-primary" ng-disabled="!hasUnsavedChanges" ng-click="saveTextEntry()">Save</button>
+          <button class="btn btn-default" ng-disabled="selectedEntry['text']===null" ng-click="extractTerms()">Extract terms</button>
+          <button class="btn btn-default" ng-class="{'btn-success': associationSource==='text'}" ng-disabled="associationInactive('text')" ng-click="showAssociation('text')">Associate</button>
+          <button class="btn btn-danger" ng-disabled="selectedEntry['text']===null" ng-click="deleteEntry('text')">Delete</button>
+          <button class="btn btn-default" ng-disabled="selectedTerms.length===0" ng-click="searchEvidenceForTerms()">Search evidence</button>
+        </div>  
+      </div> 
     </div>
-    <!-- Controls for the current argument: save and extract keywords -->
-    <div class="footer">
-      <div class="btn-group btn-group-sm" role="group">
-        <button class="btn btn-default" ng-click="addTextEntry()">Add</button>
-        <button class="btn btn-primary" ng-disabled="!hasUnsavedChanges" ng-click="saveTextEntry()">Save</button>
-        <button class="btn btn-default" ng-click="extractTerms()">Extract terms</button>
-        <button class="btn btn-default" ng-class="{'btn-success': associationSource==='text'}" ng-disabled="associationInactive('text')" ng-click="showAssociation('text')">Associate</button>
-        <button class="btn btn-danger" ng-disabled="selectedEntry['text']===null" ng-click="deleteEntry('text')">Delete</button>
-        <button class="btn btn-default" ng-click="searchEvidenceForTerms()">Search evidence</button>
-      </div>  
-    </div> 
-  </div>
-  <!-- List of evidence -->
-  <div class="panel" id="evidence-col">
-    <div class="header">
-      <span>Evidence</span>
-    </div>
-    <div class="body row">
-      <div class="col-md-3" id="topics">
-        <div ng-repeat="t in topics" class="topic-container" ng-class="{selected: $index == selectedTopic}" ng-click="selectTopic($index)" ng-attr-id="topic-container-{{$index+1}}">
-          <span ng-repeat="w in t">{{w}}  </span>
+    <!-- List of evidence -->
+    <div class="panel" id="evidence-col">
+      <div class="loading" ng-if="loadingEvidence">
+        <div class="loader-container">
+          <div class="loader"></div>
+          <div class="loading-text"><p>{{loadingStatement}}</p></div>
         </div>
       </div>
-      <div class="col-md-5" id="documents">
-        <table class="table">
-          <tr ng-repeat="e in evidence | filter:filterEvidence() | orderBy:evidenceOrder" ng-class="{active: hover || e.id == selectedEntry['evidence'].id, success: isAssociated(e, selectedEntry['text'])}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
-             <td ng-click="selectEntry(e, 'evidence')">{{e.title}}</td>
-             <td><span class="label" ng-class="{'label-primary': evidenceSourceMap[e.id] === 1}">{{evidenceSourceMap[e.id] === 1 ? 'Bookmarked' : 'Search result'}}</span></td>
-<!--             <td><input type="checkbox" ng-model="evidenceSourceMap[e.id]"></td> -->
-          </tr>
-        </table>
+      <div class="header">
+        <span>Evidence</span>
       </div>
-      <div class="col-md-4" id="details">
-          <p id="abstract">
-            {{selectedEntry['evidence'].abstract}}
-          </p>
+      <div class="body row">
+        <div class="col-md-3" id="topics">
+          <div ng-repeat="t in topics" class="topic-container" ng-class="{selected: $index == selectedTopic}" ng-click="selectTopic($index)" ng-attr-id="topic-container-{{$index+1}}">
+            <span ng-repeat="w in t">{{w}}  </span>
+          </div>
+        </div>
+        <div class="col-md-5" id="documents">
+          <table class="table">
+            <tr ng-repeat="e in evidence | filter:filterEvidence() | orderBy:evidenceOrder" ng-class="{active: hover || e.id == selectedEntry['evidence'].id, success: isAssociated(e, selectedEntry['text'])}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
+               <td ng-click="selectEntry(e, 'evidence')">{{e.title}}</td>
+               <td><span class="label" ng-class="{'label-primary': evidenceSourceMap[e.id] === 1, 'label-default': evidenceSourceMap[e.id] === 0}">{{evidenceSourceMap[e.id] === 1 ? 'Bookmarked' : 'Search result'}}</span></td>
+  <!--             <td><input type="checkbox" ng-model="evidenceSourceMap[e.id]"></td> -->
+            </tr>
+          </table>
+        </div>
+        <div class="col-md-4" id="details">
+          <div ng-if="selectedEntry['evidence']!==null">
+            <p><b>Authors</b>: {{selectedEntry['evidence'].metadata.AUTHOR}}</p>
+            <p><b>Affiliation</b>: {{selectedEntry['evidence'].metadata.AFFILIATION}}</p>
+            <p><b>Publication date</b>: {{selectedEntry['evidence'].metadata.DATE}}</p>
+            <p><b>Abstract</b>: {{selectedEntry['evidence'].abstract}}</p>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="footer">
-      <div class="btn-group btn-group-sm" role="group">
-        <button class="btn btn-default" ng-click="addEvidenceEntry()">Add</button>
-        <button class="btn btn-default">Edit</button>
-        <button class="btn btn-default" ng-class="{'btn-success': associationSource==='evidence'}" ng-disabled="associationInactive('evidence')" ng-click="showAssociation('evidence')">Associate</button>
-        <button class="btn btn-primary" ng-disabled="selectedEntry['evidence']===null||selectedEntry['text']===null" ng-click="updateEvidenceAssociation()" title="Mark this publication as relevant to the selected article">{{evidenceTextAssociated ? 'Mark as irrelevant' : 'Mark as relevant'}}</button>
-        <button class="btn btn-danger" ng-disabled="selectedEntry['evidence']===null" ng-click="deleteEntry('evidence')">Delete</button>
+      <div class="footer">
+        <div class="btn-group btn-group-sm" role="group">
+          <button class="btn btn-default" ng-click="addEvidenceEntry()">Add</button>
+          <button class="btn btn-default">Edit</button>
+          <button class="btn btn-default" ng-class="{'btn-success': associationSource==='evidence'}" ng-disabled="associationInactive('evidence')" ng-click="showAssociation('evidence')">Associate</button>
+          <button class="btn btn-primary" ng-disabled="selectedEntry['evidence']===null||selectedEntry['text']===null" ng-click="updateEvidenceAssociation()" title="Mark this publication as relevant to the selected article">{{evidenceTextAssociated ? 'Mark as irrelevant' : 'Mark as relevant'}}</button>
+          <button class="btn btn-danger" ng-disabled="selectedEntry['evidence']===null" ng-click="deleteEntry('evidence')">Delete</button>
+        </div>
       </div>
     </div>
   </div>
-  <!-- Display of topic modeling results of selected evidence-->
-  <div>
+  <div class="sidebar col-md-2">
+    <div class="panel">
+      <div class="header">
+        <span>Control panel</span>
+      </div>
+      <div class="body">
+        <div>
+          <p>Import references</p>
+          <div class="row">
+            <input type="file" class="col-md-6" id="bibtex-input">
+            <div class="col-md-2"><button class="btn btn-default" ng-click="processBibtexFile()">Upload</button></div>
+          </div>
+        </div>
+        <div>
+          <p>Export</p>
+          <button class="btn btn-default">Documents</button>
+          <button class="btn btn-default">Bibliography file</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -1,35 +1,80 @@
 angular.module('v1.controllers')
-  .controller('BaselineController', ['$scope', '$modal', 'Core', 'AssociationMap', 'Pubmed',
-    function($scope, $modal, Core, AssociationMap, Pubmed) {
+  .controller('BaselineController', ['$scope', '$modal', 'Core', 'AssociationMap', 'Pubmed', 'Bibtex',
+    function($scope, $modal, Core, AssociationMap, Pubmed, Bibtex) {
 
     var userId = 101;
+    var topicColors = ["#fbb4ae","#b3cde3","#ccebc5","#decbe4","#fed9a6","#ffffcc","#e5d8bd","#fddaec","#f2f2f2"];
 
     Core.getAllDataForUser(userId, function(response) {
       console.log(response.data)
       $scope.texts = response.data.texts;
       $scope.concepts = response.data.concepts;
+      console.log(d3.selectAll('.topic-info'));
     }, function(response) {
       console.log('server error when retrieving data for user ' + userId);
       console.log(response);
     });
 
+    $scope.loadingEvidence = true;
+    $scope.loadingStatement = 'Generating topic models over bookmarked evidence...';
     Core.getEvidenceTextTopicsForUser(userId, function(response) {
       $scope.topics = response.data.topics;
-      $scope.evidence = response.data.evidence;
+      $scope.evidence = response.data.evidence.map(function(e) {
+        e.metadata = JSON.parse(e.metadata);
+        return e;
+      });
+      console.log(response.data.evidenceTextTopicMap);
       $scope.evidenceTopicMap = _.object(_.map(_.omit(response.data.evidenceTextTopicMap, function(value, key) {
         return !key.startsWith('e');
       }), function(value, key) {
-        return [key.split('-')[1], value]
+        return [key.split('-')[1], value.max]
       }));
       $scope.textTopicMap = _.object(_.map(_.omit(response.data.evidenceTextTopicMap, function(value, key) {
-        return key.startsWith('t');
+        return !key.startsWith('t');
       }), function(value, key) {
-        return [key.split('-')[1], value]
+        return [key.split('-')[1], value.dist]
       }));
       $scope.evidenceSourceMap = _.object(_.map($scope.evidence, function(e) {
         return [e.id, 1];
       }));
-      console.log($scope.evidenceSourceMap);
+      $scope.loadingEvidence = false;
+      console.log($scope.texts);
+      console.log(d3.selectAll('.topic-info'));
+      d3.selectAll('.topic-info')
+        .data($scope.texts)
+        .append('g')        
+        .selectAll('rect')
+        .data(function(t) {
+          var distribution = $scope.textTopicMap[t.id];
+          var accumulation = distribution.reduce(function(prev, curr, index) {
+            if (index === 0) {
+              return prev.concat([curr]);
+            }
+            else {
+              return prev.concat([curr + prev[prev.length-1]])
+            }
+          }, [0]);
+          return distribution.map(function(d, i) {
+            console.log(i);
+            return {
+              'dist': d,
+              'acc': accumulation[i]
+            };
+          });
+        })
+        .enter()
+        .append('rect')
+        .attr('fill', function(d, i) {
+          return topicColors[i];
+        })
+        .attr('width', function(d) {
+          return d.dist * 150;
+        })
+        .attr('height', 20)
+        .attr('transform', function(d, i) {
+          var left = d.acc * 150;
+          return 'translate(' + left + ',0)';
+        });
     });
 
     AssociationMap.initialize(userId);
@@ -136,11 +181,17 @@ angular.module('v1.controllers')
       var modalInstance = $modal.open({
         templateUrl: 'modal/evidenceModal.html',
         controller: 'EvidenceModalController',
+        resolve: {
+          userId: function() {
+            return userId;
+          }
+        }
       });
 
       modalInstance.result.then(function (newEntries) {
+        console.log(newEntries);
         $scope.evidence = $scope.evidence.concat(newEntries); 
-        console.log($scope.evidence);   
+        extendEvidenceMap(newEntries, 1);
       });      
     }
 
@@ -321,6 +372,7 @@ angular.module('v1.controllers')
     $scope.extractTerms = function() {
       var text = $scope.activeText;
       Pubmed.extractTerms(text, userId, function(response) {
+        $scope.selectedTerms = [];
         $scope.terms = response.data;
       }, function(errorResponse) {
         console.log('error occurred while extracting terms');
@@ -333,30 +385,71 @@ angular.module('v1.controllers')
         return d.term;
       })
 
+      $scope.loadingEvidence = true;
+      $scope.loadingStatement = 'Searching PubMed for related publications...';
       // This function is called when the user wants to search the PubMed repo; 
       // There should be another function to handle search within personal reference
       Pubmed.searchEvidenceForTerms(terms, userId, function(response) {
-        console.log(response);
         // After receiving the response, update the evidence list
         $scope.topics = response.data.topics;
-        $scope.evidence = response.data.evidence;
+        $scope.evidence = response.data.evidence.map(function(e) {
+          console.log(e.metadata);
+          e.metadata = JSON.parse(e.metadata);
+          return e;
+        });
         $scope.evidenceTopicMap = response.data.evidenceTopicMap;
         // Merge the new evidence into the existing evidenceSourceMap; make sure we don't
         // overwrite any existing entry
-        var newEvidenceMap = _.object(_.map(_.filter(response.data.evidence, function(e) {
-          return $scope.evidenceSourceMap[e.id] === undefined;
-        }), function(e) {
-          return [e.id, 0];
-        }));
-        _.extend($scope.evidenceSourceMap, newEvidenceMap); 
-        console.log($scope.evidenceSourceMap);
+        extendEvidenceMap(response.data.evidence, 0);
 
+        $scope.loadingEvidence = false;
       }, function(errorResponse) {
         console.log('error occurred while searching for evidence');
         console.log(errorResponse)        
       });
+      setTimeout(function(){ 
+        $scope.$apply(function(){
+          $scope.loadingStatement = 'Generating topic models over retrieved evidence...';
+        });
+      }, 5000);
+    }
+
+    function extendEvidenceMap(evidence, source) {
+        var newEvidenceMap = _.object(_.map(_.filter(evidence, function(e) {
+          return $scope.evidenceSourceMap[e.id] === undefined;
+        }), function(e) {
+          console.log(e);
+          return [e.id, source];
+        }));
+        _.extend($scope.evidenceSourceMap, newEvidenceMap); 
     }
 
     /* ========== Service requests functions End ========== */    
+
+    $scope.processBibtexFile = function() {
+      var selectedFile = document.getElementById('bibtex-input').files[0];
+      var reader = new FileReader();
+      reader.onload = function(file) {
+        var fileContent = file.currentTarget.result;
+        var evidenceList = Bibtex.parseBibtexFile(fileContent);      
+        var storedEvidence = [];        
+        
+        evidenceList.forEach(function(evidence) {
+          Core.postEvidenceByUserId(userId, evidence.title, evidence.abstract, JSON.stringify(evidence.metadata), 
+            function(response) {
+              storedEvidence.push(response.data[0]);
+              if (storedEvidence.length === evidenceList.length) {
+                $scope.evidence = $scope.evidence.concat(storedEvidence); 
+                extendEvidenceMap(storedEvidence, 1);
+              }
+            }, function(response) {
+              console.log('server error when saving new evidence');
+              console.log(response);
+            });
+        });
+
+      };
+      reader.readAsText(selectedFile);
+    };
 
   }]);

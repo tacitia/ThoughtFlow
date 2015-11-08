@@ -9,7 +9,12 @@ angular.module('modal.controllers')
     $scope.delete = function () {
       console.log($scope.id);
       Core.deleteEntry($scope.id, $scope.type, userId, function() {
-        $modalInstance.close($scope.id);
+        Core.deleteBookmark(userId, $scope.id, function() {
+          $modalInstance.close($scope.id);
+        }, function(response) {
+          console.log('server error when deleting evidence bookmark')
+          console.log(response)
+        });
       }, function(response) {
         console.log('server error when deleting ' + $scope.type)
         console.log(response)

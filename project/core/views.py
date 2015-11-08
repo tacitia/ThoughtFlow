@@ -175,6 +175,15 @@ def deleteAssociation(request):
         Association.objects.delete_association(data['sourceType'], data['targetType'], data['sourceId'], data['targetId'], data['created_by'])
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
 
+def deleteBookmark(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        print data
+        EvidenceBookmark.objects.filter(evidence_id=data['evidence_id'], user_id=data['user_id']).delete()
+        Association.objects.filter(created_by=data['user_id'], sourceId=data['evidence_id']).delete()
+        return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
+
+
 def retrieveEvidenceTextTopics(request):
     if request.method == 'POST':
         data = json.loads(request.body)

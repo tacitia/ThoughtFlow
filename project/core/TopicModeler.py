@@ -86,9 +86,12 @@ def fit_topic_model(tdm, vocab):
   # print the topic for each document
   doc_topic_map = {}
   for n in range(n_doc):
-    topic_most_pr = doc_topic[n].argmax()
+#    topic_most_pr = doc_topic[n].argmax()
     # print("doc: {} topic: {}\n".format(n, topic_most_pr))
-    doc_topic_map[n] = topic_most_pr
+#    doc_topic_map[n] = topic_most_pr
+    doc_topic_map[n] = {}
+    doc_topic_map[n]['dist'] = doc_topic[n].tolist()
+    doc_topic_map[n]['max'] = doc_topic[n].argmax()
 
   return topics, doc_topic_map
 

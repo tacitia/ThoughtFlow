@@ -12,6 +12,7 @@
       postEvidenceByUserId: postEvidenceByUserId,
       postAssociationByUserId: postAssociationByUserId,
       deleteAssociationByUserId: deleteAssociationByUserId,
+      deleteBookmark: deleteBookmark,
       getAllDataForUser: getAllDataForUser,
       getAssociationMap: getAssociationMap,
       getEvidenceTextTopicsForUser: getEvidenceTextTopicsForUser
@@ -86,6 +87,14 @@
         user_id: userId,
         id: id
       }).then(successFn, errorFn);
+    }
+
+    function deleteBookmark(userId, evidenceId, successFn, errorFn) {
+      return $http.post('/api/v1/data/bookmark/delete/', {
+        // switch to using the id of the currently active user
+        user_id: userId,
+        evidence_id: evidenceId
+      }).then(successFn, errorFn);      
     }
  
     function getEvidenceTextTopicsForUser(userId, successFn, errorFn) {

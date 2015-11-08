@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from core.views import TextView, ConceptView, EvidenceView, DeleteEntryView, UserDataView, UserAssociationView
 from core.views import ConceptGrowthView, EvidenceSearchView, TermExtractionView
-from core.views import association, deleteAssociation, retrieveEvidenceTextTopics
+from core.views import association, deleteAssociation, retrieveEvidenceTextTopics, deleteBookmark
 
 import views
 
@@ -15,6 +15,7 @@ urlpatterns = patterns('',
 
     # For data deletion
     url(r'^api/v1/data/association/delete/$', deleteAssociation, name='deleteAssociation'),
+    url(r'^api/v1/data/bookmark/delete/$', deleteBookmark, name='deleteBookmark'),
     url(r'^api/v1/data/(?P<type>[a-zA-Z]+)/delete/$', DeleteEntryView.as_view(), name='delete_entry'), 
 
 

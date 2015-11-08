@@ -52,7 +52,7 @@ class Evidence(models.Model):
   objects = EvidenceManager()
 
   def __unicode__(self):
-    return self.title + ' ' + self.metadata
+    return self.title
 
 
 class AssociationManager(models.Manager):
