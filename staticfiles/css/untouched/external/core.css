@@ -63,7 +63,9 @@ body, html {
 }
 #texts-col .content textarea.form-control {
   width: 100%;
-  height: 100%;
+  height: 90%;
+  padding: 20px;
+  line-height: 150%;
   box-sizing: border-box;
   /* For IE and modern versions of Chrome */
   -moz-box-sizing: border-box;
@@ -71,11 +73,20 @@ body, html {
   -webkit-box-sizing: border-box;
   /* For Safari                           */
 }
+#texts-col .btn-group {
+  padding: 10px;
+}
+#texts-col button {
+  margin: 0px 5px 0px 5px;
+}
 
 #concepts-col {
   width: 15%;
 }
 
+#v1 .sidebar {
+  height: 920px;
+}
 #v1 .loading {
   background: rgba(255, 255, 255, 0.8);
   width: 100%;
@@ -133,27 +144,61 @@ body, html {
   border: 3px solid steelblue;
 }
 #v1 #evidence-col #topics #topic-container-1 {
-  background-color: #fbb4ae;
+  background-color: #a6cee3;
 }
 #v1 #evidence-col #topics #topic-container-2 {
-  background-color: #b3cde3;
+  background-color: #1f78b4;
 }
 #v1 #evidence-col #topics #topic-container-3 {
-  background-color: #ccebc5;
+  background-color: #b2df8a;
 }
 #v1 #evidence-col #topics #topic-container-4 {
-  background-color: #decbe4;
+  background-color: #33a02c;
 }
 #v1 #evidence-col #topics #topic-container-5 {
-  background-color: #fed9a6;
+  background-color: #fb9a99;
+}
+#v1 #evidence-col #topics #topic-container-6 {
+  background-color: #e31a1c;
+}
+#v1 #evidence-col #topics #topic-container-7 {
+  background-color: #fdbf6f;
+}
+#v1 #evidence-col #topics #topic-container-8 {
+  background-color: #ff7f00;
+}
+#v1 #evidence-col #topics #topic-container-9 {
+  background-color: #cab2d6;
+}
+#v1 #evidence-col #topics #topic-container-10 {
+  background-color: #6a3d9a;
+}
+#v1 #evidence-col #topics #topic-container-11 {
+  background-color: #ffff99;
+}
+#v1 #evidence-col #topics #topic-container-12 {
+  background-color: #b15928;
 }
 #v1 #evidence-col #documents {
   overflow-y: scroll;
   height: 100%;
 }
+#v1 #evidence-col #documents .document-entry {
+  padding: 8px;
+  border-top: 1px solid #ddd;
+}
+#v1 #evidence-col #documents .document-entry.active {
+  background-color: #f5f5f5;
+}
+#v1 #evidence-col #documents .document-entry.associated {
+  background-color: #dff0d8;
+}
 #v1 #evidence-col #details {
   overflow-y: scroll;
   height: 100%;
+}
+#v1 #evidence-col #details .is-search-term {
+  background-color: burlywood;
 }
 
 #terms-col {
@@ -162,6 +207,9 @@ body, html {
   border: 2px solid #ccc;
   border-radius: 5px;
   overflow-y: scroll;
+}
+#terms-col .btn-group {
+  padding: 10px;
 }
 
 #version-picker-container {
@@ -245,4 +293,34 @@ body, html {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
+}
+.example-animate-container {
+  background: white;
+  border: 1px solid black;
+  list-style: none;
+  margin: 0;
+  padding: 0 10px;
+}
+
+.animate-repeat {
+  list-style: none;
+  box-sizing: border-box;
+}
+
+.animate-repeat.ng-move,
+.animate-repeat.ng-enter,
+.animate-repeat.ng-leave {
+  transition: all linear 0.3s;
+}
+
+.animate-repeat.ng-leave.ng-leave-active,
+.animate-repeat.ng-move,
+.animate-repeat.ng-enter {
+  opacity: 0;
+}
+
+.animate-repeat.ng-leave,
+.animate-repeat.ng-move.ng-move-active,
+.animate-repeat.ng-enter.ng-enter-active {
+  opacity: 1;
 }

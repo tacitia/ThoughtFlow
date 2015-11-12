@@ -3,42 +3,51 @@
   <div class="main col-md-10">
     <div class="panel" id="texts-col">
       <div class="header">
-        <span>Texts</span>
+        <span>Arguments</span>
       </div>
       <div class="body row">
         <div class="index col-md-3">
-          <table class="table">
-            <tr ng-repeat="t in texts | filter:filterColumn('text')" ng-class="{active: hover || t.id == selectedEntry['text'].id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
-              <td ng-click="selectEntry(t, 'text')">
-                <p>{{t.title}}</p>
-                <svg class="topic-info" id="topic-info-{{t.id}}" width="150" height="30"></svg>
-              </td>
-            </tr>
-          </table>
+          <div style="height:90%"> 
+            <table class="table">
+              <tr ng-repeat="t in texts | filter:filterColumn('text')" ng-class="{active: hover || t.id == selectedEntry['text'].id, success: showCitingTexts && cites(t, selectedEntry['evidence'])}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
+                <td ng-click="selectEntry(t, 'text')">
+                  <p>{{t.title}}</p>
+                  <svg class="topic-info" id="topic-info-{{t.id}}" width="150" height="25"></svg>
+                  <div ng-if="selectedEntry['text']===t" style="margin-left:80%">
+                    <div class="btn-group btn-group-xs" role="group">
+                      <button class="btn btn-danger" ng-disabled="selectedEntry['text']===null" ng-click="deleteEntry('text')">Delete</button>
+                    </div>  
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="btn-group btn-group-xs" role="group">
+            <button class="btn btn-default" ng-click="addTextEntry()"><img style="width:20px; height:20px"src="/static/img/plus-icon.png">  Add new argument</button>
+          </div>
         </div>
         <!-- Text area for current argument -->
         <div class="content col-md-5">
           <textarea class="form-control" id="textContent" ng-model="activeText" ng-keypress="startMakingChanges()">
           </textarea>
+          <div class="btn-group btn-group-xs" role="group">
+            <button class="btn btn-primary" ng-disabled="!hasUnsavedChanges" ng-click="saveTextEntry()">Save</button>
+            <button class="btn btn-default" ng-disabled="selectedEntry['text']===null" ng-click="extractTerms()">Extract terms</button>
+          </div>
         </div>
         <!-- Display of extracted keywords -->
         <div class="side col-md-4">
+          <div style="height:90%;padding:20px">
             <div class="col-md-6 padding-sm" ng-repeat="t in terms | filter:filterTerms()">
               <button class="btn btn-default btn" ng-class="{'btn-primary': termSelected(t)}" ng-click="selectTerm(t)">{{t.term}}</td>
             </div>
+          </div>
+          <div class="btn-group btn-group-xs" role="group">
+            <button class="btn btn-default" ng-click="addTerm()"><img style="width:20px; height:20px"src="/static/img/plus-icon.png">  Add highlighted texts as new term</button>
+            <button class="btn btn-default" ng-disabled="selectedTerms.length===0" ng-click="searchEvidenceForTerms()">Search evidence</button>
+          </div>
         </div>   
       </div>
-      <!-- Controls for the current argument: save and extract keywords -->
-      <div class="footer">
-        <div class="btn-group btn-group-sm" role="group">
-          <button class="btn btn-default" ng-click="addTextEntry()">Add</button>
-          <button class="btn btn-primary" ng-disabled="!hasUnsavedChanges" ng-click="saveTextEntry()">Save</button>
-          <button class="btn btn-default" ng-disabled="selectedEntry['text']===null" ng-click="extractTerms()">Extract terms</button>
-          <button class="btn btn-default" ng-class="{'btn-success': associationSource==='text'}" ng-disabled="associationInactive('text')" ng-click="showAssociation('text')">Associate</button>
-          <button class="btn btn-danger" ng-disabled="selectedEntry['text']===null" ng-click="deleteEntry('text')">Delete</button>
-          <button class="btn btn-default" ng-disabled="selectedTerms.length===0" ng-click="searchEvidenceForTerms()">Search evidence</button>
-        </div>  
-      </div> 
     </div>
     <!-- List of evidence -->
     <div class="panel" id="evidence-col">
@@ -58,20 +67,36 @@
           </div>
         </div>
         <div class="col-md-5" id="documents">
-          <table class="table">
-            <tr ng-repeat="e in evidence | filter:filterEvidence() | orderBy:evidenceOrder" ng-class="{active: hover || e.id == selectedEntry['evidence'].id, success: isAssociated(e, selectedEntry['text'])}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
-               <td ng-click="selectEntry(e, 'evidence')">{{e.title}}</td>
-               <td><span class="label" ng-class="{'label-primary': evidenceSourceMap[e.id] === 1, 'label-default': evidenceSourceMap[e.id] === 0}">{{evidenceSourceMap[e.id] === 1 ? 'Bookmarked' : 'Search result'}}</span></td>
-  <!--             <td><input type="checkbox" ng-model="evidenceSourceMap[e.id]"></td> -->
-            </tr>
-          </table>
+          <div>
+            <div class="animate-repeat document-entry" ng-repeat="e in evidence | filter:filterEvidence() | orderBy:evidenceOrder" ng-class="{active: hover || e.id == selectedEntry['evidence'].id, associated: isAssociated(e, selectedEntry['text'])}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
+               <div ng-click="selectEntry(e, 'evidence')" style="width:90%;display:inline-block;float:left">
+                 <p>{{e.title}}</p>
+                 <p>
+                   <span><i>Search term occurrence:</i></span>
+                   <span ng-repeat="t in selectedTerms"><b>{{t.term}}</b>: {{countSearchTermOccurrence(t.term, e.abstract)}}  </span>
+                 </p>
+               </div>
+               <div style="width:10%;display:inline-block">
+                 <div ng-if="evidenceSourceMap[e.id] === 1">
+                   <img  src="/static/img/text-icon.svg" style="width:15px; height:15px"></img>
+                   <span>{{countTextsReferencingEvidence(e)}}</span>
+                 </div>
+                 <div ng-if="evidenceSourceMap[e.id] === 0"><span class="label label-default">Search result</span></div> 
+               </div>
+               <div style="clear:both"></div>
+            </div>
+          </div>
         </div>
         <div class="col-md-4" id="details">
           <div ng-if="selectedEntry['evidence']!==null">
+            <div class="row" style="margin:10px">
+              <button class="btn btn-default btn-xs col-md-12" ng-class="{'btn-success': showCitingTexts}" ng-disabled="associationInactive('evidence')" ng-click="toggleShowCitingTexts()">Who cited me?</button>
+            </div>
             <p><b>Authors</b>: {{selectedEntry['evidence'].metadata.AUTHOR}}</p>
             <p><b>Affiliation</b>: {{selectedEntry['evidence'].metadata.AFFILIATION}}</p>
             <p><b>Publication date</b>: {{selectedEntry['evidence'].metadata.DATE}}</p>
-            <p><b>Abstract</b>: {{selectedEntry['evidence'].abstract}}</p>
+            <p><b>Abstract</b>:</p>
+            <span ng-repeat="w in selectedWords track by $index" ng-class="{'is-search-term': isSearchTerm(w)}">{{w}} </span>
           </div>
         </div>
       </div>
@@ -79,7 +104,6 @@
         <div class="btn-group btn-group-sm" role="group">
           <button class="btn btn-default" ng-click="addEvidenceEntry()">Add</button>
           <button class="btn btn-default">Edit</button>
-          <button class="btn btn-default" ng-class="{'btn-success': associationSource==='evidence'}" ng-disabled="associationInactive('evidence')" ng-click="showAssociation('evidence')">Associate</button>
           <button class="btn btn-primary" ng-disabled="selectedEntry['evidence']===null||selectedEntry['text']===null" ng-click="updateEvidenceAssociation()" title="Mark this publication as relevant to the selected article">{{evidenceTextAssociated ? 'Mark as irrelevant' : 'Mark as relevant'}}</button>
           <button class="btn btn-danger" ng-disabled="selectedEntry['evidence']===null" ng-click="deleteEntry('evidence')">Delete</button>
         </div>
@@ -92,17 +116,21 @@
         <span>Control panel</span>
       </div>
       <div class="body">
-        <div>
-          <p>Import references</p>
-          <div class="row">
-            <input type="file" class="col-md-6" id="bibtex-input">
-            <div class="col-md-2"><button class="btn btn-default" ng-click="processBibtexFile()">Upload</button></div>
+        <div style="margin:10px 0 10px 0">
+          <h5>Import references</h5>
+          <div>
+            <div style="margin:10px"><input type="file"id="bibtex-input"></div>
+            <div style="margin:10px"><button class="btn btn-primary btn-xs" ng-click="processBibtexFile()">Upload</button></div>
           </div>
         </div>
-        <div>
-          <p>Export</p>
-          <button class="btn btn-default">Documents</button>
-          <button class="btn btn-default">Bibliography file</button>
+        <div style="margin:10px 0 10px 0">
+          <h5>Export</h5>
+          <div class="row" style="margin:0 10px 0 10px">
+            <button class="btn btn-default btn-xs col-md-5">Documents</button>
+            <span class="col-md-1"></span>
+            <button class="btn btn-default btn-xs col-md-5">References</button>
+            <span class="col-md-1"></span>
+          </div>
         </div>
       </div>
     </div>

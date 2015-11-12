@@ -11,7 +11,7 @@ angular.module('modal.controllers')
     var tempAssociatedEvidenceIds = [];
 
     $scope.ok = function () {
-      var newText = Core.postTextByUserId(userId, $scope.textsInfo.title, $scope.textsInfo.content, 
+      var newText = Core.postTextByUserId(userId, $scope.textsInfo.title, $scope.textsInfo.content, true, null,
         function(response) {
           tempAssociatedConceptIds.forEach(function(id) {
             AssociationMap.addAssociation('text', 'concept', response.data[0].id, id);

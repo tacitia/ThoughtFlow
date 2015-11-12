@@ -27,7 +27,8 @@
 
     function searchEvidenceForTerms(terms, userId, successFn, errorFn) {
       $http.post('api/v1/service/searchEvidenceForTerms/', {
-        terms: terms
+        terms: terms,
+        user_id: userId
       }).then(successFn, errorFn)
     }
 

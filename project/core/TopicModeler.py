@@ -4,6 +4,7 @@ import textmining
 import lda
 import lda.datasets
 from nltk.corpus import stopwords
+from timeit import default_timer as timer
 
 def compute_tdm(docs):
     # Create some very short sample documents
@@ -13,27 +14,29 @@ def compute_tdm(docs):
 #    doc4 = 'Neuromodulators such as dopamine have a central role in cognitive disorders. In the past decade, biological findings on dopamine function have been infused with concepts taken from computational theories of reinforcement learning. These more abstract approaches have now been applied to describe the biological algorithms at play in our brains when we form value judgements and make choices. The application of such quantitative models has opened up new fields, ripe for attack by young synthesizers and theoreticians.'
     # Initialize class to create term-document matrix
     tdm = textmining.TermDocumentMatrix()
-    # Add the documents
-#    tdm.add_doc(doc1)
-#    tdm.add_doc(doc2)
-#    tdm.add_doc(doc3)
-#    tdm.add_doc(doc4)
+    print '>> filtering stopwords...'
+    englishStopWords = stopwords.words('english')
+    print englishStopWords
+    englishStopWords.extend(['p', 'd', 'new', 'using'])
     for d in docs:
-      tdm.add_doc(d)
-
+      words = d.split(' ')
+      filtered_words = filter(lambda x: x.lower() not in englishStopWords, words)
+      tdm.add_doc(' '.join(filtered_words))
+    print '>> computing tdm...'
     raw_matrix = list(tdm.rows(cutoff=2))
 
-    filtered_matrix = filter_stopwords(raw_matrix)
+    return raw_matrix
 
-    return filtered_matrix
+#    filtered_matrix = filter_stopwords(raw_matrix)
+#    return filtered_matrix
 #    return apply_tfidt_transform(raw_matrix)
 
 def filter_stopwords(matrix):
-	header = matrix[0]
-	filtered_counts = [[row[col_idx] for col_idx in range(len(row)) if header[col_idx] not in stopwords.words('english')] for row in matrix[1:]]
-	filtered_header = filter(lambda x: x not in stopwords.words('english'), header)
+  header = matrix[0]
+  filtered_counts = [[row[col_idx] for col_idx in range(len(row)) if header[col_idx] not in stopwords.words('english')] for row in matrix[1:]]
+  filtered_header = filter(lambda x: x not in stopwords.words('english'), header)
 
-	return [filtered_header] + filtered_counts
+  return [filtered_header] + filtered_counts
 
 def apply_tfidt_transform(matrix):
 #	print matrix

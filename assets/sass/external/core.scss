@@ -67,11 +67,19 @@ body, html {
 
     textarea.form-control {
       width:100%;
-      height:100%; 
+      height:90%;
+      padding: 20px;
+      line-height: 150%; 
       box-sizing: border-box;         /* For IE and modern versions of Chrome */
       -moz-box-sizing: border-box;    /* For Firefox                          */
       -webkit-box-sizing: border-box; /* For Safari                           */    
     }
+  }
+  .btn-group {
+    padding: 10px;
+  }
+  button {
+    margin: 0px 5px 0px 5px;
   }
 }
 
@@ -80,6 +88,10 @@ body, html {
 }
 
 #v1 {
+
+  .sidebar {
+    height: 920px;  
+  }
 
   .loading {
     background: rgba(255,255,255,0.8);
@@ -149,7 +161,7 @@ body, html {
         border: 3px solid steelblue;
       }
 
-      $colors-list: rgb(251, 180, 174) rgb(179, 205, 227) rgb(204, 235, 197) rgb(222, 203, 228) rgb(254, 217, 166);
+      $colors-list: rgb(166,206,227) rgb(31,120,180) rgb(178,223,138) rgb(51,160,44) rgb(251,154,153) rgb(227,26,28) rgb(253,191,111) rgb(255,127,0) rgb(202,178,214) rgb(106,61,154) rgb(255,255,153) rgb(177,89,40);
       @each $current-color in $colors-list {
           $i: index($colors-list, $current-color);
           #topic-container-#{$i} { 
@@ -162,11 +174,28 @@ body, html {
     #documents {
       overflow-y: scroll;
       height: 100%;
+
+      .document-entry {
+        padding: 8px;
+        border-top: 1px solid #ddd;
+      }
+
+      .document-entry.active {
+        background-color: #f5f5f5;
+      }
+
+      .document-entry.associated {
+        background-color: #dff0d8;
+      }
     }
 
     #details {
       overflow-y: scroll;
       height: 100%;
+
+      .is-search-term {
+        background-color:burlywood;
+      }
     }
 
   }
@@ -178,6 +207,10 @@ body, html {
   border: 2px solid #ccc;
   border-radius: 5px;
   overflow-y: scroll;
+
+  .btn-group {
+    padding: 10px;  
+  }
 }
 
 #version-picker-container {
@@ -260,4 +293,35 @@ body, html {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
+}
+
+.example-animate-container {
+  background:white;
+  border:1px solid black;
+  list-style:none;
+  margin:0;
+  padding:0 10px;
+}
+
+.animate-repeat {
+  list-style:none;
+  box-sizing:border-box;
+}
+
+.animate-repeat.ng-move,
+.animate-repeat.ng-enter,
+.animate-repeat.ng-leave {
+  transition:all linear 0.3s;
+}
+
+.animate-repeat.ng-leave.ng-leave-active,
+.animate-repeat.ng-move,
+.animate-repeat.ng-enter {
+  opacity:0;
+}
+
+.animate-repeat.ng-leave,
+.animate-repeat.ng-move.ng-move-active,
+.animate-repeat.ng-enter.ng-enter-active {
+  opacity:1;
 }

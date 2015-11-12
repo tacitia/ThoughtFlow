@@ -3,13 +3,12 @@ angular.module('v1.controllers')
     function($scope, $modal, Core, AssociationMap, Pubmed, Bibtex) {
 
     var userId = 101;
-    var topicColors = ["#fbb4ae","#b3cde3","#ccebc5","#decbe4","#fed9a6","#ffffcc","#e5d8bd","#fddaec","#f2f2f2"];
+    var topicColors = ["#a6cee3","#1f78b4","#b2df8a","#33a02c","#fb9a99","#e31a1c","#fdbf6f","#ff7f00","#cab2d6","#6a3d9a","#ffff99","#b15928"]
 
     Core.getAllDataForUser(userId, function(response) {
       console.log(response.data)
       $scope.texts = response.data.texts;
       $scope.concepts = response.data.concepts;
-      console.log(d3.selectAll('.topic-info'));
     }, function(response) {
       console.log('server error when retrieving data for user ' + userId);
       console.log(response);
@@ -18,63 +17,11 @@ angular.module('v1.controllers')
     $scope.loadingEvidence = true;
     $scope.loadingStatement = 'Generating topic models over bookmarked evidence...';
     Core.getEvidenceTextTopicsForUser(userId, function(response) {
-      $scope.topics = response.data.topics;
-      $scope.evidence = response.data.evidence.map(function(e) {
-        e.metadata = JSON.parse(e.metadata);
-        return e;
-      });
-      console.log(response.data.evidenceTextTopicMap);
-      $scope.evidenceTopicMap = _.object(_.map(_.omit(response.data.evidenceTextTopicMap, function(value, key) {
-        return !key.startsWith('e');
-      }), function(value, key) {
-        return [key.split('-')[1], value.max]
-      }));
-      $scope.textTopicMap = _.object(_.map(_.omit(response.data.evidenceTextTopicMap, function(value, key) {
-        return !key.startsWith('t');
-      }), function(value, key) {
-        return [key.split('-')[1], value.dist]
-      }));
+      processEvidenceTextTopics(response);
       $scope.evidenceSourceMap = _.object(_.map($scope.evidence, function(e) {
         return [e.id, 1];
       }));
-      $scope.loadingEvidence = false;
-      console.log($scope.texts);
-      console.log(d3.selectAll('.topic-info'));
-      d3.selectAll('.topic-info')
-        .data($scope.texts)
-        .append('g')        
-        .selectAll('rect')
-        .data(function(t) {
-          var distribution = $scope.textTopicMap[t.id];
-          var accumulation = distribution.reduce(function(prev, curr, index) {
-            if (index === 0) {
-              return prev.concat([curr]);
-            }
-            else {
-              return prev.concat([curr + prev[prev.length-1]])
-            }
-          }, [0]);
-          return distribution.map(function(d, i) {
-            console.log(i);
-            return {
-              'dist': d,
-              'acc': accumulation[i]
-            };
-          });
-        })
-        .enter()
-        .append('rect')
-        .attr('fill', function(d, i) {
-          return topicColors[i];
-        })
-        .attr('width', function(d) {
-          return d.dist * 150;
-        })
-        .attr('height', 20)
-        .attr('transform', function(d, i) {
-          var left = d.acc * 150;
-          return 'translate(' + left + ',0)';
-        });
+      visualizeTextTopicDistribution();
     });
 
     AssociationMap.initialize(userId);
@@ -92,6 +39,7 @@ angular.module('v1.controllers')
     $scope.selectedEntry = {};
     $scope.selectedEntry['text'] = null;
     $scope.selectedEntry['evidence'] = null;
+    $scope.selectedWords = [];
     $scope.selectedTerms = [];
     $scope.selectedTopic = -1;
 
@@ -112,9 +60,12 @@ angular.module('v1.controllers')
     $scope.evidenceTopicMap = {};
     $scope.textTopicMap = {};
 
+    $scope.showCitingTexts = false;
+
     /* ========== Selector functions Begin ========== */
 
     $scope.selectEntry = function(elem, type) {
+      console.log(elem);
       if (elem === $scope.selectedEntry[type]) {
         $scope.selectedEntry[type] = null;
         if (type === 'text') $scope.activeText = '';
@@ -129,6 +80,10 @@ angular.module('v1.controllers')
           $scope.selectedEntry['text'].id
         );
       }
+      if ($scope.selectedEntry['evidence'] != null) {
+        $scope.selectedWords = $scope.selectedEntry['evidence'].abstract.split(' ');
+      }
+      console.log($scope.selectedWords);
     } 
 
     $scope.selectTerm = function(term) {
@@ -147,6 +102,32 @@ angular.module('v1.controllers')
     /* ========== Selector functions End ========== */
 
     /* ========== Input handling functions Begin ========== */
+
+    $scope.addTerm = function() {
+      var textComponent = document.getElementById('textContent');
+      var selectedText;
+      console.log(textComponent.selectionStart)
+      // IE version
+      if (document.selection != undefined)
+      {
+        textComponent.focus();
+        var sel = document.selection.createRange();
+        selectedText = sel.text;
+      }
+      // Mozilla version
+      else if (textComponent.selectionStart != undefined)
+      {
+        var startPos = textComponent.selectionStart;
+        var endPos = textComponent.selectionEnd;
+        selectedText = textComponent.value.substring(startPos, endPos)
+      }
+      $scope.terms.push({
+        frequency: -1,
+        length: selectedText.split(' ').length,
+        term:selectedText
+      });
+      console.log($scope.terms);
+    };
 
     $scope.addTextEntry = function() {
       var modalInstance = $modal.open({
@@ -201,12 +182,17 @@ angular.module('v1.controllers')
     }
 
     $scope.saveTextEntry = function() {
+      var newText = $scope.selectedEntry['text'];
+      newText.content = $scope.activeText;
       var modalInstance = $modal.open({
         templateUrl: 'modal/saveModal.html',
         controller: 'SaveModalController',
         resolve: {
           textEntry: function() {
             return $scope.selectedEntry['text'];
+          },
+          userId: function() {
+            return userId;
           }
         }
       });
@@ -253,6 +239,27 @@ angular.module('v1.controllers')
 
     /* ========== Boolean functions Begin ========== */
 
+    $scope.isSearchTerm = function(w) {
+      if (w === 'of') {
+        return false;
+      }
+      for (var i = 0; i < $scope.selectedTerms.length; ++i) {
+        var term = $scope.selectedTerms[i].term;
+        var term_parts = term.split(' ');
+        var word_parts = w.split('-');
+        if (term_parts.indexOf(w) > -1) {
+          return true;
+        }
+        for (var j = 0; j < word_parts.length; ++j) {
+          var wp = word_parts[j];
+          if (term_parts.indexOf(wp) > -1) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
     $scope.termSelected = function(term) {
       return $scope.selectedTerms.indexOf(term) >= 0;
     };
@@ -268,11 +275,23 @@ angular.module('v1.controllers')
     };
 
     $scope.isAssociated = function(e, t) {
-      if (t === null) {
+      if (e ===null || t === null) {
         return false;
       }
       return AssociationMap.hasAssociation('evidence', 'text', e.id, t.id);
     };
+    $scope.cites = function(t, e) {
+      if (e ===null || t === null) {
+        return false;
+      }
+      return AssociationMap.hasAssociation('evidence', 'text', e.id, t.id);
+    };
+    $scope.toggleShowCitingTexts = function() {
+        $scope.showCitingTexts = !$scope.showCitingTexts;
+      console.log('show citing texts');
+      console.log($scope.showCitingTexts);
+    };
+
 
     /* ========== Boolean functions En ========== */
 
@@ -282,9 +301,11 @@ angular.module('v1.controllers')
       $scope.hasUnsavedChanges = true;
     }
 
+/*
     $scope.showAssociation = function(type) {
       if ($scope.associationSource === type) {
         updateAssociationSource('');
+        visualizeTextTopicDistribution();
       }
       else {
         updateAssociationSource(type);
@@ -300,6 +321,7 @@ angular.module('v1.controllers')
         }
       }
     };
+*/
 
     function updateAssociationSource(source) {
       _.forOwn($scope.filterSwitches, function(value, key) {
@@ -350,7 +372,8 @@ angular.module('v1.controllers')
 
     $scope.filterTerms = function() {
       return function(term) {
-        return term.frequency > 1 || term.length > 1;
+        return true;
+//        return term.frequency > 1 || term.length > 1;
       };
     };
 
@@ -361,7 +384,16 @@ angular.module('v1.controllers')
     };
 
     $scope.evidenceOrder = function(e) {
-      return $scope.isAssociated(e, $scope.selectedEntry['text']) ? 0 : 1;
+      // 1000 and 500 are random...
+      var order = 1000 - $scope.countTextsReferencingEvidence(e);
+      if ($scope.isAssociated(e, $scope.selectedEntry['text'])) {
+        order -= 1000;
+      }
+      if ($scope.evidenceSourceMap[e.id] === 0) {
+        order = 1000;
+      }
+
+      return order;
     };
 
 
@@ -391,18 +423,22 @@ angular.module('v1.controllers')
       // There should be another function to handle search within personal reference
       Pubmed.searchEvidenceForTerms(terms, userId, function(response) {
         // After receiving the response, update the evidence list
-        $scope.topics = response.data.topics;
+        processEvidenceTextTopics(response);
+        extendEvidenceMap(response.data.evidence, 0);
+        visualizeTextTopicDistribution();
+/*        $scope.topics = response.data.topics;
         $scope.evidence = response.data.evidence.map(function(e) {
-          console.log(e.metadata);
           e.metadata = JSON.parse(e.metadata);
           return e;
         });
-        $scope.evidenceTopicMap = response.data.evidenceTopicMap;
+        console.log(response.data.evidenceTopicMap);
+        $scope.evidenceTopicMap = _.object(_.map(response.data.evidenceTopicMap, function(key, value) {
+          return [key, value.max];
+        }));
         // Merge the new evidence into the existing evidenceSourceMap; make sure we don't
         // overwrite any existing entry
-        extendEvidenceMap(response.data.evidence, 0);
 
-        $scope.loadingEvidence = false;
+        $scope.loadingEvidence = false; */
       }, function(errorResponse) {
         console.log('error occurred while searching for evidence');
         console.log(errorResponse)        
@@ -418,7 +454,6 @@ angular.module('v1.controllers')
         var newEvidenceMap = _.object(_.map(_.filter(evidence, function(e) {
           return $scope.evidenceSourceMap[e.id] === undefined;
         }), function(e) {
-          console.log(e);
           return [e.id, source];
         }));
         _.extend($scope.evidenceSourceMap, newEvidenceMap); 
@@ -451,5 +486,94 @@ angular.module('v1.controllers')
       };
       reader.readAsText(selectedFile);
     };
+
+    $scope.countTextsReferencingEvidence = function(e) {
+      return AssociationMap.getAssociatedIdsBySource('evidence', 'text', e.id).length;
+    };
+
+    $scope.countSearchTermOccurrence = function(term, abstract) {
+      var result = 0;
+      var abstractWords = abstract.split(' ');
+      for (var i = 0; i < abstractWords.length; ++i) {
+        var word = abstractWords[i];
+        if (word === 'of') {
+          continue
+        }
+        var term_parts = term.split(' ');
+        if (term_parts.indexOf(word) > -1) result += 1;
+        if (word.split('-').length>1) {
+          for (var j = 0; j < term_parts.length; ++j) {
+            if (word.split('-').indexOf(term_parts[j]) > -1) {
+              result += 1;
+            }
+          }
+        }
+      }
+      return result;
+    };
+
+    function processEvidenceTextTopics(response) {
+      $scope.topics = response.data.topics;
+      $scope.evidence = _.uniq(response.data.evidence, function(n) {
+        return n.id;
+      }).map(function(e) {
+        e.metadata = JSON.parse(e.metadata);
+        return e;
+      });
+      console.log($scope.evidence);
+      console.log(response.data.evidenceTextTopicMap);
+      $scope.evidenceTopicMap = _.object(_.map(_.omit(response.data.evidenceTextTopicMap, function(value, key) {
+        return !key.startsWith('e');
+      }), function(value, key) {
+        return [key.split('-')[1], value.max]
+      }));
+      $scope.textTopicMap = _.object(_.map(_.omit(response.data.evidenceTextTopicMap, function(value, key) {
+        return !key.startsWith('t');
+      }), function(value, key) {
+        return [key.split('-')[1], value.dist]
+      }));
+      $scope.loadingEvidence = false;
+    };
+
+    function visualizeTextTopicDistribution() {
+      d3.selectAll('.topic-info').selectAll('g').remove();
+      if ($scope.topics.length === 0) {
+        return;
+      }
+      d3.selectAll('.topic-info')
+        .data($scope.texts)
+        .append('g')        
+        .selectAll('rect')
+        .data(function(t) {
+          var distribution = $scope.textTopicMap[t.id];
+          var accumulation = distribution.reduce(function(prev, curr, index) {
+            if (index === 0) {
+              return prev.concat([curr]);
+            }
+            else {
+              return prev.concat([curr + prev[prev.length-1]])
+            }
+          }, [0]);
+          return distribution.map(function(d, i) {
+            return {
+              'dist': d,
+              'acc': accumulation[i]
+            };
+          });
+        })
+        .enter()
+        .append('rect')
+        .attr('fill', function(d, i) {
+          return topicColors[i];
+        })
+        .attr('width', function(d) {
+          return d.dist * 150;
+        })
+        .attr('height', 20)
+        .attr('transform', function(d, i) {
+          var left = d.acc * 150;
+          return 'translate(' + left + ',0)';
+        });      
+    }
 
   }]);

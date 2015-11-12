@@ -32,11 +32,15 @@
         .then(successFn, errorFn);
     }
 
-    function postTextByUserId(userId, title, content, successFn, errorFn) {
+
+    function postTextByUserId(userId, title, content, isNew, textId, successFn, errorFn) {
+      console.log(textId);
       return $http.post('/api/v1/data/texts/', {
         created_by: userId,
         title: title,
-        content: content
+        content: content,
+        is_new: isNew,
+        text_id: textId
       }).then(successFn, errorFn);
     }
 

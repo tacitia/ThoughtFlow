@@ -11,6 +11,7 @@ angular.module('mainModule', [
   'modalModule',
   'utilityModule',
   'angularModalService',
-  'angularFileUpload'
+  'angularFileUpload',
+  'ngAnimate'
 //  'd3'
 ]);

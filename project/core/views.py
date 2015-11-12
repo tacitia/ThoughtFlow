@@ -34,7 +34,15 @@ def flattenSerializedJson(input):
 class TextView(View):
     def post(self, request, format=None):
         data = json.loads(request.body)
-        text = Text.objects.create_text(data['title'], data['content'], data['created_by'])
+        if data['is_new']: 
+            text = Text.objects.create_text(data['title'], data['content'], data['created_by'])
+        else:
+            text = Text.objects.get(id=data['text_id'])
+            text.title = data['title']
+            text.content = data['content']
+            text.save()
+            print text.content
+            print data['content']
         serialized_json = serializers.serialize('json', [text])
         text_json = flattenSerializedJson(serialized_json)
 
@@ -75,6 +83,8 @@ class DeleteEntryView(View):
             Evidence.objects.filter(Q(created_by=user_id)&Q(pk=id)).delete()
         else:
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST) 
+        Association.objects.filter(created_by=user_id, sourceId=id).delete()
+        Association.objects.filter(created_by=user_id, targetId=id).delete()
 
         return HttpResponse(status=status.HTTP_202_ACCEPTED)         
 
@@ -128,7 +138,8 @@ class ConceptGrowthView(View):
         return HttpResponse(json.dumps(output), status=status.HTTP_201_CREATED)
 
 class EvidenceSearchView(View):
-    def post(self, request, format=None):
+    # The old "post" function - just for backup
+    def get(self, request, format=None):
         terms = json.loads(request.body)['terms']
         evidence = PubMedQuerier.find_evidence_for_terms(terms, skip_no_abstract=True)
         serialized_json = serializers.serialize('json', evidence)
@@ -139,6 +150,48 @@ class EvidenceSearchView(View):
         evidencePks = [e.pk for e in evidence]
         abstracts = [e.abstract for e in evidence]
         output['topics'], output['evidenceTopicMap'] = getTopicsForDocuments(evidencePks, abstracts) 
+        return HttpResponse(json.dumps(output), status=status.HTTP_201_CREATED)
+
+    def post(self, request, format=None):
+        params = json.loads(request.body)
+        terms = params['terms']
+        user_id = params['user_id']
+
+        print terms
+        print user_id
+
+        texts = Text.objects.filter(created_by=user_id)
+        serialized_json = serializers.serialize('json', texts)
+        texts_json = flattenSerializedJson(serialized_json)
+
+        evidenceCreated = Evidence.objects.filter(created_by=user_id)
+        evidenceBookmarks = EvidenceBookmark.objects.filter(user_id=user_id)
+        evidenceBookmarkedIds = [eb.evidence.pk for eb in evidenceBookmarks]
+        evidenceBookmarked = Evidence.objects.filter(pk__in=evidenceBookmarkedIds)
+        evidenceRetrieved = PubMedQuerier.find_evidence_for_terms(terms, skip_no_abstract=True)
+
+        evidence = chain(evidenceCreated, evidenceBookmarked, evidenceRetrieved)
+
+        print '>> serializing evidence...'
+        serialized_json = serializers.serialize('json', evidence)
+        print '>> flatten serialized evidence...'
+        evidence_json = flattenSerializedJson(serialized_json)
+
+        # let's provide topic modeling results in addition to the raw evidence
+        output = {}
+        print '>> loading evidence into json...'
+        output['evidence'] = json.loads(evidence_json)
+
+        contents = [t.content for t in texts]
+        textPks = ['t-'+str(t.pk) for t in texts]
+        abstracts = [e['abstract'] for e in output['evidence']]
+        evidencePks = ['e-'+str(e['id']) for e in output['evidence']]
+
+        if len(evidencePks + textPks) <= 1:
+            output['topics'] = []
+            output['evidenceTextTopicMap'] = []
+        else:
+            output['topics'], output['evidenceTextTopicMap'] = getTopicsForDocuments(evidencePks + textPks, abstracts + contents) 
         return HttpResponse(json.dumps(output), status=status.HTTP_201_CREATED)
 
 class TermExtractionView(View):
@@ -189,8 +242,6 @@ def retrieveEvidenceTextTopics(request):
         data = json.loads(request.body)
         user_id = data['user_id']
 
-#        user_id = 101
-
         texts = Text.objects.filter(created_by=user_id)
         serialized_json = serializers.serialize('json', texts)
         texts_json = flattenSerializedJson(serialized_json)
@@ -214,14 +265,17 @@ def retrieveEvidenceTextTopics(request):
         abstracts = [e['abstract'] for e in output['evidence']]
         evidencePks = ['e-'+str(e['id']) for e in output['evidence']]
 
-        output['topics'], output['evidenceTextTopicMap'] = getTopicsForDocuments(evidencePks + textPks, abstracts + contents) 
+        if len(evidencePks + textPks) <= 1:
+            output['topics'] = []
+            output['evidenceTextTopicMap'] = []
+        else:
+            output['topics'], output['evidenceTextTopicMap'] = getTopicsForDocuments(evidencePks + textPks, abstracts + contents) 
         return HttpResponse(json.dumps(output), status=status.HTTP_201_CREATED)
 
 def getTopicsForDocuments(documentIds, documents):
     topics = []
     evidenceTopicMap = {}
     topics, index_topic_map = TopicModeler.run(documents)
-    print index_topic_map
     id_topic_map = {}
     for i in range(len(documentIds)):
         id_topic_map[documentIds[i]] = index_topic_map[i]
