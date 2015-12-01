@@ -1,10 +1,13 @@
+import math
 import json
+import os
 import PubMedQuerier
+import PubMedParser
 import TermExtractor
 import TopicModeler
 from itertools import chain
 
-from core.models import Association, Concept, Evidence, Text, EvidenceBookmark
+from core.models import Association, Concept, Evidence, Text, EvidenceBookmark, EvidenceTopic
 
 from django.conf import settings
 from django.core import serializers
@@ -22,6 +25,7 @@ def index(request):
     return render(request, template, context)
 
 def flattenSerializedJson(input):
+    print '>> flatten serialized json...'
     output = []
     json_array = json.loads(input)
     for d in json_array:
@@ -280,5 +284,138 @@ def getTopicsForDocuments(documentIds, documents):
     for i in range(len(documentIds)):
         id_topic_map[documentIds[i]] = index_topic_map[i]
 
-    return topics, id_topic_map    
+    return topics, id_topic_map
+
+def getEvidenceCollection(request, collection_id):
+    if request.method == 'GET':
+        evidence_count = Evidence.objects.filter(created_by=collection_id).count()
+
+        evidence = Evidence.objects.filter(evidencetopic__created_by=collection_id)
+        serialized_json = serializers.serialize('json', evidence)
+        evidence_json = flattenSerializedJson(serialized_json)
+
+        evidenceTopics = EvidenceTopic.objects.filter(created_by=collection_id)
+        serialized_json = serializers.serialize('json', evidenceTopics, fields=('evidence', 'primary_topic', 'primary_topic_prob', 'topic_dist'))
+        evidenceTopics_json = flattenSerializedJson(serialized_json)
+
+        names = {}
+        names[10] = 'visualization'
+        names[11] = ' pfc and executive functions'
+        names[12] = 'virtual reality'
+
+        topicList = TopicModeler.get_online_lda_topics(names[int(collection_id)], evidence_count/200)
+        output = {}
+        output['evidence'] = json.loads(evidence_json)
+        output['evidenceTopics'] = json.loads(evidenceTopics_json)
+        output['topics'] = topicList
+
+        return HttpResponse(json.dumps(output), status=status.HTTP_200_OK)
+
+
+# This function gets recommended evidence for a piece of user-generated argument based on 
+# 1) topic modeling result (only recommends documents from the same topic cluster)
+def getEvidenceRecommendation(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+#        data = {}
+#        data['text'] = 'cognitive control fmri task'
+        name = ' pfc and executive functions'
+        topic_dist, primary_topic_terms = TopicModeler.get_document_topics(data['text'], name)
+        primary_topic_tuple = max(topic_dist, key=lambda x:x[1])
+        output = {}
+        output['topics'] = [{}]
+        output['topics'][0]['terms'] = primary_topic_terms
+        output['topics'][0]['prob'] = primary_topic_tuple[1]
+
+#        evidence = getEvidenceRecommendationAcrossTopics(topic_dist, name)
+        output['evidence'] = getEvidenceRecommendationWithinTopics(topic_dist, name)
+
+        return HttpResponse(json.dumps(output), status=status.HTTP_200_OK)
+
+def getEvidenceRecommendationAcrossTopics(topic_dist, name):
+    top_documents = TopicModeler.compute_documents_similarity(topic_dist, name)
+    start_id = 62164 # TODO: change this based on corpus name
+    evidence_ids = map(lambda id: id+start_id, top_documents)
+    evidence = Evidence.objects.filter(id__in=evidence_ids)
+    evidence = dict([(obj.id, obj) for obj in evidence])
+    sorted_evidence = [evidence[id] for id in evidence_ids]
+    serialized_json = serializers.serialize('json', sorted_evidence)
+    evidence_json = flattenSerializedJson(serialized_json)
+    return json.loads(evidence_json)
+
+def getEvidenceRecommendationWithinTopics(topic_dist, name):
+    primary_topic_tuple = max(topic_dist, key=lambda x:x[1])
+    evidence = Evidence.objects.filter(evidencetopic__primary_topic=primary_topic_tuple[0]) # use this if later needs to get evidence by topic
+    serialized_json = serializers.serialize('json', evidence)
+    evidence_json = flattenSerializedJson(serialized_json)
+    evidence = json.loads(evidence_json)
+    abstracts = [e['abstract'] for e in evidence]    
+    evidence_ids = TopicModeler.compute_documents_similarity_sub(topic_dist, abstracts, name)
+    sorted_evidence = map(lambda index:evidence[index], evidence_ids)
+    return sorted_evidence
+
+# This is a special function that loads a large document collection, performs topic modeling over them,
+# then caches the topic modeling results
+# How do we cache the results in a way so that we can quickly estimate topic for a new piece of writing?
+def loadBatchResults(request):
+    if request.method == 'GET':
+        print '>> loading batch result request...'
+        current_dir = os.path.dirname(os.path.realpath(__file__))
+        query = 'cognitive control'
+        f = os.path.join(current_dir, 'batchresults', query + '.txt')
+        PubMedParser.load_evidence(f, True, 11)
+        
+        return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
+
+def loadOnlineLDA(request):
+    if request.method == 'GET':
+        user_id = 11
+        evidence = Evidence.objects.filter(created_by=user_id)
+        serialized_json = serializers.serialize('json', evidence)
+        evidence_json = flattenSerializedJson(serialized_json)
+        loaded_evidence = json.loads(evidence_json)
+        abstracts = [e['abstract'] for e in loaded_evidence]
+        evidencePks = [e['id'] for e in loaded_evidence]
+        name = ' pfc and executive functions'
+        evidenceTopicMap, topicList = TopicModeler.load_online_lda(abstracts, evidencePks, name)
+        saveTopicsForEvidence(evidenceTopicMap, user_id)
+        return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
+
+def createOnlineLDA(request):
+    if request.method == 'GET':
+        print '>> preparing data for online lda...'
+        user_id = 10
+        evidence = Evidence.objects.filter(created_by=user_id)
+        serialized_json = serializers.serialize('json', evidence)
+        evidence_json = flattenSerializedJson(serialized_json)
+        loaded_evidence = json.loads(evidence_json)
+        abstracts = [e['abstract'] for e in loaded_evidence]
+        evidencePks = [e['id'] for e in loaded_evidence]
+        name = 'visualization'
+        numDocs = len(loaded_evidence)
+        evidenceTopicMap, topics = TopicModeler.create_online_lda(abstracts, evidencePks, name, math.ceil(numDocs / 200))
+        saveTopicsForEvidence(evidenceTopicMap, user_id)
+
+        return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
+
+def createSimilarityMatrix(request):
+    if request.method == 'GET':
+        # name = ' pfc and executive functions'
+        name = 'visualization'
+        TopicModeler.create_similarity_matrix(name)
+        return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)        
+
+def saveTopicsForEvidence(evidenceTopicMap, user_id):
+    print '>> saving evidence topic map...'
+    counter = 0
+    for e in evidenceTopicMap:
+        topic_dist = evidenceTopicMap[e]
+        if len(topic_dist) == 0:
+            counter += 1
+            continue
+        primary_topic_tuple = max(topic_dist, key=lambda x:x[1])
+        EvidenceTopic.objects.create_entry(e, primary_topic_tuple[0], primary_topic_tuple[1], json.dumps(topic_dist), user_id)
+        continue
+    print '>> skipped ' + str(counter) + ' evidence with no topic distribution'
+    return
 

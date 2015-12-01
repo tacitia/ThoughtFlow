@@ -15,6 +15,7 @@
       deleteBookmark: deleteBookmark,
       getAllDataForUser: getAllDataForUser,
       getAssociationMap: getAssociationMap,
+      getEvidenceCollection: getEvidenceCollection,
       getEvidenceTextTopicsForUser: getEvidenceTextTopicsForUser
     };
 
@@ -54,6 +55,11 @@
         console.log('server error when saving new concept');
         console.log(response);
       });
+    }
+
+    function getEvidenceCollection(collectionId, successFn, errorFn) {
+      return $http.get('/api/v1/data/collection/' + collectionId + '/')
+        .then(successFn, errorFn);
     }
 
     function postEvidenceByUserId(userId, title, abstract, metadata, successFn, errorFn) {

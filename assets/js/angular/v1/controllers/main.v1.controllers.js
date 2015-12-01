@@ -1,8 +1,8 @@
 angular.module('v1.controllers')
-  .controller('BaselineController', ['$scope', '$modal', 'Core', 'AssociationMap', 'Pubmed', 'Bibtex',
-    function($scope, $modal, Core, AssociationMap, Pubmed, Bibtex) {
+  .controller('BaselineController', ['$scope', '$modal', 'Core', 'AssociationMap', 'Argument', 'Pubmed', 'Bibtex',
+    function($scope, $modal, Core, AssociationMap, Argument, Pubmed, Bibtex) {
 
-    var userId = 101;
+    var userId = 105;
     var topicColors = ["#a6cee3","#1f78b4","#b2df8a","#33a02c","#fb9a99","#e31a1c","#fdbf6f","#ff7f00","#cab2d6","#6a3d9a","#ffff99","#b15928"]
 
     Core.getAllDataForUser(userId, function(response) {
@@ -17,7 +17,7 @@ angular.module('v1.controllers')
     $scope.loadingEvidence = true;
     $scope.loadingStatement = 'Generating topic models over bookmarked evidence...';
     Core.getEvidenceTextTopicsForUser(userId, function(response) {
-      processEvidenceTextTopics(response);
+      processEvidenceTextTopics(response, 's');
       $scope.evidenceSourceMap = _.object(_.map($scope.evidence, function(e) {
         return [e.id, 1];
       }));
@@ -25,11 +25,6 @@ angular.module('v1.controllers')
     });
 
     AssociationMap.initialize(userId);
-
-    // TODO: get peronal evidence after being processed by topic modeling; also
-    // throw in user created articles into the topic modeling process; this way, 
-    // personal references are automatically grouped with existing user created 
-    // articles
 
     // terms extracted from the selected text
     $scope.terms = [];
@@ -42,6 +37,7 @@ angular.module('v1.controllers')
     $scope.selectedWords = [];
     $scope.selectedTerms = [];
     $scope.selectedTopic = -1;
+    $scope.evidenceSelectionMap = {};
 
     $scope.hasUnsavedChanges = false;
     $scope.associationSource = '';
@@ -65,7 +61,6 @@ angular.module('v1.controllers')
     /* ========== Selector functions Begin ========== */
 
     $scope.selectEntry = function(elem, type) {
-      console.log(elem);
       if (elem === $scope.selectedEntry[type]) {
         $scope.selectedEntry[type] = null;
         if (type === 'text') $scope.activeText = '';
@@ -83,7 +78,6 @@ angular.module('v1.controllers')
       if ($scope.selectedEntry['evidence'] != null) {
         $scope.selectedWords = $scope.selectedEntry['evidence'].abstract.split(' ');
       }
-      console.log($scope.selectedWords);
     } 
 
     $scope.selectTerm = function(term) {
@@ -204,18 +198,31 @@ angular.module('v1.controllers')
     }
 
     $scope.deleteEntry = function(type) {
+      var selectedEvidence = _.keys(_.pick($scope.evidenceSelectionMap, function(value, key) {
+        return value;
+      }));
       var modalInstance = $modal.open({
         templateUrl: 'modal/deleteModal.html',
         controller: 'DeleteModalController',
         resolve: {
           content: function() {
-            switch (type) {
-              case 'text': return $scope.selectedEntry[type].title;
-              case 'evidence': return $scope.selectedEntry[type].title;
+            if (selectedEvidence.length > 0) {
+              return selectedEvidence.length + ' publications';
+            }
+            else {
+              switch (type) {
+                case 'text': return $scope.selectedEntry[type].title;
+                case 'evidence': return $scope.selectedEntry[type].title;
+              }
             }
           },
           id: function() {
-            return $scope.selectedEntry[type].id;
+            if (selectedEvidence.length > 0) {
+              return selectedEvidence;
+            }
+            else {
+              return [$scope.selectedEntry[type].id];
+            }
           },
           type: function() {
             return type;
@@ -228,10 +235,17 @@ angular.module('v1.controllers')
 
       var target = (type === 'text') 
         ? $scope.texts : $scope.evidence;
+
       modalInstance.result.then(function (deletedEntryId) {
-        _.remove(target, function(elem) {
-          return elem.id === deletedEntryId;
-        })
+        for (var i = 0; i < deletedEntryId.length; ++i) {
+          var entryId = deletedEntryId[i];
+          _.remove(target, function(elem) {
+            return elem.id == entryId;
+          })
+          if (type === 'evidence') {
+            $scope.evidenceSelectionMap[entryId] = false;
+          }
+        };
       });
     }
 
@@ -245,6 +259,29 @@ angular.module('v1.controllers')
       }
       for (var i = 0; i < $scope.selectedTerms.length; ++i) {
         var term = $scope.selectedTerms[i].term;
+        var term_parts = term.split(' ');
+        var word_parts = w.split('-');
+        if (term_parts.indexOf(w) > -1) {
+          return true;
+        }
+        for (var j = 0; j < word_parts.length; ++j) {
+          var wp = word_parts[j];
+          if (term_parts.indexOf(wp) > -1) {
+            return true;
+          }
+        }
+      }
+      return false;
+    };
+
+    $scope.isTopicTerm = function(w) {
+      if (w === 'of') {
+        return false;
+      }
+      if ($scope.selectedTopic === -1) return false;
+      var topicTerms = $scope.topics[$scope.selectedTopic];
+      for (var i = 0; i < topicTerms.length; ++i) {
+        var term = topicTerms[i];
         var term_parts = term.split(' ');
         var word_parts = w.split('-');
         if (term_parts.indexOf(w) > -1) {
@@ -300,28 +337,6 @@ angular.module('v1.controllers')
     $scope.startMakingChanges = function() {
       $scope.hasUnsavedChanges = true;
     }
-
-/*
-    $scope.showAssociation = function(type) {
-      if ($scope.associationSource === type) {
-        updateAssociationSource('');
-        visualizeTextTopicDistribution();
-      }
-      else {
-        updateAssociationSource(type);
-        switch (type) {
-          case 'text': {
-            $scope.associatedIds['evidence'] = AssociationMap.getAssociatedIdsByTarget('evidence', 'text', $scope.selectedEntry['text'].id);
-            break;
-          }
-          case 'evidence': {
-            $scope.associatedIds['text'] = AssociationMap.getAssociatedIdsBySource('evidence', 'text', $scope.selectedEntry['evidence'].id);
-            break;
-          }
-        }
-      }
-    };
-*/
 
     function updateAssociationSource(source) {
       _.forOwn($scope.filterSwitches, function(value, key) {
@@ -423,22 +438,9 @@ angular.module('v1.controllers')
       // There should be another function to handle search within personal reference
       Pubmed.searchEvidenceForTerms(terms, userId, function(response) {
         // After receiving the response, update the evidence list
-        processEvidenceTextTopics(response);
+        processEvidenceTextTopics(response, 's');
         extendEvidenceMap(response.data.evidence, 0);
         visualizeTextTopicDistribution();
-/*        $scope.topics = response.data.topics;
-        $scope.evidence = response.data.evidence.map(function(e) {
-          e.metadata = JSON.parse(e.metadata);
-          return e;
-        });
-        console.log(response.data.evidenceTopicMap);
-        $scope.evidenceTopicMap = _.object(_.map(response.data.evidenceTopicMap, function(key, value) {
-          return [key, value.max];
-        }));
-        // Merge the new evidence into the existing evidenceSourceMap; make sure we don't
-        // overwrite any existing entry
-
-        $scope.loadingEvidence = false; */
       }, function(errorResponse) {
         console.log('error occurred while searching for evidence');
         console.log(errorResponse)        
@@ -448,7 +450,18 @@ angular.module('v1.controllers')
           $scope.loadingStatement = 'Generating topic models over retrieved evidence...';
         });
       }, 5000);
-    }
+    };
+
+    $scope.recommendCitations = function() {
+      Argument.getEvidenceRecommendation($scope.activeText, function(response) {
+        processEvidenceTextTopics(response, 'r');
+        extendEvidenceMap(response.data.evidence, 0);
+        visualizeTextTopicDistribution();
+      }, function(errorResponse) {
+        console.log('error occurred while recommending citations');
+        console.log(errorResponse);
+      });
+    };
 
     function extendEvidenceMap(evidence, source) {
         var newEvidenceMap = _.object(_.map(_.filter(evidence, function(e) {
@@ -491,6 +504,16 @@ angular.module('v1.controllers')
       return AssociationMap.getAssociatedIdsBySource('evidence', 'text', e.id).length;
     };
 
+    $scope.countEvidenceWithTopic = function(topicIndex) {
+      var result = 0;
+      for (var key in $scope.evidenceTopicMap) {
+        if ($scope.evidenceTopicMap[key] === topicIndex) {
+          result += 1;
+        }
+      }
+      return result;
+    };
+
     $scope.countSearchTermOccurrence = function(term, abstract) {
       var result = 0;
       var abstractWords = abstract.split(' ');
@@ -512,27 +535,51 @@ angular.module('v1.controllers')
       return result;
     };
 
-    function processEvidenceTextTopics(response) {
-      $scope.topics = response.data.topics;
-      $scope.evidence = _.uniq(response.data.evidence, function(n) {
-        return n.id;
-      }).map(function(e) {
-        e.metadata = JSON.parse(e.metadata);
-        return e;
-      });
-      console.log($scope.evidence);
-      console.log(response.data.evidenceTextTopicMap);
-      $scope.evidenceTopicMap = _.object(_.map(_.omit(response.data.evidenceTextTopicMap, function(value, key) {
-        return !key.startsWith('e');
-      }), function(value, key) {
-        return [key.split('-')[1], value.max]
-      }));
-      $scope.textTopicMap = _.object(_.map(_.omit(response.data.evidenceTextTopicMap, function(value, key) {
-        return !key.startsWith('t');
-      }), function(value, key) {
-        return [key.split('-')[1], value.dist]
-      }));
-      $scope.loadingEvidence = false;
+    function processEvidenceTextTopics(response, mode) {
+      if (mode === 's') {
+        $scope.topics = response.data.topics;
+        $scope.evidence = _.uniq(response.data.evidence, function(n) {
+          return n.id;
+        }).map(function(e) {
+          e.metadata = JSON.parse(e.metadata);
+          return e;
+        });
+        $scope.evidenceSelectionMap = _.object(_.map($scope.evidence, function(e) {
+          return [e.id, false];
+        }));
+        $scope.evidenceTopicMap = _.object(_.map(_.omit(response.data.evidenceTextTopicMap, function(value, key) {
+          return !key.startsWith('e');
+        }), function(value, key) {
+          return [key.split('-')[1], value.max]
+        }));
+        $scope.textTopicMap = _.object(_.map(_.omit(response.data.evidenceTextTopicMap, function(value, key) {
+          return !key.startsWith('t');
+        }), function(value, key) {
+          return [key.split('-')[1], value.dist]
+        }));
+        $scope.loadingEvidence = false;
+      }
+      else if (mode === 'r') {
+        var data = response.data;
+        console.log(data);
+        $scope.topics = _.map(data.topics, function(d) {
+          return d.terms.map(function(t) {
+            return t[0];
+          });
+        });
+        $scope.evidence = data.evidence.map(function(e) {
+          e.metadata = JSON.parse(e.metadata);
+          return e;
+        });
+        $scope.evidenceSelectionMap = _.object(_.map($scope.evidence, function(e) {
+          return [e.id, false];
+        }));
+        $scope.evidenceTopicMap = _.object(_.map($scope.evidence, function(e) {
+          return [e.id, 0];
+        }));
+        // TODO: update $scope.textTopicMap
+        $scope.loadingEvidence = false;           
+      }
     };
 
     function visualizeTextTopicDistribution() {

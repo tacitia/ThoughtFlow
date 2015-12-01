@@ -2,7 +2,8 @@ angular
   .module('coreModule', [
     'core.services',
     'pubmed.services',
-    'associationMap.services'
+    'associationMap.services',
+    'argument.services'
   ]);
 
 angular
@@ -13,3 +14,6 @@ angular
 
 angular
   .module('associationMap.services', ['core.services']);
+
+angular
+  .module('argument.services', ['core.services']);

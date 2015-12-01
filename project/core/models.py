@@ -99,3 +99,20 @@ class EvidenceBookmark(models.Model):
 
   objects = EvidenceBookmarkManager()
 
+class EvidenceTopicManager(models.Manager):
+  def create_entry(self, evidence_id, primary_topic, primary_topic_prob, topic_dist, created_by):
+    entry, created = self.get_or_create(evidence_id=evidence_id, primary_topic=primary_topic, primary_topic_prob=primary_topic_prob, topic_dist=topic_dist, created_by=created_by)
+    return entry
+
+class EvidenceTopic(models.Model):
+  evidence = models.ForeignKey(Evidence)
+  primary_topic = models.IntegerField()
+  primary_topic_prob = models.FloatField()
+  topic_dist = models.TextField()
+  created_by = models.IntegerField()
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
+
+  objects = EvidenceTopicManager()
+
+

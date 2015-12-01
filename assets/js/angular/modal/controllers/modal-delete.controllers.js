@@ -1,24 +1,27 @@
 angular.module('modal.controllers')
   .controller('DeleteModalController', ['$scope', '$modalInstance', 'Core', 'id', 'content', 'type', 'userId',
-    function($scope, $modalInstance, Core, id, content, type, userId) {
+    function($scope, $modalInstance, Core, ids, content, type, userId) {
 
-    $scope.id = id;
     $scope.content = content;
     $scope.type = type;
 
     $scope.delete = function () {
-      console.log($scope.id);
-      Core.deleteEntry($scope.id, $scope.type, userId, function() {
-        Core.deleteBookmark(userId, $scope.id, function() {
-          $modalInstance.close($scope.id);
+      var counter = 0;
+      for (var i = 0; i < ids.length; ++i) {
+        var currentId = ids[i];
+        Core.deleteEntry(currentId, $scope.type, userId, function() {
+          Core.deleteBookmark(userId, currentId, function() {
+            counter += 1;
+            if (counter === ids.length) $modalInstance.close(ids);
+          }, function(response) {
+            console.log('server error when deleting evidence bookmark')
+            console.log(response)
+          });
         }, function(response) {
-          console.log('server error when deleting evidence bookmark')
+          console.log('server error when deleting ' + $scope.type)
           console.log(response)
         });
-      }, function(response) {
-        console.log('server error when deleting ' + $scope.type)
-        console.log(response)
-      });
+      }
     };
 
     $scope.cancel = function () {

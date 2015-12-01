@@ -85,12 +85,15 @@ def merge_terms(terms, source):
 	return results
 
 # quick and dirty processing of PubMed entries
-def load_evidence(filename, skip_no_abstract=False):
+def load_evidence(filename, skip_no_abstract=False, user_id=0):
 	print '>> loading evidence...'
 	pubfile = open(filename)
 	prev_field = ''
 	current_entry = {}
 	loaded_evidence = []
+	start_id = -1
+	counter = 0
+	skipped_counter = 0
 	for line in pubfile:
 		label = line[:4].strip()
 		if label != '':
@@ -100,17 +103,23 @@ def load_evidence(filename, skip_no_abstract=False):
 		if label =='PMID':
 			if 'PMID' in current_entry:
 				if not skip_no_abstract or current_entry['AB'] != '':
-					evidence = Evidence.objects.create_evidence(current_entry['TI'], current_entry['AB'], json.dumps({
-						'PMID': current_entry['PMID'],
-						'AUTHOR': ' and '.join(current_entry['AU']),
-						'JOURNAL': current_entry['JT'],
-						'DATE': current_entry['DP'],
-						'AFFILIATION': current_entry['AD']
-					}), 0)
-					loaded_evidence.append(evidence)
-					for k in current_entry['OT']:
-						concept = Concept.objects.create_concept(k, 0)
-						Association.objects.create_association('concept', 'evidence', concept.id, evidence.id, 0)
+					counter += 1
+					if counter >= start_id:
+						evidence = Evidence.objects.create_evidence(current_entry['TI'], current_entry['AB'], json.dumps({
+							'PMID': current_entry['PMID'],
+							'AUTHOR': ' and '.join(current_entry['AU']),
+							'JOURNAL': current_entry['JT'],
+							'DATE': current_entry['DP'],
+							'AFFILIATION': current_entry['AD']
+						}), user_id)
+						print '>> loaded ' + current_entry['TI']
+						loaded_evidence.append(evidence)
+						for k in current_entry['OT']:
+							concept = Concept.objects.create_concept(k, user_id)
+							Association.objects.create_association('concept', 'evidence', concept.id, evidence.id, 0)
+				elif current_entry['AB'] == '':
+					skipped_counter += 1
+					print '>> skipped ' + current_entry['TI']
 			current_entry = {}
 			current_entry['PMID'] = content
 			current_entry['AU'] = []
@@ -126,6 +135,9 @@ def load_evidence(filename, skip_no_abstract=False):
 			current_entry[label] = content
 		elif label == 'AU' or label == 'OT':
 			current_entry[label].append(content)
+	print '>> All entries processed!'
+	print '>> ' + str(counter) + ' entries loaded'
+	print '>> ' + str(skipped_counter) + ' entries with no abstract and skipped'	
 	return loaded_evidence
 
 # deprecated	

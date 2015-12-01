@@ -200,6 +200,9 @@ body, html {
 #v1 #evidence-col #details .is-search-term {
   background-color: burlywood;
 }
+#v1 #evidence-col #details .is-topic-term {
+  background-color: #eee8cd;
+}
 
 #terms-col {
   height: 300px;

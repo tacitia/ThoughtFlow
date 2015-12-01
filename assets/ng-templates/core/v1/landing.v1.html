@@ -33,6 +33,7 @@
           <div class="btn-group btn-group-xs" role="group">
             <button class="btn btn-primary" ng-disabled="!hasUnsavedChanges" ng-click="saveTextEntry()">Save</button>
             <button class="btn btn-default" ng-disabled="selectedEntry['text']===null" ng-click="extractTerms()">Extract terms</button>
+            <button class="btn btn-default" ng-disabled="selectedEntry['text']===null" ng-click="recommendCitations()">Recommend citations</button>
           </div>
         </div>
         <!-- Display of extracted keywords -->
@@ -63,14 +64,15 @@
       <div class="body row">
         <div class="col-md-3" id="topics">
           <div ng-repeat="t in topics" class="topic-container" ng-class="{selected: $index == selectedTopic}" ng-click="selectTopic($index)" ng-attr-id="topic-container-{{$index+1}}">
-            <span ng-repeat="w in t">{{w}}  </span>
+            <p style="margin:0"><span ng-repeat="w in t">{{w}}  </span></p>
+            <p style="margin-left:90%"><img  src="/static/img/text-icon.svg" style="width:15px; height:15px"></img><span> {{countEvidenceWithTopic($index)}}</span></p>
           </div>
         </div>
         <div class="col-md-5" id="documents">
           <div>
             <div class="animate-repeat document-entry" ng-repeat="e in evidence | filter:filterEvidence() | orderBy:evidenceOrder" ng-class="{active: hover || e.id == selectedEntry['evidence'].id, associated: isAssociated(e, selectedEntry['text'])}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
                <div ng-click="selectEntry(e, 'evidence')" style="width:90%;display:inline-block;float:left">
-                 <p>{{e.title}}</p>
+                 <p><input type="checkbox" ng-model="evidenceSelectionMap[e.id]"><span> {{e.title}}</span></p>
                  <p>
                    <span><i>Search term occurrence:</i></span>
                    <span ng-repeat="t in selectedTerms"><b>{{t.term}}</b>: {{countSearchTermOccurrence(t.term, e.abstract)}}  </span>
@@ -78,7 +80,7 @@
                </div>
                <div style="width:10%;display:inline-block">
                  <div ng-if="evidenceSourceMap[e.id] === 1">
-                   <img  src="/static/img/text-icon.svg" style="width:15px; height:15px"></img>
+                   <img  src="/static/img/link-icon.svg" style="width:15px; height:15px"></img>
                    <span>{{countTextsReferencingEvidence(e)}}</span>
                  </div>
                  <div ng-if="evidenceSourceMap[e.id] === 0"><span class="label label-default">Search result</span></div> 
@@ -96,7 +98,7 @@
             <p><b>Affiliation</b>: {{selectedEntry['evidence'].metadata.AFFILIATION}}</p>
             <p><b>Publication date</b>: {{selectedEntry['evidence'].metadata.DATE}}</p>
             <p><b>Abstract</b>:</p>
-            <span ng-repeat="w in selectedWords track by $index" ng-class="{'is-search-term': isSearchTerm(w)}">{{w}} </span>
+            <span ng-repeat="w in selectedWords track by $index" ng-class="{'is-search-term': isSearchTerm(w), 'is-topic-term': isTopicTerm(w)}">{{w}} </span>
           </div>
         </div>
       </div>

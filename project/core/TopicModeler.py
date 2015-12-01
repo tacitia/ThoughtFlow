@@ -1,3 +1,6 @@
+import gensim
+from gensim.similarities.docsim import MatrixSimilarity
+import math
 import numpy as np
 import pandas as pd
 import textmining
@@ -5,6 +8,8 @@ import lda
 import lda.datasets
 from nltk.corpus import stopwords
 from timeit import default_timer as timer
+from pprint import pprint
+from collections import defaultdict
 
 def compute_tdm(docs):
     # Create some very short sample documents
@@ -15,9 +20,7 @@ def compute_tdm(docs):
     # Initialize class to create term-document matrix
     tdm = textmining.TermDocumentMatrix()
     print '>> filtering stopwords...'
-    englishStopWords = stopwords.words('english')
-    print englishStopWords
-    englishStopWords.extend(['p', 'd', 'new', 'using'])
+    englishStopWords = get_stopwords('english')
     for d in docs:
       words = d.split(' ')
       filtered_words = filter(lambda x: x.lower() not in englishStopWords, words)
@@ -30,6 +33,11 @@ def compute_tdm(docs):
 #    filtered_matrix = filter_stopwords(raw_matrix)
 #    return filtered_matrix
 #    return apply_tfidt_transform(raw_matrix)
+
+def get_stopwords(language):
+    result = stopwords.words(language)
+    result.extend(['new', 'using', 'used', 'finding', 'findings'])
+    return result
 
 def filter_stopwords(matrix):
   header = matrix[0]
@@ -107,3 +115,112 @@ def run(docs):
 #for col_idx in range(len(tdm[0])):
 #	if tdm[1][col_idx] < 0:
 #		print tdm[0][col_idx]
+
+def generate_dictionary(texts, name, numDocs):
+  print '>> generating dictionary...'
+  dictionary = gensim.corpora.Dictionary(texts)
+  print '1'
+  numDocs = len(texts)
+  print numDocs
+  dictionary.filter_extremes(no_below=math.ceil(numDocs*0.0005), no_above=0.75, keep_n=100000)
+  print '2'
+  dictionary.save('/tmp/' + name + '.dict')
+  print 'dictionary information: '
+  print dictionary
+  return dictionary
+
+def docs2corpus(docs, name, isNew):
+  print '>> converting documents to corpus...'
+  numDocs = len(docs)
+  englishStopWords = get_stopwords('english')
+  texts = [[word for word in doc.lower().split() if word not in englishStopWords and word.isalpha() and len(word) > 1] for doc in docs]
+  # remove words that appear only once
+  frequency = defaultdict(int)
+  for text in texts:
+    for token in text:
+      frequency[token] += 1
+  texts = [[token for token in text if frequency[token] > 1] for text in texts]
+  if isNew:
+    dictionary = generate_dictionary(texts, name, numDocs) #uncomment for new corpus
+  else:
+    dictionary = gensim.corpora.Dictionary.load('/tmp/' + name + '.dict')
+  corpus = [dictionary.doc2bow(text) for text in texts]
+  if isNew:
+    gensim.corpora.MmCorpus.serialize('/tmp/' + name + '.mm', corpus) # store to disk, for later use
+  return corpus, dictionary
+
+def get_document_topics(doc, name):
+  lda = gensim.models.ldamodel.LdaModel.load(name + '.lda')
+  englishStopWords = get_stopwords('english')
+  text = [word for word in doc.lower().split() if word not in englishStopWords and word.isalpha() and len(word) > 1]
+  dictionary = gensim.corpora.Dictionary.load('/tmp/' + name + '.dict')
+  document_topics = lda.get_document_topics(dictionary.doc2bow(text), minimum_probability=0.1)
+  primary_topic_tuple = max(document_topics, key=lambda x:x[1])
+  topic_terms = lda.show_topic(primary_topic_tuple[0])
+  print topic_terms
+
+  return document_topics, topic_terms
+
+def compute_documents_similarity_sub(target, docs, name):
+  print 'here'
+  corpus, dictionary = docs2corpus(docs, name, False)
+  lda = gensim.models.ldamodel.LdaModel.load(name + '.lda')
+#  dictionary = gensim.corpora.Dictionary.load('/tmp/' + name + '.dict')
+  numTokens = len(dictionary.values())
+  lda_corpus = lda[corpus]
+  index = MatrixSimilarity(lda_corpus, num_features=numTokens)
+  print index
+  sims = index[target]
+  sort_sims = sorted(enumerate(sims), key=lambda item: -item[1])
+  top_documents = sort_sims[:200]  
+  return map(lambda item: item[0], top_documents)
+
+# target is an array of topic distribution
+def compute_documents_similarity(target, name):
+  dictionary = gensim.corpora.Dictionary.load('/tmp/' + name + '.dict')
+  index = MatrixSimilarity.load(name + '.sim')
+  print index
+  sims = index[target]
+  sort_sims = sorted(enumerate(sims), key=lambda item: -item[1])
+  top_documents = sort_sims[:200]
+  return map(lambda item: item[0], top_documents)
+
+def lda2topicMap(lda, corpus, ids, name):
+  print '>> generating topic map...'
+  evidenceTopicMap = {}
+#  dictionary = gensim.corpora.Dictionary.load('/tmp/' + name + '.dict')
+  i = 0
+  for c in corpus:
+#    b = dictionary.doc2bow(d)
+    evidenceTopicMap[ids[i]] = lda.get_document_topics(c, minimum_probability=0.1)
+    i += 1
+  return evidenceTopicMap
+
+def create_online_lda(docs, ids, name, numTopics):
+  corpus, dictionary = docs2corpus(docs, name, True)
+  print '>> generating online lda model...'
+  lda = gensim.models.ldamodel.LdaModel(corpus, num_topics=numTopics, id2word=dictionary)
+  print lda
+  lda.save(name + '.lda')
+  return lda2topicMap(lda, corpus, ids, name), lda.show_topics(formatted=False)
+
+def load_online_lda(docs, ids, name):
+  print '>> loading online lda model...'
+  corpus, dictionary = docs2corpus(docs, name, False)
+  lda = gensim.models.ldamodel.LdaModel.load(name + '.lda')
+  # return a map from evidence to topic and a list of topics
+  return lda2topicMap(lda, corpus, ids, name), lda.show_topics(formatted=False)
+
+def get_online_lda_topics(name, numTopics):
+  lda = gensim.models.ldamodel.LdaModel.load(name + '.lda')
+  return lda.show_topics(num_topics=numTopics, formatted=False)
+
+def create_similarity_matrix(name):
+  lda = gensim.models.ldamodel.LdaModel.load(name + '.lda')
+  corpus = gensim.corpora.MmCorpus('/tmp/' + name + '.mm')
+  lda_corpus = lda[corpus]
+  dictionary = gensim.corpora.Dictionary.load('/tmp/' + name + '.dict')
+  numTokens = len(dictionary.values())
+  index = MatrixSimilarity(lda_corpus, num_features=numTokens)
+  index.save(name + '.sim')
+  return
