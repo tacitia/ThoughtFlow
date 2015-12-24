@@ -32,7 +32,7 @@ class Concept(models.Model):
   objects = ConceptManager()
 
   def __unicode__(self):
-    return self.term
+    return str(self.id) + ' ' + self.term
 
 
 class EvidenceManager(models.Manager):
@@ -52,7 +52,7 @@ class Evidence(models.Model):
   objects = EvidenceManager()
 
   def __unicode__(self):
-    return self.title
+    return str(self.id) + ' ' + self.title
 
 
 class AssociationManager(models.Manager):
@@ -75,8 +75,8 @@ class Association(models.Model):
 
   sourceType = models.CharField(max_length=8, choices=TYPE_CHOICES)
   targetType = models.CharField(max_length=8, choices=TYPE_CHOICES)
-  sourceId = models.IntegerField()
-  targetId = models.IntegerField()
+  sourceId = models.CharField(max_length=16)
+  targetId = models.CharField(max_length=16)
   created_by = models.IntegerField()
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)

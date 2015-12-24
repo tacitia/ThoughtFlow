@@ -87,122 +87,123 @@ body, html {
   width: 15%;
 }
 
-#v1 {
+.loading {
+  background: rgba(255,255,255,0.8);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
 
-  .sidebar {
-    height: 920px;  
-  }
-
-  .loading {
-    background: rgba(255,255,255,0.8);
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    z-index: 1;
-
-    .loader-container {
-      margin: 100px 0px 0px 0px;
-      width: 90%;    
-    
-      .loading-text {
-        margin: 20px;
-        text-align: center;
-      }
+  .loader-container {
+    margin: 100px 0px 0px 0px;
+    width: 90%;    
+  
+    .loading-text {
+      margin: 20px;
+      text-align: center;
     }
   }
+}
 
-  .panel {
-    height: 100%;
-    margin: 10px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    vertical-align: top;
+.sidebar {
+  height: 920px;  
+}
 
-    .header {
-      height: 35px;
-      background: #d0d0d0;
-      padding: 3px 20px 3px 20px;
-      font-size: 18px; 
-    }
+.panel {
+  height: 100%;
+  margin: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  vertical-align: top;
 
-    .body {
-      padding: 20px;
-      height: 400px;
-
-      .side {
-        height: 350px;
-        overflow-y: scroll;
-      }
-    }
-
-    .footer {
-      height: 35px;
-      padding: 3px 20px 3px 20px;
-      background: #d9edf7;
-
-      .btn-group {
-        float: right;
-      }
-    }
+  .header {
+    height: 35px;
+    background: #d0d0d0;
+    padding: 3px 20px 3px 20px;
+    font-size: 18px; 
   }
 
-  #evidence-col {
-    width: 100%;
+  .body {
+    padding: 20px;
+    height: 400px;
 
-    #topics {
-      .topic-container {
-        height: 70px;
-        margin: 5px;
-        padding: 5px;
-        border-radius: 5px;
-      }
-
-      .topic-container.selected {
-        border: 3px solid steelblue;
-      }
-
-      $colors-list: rgb(166,206,227) rgb(31,120,180) rgb(178,223,138) rgb(51,160,44) rgb(251,154,153) rgb(227,26,28) rgb(253,191,111) rgb(255,127,0) rgb(202,178,214) rgb(106,61,154) rgb(255,255,153) rgb(177,89,40);
-      @each $current-color in $colors-list {
-          $i: index($colors-list, $current-color);
-          #topic-container-#{$i} { 
-              background-color: $current-color;
-          }
-      }
-
-    }
-
-    #documents {
+    .side {
+      height: 350px;
       overflow-y: scroll;
-      height: 100%;
+    }
+  }
 
-      .document-entry {
-        padding: 8px;
-        border-top: 1px solid #ddd;
-      }
+  .footer {
+    height: 35px;
+    padding: 3px 20px 3px 20px;
+    background: #d9edf7;
 
-      .document-entry.active {
-        background-color: #f5f5f5;
-      }
+    .btn-group {
+      float: right;
+    }
+  }
+}
 
-      .document-entry.associated {
-        background-color: #dff0d8;
-      }
+#evidence-col {
+  width: 100%;
+
+  #topics {
+    .topic-container {
+      height: 70px;
+      margin: 5px;
+      padding: 5px;
+      border-radius: 5px;
     }
 
-    #details {
-      overflow-y: scroll;
-      height: 100%;
+    .topic-container.selected {
+      border: 3px solid steelblue;
+    }
 
-      .is-search-term {
-        background-color:burlywood;
-      }
-
-      .is-topic-term {
-        background-color:#eee8cd;
-      }
+    $colors-list: rgb(166,206,227) rgb(31,120,180) rgb(178,223,138) rgb(51,160,44) rgb(251,154,153) rgb(227,26,28) rgb(253,191,111) rgb(255,127,0) rgb(202,178,214) rgb(106,61,154) rgb(255,255,153) rgb(177,89,40);
+    @each $current-color in $colors-list {
+        $i: index($colors-list, $current-color);
+        #topic-container-#{$i} { 
+            background-color: $current-color;
+        }
     }
 
   }
+
+  #documents {
+    overflow-y: scroll;
+    height: 100%;
+
+    .document-entry {
+      padding: 8px;
+      border-top: 1px solid #ddd;
+    }
+
+    .document-entry.active {
+      background-color: #f5f5f5;
+    }
+
+    .document-entry.associated {
+      background-color: #dff0d8;
+    }
+
+    .document-entry.bookmarked {
+      background-color: #d9edf7;
+    }
+  }
+
+  #details {
+    overflow-y: scroll;
+    height: 100%;
+
+    .is-search-term {
+      background-color:burlywood;
+    }
+
+    .is-topic-term {
+      background-color:#eee8cd;
+    }
+  }
+
 }
 
 #terms-col {
@@ -232,6 +233,54 @@ body, html {
   margin: 20px;
 }
 
+
+#v2 {
+  #control {
+    margin-left: 50px;
+  }
+}
+
+#focus {
+
+  h3 {
+    padding-bottom: 15px;
+  }
+
+  .text-paragraph {
+    width:85%;
+    display:inline-block;
+    float:left;
+    min-height: 150px;
+    border-bottom: solid;
+    border-bottom-color: #ccc;
+    border-bottom-width: 1px;
+    border-bottom-style: dotted;  
+  }
+
+  .citation-entry {
+    padding: 5px 5px 0 10px;
+  }
+
+  .citation-container {
+    height:500px;
+    overflow-y:scroll;
+    border-bottom: solid 1px #ccc;
+    margin: 5px 0 15px 0;
+  }
+
+  .document-entry.active {
+    background-color: #f5f5f5;
+  }
+
+  .document-entry.associated {
+    background-color: #dff0d8;
+  }
+
+  .document-entry.bookmarked {
+    background-color: #d9edf7;
+  }
+
+}
 
 /* CSS for visual effects */
 
@@ -328,4 +377,60 @@ body, html {
 .animate-repeat.ng-move.ng-move-active,
 .animate-repeat.ng-enter.ng-enter-active {
   opacity:1;
+}
+
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+
+.spinner {
+  margin: 200px auto;
+  width: 50px;
+  height: 40px;
+  text-align: center;
+  font-size: 10px;
+}
+
+.spinner > div {
+  background-color: #ccc;
+  height: 100%;
+  width: 6px;
+  display: inline-block;
+  
+  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+.spinner .rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+
+.spinner .rect3 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+.spinner .rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+
+.spinner .rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+  20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes sk-stretchdelay {
+  0%, 40%, 100% { 
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  }  20% { 
+    transform: scaleY(1.0);
+    -webkit-transform: scaleY(1.0);
+  }
 }

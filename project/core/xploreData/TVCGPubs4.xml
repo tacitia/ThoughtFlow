@@ -1,0 +1,3045 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root>
+
+<totalfound>3041</totalfound>
+
+<totalsearched>3834149</totalsearched>
+
+<document>
+
+<rank>3001</rank>
+
+<title><![CDATA[Visual discovery and analysis]]></title>
+
+<authors><![CDATA[Eick, S.G.]]></authors>
+
+<affiliations><![CDATA[Visual Insights Inc., Naperville, IL, USA]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[data visualisation]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Application software]]></term>
+
+<term><![CDATA[Containers]]></term>
+
+<term><![CDATA[Data analysis]]></term>
+
+<term><![CDATA[Data visualization]]></term>
+
+<term><![CDATA[Displays]]></term>
+
+<term><![CDATA[Graphics]]></term>
+
+<term><![CDATA[Marketing and sales]]></term>
+
+<term><![CDATA[Navigation]]></term>
+
+<term><![CDATA[Packaging]]></term>
+
+<term><![CDATA[Production]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[6]]></volume>
+
+<issue><![CDATA[1]]></issue>
+
+<py><![CDATA[2000]]></py>
+
+<spage><![CDATA[44]]></spage>
+
+<epage><![CDATA[58]]></epage>
+
+<abstract><![CDATA[We have developed a flexible software environment called ADVIZOR for visual information discovery. ADVIZOR complements existing assumptive-based analyses by providing a discovery-based approach. ADVIZOR consists of five parts: a rich set of flexible visual components, strategies for arranging the components for particular analyses, an in-memory data pool, data manipulation components, and container applications. Working together, ADVIZOR's architecture provides a powerful production platform for creating innovative visual query and analysis applications]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<arnumber><![CDATA[841120]]></arnumber>
+
+<doi><![CDATA[10.1109/2945.841120]]></doi>
+
+<publicationId><![CDATA[841120]]></publicationId>
+
+<partnum><![CDATA[841120]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=841120&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=841120]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3002</rank>
+
+<title><![CDATA[[Inside front cover]]]></title>
+
+<authors><![CDATA[]]></authors>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[13]]></volume>
+
+<issue><![CDATA[4]]></issue>
+
+<py><![CDATA[2007]]></py>
+
+<spage><![CDATA[c2]]></spage>
+
+<epage><![CDATA[c2]]></epage>
+
+<abstract><![CDATA[Provides a listing of current committee members and society officers.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<arnumber><![CDATA[4293008]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2007.070402]]></doi>
+
+<publicationId><![CDATA[4293008]]></publicationId>
+
+<partnum><![CDATA[4293008]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=4293008&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=4293008]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3003</rank>
+
+<title><![CDATA[Dynamic View Selection for Time-Varying Volumes]]></title>
+
+<authors><![CDATA[Guangfeng Ji;  Han-Wei Shen]]></authors>
+
+<affiliations><![CDATA[Ohio State Univ., Columbus, OH]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[computer animation]]></term>
+
+<term><![CDATA[data visualisation]]></term>
+
+<term><![CDATA[dynamic programming]]></term>
+
+<term><![CDATA[rendering (computer graphics)]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Animation]]></term>
+
+<term><![CDATA[Data visualization]]></term>
+
+<term><![CDATA[Diversity reception]]></term>
+
+<term><![CDATA[Dynamic programming]]></term>
+
+<term><![CDATA[Image analysis]]></term>
+
+<term><![CDATA[Image color analysis]]></term>
+
+<term><![CDATA[Information entropy]]></term>
+
+<term><![CDATA[Optimization methods]]></term>
+
+<term><![CDATA[Rendering (computer graphics)]]></term>
+
+<term><![CDATA[Volume measurement]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[12]]></volume>
+
+<issue><![CDATA[5]]></issue>
+
+<py><![CDATA[2006]]></py>
+
+<spage><![CDATA[1109]]></spage>
+
+<epage><![CDATA[1116]]></epage>
+
+<abstract><![CDATA[Animation is an effective way to show how time-varying phenomena evolve over time. A key issue of generating a good animation is to select ideal views through which the user can perceive the maximum amount of information from the time-varying dataset. In this paper, we first propose an improved view selection method for static data. The method measures the quality of a static view by analyzing the opacity, color and curvature distributions of the corresponding volume rendering images from the given view. Our view selection metric prefers an even opacity distribution with a larger projection area, a larger area of salient features' colors with an even distribution among the salient features, and more perceived curvatures. We use this static view selection method and a dynamic programming approach to select time-varying views. The time-varying view selection maximizes the information perceived from the time-varying dataset based on the constraints that the time-varying view should show smooth changes of direction and near-constant speed. We also introduce a method that allows the user to generate a smooth transition between any two views in a given time step, with the perceived information maximized as well. By combining the static and dynamic view selection methods, the users are able to generate a time-varying view that shows the maximum amount of information from a time-varying data set]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[4015471]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2006.137]]></doi>
+
+<publicationId><![CDATA[4015471]]></publicationId>
+
+<partnum><![CDATA[4015471]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=4015471&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=4015471]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3004</rank>
+
+<title><![CDATA[High-quality animation of 2D steady vector fields]]></title>
+
+<authors><![CDATA[Lefer, W.;  Jobard, B.;  Leduc, C.]]></authors>
+
+<affiliations><![CDATA[Pau Univ., France]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[computer animation]]></term>
+
+<term><![CDATA[data visualisation]]></term>
+
+<term><![CDATA[flow visualisation]]></term>
+
+<term><![CDATA[image texture]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Animation]]></term>
+
+<term><![CDATA[Cost function]]></term>
+
+<term><![CDATA[Data structures]]></term>
+
+<term><![CDATA[Encoding]]></term>
+
+<term><![CDATA[Java]]></term>
+
+<term><![CDATA[Proposals]]></term>
+
+<term><![CDATA[Real time systems]]></term>
+
+<term><![CDATA[Topology]]></term>
+
+<term><![CDATA[Visualization]]></term>
+
+<term><![CDATA[Workstations]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[10]]></volume>
+
+<issue><![CDATA[1]]></issue>
+
+<py><![CDATA[2004]]></py>
+
+<spage><![CDATA[2]]></spage>
+
+<epage><![CDATA[14]]></epage>
+
+<abstract><![CDATA[Simulators for dynamic systems are now widely used in various application areas and raise the need for effective and accurate flow visualization techniques. Animation allows us to depict direction, orientation, and velocity of a vector field accurately. We extend a former proposal for a new approach to produce perfectly cyclic and variable-speed animations for 2D steady vector fields [B. Jobard, et al., (1997)] and [C. Chedot, et al., (1998)]. A complete animation of an arbitrary number of frames is encoded in a single image. The animation can be played using the color table animation technique, which is very effective even on low-end workstations. A cyclic set of textures can be produced as well and then encoded in a common animation format or used for texture mapping on 3D objects. As compared to other approaches, the method presented produces smoother animations and is more effective, both in memory requirements to store the animation, and in computation time.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[1260754]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2004.1260754]]></doi>
+
+<publicationId><![CDATA[1260754]]></publicationId>
+
+<partnum><![CDATA[1260754]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=1260754&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=1260754]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3005</rank>
+
+<title><![CDATA[Focus+Context Route Zooming and Information Overlay in 3D Urban Environments]]></title>
+
+<authors><![CDATA[Huamin Qu;  Haomian Wang;  Weiwei Cui;  Yingcai Wu;  Ming-Yuen Chan]]></authors>
+
+<affiliations><![CDATA[Hong Kong Univ. of Sci. & Technol., Hong Kong, China]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[cartography]]></term>
+
+<term><![CDATA[rendering (computer graphics)]]></term>
+
+<term><![CDATA[search engines]]></term>
+
+<term><![CDATA[solid modelling]]></term>
+
+<term><![CDATA[town and country planning]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Cities and towns]]></term>
+
+<term><![CDATA[Displays]]></term>
+
+<term><![CDATA[Earth]]></term>
+
+<term><![CDATA[Roads]]></term>
+
+<term><![CDATA[Virtual environment]]></term>
+
+<term><![CDATA[Visualization]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[15]]></volume>
+
+<issue><![CDATA[6]]></issue>
+
+<py><![CDATA[2009]]></py>
+
+<spage><![CDATA[1547]]></spage>
+
+<epage><![CDATA[1554]]></epage>
+
+<abstract><![CDATA[In this paper we present a novel focus+context zooming technique, which allows users to zoom into a route and its associated landmarks in a 3D urban environment from a 45-degree bird's-eye view. Through the creative utilization of the empty space in an urban environment, our technique can informatively reveal the focus region and minimize distortions to the context buildings. We first create more empty space in the 2D map by broadening the road with an adapted seam carving algorithm. A grid-based zooming technique is then used to enlarge the landmarks to reclaim the created empty space and thus reduce distortions to the other parts. Finally,an occlusion-free route visualization scheme adaptively scales the buildings occluding the route to make the route always visible to users. Our method can be conveniently integrated into Google Earth and Virtual Earth to provide seamless route zooming and help users better explore a city and plan their tours. It can also be used in other applications such as information overlay to a virtual city.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[5290772]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2009.144]]></doi>
+
+<publicationId><![CDATA[5290772]]></publicationId>
+
+<partnum><![CDATA[5290772]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=5290772&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=5290772]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3006</rank>
+
+<title><![CDATA[Registration Techniques for Using Imperfect and Partially Calibrated Devices in Planar Multi-Projector Displays]]></title>
+
+<authors><![CDATA[Niski, K.;  Cohen, J.D.]]></authors>
+
+<affiliations><![CDATA[NVIDIA Corp., Santa Clara]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[parallel processing]]></term>
+
+<term><![CDATA[rendering (computer graphics)]]></term>
+
+<term><![CDATA[resource allocation]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Computational geometry]]></term>
+
+<term><![CDATA[Displays]]></term>
+
+<term><![CDATA[Graphics]]></term>
+
+<term><![CDATA[Load management]]></term>
+
+<term><![CDATA[Parallel processing]]></term>
+
+<term><![CDATA[Personal communication networks]]></term>
+
+<term><![CDATA[Power system management]]></term>
+
+<term><![CDATA[Rendering (computer graphics)]]></term>
+
+<term><![CDATA[Resource management]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[13]]></volume>
+
+<issue><![CDATA[6]]></issue>
+
+<py><![CDATA[2007]]></py>
+
+<spage><![CDATA[1352]]></spage>
+
+<epage><![CDATA[1359]]></epage>
+
+<abstract><![CDATA[Today's PCs incorporate multiple CPUs and GPUs and are easily arranged in clusters for high-performance, interactive graphics. We present an approach based on hierarchical, screen-space tiles to parallelizing rendering with level of detail. Adapt tiles, render tiles, and machine tiles are associated with CPUs, GPUs, and PCs, respectively, to efficiently parallelize the workload with good resource utilization. Adaptive tile sizes provide load balancing while our level of detail system allows total and independent management of the load on CPUs and GPUs. We demonstrate our approach on parallel configurations consisting of both single PCs and a cluster of PCs.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[4376161]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2007.70587]]></doi>
+
+<publicationId><![CDATA[4376161]]></publicationId>
+
+<partnum><![CDATA[4376161]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=4376161&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=4376161]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3007</rank>
+
+<title><![CDATA[Interactive Transfer Function Design Based on Editing Direct Volume Rendered Images]]></title>
+
+<authors><![CDATA[Yingcai Wu;  Huamin Qu]]></authors>
+
+<affiliations><![CDATA[Hong Kong Univ. of Sci. & Technol., Kowloon]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[data visualisation]]></term>
+
+<term><![CDATA[transfer functions]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Animation]]></term>
+
+<term><![CDATA[Biomedical imaging]]></term>
+
+<term><![CDATA[Computational fluid dynamics]]></term>
+
+<term><![CDATA[Data visualization]]></term>
+
+<term><![CDATA[Focusing]]></term>
+
+<term><![CDATA[Fuses]]></term>
+
+<term><![CDATA[Graphics]]></term>
+
+<term><![CDATA[Rendering (computer graphics)]]></term>
+
+<term><![CDATA[Transfer functions]]></term>
+
+<term><![CDATA[User interfaces]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[13]]></volume>
+
+<issue><![CDATA[5]]></issue>
+
+<py><![CDATA[2007]]></py>
+
+<spage><![CDATA[1027]]></spage>
+
+<epage><![CDATA[1040]]></epage>
+
+<abstract><![CDATA[Direct volume rendered images (DVRIs) have been widely used to reveal structures in volumetric data. However, DVRIs generated by many volume visualization techniques can only partially satisfy users' demands. In this paper, we propose a framework for editing DVRIs, which can also be used for interactive transfer function (TF) design. Our approach allows users to fuse multiple features in distinct DVRIs into a comprehensive one, to blend two DVRIs, and/or to delete features in a DVRI. We further present how these editing operations can generate smooth animations for focus + context visualization. Experimental results on some real volumetric data demonstrate the effectiveness of our method.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[4276082]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2007.1051]]></doi>
+
+<publicationId><![CDATA[4276082]]></publicationId>
+
+<partnum><![CDATA[4276082]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=4276082&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=4276082]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3008</rank>
+
+<title><![CDATA[Faster isosurface ray tracing using implicit KD-trees]]></title>
+
+<authors><![CDATA[Wald, I.;  Friedrich, H.;  Marmitt, G.;  Slusallek, P.;  Seidel, H.-P.]]></authors>
+
+<affiliations><![CDATA[Max-Planck-Inst. fur Inf., Saarbrucken, Germany]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[computational geometry]]></term>
+
+<term><![CDATA[computer graphic equipment]]></term>
+
+<term><![CDATA[data visualisation]]></term>
+
+<term><![CDATA[interactive systems]]></term>
+
+<term><![CDATA[lighting]]></term>
+
+<term><![CDATA[ray tracing]]></term>
+
+<term><![CDATA[real-time systems]]></term>
+
+<term><![CDATA[rendering (computer graphics)]]></term>
+
+<term><![CDATA[solid modelling]]></term>
+
+<term><![CDATA[tree data structures]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Data mining]]></term>
+
+<term><![CDATA[Data visualization]]></term>
+
+<term><![CDATA[Graphics]]></term>
+
+<term><![CDATA[Hardware]]></term>
+
+<term><![CDATA[Isosurfaces]]></term>
+
+<term><![CDATA[Layout]]></term>
+
+<term><![CDATA[Personal communication networks]]></term>
+
+<term><![CDATA[Ray tracing]]></term>
+
+<term><![CDATA[Rendering (computer graphics)]]></term>
+
+<term><![CDATA[Supercomputers]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[11]]></volume>
+
+<issue><![CDATA[5]]></issue>
+
+<py><![CDATA[2005]]></py>
+
+<spage><![CDATA[562]]></spage>
+
+<epage><![CDATA[572]]></epage>
+
+<abstract><![CDATA[The visualization of high-quality isosurfaces at interactive rates is an important tool in many simulation and visualization applications. Today, isosurfaces are most often visualized by extracting a polygonal approximation that is then rendered via graphics hardware or by using a special variant of preintegrated volume rendering. However, these approaches have a number of limitations in terms of the quality of the isosurface, lack of performance for complex data sets, or supported shading models. An alternative isosurface rendering method that does not suffer from these limitations is to directly ray trace the isosurface. However, this approach has been much too slow for interactive applications unless massively parallel shared-memory supercomputers have been used. In this paper, we implement interactive isosurface ray tracing on commodity desktop PCs by building on recent advances in real-time ray tracing of polygonal scenes and using those to improve isosurface ray tracing performance as well. The high performance and scalability of our approach will be demonstrated with several practical examples, including the visualization of highly complex isosurface data sets, the interactive rendering of hybrid polygonal/isosurface scenes, including high-quality ray traced shading effects, and even interactive global illumination on isosurfaces.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[1471693]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2005.79]]></doi>
+
+<publicationId><![CDATA[1471693]]></publicationId>
+
+<partnum><![CDATA[1471693]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=1471693&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=1471693]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3009</rank>
+
+<title><![CDATA[Message from the Editor-in-Chief]]></title>
+
+<authors><![CDATA[]]></authors>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[20]]></volume>
+
+<issue><![CDATA[12]]></issue>
+
+<py><![CDATA[2014]]></py>
+
+<spage><![CDATA[x]]></spage>
+
+<epage><![CDATA[x]]></epage>
+
+<abstract><![CDATA[I am pleased to introduce the December 2014 issue of the IEEE Transactions on Visualization and Computer Graphics (TVCG). With mixed emotions, I am writing my last editorial for IEEE VIS and ending my tenure as the EIC of IEEE TVCG. Selected from a record high number of 480 submissions, this special issue contains 111 papers presented at the 2014 IEEE VIS, including the IEEE Conference on Visual Analytics Science and Technolgy (VAST), the IEEE Information Visualization Conference (InfoVis), and the IEEE Scientific Visualization Conference (SciVis) in Paris, France from 9-14 November 2014. These papers that were recommended for acceptance by the program committees of these three conferences, after having undergone a rigorous two-round review process, are published in this issue.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<arnumber><![CDATA[6935055]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2014.2346658]]></doi>
+
+<publicationId><![CDATA[6935055]]></publicationId>
+
+<partnum><![CDATA[6935055]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6935055&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6935055]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3010</rank>
+
+<title><![CDATA[A Visual Analytics Approach to Multiscale Exploration of Environmental Time Series]]></title>
+
+<authors><![CDATA[Sips, M.;  Kothur, P.;  Unger, A.;  Hege, H.-C.;  Dransch, D.]]></authors>
+
+<affiliations><![CDATA[German Res. Center for Geosci. GFZ, Germany]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[data visualisation]]></term>
+
+<term><![CDATA[environmental science computing]]></term>
+
+<term><![CDATA[interactive systems]]></term>
+
+<term><![CDATA[matrix algebra]]></term>
+
+<term><![CDATA[pattern recognition]]></term>
+
+<term><![CDATA[statistical analysis]]></term>
+
+<term><![CDATA[time series]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Data visualization]]></term>
+
+<term><![CDATA[Earth]]></term>
+
+<term><![CDATA[Entropy]]></term>
+
+<term><![CDATA[Meteorology]]></term>
+
+<term><![CDATA[Time series analysis]]></term>
+
+<term><![CDATA[Visual analytics]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[18]]></volume>
+
+<issue><![CDATA[12]]></issue>
+
+<py><![CDATA[2012]]></py>
+
+<spage><![CDATA[2899]]></spage>
+
+<epage><![CDATA[2907]]></epage>
+
+<abstract><![CDATA[We present a Visual Analytics approach that addresses the detection of interesting patterns in numerical time series, specifically from environmental sciences. Crucial for the detection of interesting temporal patterns are the time scale and the starting points one is looking at. Our approach makes no assumption about time scale and starting position of temporal patterns and consists of three main steps: an algorithm to compute statistical values for all possible time scales and starting positions of intervals, visual identification of potentially interesting patterns in a matrix visualization, and interactive exploration of detected patterns. We demonstrate the utility of this approach in two scientific scenarios and explain how it allowed scientists to gain new insight into the dynamics of environmental systems.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<arnumber><![CDATA[6327296]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2012.191]]></doi>
+
+<publicationId><![CDATA[6327296]]></publicationId>
+
+<partnum><![CDATA[6327296]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6327296&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6327296]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3011</rank>
+
+<title><![CDATA[Study of a Ray Casting Technique for the Visualization of Deformable Volumes]]></title>
+
+<authors><![CDATA[Herrera, I.;  Buchart, C.;  Aguinaga, I.;  Borro, D.]]></authors>
+
+<affiliations><![CDATA[Appl. Mech., TECNUN, San Sebastian, Spain]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[data visualisation]]></term>
+
+<term><![CDATA[mesh generation]]></term>
+
+<term><![CDATA[rendering (computer graphics)]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Computational modeling]]></term>
+
+<term><![CDATA[Data visualization]]></term>
+
+<term><![CDATA[Deformable models]]></term>
+
+<term><![CDATA[Rendering (computer graphics)]]></term>
+
+<term><![CDATA[Solid modeling]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[20]]></volume>
+
+<issue><![CDATA[11]]></issue>
+
+<py><![CDATA[2014]]></py>
+
+<spage><![CDATA[1555]]></spage>
+
+<epage><![CDATA[1565]]></epage>
+
+<abstract><![CDATA[Deformable models are widely used in many disciplines such as engineering and medicine. Real objects are usually scanned to create models in such applications. In many cases the shape of the object is extracted from volumetric data acquired during the scanning phase. At the same time, this volume can be used to define the model's appearance. In order to achieve a visualization that unifies the shape (physical model) and appearance (scanned volume) specially adapted volume rendering techniques are required. One of the most common volumetric visualization techniques is ray casting, which also enables the use of different corrections or improvements such as adaptive sampling or stochastic jittering. This paper presents an extensive study about a ray casting method for tetrahedral meshes with an underlying structured volume. This allows a direct visualization of the deformed model without losing the information contained in the volume. The aim of this study is to analyse and compare the different methods for ray traversal and illumination correction, resulting in a comprehensive relation of the different methods, their computational cost and visual performance.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[6851204]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2014.2337332]]></doi>
+
+<publicationId><![CDATA[6851204]]></publicationId>
+
+<partnum><![CDATA[6851204]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6851204&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6851204]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3012</rank>
+
+<title><![CDATA[Transform Coding for Hardware-accelerated Volume Rendering]]></title>
+
+<authors><![CDATA[Fout, N.;  Kwan-Liu Ma]]></authors>
+
+<affiliations><![CDATA[Univ. of California, Davis]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[computer graphic equipment]]></term>
+
+<term><![CDATA[data compression]]></term>
+
+<term><![CDATA[real-time systems]]></term>
+
+<term><![CDATA[rendering (computer graphics)]]></term>
+
+<term><![CDATA[transform coding]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Data visualization]]></term>
+
+<term><![CDATA[Decoding]]></term>
+
+<term><![CDATA[Encoding]]></term>
+
+<term><![CDATA[Graphics]]></term>
+
+<term><![CDATA[Hardware]]></term>
+
+<term><![CDATA[Pipelines]]></term>
+
+<term><![CDATA[Production]]></term>
+
+<term><![CDATA[Rendering (computer graphics)]]></term>
+
+<term><![CDATA[Resource management]]></term>
+
+<term><![CDATA[Transform coding]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[13]]></volume>
+
+<issue><![CDATA[6]]></issue>
+
+<py><![CDATA[2007]]></py>
+
+<spage><![CDATA[1600]]></spage>
+
+<epage><![CDATA[1607]]></epage>
+
+<abstract><![CDATA[Hardware-accelerated volume rendering using the GPU is now the standard approach for real-time volume rendering, although limited graphics memory can present a problem when rendering large volume data sets. Volumetric compression in which the decompression is coupled to rendering has been shown to be an effective solution to this problem; however, most existing techniques were developed in the context of software volume rendering, and all but the simplest approaches are prohibitive in a real-time hardware-accelerated volume rendering context. In this paper we present a novel block-based transform coding scheme designed specifically with real-time volume rendering in mind, such that the decompression is fast without sacrificing compression quality. This is made possible by consolidating the inverse transform with dequantization in such a way as to allow most of the reprojection to be precomputed. Furthermore, we take advantage of the freedom afforded by offline compression in order to optimize the encoding as much as possible while hiding this complexity from the decoder. In this context we develop a new block classification scheme which allows us to preserve perceptually important features in the compression. The result of this work is an asymmetric transform coding scheme that allows very large volumes to be compressed and then decompressed in real-time while rendering on the GPU.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[4376192]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2007.70516]]></doi>
+
+<publicationId><![CDATA[4376192]]></publicationId>
+
+<partnum><![CDATA[4376192]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=4376192&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=4376192]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3013</rank>
+
+<title><![CDATA[Real-time elastic deformations of soft tissues for surgery simulation]]></title>
+
+<authors><![CDATA[Cotin, Stephane;  Delingette, H.;  Ayache, N.]]></authors>
+
+<affiliations><![CDATA[Epidaure Project, Inst. Nat. de Recherche en Inf. et Autom., Sophia-Antipolis, France]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[biomechanics]]></term>
+
+<term><![CDATA[computer graphics]]></term>
+
+<term><![CDATA[digital simulation]]></term>
+
+<term><![CDATA[elastic deformation]]></term>
+
+<term><![CDATA[finite element analysis]]></term>
+
+<term><![CDATA[medical computing]]></term>
+
+<term><![CDATA[real-time systems]]></term>
+
+<term><![CDATA[surgery]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Biological tissues]]></term>
+
+<term><![CDATA[Biomedical imaging]]></term>
+
+<term><![CDATA[Computational modeling]]></term>
+
+<term><![CDATA[Deformable models]]></term>
+
+<term><![CDATA[Elasticity]]></term>
+
+<term><![CDATA[Finite element methods]]></term>
+
+<term><![CDATA[Force feedback]]></term>
+
+<term><![CDATA[Medical simulation]]></term>
+
+<term><![CDATA[Shape]]></term>
+
+<term><![CDATA[Surgery]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[5]]></volume>
+
+<issue><![CDATA[1]]></issue>
+
+<py><![CDATA[1999]]></py>
+
+<spage><![CDATA[62]]></spage>
+
+<epage><![CDATA[73]]></epage>
+
+<abstract><![CDATA[We describe a novel method for surgery simulation including a volumetric model built from medical images and an elastic modeling of the deformations. The physical model is based on elasticity theory which suitably links the shape of deformable bodies and the forces associated with the deformation. A real time computation of the deformation is possible thanks to a preprocessing of elementary deformations derived from a finite element method. This method has been implemented in a system including a force feedback device and a collision detection algorithm. The simulator works in real time with a high resolution liver model]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<arnumber><![CDATA[764872]]></arnumber>
+
+<doi><![CDATA[10.1109/2945.764872]]></doi>
+
+<publicationId><![CDATA[764872]]></publicationId>
+
+<partnum><![CDATA[764872]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=764872&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=764872]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3014</rank>
+
+<title><![CDATA[[Front cover]]]></title>
+
+<authors><![CDATA[]]></authors>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[12]]></volume>
+
+<issue><![CDATA[6]]></issue>
+
+<py><![CDATA[2006]]></py>
+
+<spage><![CDATA[c1]]></spage>
+
+<epage><![CDATA[c1]]></epage>
+
+<abstract><![CDATA[Presents the table of contents for this issue of the periodical.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<arnumber><![CDATA[1703356]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2006.86]]></doi>
+
+<publicationId><![CDATA[1703356]]></publicationId>
+
+<partnum><![CDATA[1703356]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=1703356&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=1703356]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3015</rank>
+
+<title><![CDATA[Shape Deformation Using a Skeleton to Drive Simplex Transformations]]></title>
+
+<authors><![CDATA[Han-Bing Yan;  Shi-Min Hu;  Martin, R.R.;  Yong-Liang Yang]]></authors>
+
+<affiliations><![CDATA[Tsinghua Univ., Beijing]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[computer graphics]]></term>
+
+<term><![CDATA[image thinning]]></term>
+
+<term><![CDATA[mesh generation]]></term>
+
+</controlledterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[14]]></volume>
+
+<issue><![CDATA[3]]></issue>
+
+<py><![CDATA[2008]]></py>
+
+<spage><![CDATA[693]]></spage>
+
+<epage><![CDATA[706]]></epage>
+
+<abstract><![CDATA[This paper presents a skeleton-based method for deforming meshes (the skeleton need not be the medial axis). The significant difference from previous skeleton-based methods is that the latter use the skeleton to control movement of vertices, whereas we use it to control the simplices defining the model. By doing so, errors that occur near joints in other methods can be spread over the whole mesh, via an optimization process, resulting in smooth transitions near joints of the skeleton. By controlling simplices, our method has the additional advantage that no vertex weights need be defined on the bones, which is a tedious requirement in previous skeleton-based methods. Furthermore, by incorporating the translation vector in our optimization, unlike other methods, we do not need to fix an arbitrary vertex, and the deformed mesh moves with the deformed skeleton. Our method can also easily be used to control deformation by moving a few chosen line segments, rather than a skeleton.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[4441712]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2008.28]]></doi>
+
+<publicationId><![CDATA[4441712]]></publicationId>
+
+<partnum><![CDATA[4441712]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=4441712&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=4441712]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3016</rank>
+
+<title><![CDATA[Arthrodial Joint Markerless Cross-Parameterization and Biomechanical Visualization]]></title>
+
+<authors><![CDATA[Marai, G.E.;  Grimm, C.M.;  Laidlaw, D.H.]]></authors>
+
+<affiliations><![CDATA[Brown Univ., Providence]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[biomechanics]]></term>
+
+<term><![CDATA[computer vision]]></term>
+
+<term><![CDATA[data visualisation]]></term>
+
+<term><![CDATA[medical computing]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Biomechanics]]></term>
+
+<term><![CDATA[Cadaver]]></term>
+
+<term><![CDATA[Computational geometry]]></term>
+
+<term><![CDATA[Data visualization]]></term>
+
+<term><![CDATA[Deformable models]]></term>
+
+<term><![CDATA[Distortion measurement]]></term>
+
+<term><![CDATA[Image analysis]]></term>
+
+<term><![CDATA[In vivo]]></term>
+
+<term><![CDATA[Kinematics]]></term>
+
+<term><![CDATA[Solid modeling]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[13]]></volume>
+
+<issue><![CDATA[5]]></issue>
+
+<py><![CDATA[2007]]></py>
+
+<spage><![CDATA[1095]]></spage>
+
+<epage><![CDATA[1104]]></epage>
+
+<abstract><![CDATA[Orthopedists invest significant amounts of effort and time trying to understand the biomechanics of arthrodial (gliding) joints. Although new image acquisition and processing methods currently generate richer-than-ever geometry and kinematic data sets that are individual specific, the computational and visualization tools needed to enable the comparative analysis and exploration of these data sets lag behind. In this paper, we present a framework that enables the cross-data-set visual exploration and analysis of arthrodial joint biomechanics. Central to our approach is a computer-vision-inspired markerless method for establishing pairwise correspondences between individual-specific geometry. Manifold models are subsequently defined and deformed from one individual-specific geometry to another such that the markerless correspondences are preserved while minimizing model distortion. The resulting mutually consistent parameterization and visualization allow the users to explore the similarities and differences between two data sets and to define meaningful quantitative measures. We present two applications of this framework to human-wrist data: articular cartilage transfer from cadaver data to in vivo data and cross-data-set kinematics analysis. The method allows our users to combine complementary geometries acquired through different modalities and thus overcome current imaging limitations. The results demonstrate that the technique is useful in the study of normal and injured anatomy and kinematics of arthrodial joints. In principle, the pairwise cross-parameterization method applies to all spherical topology data from the same class and should be particularly beneficial in instances where identifying salient object features is a nontrivial task.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[4276086]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2007.1063]]></doi>
+
+<publicationId><![CDATA[4276086]]></publicationId>
+
+<partnum><![CDATA[4276086]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=4276086&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=4276086]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3017</rank>
+
+<title><![CDATA[Domino: Extracting, Comparing, and Manipulating Subsets Across Multiple Tabular Datasets]]></title>
+
+<authors><![CDATA[Gratzl, S.;  Gehlenborg, N.;  Lex, A.;  Pfister, H.;  Streit, M.]]></authors>
+
+<affiliations><![CDATA[Johannes Kepler Univ. Linz, Linz, Austria]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[cancer]]></term>
+
+<term><![CDATA[data visualisation]]></term>
+
+<term><![CDATA[distributed databases]]></term>
+
+<term><![CDATA[genomics]]></term>
+
+<term><![CDATA[interactive systems]]></term>
+
+<term><![CDATA[set theory]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Biomedical measurements]]></term>
+
+<term><![CDATA[Cancer]]></term>
+
+<term><![CDATA[Data visualization]]></term>
+
+<term><![CDATA[Genomics]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[20]]></volume>
+
+<issue><![CDATA[12]]></issue>
+
+<py><![CDATA[2014]]></py>
+
+<spage><![CDATA[2023]]></spage>
+
+<epage><![CDATA[2032]]></epage>
+
+<abstract><![CDATA[Answering questions about complex issues often requires analysts to take into account information contained in multiple interconnected datasets. A common strategy in analyzing and visualizing large and heterogeneous data is dividing it into meaningful subsets. Interesting subsets can then be selected and the associated data and the relationships between the subsets visualized. However, neither the extraction and manipulation nor the comparison of subsets is well supported by state-of-the-art techniques. In this paper we present Domino, a novel multiform visualization technique for effectively representing subsets and the relationships between them. By providing comprehensive tools to arrange, combine, and extract subsets, Domino allows users to create both common visualization techniques and advanced visualizations tailored to specific use cases. In addition to the novel technique, we present an implementation that enables analysts to manage the wide range of options that our approach offers. Innovative interactive features such as placeholders and live previews support rapid creation of complex analysis setups. We introduce the technique and the implementation using a simple example and demonstrate scalability and effectiveness in a use case from the field of cancer genomics.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[6875920]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2014.2346260]]></doi>
+
+<publicationId><![CDATA[6875920]]></publicationId>
+
+<partnum><![CDATA[6875920]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6875920&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6875920]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3018</rank>
+
+<title><![CDATA[Comparative flow visualization]]></title>
+
+<authors><![CDATA[Verma, V.;  Pang, A.]]></authors>
+
+<affiliations><![CDATA[Sarnoff Corp., Princeton, NJ, USA]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[data visualisation]]></term>
+
+<term><![CDATA[feature extraction]]></term>
+
+<term><![CDATA[flow visualisation]]></term>
+
+<term><![CDATA[image resolution]]></term>
+
+<term><![CDATA[rendering (computer graphics)]]></term>
+
+<term><![CDATA[vortices]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Computational modeling]]></term>
+
+<term><![CDATA[Data visualization]]></term>
+
+<term><![CDATA[Degradation]]></term>
+
+<term><![CDATA[Feature extraction]]></term>
+
+<term><![CDATA[Geometry]]></term>
+
+<term><![CDATA[Graphics]]></term>
+
+<term><![CDATA[Helium]]></term>
+
+<term><![CDATA[Interpolation]]></term>
+
+<term><![CDATA[Numerical models]]></term>
+
+<term><![CDATA[Power generation]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[10]]></volume>
+
+<issue><![CDATA[6]]></issue>
+
+<py><![CDATA[2004]]></py>
+
+<spage><![CDATA[609]]></spage>
+
+<epage><![CDATA[624]]></epage>
+
+<abstract><![CDATA[There are many situations where one needs to compare two or more data sets. It may be to compare different models, different resolutions, differences in algorithms, different experimental results, etc. There is therefore a need for comparative visualization tools to help analyze the differences. This paper focuses on comparative visualization tools for analyzing flow or vector data sets. The techniques presented allow one to compare individual streamlines and stream ribbons as well as a dense field of streamlines. These comparison methods can also be used to study differences in vortex cores that are represented as polylines.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[1333660]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2004.39]]></doi>
+
+<publicationId><![CDATA[1333660]]></publicationId>
+
+<partnum><![CDATA[1333660]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=1333660&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=1333660]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3019</rank>
+
+<title><![CDATA[Asynchronous Distributed Calibration for Scalable and Reconfigurable Multi-Projector Displays]]></title>
+
+<authors><![CDATA[Bhasker, E.S.;  Sinha, P.;  Majumder, A.]]></authors>
+
+<affiliations><![CDATA[Dept. of Comput. Sci., California Univ., Irvine, CA]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[calibration]]></term>
+
+<term><![CDATA[cameras]]></term>
+
+<term><![CDATA[client-server systems]]></term>
+
+<term><![CDATA[computer displays]]></term>
+
+<term><![CDATA[distributed algorithms]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Calibration]]></term>
+
+<term><![CDATA[Cameras]]></term>
+
+<term><![CDATA[Computer architecture]]></term>
+
+<term><![CDATA[Computer displays]]></term>
+
+<term><![CDATA[Distributed computing]]></term>
+
+<term><![CDATA[Fault detection]]></term>
+
+<term><![CDATA[Instruments]]></term>
+
+<term><![CDATA[Photometry]]></term>
+
+<term><![CDATA[Project management]]></term>
+
+<term><![CDATA[Two dimensional displays]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[12]]></volume>
+
+<issue><![CDATA[5]]></issue>
+
+<py><![CDATA[2006]]></py>
+
+<spage><![CDATA[1101]]></spage>
+
+<epage><![CDATA[1108]]></epage>
+
+<abstract><![CDATA[Centralized techniques have been used until now when automatically calibrating (both geometrically and photometrically) large high-resolution displays created by tiling multiple projectors in a 2D array. A centralized server managed all the projectors and also the camera(s) used to calibrate the display. In this paper, we propose an asynchronous distributed calibration methodology via a display unit called the plug-and-play projector (PPP). The PPP consists of a projector, camera, computation and communication unit, thus creating a self-sufficient module that enables an asynchronous distributed architecture for multi-projector displays. We present a single-program-multiple-data (SPMD) calibration algorithm that runs on each PPP and achieves a truly scalable and reconfigurable display without any input from the user. It instruments novel capabilities like adding/removing PPPs from the display dynamically, detecting faults, and reshaping the display to a reasonable rectangular shape to react to the addition/removal/faults. To the best of our knowledge, this is the first attempt to realize a completely asynchronous and distributed calibration architecture and methodology for multi-projector displays]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[4015470]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2006.121]]></doi>
+
+<publicationId><![CDATA[4015470]]></publicationId>
+
+<partnum><![CDATA[4015470]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=4015470&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=4015470]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3020</rank>
+
+<title><![CDATA[Interactive stereoscopic rendering of volumetric environments]]></title>
+
+<authors><![CDATA[Wan, M.;  Zhang, N.;  Huamin Qu;  Kaufman, A.E.]]></authors>
+
+<affiliations><![CDATA[Boeing Co., Seattle, WA, USA]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[antialiasing]]></term>
+
+<term><![CDATA[ray tracing]]></term>
+
+<term><![CDATA[rendering (computer graphics)]]></term>
+
+<term><![CDATA[stereo image processing]]></term>
+
+<term><![CDATA[virtual reality]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Acceleration]]></term>
+
+<term><![CDATA[Casting]]></term>
+
+<term><![CDATA[Geometry]]></term>
+
+<term><![CDATA[Large-scale systems]]></term>
+
+<term><![CDATA[Load management]]></term>
+
+<term><![CDATA[Navigation]]></term>
+
+<term><![CDATA[Partitioning algorithms]]></term>
+
+<term><![CDATA[Pixel]]></term>
+
+<term><![CDATA[Rendering (computer graphics)]]></term>
+
+<term><![CDATA[Virtual colonoscopy]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[10]]></volume>
+
+<issue><![CDATA[1]]></issue>
+
+<py><![CDATA[2004]]></py>
+
+<spage><![CDATA[15]]></spage>
+
+<epage><![CDATA[28]]></epage>
+
+<abstract><![CDATA[We present an efficient stereoscopic rendering algorithm supporting interactive navigation through large-scale 3D voxel-based environments. In this algorithm, most of the pixel values of the right image are derived from the left image by a fast 3D warping based on a specific stereoscopic projection geometry. An accelerated volumetric ray casting then fills the remaining gaps in the warped right image. Our algorithm has been parallelized on a multiprocessor by employing effective task partitioning schemes and achieved a high cache coherency and load balancing. We also extend our stereoscopic rendering to include view-dependent shading and transparency effects. We have applied our algorithm in two virtual navigation systems, flythrough over terrain and virtual colonoscopy, and reached interactive stereoscopic rendering rates of more than 10 frames per second on a 16-processor SGI challenge.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[1260755]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2004.1260755]]></doi>
+
+<publicationId><![CDATA[1260755]]></publicationId>
+
+<partnum><![CDATA[1260755]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=1260755&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=1260755]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3021</rank>
+
+<title><![CDATA[Enhancing Depth-Perception with Flexible Volumetric Halos]]></title>
+
+<authors><![CDATA[Bruckner, S.;  Groller, M.E.]]></authors>
+
+<affiliations><![CDATA[Vienna Univ. of Technol., Vienna]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[computational complexity]]></term>
+
+<term><![CDATA[computer graphic equipment]]></term>
+
+<term><![CDATA[data visualisation]]></term>
+
+<term><![CDATA[interactive systems]]></term>
+
+<term><![CDATA[pattern classification]]></term>
+
+<term><![CDATA[rendering (computer graphics)]]></term>
+
+<term><![CDATA[transfer functions]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Biomedical imaging]]></term>
+
+<term><![CDATA[Computed tomography]]></term>
+
+<term><![CDATA[Data visualization]]></term>
+
+<term><![CDATA[Humans]]></term>
+
+<term><![CDATA[Image resolution]]></term>
+
+<term><![CDATA[Lighting]]></term>
+
+<term><![CDATA[Optical attenuators]]></term>
+
+<term><![CDATA[Rendering (computer graphics)]]></term>
+
+<term><![CDATA[Spatial resolution]]></term>
+
+<term><![CDATA[Transfer functions]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[13]]></volume>
+
+<issue><![CDATA[6]]></issue>
+
+<py><![CDATA[2007]]></py>
+
+<spage><![CDATA[1344]]></spage>
+
+<epage><![CDATA[1351]]></epage>
+
+<abstract><![CDATA[Volumetric data commonly has high depth complexity which makes it difficult to judge spatial relationships accurately. There are many different ways to enhance depth perception, such as shading, contours, and shadows. Artists and illustrators frequently employ halos for this purpose. In this technique, regions surrounding the edges of certain structures are darkened or brightened which makes it easier to judge occlusion. Based on this concept, we present a flexible method for enhancing and highlighting structures of interest using GPU-based direct volume rendering. Our approach uses an interactively defined halo transfer function to classify structures of interest based on data value, direction, and position. A feature-preserving spreading algorithm is applied to distribute seed values to neighboring locations, generating a controllably smooth field of halo intensities. These halo intensities are then mapped to colors and opacities using a halo profile function. Our method can be used to annotate features at interactive frame rates.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[4376160]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2007.70555]]></doi>
+
+<publicationId><![CDATA[4376160]]></publicationId>
+
+<partnum><![CDATA[4376160]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=4376160&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=4376160]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3022</rank>
+
+<title><![CDATA[Introducing OnlinePlus]]></title>
+
+<authors><![CDATA[]]></authors>
+
+<thesaurusterms>
+
+<term><![CDATA[Books]]></term>
+
+<term><![CDATA[Internet]]></term>
+
+<term><![CDATA[Portals]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[16]]></volume>
+
+<issue><![CDATA[5]]></issue>
+
+<py><![CDATA[2010]]></py>
+
+<spage><![CDATA[880]]></spage>
+
+<epage><![CDATA[880]]></epage>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<arnumber><![CDATA[5506923]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2010.103]]></doi>
+
+<publicationId><![CDATA[5506923]]></publicationId>
+
+<partnum><![CDATA[5506923]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=5506923&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=5506923]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3023</rank>
+
+<title><![CDATA[Enhancing Light Fields through Ray-Space Stitching]]></title>
+
+<authors><![CDATA[Guo, X.;  Yu, Z.;  Kang, S.;  Lin, H.;  Yu, J.]]></authors>
+
+<affiliations><![CDATA[Xinqing Guo is with the Department of Computer and Information Sciences, University of Delaware, Newark, DE (e-mail: xinqing@udel.edu)]]></affiliations>
+
+<thesaurusterms>
+
+<term><![CDATA[Apertures]]></term>
+
+<term><![CDATA[Cameras]]></term>
+
+<term><![CDATA[Estimation]]></term>
+
+<term><![CDATA[Feature extraction]]></term>
+
+<term><![CDATA[Rendering (computer graphics)]]></term>
+
+<term><![CDATA[Spatial resolution]]></term>
+
+<term><![CDATA[Visualization]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Early Access Articles]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[PP]]></volume>
+
+<issue><![CDATA[99]]></issue>
+
+<py><![CDATA[2015]]></py>
+
+<spage><![CDATA[1]]></spage>
+
+<epage><![CDATA[1]]></epage>
+
+<abstract><![CDATA[Light fields (LFs) have been shown to enable photorealistic visualization of complex scenes. In practice, however, an LF tends to have a relatively small angular range or spatial resolution, which limits the scope of virtual navigation. In this paper, we show how seamless virtual navigation can be enhanced by stitching multiple LFs. Our technique consists of two key components: LF registration and LF stitching. To register LFs, we use what we call the ray-space motion matrix (RSMM) to establish pairwise ray-ray correspondences. Using Pl &#x00A8;ucker coordinates, we show that the RSMM is a 5 6 matrix, which reduces to a 5 5 matrix under pure translation and/or in-plane rotation. The final LF stitching is done using multi-resolution, high-dimensional graph-cut in order to account for possible scene motion, imperfect RSMM estimation, and/or undersampling. We show how our technique allows us to create LFs with various enhanced features: extended horizontal and/or vertical field-of-view, larger synthetic aperture and defocus blur, and larger parallax.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<arnumber><![CDATA[7244244]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2015.2476805]]></doi>
+
+<publicationId><![CDATA[7244244]]></publicationId>
+
+<partnum><![CDATA[7244244]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=7244244&contentType=Early+Access+Articles]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=7244244]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3024</rank>
+
+<title><![CDATA[Real-Time Path Planning in Dynamic Virtual Environments Using Multiagent Navigation Graphs]]></title>
+
+<authors><![CDATA[Sud, A.;  Andersen, E.;  Curtis, S.;  Lin, M.C.;  Manocha, D.]]></authors>
+
+<affiliations><![CDATA[One Microsoft Way, Redmond]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[computational geometry]]></term>
+
+<term><![CDATA[multi-agent systems]]></term>
+
+<term><![CDATA[navigation]]></term>
+
+<term><![CDATA[path planning]]></term>
+
+<term><![CDATA[robots]]></term>
+
+<term><![CDATA[virtual reality]]></term>
+
+</controlledterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[14]]></volume>
+
+<issue><![CDATA[3]]></issue>
+
+<py><![CDATA[2008]]></py>
+
+<spage><![CDATA[526]]></spage>
+
+<epage><![CDATA[538]]></epage>
+
+<abstract><![CDATA[We present a novel approach for efficient path planning and navigation of multiple virtual agents in complex dynamic scenes. We introduce a new data structure, Multiagent Navigation Graph (MaNG), which is constructed using first- and second-order Voronoi diagrams. The MaNG is used to perform route planning and proximity computations for each agent in real time. Moreover, we use the path information and proximity relationships for the local dynamics computation of each agent by extending a social force model [15]. We compute the MaNG using graphics hardware and present culling techniques to accelerate the computation. We also address undersampling issues and present techniques to improve the accuracy of our algorithm. Our algorithm is used for real-time multiagent planning in pursuit-evasion, terrain exploration, and crowd simulation scenarios consisting of hundreds of moving agents, each with a distinct goal.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[4441711]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2008.27]]></doi>
+
+<publicationId><![CDATA[4441711]]></publicationId>
+
+<partnum><![CDATA[4441711]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=4441711&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=4441711]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3025</rank>
+
+<title><![CDATA[Message from the VIS Paper Chairs and Guest Editors]]></title>
+
+<authors><![CDATA[]]></authors>
+
+<thesaurusterms>
+
+<term><![CDATA[Meetings]]></term>
+
+<term><![CDATA[Special issues and sections]]></term>
+
+<term><![CDATA[Visualization]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[20]]></volume>
+
+<issue><![CDATA[12]]></issue>
+
+<py><![CDATA[2014]]></py>
+
+<spage><![CDATA[xi]]></spage>
+
+<epage><![CDATA[xiv]]></epage>
+
+<abstract><![CDATA[The papers in this special issue were presented at the Proceedings of IEEE VIS 2014, held during November 9??14, 2014, in Paris, France. VIS consists of three conferences, held concurrently: the IEEE Visual Analytics Science and Technology Conference (VAST 2014), the IEEE Information Visualization Conference (InfoVis 2014), and the IEEE Scientific Visualization Conference (SciVis 2014). Visualization continues to develop rapidly as a research discipline and the three conferences are maintaining their positions as the leading annual events for researchers and practitioners to share the most innovative and impactful results of an increasingly diverse and influential community.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<arnumber><![CDATA[6935059]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2014.2346661]]></doi>
+
+<publicationId><![CDATA[6935059]]></publicationId>
+
+<partnum><![CDATA[6935059]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6935059&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6935059]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3026</rank>
+
+<title><![CDATA[Interactive Applications for Sketch-Based Editable Polycube Map]]></title>
+
+<authors><![CDATA[Garcia, I.;  Jiazhi Xia;  Ying He;  Shi-Qing Xin;  Patow, G.]]></authors>
+
+<affiliations><![CDATA[Dept. d'Inf. i Mat. Aplic., Univ. de Girona, Girona, Spain]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[computational geometry]]></term>
+
+<term><![CDATA[graphics processing units]]></term>
+
+<term><![CDATA[interactive systems]]></term>
+
+<term><![CDATA[mesh generation]]></term>
+
+<term><![CDATA[topology]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Computational modeling]]></term>
+
+<term><![CDATA[Geometry]]></term>
+
+<term><![CDATA[Harmonic analysis]]></term>
+
+<term><![CDATA[Shape]]></term>
+
+<term><![CDATA[Solid modeling]]></term>
+
+<term><![CDATA[Surface treatment]]></term>
+
+<term><![CDATA[Topology]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[19]]></volume>
+
+<issue><![CDATA[7]]></issue>
+
+<py><![CDATA[2013]]></py>
+
+<spage><![CDATA[1158]]></spage>
+
+<epage><![CDATA[1171]]></epage>
+
+<abstract><![CDATA[In this paper, we propose a sketch-based editable polycube mapping method that, given a general mesh and a simple polycube that coarsely resembles the shape of the object, plus sketched features indicating relevant correspondences between the two, provides a uniform, regular, and user-controllable quads-only mesh that can be used as a basis structure for subdivision. Large scale models with complex geometry and topology can be processed efficiently with simple, intuitive operations. We show that the simple, intuitive nature of the polycube map is a substantial advantage from the point of view of the interface by demonstrating a series of applications, including kit-basing, shape morphing, painting over the parameterization domain, and GPU-friendly tessellated subdivision displacement, where the user is also able to control the number of patches in the base mesh by the construction of the base polycube.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[6361388]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2012.308]]></doi>
+
+<publicationId><![CDATA[6361388]]></publicationId>
+
+<partnum><![CDATA[6361388]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6361388&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6361388]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3027</rank>
+
+<title><![CDATA[New OnlinePluse publication model [advertisement]]]></title>
+
+<authors><![CDATA[]]></authors>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[18]]></volume>
+
+<issue><![CDATA[5]]></issue>
+
+<py><![CDATA[2012]]></py>
+
+<spage><![CDATA[836]]></spage>
+
+<epage><![CDATA[836]]></epage>
+
+<abstract><![CDATA[Advertisement: Now available: A video introducing the IEEE Computer Society's new OnlinePlus publication model for Transactions.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<arnumber><![CDATA[6328216]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2012.90]]></doi>
+
+<publicationId><![CDATA[6328216]]></publicationId>
+
+<partnum><![CDATA[6328216]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6328216&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6328216]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3028</rank>
+
+<title><![CDATA[High-Dynamic-Range Texture Compression for Rendering Systems of Different Capacities]]></title>
+
+<authors><![CDATA[Wen Sun;  Yan Lu;  Feng Wu;  Shipeng Li;  Tardif, J.]]></authors>
+
+<affiliations><![CDATA[Univ. of Sci. & Technol. of China, Hefei, China]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[data compression]]></term>
+
+<term><![CDATA[image texture]]></term>
+
+<term><![CDATA[rendering (computer graphics)]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Bandwidth]]></term>
+
+<term><![CDATA[Bit rate]]></term>
+
+<term><![CDATA[Dynamic range]]></term>
+
+<term><![CDATA[Graphics]]></term>
+
+<term><![CDATA[Hardware]]></term>
+
+<term><![CDATA[Layout]]></term>
+
+<term><![CDATA[Pipelines]]></term>
+
+<term><![CDATA[Rendering (computer graphics)]]></term>
+
+<term><![CDATA[Robustness]]></term>
+
+<term><![CDATA[Sun]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[16]]></volume>
+
+<issue><![CDATA[1]]></issue>
+
+<py><![CDATA[2010]]></py>
+
+<spage><![CDATA[57]]></spage>
+
+<epage><![CDATA[69]]></epage>
+
+<abstract><![CDATA[In this paper, we propose a novel approach for high-dynamic-range (HDR) texture compression (TC) suitable for rendering systems of different capacities. Based on the previously proposed DHTC scheme, we first work out an improved joint-channel compression framework, which is robust and flexible enough to provide compressed HDR textures at different bit rates. Then, two compressed HDR texture formats based on the proposed framework are developed. The 8 bpp format is of near lossless visual quality, improving upon known state-of-the-art algorithms. And, to our knowledge, the 4 bpp format is the first workable 4 bpp solution with good quality. We also show that HDR textures in the proposed 4 bpp and 8 bpp formats can compose a layered architecture in the texture consumption pipeline, to significantly save the memory bandwidth and storage in real-time rendering. In addition, the 8 bpp format can also be used to handle traditional low dynamic range (LDR) RGBA textures. Our scheme exhibits a practical solution for compressing HDR textures at different rates and LDR textures with alpha maps.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[5072211]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2009.60]]></doi>
+
+<publicationId><![CDATA[5072211]]></publicationId>
+
+<partnum><![CDATA[5072211]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=5072211&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=5072211]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3029</rank>
+
+<title><![CDATA[Extended Depth-of-Field Projector by Fast Focal Sweep Projection]]></title>
+
+<authors><![CDATA[Iwai, D.;  Mihara, S.;  Sato, K.]]></authors>
+
+<affiliations><![CDATA[Osaka Univ., Suita, Japan]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[display instrumentation]]></term>
+
+<term><![CDATA[lenses]]></term>
+
+<term><![CDATA[optical modulation]]></term>
+
+<term><![CDATA[optical projectors]]></term>
+
+<term><![CDATA[optical transfer function]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Cameras]]></term>
+
+<term><![CDATA[Computational modeling]]></term>
+
+<term><![CDATA[Focusing]]></term>
+
+<term><![CDATA[Frequency modulation]]></term>
+
+<term><![CDATA[Lenses]]></term>
+
+<term><![CDATA[Semiconductor device measurement]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[21]]></volume>
+
+<issue><![CDATA[4]]></issue>
+
+<py><![CDATA[2015]]></py>
+
+<spage><![CDATA[462]]></spage>
+
+<epage><![CDATA[470]]></epage>
+
+<abstract><![CDATA[A simple and cost-efficient method for extending a projector's depth-of-field (DOF) is proposed. By leveraging liquid lens technology, we can periodically modulate the focal length of a projector at a frequency that is higher than the critical flicker fusion (CFF) frequency. Fast periodic focal length modulation results in forward and backward sweeping of focusing distance. Fast focal sweep projection makes the point spread function (PSF) of each projected pixel integrated over a sweep period (IPSF; integrated PSF) nearly invariant to the distance from the projector to the projection surface as long as it is positioned within sweep range. This modulation is not perceivable by human observers. Once we compensate projection images for the IPSF, the projected results can be focused at any point within the range. Consequently, the proposed method requires only a single offline PSF measurement; thus, it is an open-loop process. We have proved the approximate invariance of the projector's IPSF both numerically and experimentally. Through experiments using a prototype system, we have confirmed that the image quality of the proposed method is superior to that of normal projection with fixed focal length. In addition, we demonstrate that a structured light pattern projection technique using the proposed method can measure the shape of an object with large depth variances more accurately than normal projection techniques.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[7014259]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2015.2391861]]></doi>
+
+<publicationId><![CDATA[7014259]]></publicationId>
+
+<partnum><![CDATA[7014259]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=7014259&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=7014259]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3030</rank>
+
+<title><![CDATA[Multivariate Network Exploration and Presentation: From Detail to Overview via Selections and Aggregations]]></title>
+
+<authors><![CDATA[van den Elzen, S.;  van Wijk, J.J.]]></authors>
+
+<affiliations><![CDATA[Dept. of Mathematic & Comput. Sci., Eindhoven Univ. of Technol., Eindhoven, Netherlands]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[graphical user interfaces]]></term>
+
+<term><![CDATA[network theory (graphs)]]></term>
+
+<term><![CDATA[topology]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Clutter]]></term>
+
+<term><![CDATA[Context awareness]]></term>
+
+<term><![CDATA[Data visualization]]></term>
+
+<term><![CDATA[Image color analysis]]></term>
+
+<term><![CDATA[Network topology]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[20]]></volume>
+
+<issue><![CDATA[12]]></issue>
+
+<py><![CDATA[2014]]></py>
+
+<spage><![CDATA[2310]]></spage>
+
+<epage><![CDATA[2319]]></epage>
+
+<abstract><![CDATA[Network data is ubiquitous; e-mail traffic between persons, telecommunication, transport and financial networks are some examples. Often these networks are large and multivariate, besides the topological structure of the network, multivariate data on the nodes and links is available. Currently, exploration and analysis methods are focused on a single aspect; the network topology or the multivariate data. In addition, tools and techniques are highly domain specific and require expert knowledge. We focus on the non-expert user and propose a novel solution for multivariate network exploration and analysis that tightly couples structural and multivariate analysis. In short, we go from Detail to Overview via Selections and Aggregations (DOSA): users are enabled to gain insights through the creation of selections of interest (manually or automatically), and producing high-level, infographic-style overviews simultaneously. Finally, we present example explorations on real-world datasets that demonstrate the effectiveness of our method for the exploration and understanding of multivariate networks where presentation of findings comes for free.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[6875972]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2014.2346441]]></doi>
+
+<publicationId><![CDATA[6875972]]></publicationId>
+
+<partnum><![CDATA[6875972]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6875972&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6875972]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3031</rank>
+
+<title><![CDATA[Registration of 3D Point Clouds and Meshes: A Survey from Rigid to Nonrigid]]></title>
+
+<authors><![CDATA[Tam, G.K.L.;  Zhi-Quan Cheng;  Yu-Kun Lai;  Langbein, F.C.;  Yonghuai Liu;  Marshall, D.;  Martin, R.R.;  Xian-Fang Sun;  Rosin, P.L.]]></authors>
+
+<affiliations><![CDATA[Dept. of Comput. Sci., Swansea Univ., Swansea, UK]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[computational geometry]]></term>
+
+<term><![CDATA[mesh generation]]></term>
+
+<term><![CDATA[solid modelling]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Bones]]></term>
+
+<term><![CDATA[Data models]]></term>
+
+<term><![CDATA[Joints]]></term>
+
+<term><![CDATA[Mathematical model]]></term>
+
+<term><![CDATA[Optimization]]></term>
+
+<term><![CDATA[Vectors]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[19]]></volume>
+
+<issue><![CDATA[7]]></issue>
+
+<py><![CDATA[2013]]></py>
+
+<spage><![CDATA[1199]]></spage>
+
+<epage><![CDATA[1217]]></epage>
+
+<abstract><![CDATA[Three-dimensional surface registration transforms multiple three-dimensional data sets into the same coordinate system so as to align overlapping components of these sets. Recent surveys have covered different aspects of either rigid or nonrigid registration, but seldom discuss them as a whole. Our study serves two purposes: 1) To give a comprehensive survey of both types of registration, focusing on three-dimensional point clouds and meshes and 2) to provide a better understanding of registration from the perspective of data fitting. Registration is closely related to data fitting in which it comprises three core interwoven components: model selection, correspondences and constraints, and optimization. Study of these components 1) provides a basis for comparison of the novelties of different techniques, 2) reveals the similarity of rigid and nonrigid registration in terms of problem representations, and 3) shows how overfitting arises in nonrigid registration and the reasons for increasing interest in intrinsic techniques. We further summarize some practical issues of registration which include initializations and evaluations, and discuss some of our own observations, insights and foreseeable research trends.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[6361384]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2012.310]]></doi>
+
+<publicationId><![CDATA[6361384]]></publicationId>
+
+<partnum><![CDATA[6361384]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6361384&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6361384]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3032</rank>
+
+<title><![CDATA[An Efficient Naturalness-Preserving Image-Recoloring Method for Dichromats]]></title>
+
+<authors><![CDATA[Kuhn, G.R.;  Oliveira, M.M.;  Fernandes, Leandro A.F.]]></authors>
+
+<affiliations><![CDATA[Inst. de Inf., UFRGS, Porto Alegre]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[colour graphics]]></term>
+
+<term><![CDATA[colour vision]]></term>
+
+<term><![CDATA[data visualisation]]></term>
+
+<term><![CDATA[image colour analysis]]></term>
+
+<term><![CDATA[image enhancement]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Chemistry]]></term>
+
+<term><![CDATA[Computational efficiency]]></term>
+
+<term><![CDATA[Data visualization]]></term>
+
+<term><![CDATA[Face detection]]></term>
+
+<term><![CDATA[Geology]]></term>
+
+<term><![CDATA[Pediatrics]]></term>
+
+<term><![CDATA[Photoreceptors]]></term>
+
+<term><![CDATA[Proteins]]></term>
+
+<term><![CDATA[Retina]]></term>
+
+<term><![CDATA[Statistics]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[14]]></volume>
+
+<issue><![CDATA[6]]></issue>
+
+<py><![CDATA[2008]]></py>
+
+<spage><![CDATA[1747]]></spage>
+
+<epage><![CDATA[1754]]></epage>
+
+<abstract><![CDATA[We present an efficient and automatic image-recoloring technique for dichromats that highlights important visual details that would otherwise be unnoticed by these individuals. While previous techniques approach this problem by potentially changing all colors of the original image, causing their results to look unnatural to color vision deficients, our approach preserves, as much as possible, the image's original colors. Our approach is about three orders of magnitude faster than previous ones. The results of a paired-comparison evaluation carried out with fourteen color-vision deficients (CVDs) indicated the preference of our technique over the state-of-the-art automatic recoloring technique for dichromats. When considering information visualization examples, the subjects tend to prefer our results over the original images. An extension of our technique that exaggerates color contrast tends to be preferred when CVDs compared pairs of scientific visualization images. These results provide valuable information for guiding the design of visualizations for color-vision deficients.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[4658199]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2008.112]]></doi>
+
+<publicationId><![CDATA[4658199]]></publicationId>
+
+<partnum><![CDATA[4658199]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=4658199&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=4658199]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3033</rank>
+
+<title><![CDATA[AggreSet: Rich and Scalable Set Exploration using Visualizations of Element Aggregations]]></title>
+
+<authors><![CDATA[Yalcin, M.A.;  Elmqvist, N.;  Bederson, B.B.]]></authors>
+
+<affiliations><![CDATA[Univ. of Maryland, College Park, MD, USA]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[combinatorial mathematics]]></term>
+
+<term><![CDATA[data visualisation]]></term>
+
+<term><![CDATA[matrix algebra]]></term>
+
+<term><![CDATA[set theory]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Aggregates]]></term>
+
+<term><![CDATA[Chapters]]></term>
+
+<term><![CDATA[Data visualization]]></term>
+
+<term><![CDATA[Filtering]]></term>
+
+<term><![CDATA[Motion pictures]]></term>
+
+<term><![CDATA[Scalability]]></term>
+
+<term><![CDATA[Visualization]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[22]]></volume>
+
+<issue><![CDATA[1]]></issue>
+
+<py><![CDATA[2016]]></py>
+
+<spage><![CDATA[688]]></spage>
+
+<epage><![CDATA[697]]></epage>
+
+<abstract><![CDATA[Datasets commonly include multi-value (set-typed) attributes that describe set memberships over elements, such as genres per movie or courses taken per student. Set-typed attributes describe rich relations across elements, sets, and the set intersections. Increasing the number of sets results in a combinatorial growth of relations and creates scalability challenges. Exploratory tasks (e.g. selection, comparison) have commonly been designed in separation for set-typed attributes, which reduces interface consistency. To improve on scalability and to support rich, contextual exploration of set-typed data, we present AggreSet. AggreSet creates aggregations for each data dimension: sets, set-degrees, set-pair intersections, and other attributes. It visualizes the element count per aggregate using a matrix plot for set-pair intersections, and histograms for set lists, set-degrees and other attributes. Its non-overlapping visual design is scalable to numerous and large sets. AggreSet supports selection, filtering, and comparison as core exploratory tasks. It allows analysis of set relations inluding subsets, disjoint sets and set intersection strength, and also features perceptual set ordering for detecting patterns in set matrices. Its interaction is designed for rich and rapid data exploration. We demonstrate results on a wide range of datasets from different domains with varying characteristics, and report on expert reviews and a case study using student enrollment and degree data with assistant deans at a major public university.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[7194854]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2015.2467051]]></doi>
+
+<publicationId><![CDATA[7194854]]></publicationId>
+
+<partnum><![CDATA[7194854]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=7194854&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=7194854]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3034</rank>
+
+<title><![CDATA[[Front cover]]]></title>
+
+<authors><![CDATA[]]></authors>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[20]]></volume>
+
+<issue><![CDATA[12]]></issue>
+
+<py><![CDATA[2014]]></py>
+
+<spage><![CDATA[i]]></spage>
+
+<epage><![CDATA[Bii]]></epage>
+
+<abstract><![CDATA[Presents the front cover for this issue of the publication.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<arnumber><![CDATA[6935065]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2014.2346976]]></doi>
+
+<publicationId><![CDATA[6935065]]></publicationId>
+
+<partnum><![CDATA[6935065]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6935065&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6935065]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3035</rank>
+
+<title><![CDATA[Computing 2D Constrained Delaunay Triangulation Using the GPU]]></title>
+
+<authors><![CDATA[Meng Qi;  Thanh-Tung Cao;  Tiow-Seng Tan]]></authors>
+
+<affiliations><![CDATA[GR/ST/21-256C, Nat. Univ. of Singapore, Singapore, Singapore]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[graphics processing units]]></term>
+
+<term><![CDATA[mesh generation]]></term>
+
+<term><![CDATA[parallel architectures]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Arrays]]></term>
+
+<term><![CDATA[Color]]></term>
+
+<term><![CDATA[Graphics processing units]]></term>
+
+<term><![CDATA[Instruction sets]]></term>
+
+<term><![CDATA[Standards]]></term>
+
+<term><![CDATA[Strips]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[19]]></volume>
+
+<issue><![CDATA[5]]></issue>
+
+<py><![CDATA[2013]]></py>
+
+<spage><![CDATA[736]]></spage>
+
+<epage><![CDATA[748]]></epage>
+
+<abstract><![CDATA[We propose the first graphics processing unit (GPU) solution to compute the 2D constrained Delaunay triangulation (CDT) of a planar straight line graph (PSLG) consisting of points and edges. There are many existing CPU algorithms to solve the CDT problem in computational geometry, yet there has been no prior approach to solve this problem efficiently using the parallel computing power of the GPU. For the special case of the CDT problem where the PSLG consists of just points, which is simply the normal Delaunay triangulation (DT) problem, a hybrid approach using the GPU together with the CPU to partially speed up the computation has already been presented in the literature. Our work, on the other hand, accelerates the entire computation on the GPU. Our implementation using the CUDA programming model on NVIDIA GPUs is numerically robust, and runs up to an order of magnitude faster than the best sequential implementations on the CPU. This result is reflected in our experiment with both randomly generated PSLGs and real-world GIS data having millions of points and edges.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[6361389]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2012.307]]></doi>
+
+<publicationId><![CDATA[6361389]]></publicationId>
+
+<partnum><![CDATA[6361389]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6361389&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6361389]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3036</rank>
+
+<title><![CDATA[Interactive Progressive Visualization with Space-Time Error Control]]></title>
+
+<authors><![CDATA[Frey, S.;  Sadlo, F.;  Kwan-Liu Ma;  Ertl, T.]]></authors>
+
+<affiliations><![CDATA[Univ. of Stuttgart, Stuttgart, Germany]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[data visualisation]]></term>
+
+<term><![CDATA[graphics processing units]]></term>
+
+<term><![CDATA[image reconstruction]]></term>
+
+<term><![CDATA[rendering (computer graphics)]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Data visualization]]></term>
+
+<term><![CDATA[Image resolution]]></term>
+
+<term><![CDATA[Interactive systems]]></term>
+
+<term><![CDATA[Optimization]]></term>
+
+<term><![CDATA[Quality assessment]]></term>
+
+<term><![CDATA[Rendering (computer graphics)]]></term>
+
+<term><![CDATA[Video recording]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[20]]></volume>
+
+<issue><![CDATA[12]]></issue>
+
+<py><![CDATA[2014]]></py>
+
+<spage><![CDATA[2397]]></spage>
+
+<epage><![CDATA[2406]]></epage>
+
+<abstract><![CDATA[We present a novel scheme for progressive rendering in interactive visualization. Static settings with respect to a certain image quality or frame rate are inherently incapable of delivering both high frame rates for rapid changes and high image quality for detailed investigation. Our novel technique flexibly adapts by steering the visualization process in three major degrees of freedom: when to terminate the refinement of a frame in the background and start a new one, when to display a frame currently computed, and how much resources to consume. We base these decisions on the correlation of the errors due to insufficient sampling and response delay, which we estimate separately using fast yet expressive heuristics. To automate the configuration of the steering behavior, we employ offline video quality analysis. We provide an efficient implementation of our scheme for the application of volume raycasting, featuring integrated GPU-accelerated image reconstruction and error estimation. Our implementation performs an integral handling of the changes due to camera transforms, transfer function adaptations, as well as the progression of the data to in time. Finally, the overall technique is evaluated with an expert study.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[6875936]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2014.2346319]]></doi>
+
+<publicationId><![CDATA[6875936]]></publicationId>
+
+<partnum><![CDATA[6875936]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6875936&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6875936]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3037</rank>
+
+<title><![CDATA[Dynamic color quantization of video sequences]]></title>
+
+<authors><![CDATA[Roytman, E.;  Gotsman, C.]]></authors>
+
+<affiliations><![CDATA[Dept. of Comput. Sci., Technion-Israel Inst. of Technol., Haifa, Israel]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[colour graphics]]></term>
+
+<term><![CDATA[image sequences]]></term>
+
+<term><![CDATA[multimedia computing]]></term>
+
+<term><![CDATA[quantisation (signal)]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Algorithm design and analysis]]></term>
+
+<term><![CDATA[Color]]></term>
+
+<term><![CDATA[Computer displays]]></term>
+
+<term><![CDATA[Costs]]></term>
+
+<term><![CDATA[Heuristic algorithms]]></term>
+
+<term><![CDATA[Image generation]]></term>
+
+<term><![CDATA[Image resolution]]></term>
+
+<term><![CDATA[Quantization]]></term>
+
+<term><![CDATA[Robustness]]></term>
+
+<term><![CDATA[Video sequences]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[1]]></volume>
+
+<issue><![CDATA[3]]></issue>
+
+<py><![CDATA[1995]]></py>
+
+<spage><![CDATA[274]]></spage>
+
+<epage><![CDATA[286]]></epage>
+
+<abstract><![CDATA[We present an efficient algorithm for dynamic adaptive color quantization of 24 bit image (video) sequences, important in multimedia applications. Besides producing hi fidelity 8 bit imagery, our algorithm runs with minimal computational cost and the generated colormaps are robust to small differences in consecutive images. Apart from the two standard color quantization tasks, colormap design and quantizer mapping, our algorithm includes colormap filling-an operation unique to dynamic color quantization. This task solves the problem of screen flicker, a serious problem in dynamic quantization of image sequences, resulting from rapid changes in display of colormaps. Our solution is based on two ideas: including in the current colormap a small set of color representatives from the previous image; assigning representatives to the colormap entries in an order that reduces the difference between contents of equal entries in consecutive colormaps. Our algorithm runs in near real time on medium range workstations]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<arnumber><![CDATA[466721]]></arnumber>
+
+<doi><![CDATA[10.1109/2945.466721]]></doi>
+
+<publicationId><![CDATA[466721]]></publicationId>
+
+<partnum><![CDATA[466721]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=466721&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=466721]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3038</rank>
+
+<title><![CDATA[UpSet: Visualization of Intersecting Sets]]></title>
+
+<authors><![CDATA[Lex, A.;  Gehlenborg, N.;  Strobelt, H.;  Vuillemot, R.;  Pfister, H.]]></authors>
+
+<affiliations><![CDATA[Hendrik Strobelt & Hanspeter Pfister, Harvard Univ., Cambridge, MA, USA]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[Internet]]></term>
+
+<term><![CDATA[combinatorial mathematics]]></term>
+
+<term><![CDATA[data visualisation]]></term>
+
+<term><![CDATA[duality (mathematics)]]></term>
+
+<term><![CDATA[mathematics computing]]></term>
+
+<term><![CDATA[matrix algebra]]></term>
+
+<term><![CDATA[public domain software]]></term>
+
+<term><![CDATA[set theory]]></term>
+
+<term><![CDATA[sorting]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Data visualization]]></term>
+
+<term><![CDATA[Information analysis]]></term>
+
+<term><![CDATA[Power generation]]></term>
+
+<term><![CDATA[Sorting]]></term>
+
+<term><![CDATA[Visualization]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[20]]></volume>
+
+<issue><![CDATA[12]]></issue>
+
+<py><![CDATA[2014]]></py>
+
+<spage><![CDATA[1983]]></spage>
+
+<epage><![CDATA[1992]]></epage>
+
+<abstract><![CDATA[Understanding relationships between sets is an important analysis task that has received widespread attention in the visualization community. The major challenge in this context is the combinatorial explosion of the number of set intersections if the number of sets exceeds a trivial threshold. In this paper we introduce UpSet, a novel visualization technique for the quantitative analysis of sets, their intersections, and aggregates of intersections. UpSet is focused on creating task-driven aggregates, communicating the size and properties of aggregates and intersections, and a duality between the visualization of the elements in a dataset and their set membership. UpSet visualizes set intersections in a matrix layout and introduces aggregates based on groupings and queries. The matrix layout enables the effective representation of associated data, such as the number of elements in the aggregates and intersections, as well as additional summary statistics derived from subset or element attributes. Sorting according to various measures enables a task-driven analysis of relevant intersections and aggregates. The elements represented in the sets and their associated attributes are visualized in a separate view. Queries based on containment in specific intersections, aggregates or driven by attribute filters are propagated between both views. We also introduce several advanced visual encodings and interaction methods to overcome the problems of varying scales and to address scalability. UpSet is web-based and open source. We demonstrate its general utility in multiple use cases from various domains.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[6876017]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2014.2346248]]></doi>
+
+<publicationId><![CDATA[6876017]]></publicationId>
+
+<partnum><![CDATA[6876017]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6876017&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6876017]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3039</rank>
+
+<title><![CDATA[Visualization of Regular Maps: The Chase Continues]]></title>
+
+<authors><![CDATA[van Wijk, J.J.]]></authors>
+
+<affiliations><![CDATA[Eindhoven Univ. of Technol., Eindhoven, Netherlands]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[computational geometry]]></term>
+
+<term><![CDATA[data visualisation]]></term>
+
+<term><![CDATA[solid modelling]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Data visualization]]></term>
+
+<term><![CDATA[Image color analysis]]></term>
+
+<term><![CDATA[Shape analysis]]></term>
+
+<term><![CDATA[Solid modeling]]></term>
+
+<term><![CDATA[Surface treatment]]></term>
+
+<term><![CDATA[Terrain mapping]]></term>
+
+<term><![CDATA[Three-dimensional displays]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[20]]></volume>
+
+<issue><![CDATA[12]]></issue>
+
+<py><![CDATA[2014]]></py>
+
+<spage><![CDATA[2614]]></spage>
+
+<epage><![CDATA[2623]]></epage>
+
+<abstract><![CDATA[A regular map is a symmetric tiling of a closed surface, in the sense that all faces, vertices, and edges are topologically indistinguishable. Platonic solids are prime examples, but also for surfaces with higher genus such regular maps exist. We present a new method to visualize regular maps. Space models are produced by matching regular maps with target shapes in the hyperbolic plane. The approach is an extension of our earlier work. Here a wider variety of target shapes is considered, obtained by duplicating spherical and toroidal regular maps, merging triangles, punching holes, and gluing the edges. The method produces about 45 new examples, including the genus 7 Hurwitz surface.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[6887357]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2014.2352952]]></doi>
+
+<publicationId><![CDATA[6887357]]></publicationId>
+
+<partnum><![CDATA[6887357]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6887357&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6887357]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3040</rank>
+
+<title><![CDATA[Multiscale volume representation by a DoG wavelet]]></title>
+
+<authors><![CDATA[Muraki, S.]]></authors>
+
+<affiliations><![CDATA[Image Understanding Section, Electrotech. Lab., Tsukuba, Japan]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[Gaussian processes]]></term>
+
+<term><![CDATA[data compression]]></term>
+
+<term><![CDATA[data visualisation]]></term>
+
+<term><![CDATA[function approximation]]></term>
+
+<term><![CDATA[rendering (computer graphics)]]></term>
+
+<term><![CDATA[wavelet transforms]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Biological system modeling]]></term>
+
+<term><![CDATA[Data compression]]></term>
+
+<term><![CDATA[Density functional theory]]></term>
+
+<term><![CDATA[Gaussian approximation]]></term>
+
+<term><![CDATA[Gaussian processes]]></term>
+
+<term><![CDATA[Laplace equations]]></term>
+
+<term><![CDATA[Shape]]></term>
+
+<term><![CDATA[Spatial resolution]]></term>
+
+<term><![CDATA[Surface fitting]]></term>
+
+<term><![CDATA[Wavelet coefficients]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[1]]></volume>
+
+<issue><![CDATA[2]]></issue>
+
+<py><![CDATA[1995]]></py>
+
+<spage><![CDATA[109]]></spage>
+
+<epage><![CDATA[116]]></epage>
+
+<abstract><![CDATA[This article presents a method for decomposing volume data into 3D DoG (difference of Gaussians) functions by using the frame theory of nonorthogonal wavelets. Since we can think of a DoG function as a pair of Gaussian functions, we can consider this method an automatic generation of Blinn's blobby objects (1982). We can also use this representation method for data compression by neglecting the insignificant coefficients, since the wavelet coefficients have significant values only where the volume density changes. Further, since the DoG function closely approximates a &nabla;<sup>2</sup>G (Laplacian of Gaussian) function, the representation can be considered a hierarchy of the 3D edges on different resolution spaces. Using the spherically symmetric feature of the 3D DoG function, we can easily visualize the 3D edge structure by the density reprojection method. We apply our representation method to medical CT volume data and show its efficiency in describing the spatial structure of the volume]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<arnumber><![CDATA[468408]]></arnumber>
+
+<doi><![CDATA[10.1109/2945.468408]]></doi>
+
+<publicationId><![CDATA[468408]]></publicationId>
+
+<partnum><![CDATA[468408]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=468408&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=468408]]></pdf>
+
+</document>
+
+<document>
+
+<rank>3041</rank>
+
+<title><![CDATA[Visual Reconciliation of Alternative Similarity Spaces in Climate Modeling]]></title>
+
+<authors><![CDATA[Poco, J.;  Dasgupta, A.;  Yaxing Wei;  Hargrove, W.;  Schwalm, C.R.;  Huntzinger, D.N.;  Cook, R.;  Bertini, E.;  Silva, C.T.]]></authors>
+
+<affiliations><![CDATA[New York Univ., New York, NY, USA]]></affiliations>
+
+<controlledterms>
+
+<term><![CDATA[climatology]]></term>
+
+<term><![CDATA[data visualisation]]></term>
+
+<term><![CDATA[geographic information systems]]></term>
+
+<term><![CDATA[meteorology]]></term>
+
+<term><![CDATA[pattern clustering]]></term>
+
+</controlledterms>
+
+<thesaurusterms>
+
+<term><![CDATA[Adaptation models]]></term>
+
+<term><![CDATA[Analytical models]]></term>
+
+<term><![CDATA[Computational modeling]]></term>
+
+<term><![CDATA[Data models]]></term>
+
+<term><![CDATA[Meteorology]]></term>
+
+<term><![CDATA[Visual analytics]]></term>
+
+</thesaurusterms>
+
+<pubtitle><![CDATA[Visualization and Computer Graphics, IEEE Transactions on]]></pubtitle>
+
+<punumber><![CDATA[2945]]></punumber>
+
+<pubtype><![CDATA[Journals & Magazines]]></pubtype>
+
+<publisher><![CDATA[IEEE]]></publisher>
+
+<volume><![CDATA[20]]></volume>
+
+<issue><![CDATA[12]]></issue>
+
+<py><![CDATA[2014]]></py>
+
+<spage><![CDATA[1923]]></spage>
+
+<epage><![CDATA[1932]]></epage>
+
+<abstract><![CDATA[Visual data analysis often requires grouping of data objects based on their similarity. In many application domains researchers use algorithms and techniques like clustering and multidimensional scaling to extract groupings from data. While extracting these groups using a single similarity criteria is relatively straightforward, comparing alternative criteria poses additional challenges. In this paper we define visual reconciliation as the problem of reconciling multiple alternative similarity spaces through visualization and interaction. We derive this problem from our work on model comparison in climate science where climate modelers are faced with the challenge of making sense of alternative ways to describe their models: one through the output they generate, another through the large set of properties that describe them. Ideally, they want to understand whether groups of models with similar spatio-temporal behaviors share similar sets of criteria or, conversely, whether similar criteria lead to similar behaviors. We propose a visual analytics solution based on linked views, that addresses this problem by allowing the user to dynamically create, modify and observe the interaction among groupings, thereby making the potential explanations apparent. We present case studies that demonstrate the usefulness of our technique in the area of climate science.]]></abstract>
+
+<issn><![CDATA[1077-2626]]></issn>
+
+<htmlFlag><![CDATA[1]]></htmlFlag>
+
+<arnumber><![CDATA[6876041]]></arnumber>
+
+<doi><![CDATA[10.1109/TVCG.2014.2346755]]></doi>
+
+<publicationId><![CDATA[6876041]]></publicationId>
+
+<partnum><![CDATA[6876041]]></partnum>
+
+<mdurl><![CDATA[http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6876041&contentType=Journals+%26+Magazines]]></mdurl>
+
+<pdf><![CDATA[http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6876041]]></pdf>
+
+</document>
+
+</root>

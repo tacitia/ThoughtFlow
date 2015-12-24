@@ -21,10 +21,11 @@ function AssociationMap(Core) {
 
   ////////////////////
 
-  function initialize(userId) {
+  function initialize(userId, successFn) {
     Core.getAssociationMap(userId, function(response) {
       associationMap = response.data;
       console.log('>> User association map retrieved...');
+      successFn();
     }, function(response) {
       console.log('server error when retrieving association map');
       console.log(response);
@@ -61,7 +62,7 @@ function AssociationMap(Core) {
       function(response) {
         console.log(response.data[0])
         associationMap.push(response.data[0]);
-        successFn();
+        successFn(response.data[0]);
       }, function(response) {
         console.log('server error when saving new association');
         console.log(response);

@@ -5,6 +5,7 @@ import PubMedQuerier
 import PubMedParser
 import TermExtractor
 import TopicModeler
+import XploreParser
 from itertools import chain
 
 from core.models import Association, Concept, Evidence, Text, EvidenceBookmark, EvidenceTopic
@@ -36,7 +37,14 @@ def flattenSerializedJson(input):
 
 
 class TextView(View):
-    def post(self, request, format=None):
+    def get(self, request, user_id, format=None):
+        texts = Text.objects.filter(created_by=user_id)
+        serialized_json = serializers.serialize('json', texts)
+        text_json = flattenSerializedJson(serialized_json)
+        return HttpResponse(text_json, status=status.HTTP_200_OK)   
+
+    def post(self, request, user_id, format=None):
+        print 'post request!'
         data = json.loads(request.body)
         if data['is_new']: 
             text = Text.objects.create_text(data['title'], data['content'], data['created_by'])
@@ -62,7 +70,20 @@ class ConceptView(View):
         return HttpResponse(concept_json, status=status.HTTP_201_CREATED) 
 
 class EvidenceView(View):
-    def post(self, request, format=None):
+    def get(self, request, user_id, format=None):
+        # get both user created and bookmarked evidence (cited / associated evidence are automatically bookmarked)
+        evidenceCreated = Evidence.objects.filter(created_by=user_id)
+        evidenceBookmarks = EvidenceBookmark.objects.filter(user_id=user_id)
+        evidenceBookmarkedIds = [eb.evidence.pk for eb in evidenceBookmarks]
+        evidenceBookmarked = Evidence.objects.filter(pk__in=evidenceBookmarkedIds)
+        evidence = chain(evidenceCreated, evidenceBookmarked)
+        serialized_json = serializers.serialize('json', evidence)
+        evidence_json = flattenSerializedJson(serialized_json)
+
+        return HttpResponse(evidence_json, status=status.HTTP_200_OK) 
+
+
+    def post(self, request, user_id, format=None):
         data = json.loads(request.body)
         evidence = Evidence.objects.create_evidence(data['title'], data['abstract'], data['metadata'], data['created_by'])
         print evidence
@@ -77,8 +98,7 @@ class DeleteEntryView(View):
     def post(self, request, type, format=None):
         data = json.loads(request.body)
         user_id = data['user_id']
-        id = data['id']
-        print type
+        id = str(data['id'])
         if type == 'text':
             Text.objects.filter(Q(created_by=user_id)&Q(pk=id)).delete()
         elif type == 'concept':
@@ -217,7 +237,7 @@ def association(request):
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
     elif request.method == 'POST':
         data = json.loads(request.body)
-        association = Association.objects.create_association(data['sourceType'], data['targetType'], data['sourceId'], data['targetId'], data['created_by'])
+        association = Association.objects.create_association(data['sourceType'], data['targetType'], str(data['sourceId']), str(data['targetId']), data['created_by'])
         print association
         if (data['sourceType'] == 'evidence' and data['targetType'] == 'text'):
             EvidenceBookmark.objects.create_entry(data['sourceId'], data['created_by'])
@@ -229,15 +249,24 @@ def association(request):
 def deleteAssociation(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        Association.objects.delete_association(data['sourceType'], data['targetType'], data['sourceId'], data['targetId'], data['created_by'])
+        Association.objects.delete_association(data['sourceType'], data['targetType'], str(data['sourceId']), str(data['targetId']), data['created_by'])
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
+
+
+def addBookmark(request):
+    if request.method == 'POST':
+        print '???'
+        data = json.loads(request.body)
+        EvidenceBookmark.objects.create_entry(evidence_id=data['evidence_id'], user_id=data['user_id'])
+        return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
+
 
 def deleteBookmark(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         print data
         EvidenceBookmark.objects.filter(evidence_id=data['evidence_id'], user_id=data['user_id']).delete()
-        Association.objects.filter(created_by=data['user_id'], sourceId=data['evidence_id']).delete()
+        Association.objects.filter(created_by=data['user_id'], sourceId=str(data['evidence_id'])).delete()
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
 
 
@@ -290,20 +319,21 @@ def getEvidenceCollection(request, collection_id):
     if request.method == 'GET':
         evidence_count = Evidence.objects.filter(created_by=collection_id).count()
 
-        evidence = Evidence.objects.filter(evidencetopic__created_by=collection_id)
+        evidence = Evidence.objects.filter(evidencetopic__created_by=collection_id)[:100]
         serialized_json = serializers.serialize('json', evidence)
         evidence_json = flattenSerializedJson(serialized_json)
 
-        evidenceTopics = EvidenceTopic.objects.filter(created_by=collection_id)
+        evidenceTopics = EvidenceTopic.objects.filter(created_by=collection_id)[:100]
         serialized_json = serializers.serialize('json', evidenceTopics, fields=('evidence', 'primary_topic', 'primary_topic_prob', 'topic_dist'))
         evidenceTopics_json = flattenSerializedJson(serialized_json)
 
         names = {}
         names[10] = 'visualization'
-        names[11] = ' pfc and executive functions'
+        names[11] = 'pfc and executive functions'
         names[12] = 'virtual reality'
+        names[13] = 'TVCG'
 
-        topicList = TopicModeler.get_online_lda_topics(names[int(collection_id)], evidence_count/200)
+        topicList = TopicModeler.get_online_lda_topics(names[int(collection_id)], evidence_count / 10)
         output = {}
         output['evidence'] = json.loads(evidence_json)
         output['evidenceTopics'] = json.loads(evidenceTopics_json)
@@ -318,8 +348,10 @@ def getEvidenceRecommendation(request):
     if request.method == 'POST':
         data = json.loads(request.body)
 #        data = {}
-#        data['text'] = 'cognitive control fmri task'
-        name = ' pfc and executive functions'
+#        data['text'] = 'Using brain imaging in humans, we showed that the lateral PFC is organized as a cascade of executive processes from premotor to anterior PFC regions that control behavior according to stimuli, the present perceptual context, and the temporal episode in which stimuli occur, respectively.'
+#        name = 'pfc and executive functions'
+        name = 'TVCG'
+        collection_id = 13
         topic_dist, primary_topic_terms = TopicModeler.get_document_topics(data['text'], name)
         primary_topic_tuple = max(topic_dist, key=lambda x:x[1])
         output = {}
@@ -328,7 +360,7 @@ def getEvidenceRecommendation(request):
         output['topics'][0]['prob'] = primary_topic_tuple[1]
 
 #        evidence = getEvidenceRecommendationAcrossTopics(topic_dist, name)
-        output['evidence'] = getEvidenceRecommendationWithinTopics(topic_dist, name)
+        output['evidence'] = getEvidenceRecommendationWithinTopics(topic_dist, name, collection_id)[:100]
 
         return HttpResponse(json.dumps(output), status=status.HTTP_200_OK)
 
@@ -343,9 +375,9 @@ def getEvidenceRecommendationAcrossTopics(topic_dist, name):
     evidence_json = flattenSerializedJson(serialized_json)
     return json.loads(evidence_json)
 
-def getEvidenceRecommendationWithinTopics(topic_dist, name):
+def getEvidenceRecommendationWithinTopics(topic_dist, name, collection_id):
     primary_topic_tuple = max(topic_dist, key=lambda x:x[1])
-    evidence = Evidence.objects.filter(evidencetopic__primary_topic=primary_topic_tuple[0]) # use this if later needs to get evidence by topic
+    evidence = Evidence.objects.filter(Q(evidencetopic__primary_topic=primary_topic_tuple[0])&Q(created_by=collection_id)) # use this if later needs to get evidence by topic
     serialized_json = serializers.serialize('json', evidence)
     evidence_json = flattenSerializedJson(serialized_json)
     evidence = json.loads(evidence_json)
@@ -353,6 +385,45 @@ def getEvidenceRecommendationWithinTopics(topic_dist, name):
     evidence_ids = TopicModeler.compute_documents_similarity_sub(topic_dist, abstracts, name)
     sorted_evidence = map(lambda index:evidence[index], evidence_ids)
     return sorted_evidence
+
+def getEvidenceByTopic(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        collection_id = data['collection_id']
+        topic_id = data['topic_id']
+        user_id = data['user_id']
+        evidence = Evidence.objects.filter(Q(evidencetopic__created_by=collection_id)&Q(evidencetopic__primary_topic=topic_id))
+        evidenceBookmarks = EvidenceBookmark.objects.filter(user_id=user_id)
+        serialized_json = serializers.serialize('json', evidence)
+        evidence_json = flattenSerializedJson(serialized_json)
+        serialized_json = serializers.serialize('json', evidenceBookmarks)
+        evidenceBookmark_json = flattenSerializedJson(serialized_json)
+        output = {}
+        output['evidence'] = json.loads(evidence_json)
+        output['evidenceBookmarks'] = json.loads(evidenceBookmark_json)
+
+        return HttpResponse(json.dumps(output), status=status.HTTP_200_OK)
+
+
+def loadXploreData(request):
+    user_id = 13
+    if request.method == 'GET':
+        entries = XploreParser.getEntries()
+        for e in entries:
+            evidence = Evidence.objects.create_evidence(e['title'], e['abstract'], json.dumps({
+                    'PUBID': e['publicationId'],                            
+                    'AUTHOR': e['authors'],
+                    'JOURNAL': 'IEEE Transactions on Visualization and Computer Graphics',
+                    'DATE': e['date'],
+                    'AFFILIATION': e['affiliations']
+                }), user_id)
+            print evidence
+            for t in e['terms']:
+                concept = Concept.objects.create_concept(t, user_id)
+                print concept
+                Association.objects.create_association('concept', 'evidence', concept.id, evidence.id, 0)
+
+        return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
 
 # This is a special function that loads a large document collection, performs topic modeling over them,
 # then caches the topic modeling results
@@ -369,14 +440,15 @@ def loadBatchResults(request):
 
 def loadOnlineLDA(request):
     if request.method == 'GET':
-        user_id = 11
+        user_id = 13
         evidence = Evidence.objects.filter(created_by=user_id)
         serialized_json = serializers.serialize('json', evidence)
         evidence_json = flattenSerializedJson(serialized_json)
         loaded_evidence = json.loads(evidence_json)
         abstracts = [e['abstract'] for e in loaded_evidence]
         evidencePks = [e['id'] for e in loaded_evidence]
-        name = ' pfc and executive functions'
+        name = 'TVCG'
+#        name = 'pfc and executive functions'
         evidenceTopicMap, topicList = TopicModeler.load_online_lda(abstracts, evidencePks, name)
         saveTopicsForEvidence(evidenceTopicMap, user_id)
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
@@ -384,23 +456,26 @@ def loadOnlineLDA(request):
 def createOnlineLDA(request):
     if request.method == 'GET':
         print '>> preparing data for online lda...'
-        user_id = 10
+        user_id = 13
         evidence = Evidence.objects.filter(created_by=user_id)
         serialized_json = serializers.serialize('json', evidence)
         evidence_json = flattenSerializedJson(serialized_json)
         loaded_evidence = json.loads(evidence_json)
         abstracts = [e['abstract'] for e in loaded_evidence]
         evidencePks = [e['id'] for e in loaded_evidence]
-        name = 'visualization'
+        name = 'TVCG'
+#        name = 'virtual reality'
+#        name = 'visualization'
+#        name = 'pfc and executive functions'
         numDocs = len(loaded_evidence)
-        evidenceTopicMap, topics = TopicModeler.create_online_lda(abstracts, evidencePks, name, math.ceil(numDocs / 200))
-        saveTopicsForEvidence(evidenceTopicMap, user_id)
+        evidenceTopicMap, topics = TopicModeler.create_online_lda(abstracts, evidencePks, name, math.ceil(numDocs / 10))
+#        saveTopicsForEvidence(evidenceTopicMap, user_id)
 
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
 
 def createSimilarityMatrix(request):
     if request.method == 'GET':
-        # name = ' pfc and executive functions'
+        # name = 'pfc and executive functions'
         name = 'visualization'
         TopicModeler.create_similarity_matrix(name)
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)        

@@ -6,6 +6,7 @@
 
   function Core($cookies, $http) {
     var Core = {
+      addBookmark: addBookmark,
       deleteEntry: deleteEntry,
       postTextByUserId: postTextByUserId,
       postConceptByUserId: postConceptByUserId,
@@ -13,8 +14,11 @@
       postAssociationByUserId: postAssociationByUserId,
       deleteAssociationByUserId: deleteAssociationByUserId,
       deleteBookmark: deleteBookmark,
+      getAllTextsForUser: getAllTextsForUser,
+      getAllEvidenceForUser: getAllEvidenceForUser,
       getAllDataForUser: getAllDataForUser,
       getAssociationMap: getAssociationMap,
+      getEvidenceByTopic: getEvidenceByTopic,
       getEvidenceCollection: getEvidenceCollection,
       getEvidenceTextTopicsForUser: getEvidenceTextTopicsForUser
     };
@@ -22,6 +26,16 @@
     return Core;
 
     ////////////////////
+
+    function getAllTextsForUser(userId, successFn, errorFn) {
+      return $http.get('/api/v1/data/texts/' + userId + '/')
+       .then(successFn, errorFn);
+    } 
+
+    function getAllEvidenceForUser(userId, successFn, errorFn) {
+      return $http.get('/api/v1/data/evidence/' + userId + '/')
+       .then(successFn, errorFn);
+    }       
 
     function getAllDataForUser(userId, successFn, errorFn) {
       return $http.get('/api/v1/data/user-data/' + userId + '/')
@@ -35,8 +49,7 @@
 
 
     function postTextByUserId(userId, title, content, isNew, textId, successFn, errorFn) {
-      console.log(textId);
-      return $http.post('/api/v1/data/texts/', {
+      return $http.post('/api/v1/data/texts/' + userId + '/', {
         created_by: userId,
         title: title,
         content: content,
@@ -58,7 +71,8 @@
     }
 
     function getEvidenceCollection(collectionId, successFn, errorFn) {
-      return $http.get('/api/v1/data/collection/' + collectionId + '/')
+      console.log('>> Retrieving evidence collection...');
+      $http.get('/api/v1/data/collection/' + collectionId + '/')
         .then(successFn, errorFn);
     }
 
@@ -71,6 +85,14 @@
       }).then(successFn, errorFn);
     }
 
+    function getEvidenceByTopic(collectionId, topicId, userId, successFn, errorFn) {
+      $http.post('/api/v1/service/getEvidenceByTopic/', {
+        collection_id: collectionId,
+        topic_id: topicId,
+        user_id: userId
+      }).then(successFn, errorFn);
+    }
+
     function postAssociationByUserId(userId, sourceType, targetType, sourceId, targetId, successFn, errorFn) {
       return $http.post('/api/v1/data/association/', {
         created_by: userId,
@@ -79,6 +101,15 @@
         sourceId: sourceId,
         targetId: targetId
       }).then(successFn, errorFn)      
+    }
+
+    function addBookmark(userId, evidenceId, successFn, errorFn) {
+      console.log('add bookmark called');
+      return $http.post('/api/v1/data/bookmark/', {
+        // switch to using the id of the currently active user
+        user_id: userId,
+        evidence_id: evidenceId
+      }).then(successFn, errorFn);      
     }
 
     function deleteAssociationByUserId(userId, sourceType, targetType, sourceId, targetId, successFn, errorFn) {

@@ -1,3 +1,7 @@
+*.pyc
+*.mm
+*.dict
+*.index
 project/core/batchresults/
 *.lda
 *.state
