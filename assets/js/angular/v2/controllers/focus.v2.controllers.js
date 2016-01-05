@@ -14,10 +14,17 @@ angular.module('focus.v2.controllers')
       $scope.recommendedEvidence = [];
       $scope.citedEvidence = [];
       $scope.paragraphInformation = [];
+      $scope.paragraphCitation = [];
 
       $scope.loadingRecommendedEvidence = false;
+      $scope.citationTabs = {
+        'recommended': {active: true},
+        'cited': {active: false},
+        'bookmarked': {active: false}
+      };
 
-      var userId = 113;
+
+      var userId = 111;
       $scope.evidence = null;
       var textEvidenceAssociations = null;
       var evidenceIdMap = {};
@@ -31,7 +38,9 @@ angular.module('focus.v2.controllers')
        
       Core.getAllTextsForUser(userId, function(response) {
         $scope.texts = response.data;
-        $scope.selectText($scope.texts[0]);
+        if ($scope.texts.length > 0) {
+          $scope.selectText($scope.texts[0]);
+        }
       }, function(response) {
         console.log('server error when retrieving texts for user ' + userId);
         console.log(response);
@@ -76,10 +85,13 @@ angular.module('focus.v2.controllers')
 
       $scope.selectText = function(text) {
         $scope.selectedText = text;
+        $scope.paragraphInformation = [];
+        $scope.paragraphCitation = [];
         $scope.activeParagraphs = _.filter(text.content.split('/n'), function(text) {
           return text !== '';
         }).map(function(p, i) {
           $scope.paragraphInformation.push({});
+          $scope.paragraphCitation.push([]);
           updateRecommendedCitations(p, i);
           return {text: p};
         });
@@ -112,22 +124,74 @@ angular.module('focus.v2.controllers')
             $scope.citedEvidence.push(evidence);            
             index = $scope.citedEvidence.length - 1;
           }
-          // Add evidence reference id to the text
-          insertTextAtCursor('[' + (index+1) + ']');
+
+          $scope.paragraphCitation[$scope.selectedParagraph].push({
+            index: index,
+            evidence: evidence
+          });
+
         });
       };
+
+      $scope.showCitation = function(citation) {
+        $scope.selectEvidence(citation.evidence);
+        $scope.citationTabs['cited'].active = true;
+      }
+
+      $scope.addTextEntry = function() {
+        var modalInstance = $modal.open({
+          templateUrl: 'modal/textsModal.html',
+          controller: 'TextsModalController',
+          resolve: {
+            textsInfo: function() {
+              return {
+                id: -1,
+                title: "",
+                content: ""
+              }
+            },
+            concepts: function() {
+              return null;
+            },
+            evidence: function() {
+              return $scope.evidence;
+            },
+            userId: function() {
+              return userId;
+            }
+          }
+        });
+
+        modalInstance.result.then(function (newEntry) {
+          $scope.texts.push(newEntry);
+        });
+      }
+
 
       function updateCitedEvidence() {
         if (textEvidenceAssociations === null || _.size(evidenceIdMap) === 0) return;
         $scope.citedEvidence = _.uniq(_.filter(textEvidenceAssociations, function(a) {
-          console.log(a.targetId.toString().split('-')[0] == $scope.selectedText.id)
           return a.targetId.toString().split('-')[0] == $scope.selectedText.id;
-        }).map(function(a) {
-          console.log(evidenceIdMap)
+        }).map(function(a) {  
           return evidenceIdMap[a.sourceId];
         }));
+
+        // Identify citations for each paragraph
+        textEvidenceAssociations.forEach(function(a) {
+          var textId = a.targetId.toString().split('-');
+          if (textId[0] != $scope.selectedText.id) return;
+          var paragraphIndex = parseInt(textId[1]);   
+          var e = evidenceIdMap[a.sourceId];
+          var evidenceIndex = $scope.citedEvidence.indexOf(e);
+          $scope.paragraphCitation[paragraphIndex].push({
+            index: evidenceIndex,
+            evidence: e
+          });
+        });
+
         console.log('updating cited evidence')
         console.log($scope.citedEvidence)
+        console.log($scope.paragraphCitation);
       }
 
       function insertTextAtCursor(text) { 
@@ -154,6 +218,7 @@ angular.module('focus.v2.controllers')
           e.preventDefault();
           $scope.activeParagraphs.splice(i+1, 0, {text: ''});
           $scope.paragraphInformation.splice(i+1, 0, {});
+          $scope.paragraphCitation.splice(i+1, 0, []);
           newParagraphIndex = i+1;
           updateRecommendedCitations($scope.activeParagraphs[i].text, i);
 
@@ -167,7 +232,35 @@ angular.module('focus.v2.controllers')
       };
 
       $scope.deleteText = function() {
+        var modalInstance = $modal.open({
+          templateUrl: 'modal/deleteModal.html',
+          controller: 'DeleteModalController',
+          resolve: {
+            content: function() {
+              return $scope.selectedText.title;
+            },
+            ids: function() {
+              return [$scope.selectedText.id];
+            },
+            type: function() {
+              return 'text';
+            },
+            userId: function() {
+              return userId;
+            }
+          }
+        });      
 
+        var target = $scope.texts;
+
+        modalInstance.result.then(function (deletedEntryId) {
+          for (var i = 0; i < deletedEntryId.length; ++i) {
+            var entryId = deletedEntryId[i];
+            _.remove(target, function(elem) {
+              return elem.id == entryId;
+            })
+          };
+        });
       };
 
 
@@ -208,7 +301,6 @@ angular.module('focus.v2.controllers')
         Core.postTextByUserId(userId, $scope.selectedText.title, newContent, false, $scope.selectedText.id, 
           function(response) {
             $scope.texts.forEach(function(t) {
-              console.log(response.data[0].id);
               if (t.id === response.data[0].id) {
                 t.content = newContent;
               }

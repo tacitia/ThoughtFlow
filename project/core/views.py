@@ -319,13 +319,13 @@ def getEvidenceCollection(request, collection_id):
     if request.method == 'GET':
         evidence_count = Evidence.objects.filter(created_by=collection_id).count()
 
-        evidence = Evidence.objects.filter(evidencetopic__created_by=collection_id)[:100]
-        serialized_json = serializers.serialize('json', evidence)
-        evidence_json = flattenSerializedJson(serialized_json)
+#        evidence = Evidence.objects.filter(evidencetopic__created_by=collection_id)[:100]
+#        serialized_json = serializers.serialize('json', evidence)
+#        evidence_json = flattenSerializedJson(serialized_json)
 
-        evidenceTopics = EvidenceTopic.objects.filter(created_by=collection_id)[:100]
-        serialized_json = serializers.serialize('json', evidenceTopics, fields=('evidence', 'primary_topic', 'primary_topic_prob', 'topic_dist'))
-        evidenceTopics_json = flattenSerializedJson(serialized_json)
+#        evidenceTopics = EvidenceTopic.objects.filter(created_by=collection_id)[:100]
+#        serialized_json = serializers.serialize('json', evidenceTopics, fields=('evidence', 'primary_topic', 'primary_topic_prob', 'topic_dist'))
+#        evidenceTopics_json = flattenSerializedJson(serialized_json)
 
         names = {}
         names[10] = 'visualization'
@@ -335,9 +335,14 @@ def getEvidenceCollection(request, collection_id):
 
         topicList = TopicModeler.get_online_lda_topics(names[int(collection_id)], evidence_count / 10)
         output = {}
-        output['evidence'] = json.loads(evidence_json)
-        output['evidenceTopics'] = json.loads(evidenceTopics_json)
+#        output['evidence'] = json.loads(evidence_json)
+#        output['evidenceTopics'] = json.loads(evidenceTopics_json)
         output['topics'] = topicList
+        output['topicEvidenceCounts'] = {}
+        for i in range(len(topicList)):
+            topic_id = topicList[i][0]
+            evidence_count = Evidence.objects.filter(Q(evidencetopic__primary_topic=topic_id)&Q(created_by=collection_id)).count()
+            output['topicEvidenceCounts'][topic_id] = evidence_count
 
         return HttpResponse(json.dumps(output), status=status.HTTP_200_OK)
 
@@ -349,9 +354,9 @@ def getEvidenceRecommendation(request):
         data = json.loads(request.body)
 #        data = {}
 #        data['text'] = 'Using brain imaging in humans, we showed that the lateral PFC is organized as a cascade of executive processes from premotor to anterior PFC regions that control behavior according to stimuli, the present perceptual context, and the temporal episode in which stimuli occur, respectively.'
-#        name = 'pfc and executive functions'
-        name = 'TVCG'
-        collection_id = 13
+        name = 'pfc and executive functions'
+#        name = 'TVCG'
+        collection_id = 11
         topic_dist, primary_topic_terms = TopicModeler.get_document_topics(data['text'], name)
         primary_topic_tuple = max(topic_dist, key=lambda x:x[1])
         output = {}

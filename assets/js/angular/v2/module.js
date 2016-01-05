@@ -12,7 +12,7 @@ angular
   .module('v2.controllers', ['modalModule']);
 
 angular
-  .module('explore.v2.controllers', ['angularFileUpload']);
+  .module('explore.v2.controllers', ['angularFileUpload', 'ui.select', 'ngSanitize']);
 
 angular
   .module('focus.v2.controllers', ['angularFileUpload']);

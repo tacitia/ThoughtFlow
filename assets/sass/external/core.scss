@@ -237,6 +237,9 @@ body, html {
 #v2 {
   #control {
     margin-left: 50px;
+    .selected-topic-term.active {
+      background-color: #f5f5f5;  
+    }
   }
 }
 

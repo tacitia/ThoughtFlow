@@ -7561,6 +7561,9 @@ body, html {
 #v2 #control {
   margin-left: 50px;
 }
+#v2 #control .selected-topic-term.active {
+  background-color: #f5f5f5;
+}
 
 #focus h3 {
   padding-bottom: 15px;

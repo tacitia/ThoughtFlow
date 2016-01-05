@@ -10,8 +10,8 @@ angular.module('explore.v2.controllers')
 
     var defaultFill = '#ccc';
 
-    var userId = 113;
-    var collectionId = 13;
+    var userId = 111;
+    var collectionId = 11;
 
     var termBatchSize = 30;
     var topicBatchSize = 30;
@@ -20,6 +20,9 @@ angular.module('explore.v2.controllers')
     $scope.selectedTerms = [];
     $scope.selectedWords = [];
     $scope.selectedTopic = null;
+    $scope.topicEvidenceCountMap = null;
+
+    $scope.selected = {};
 
     $scope.loadingEvidence = true;
     $scope.loadingTopicEvidence = false;
@@ -30,6 +33,7 @@ angular.module('explore.v2.controllers')
     Core.getEvidenceCollection(collectionId, function(response) {
       console.log(response.data);
       $scope.loadingEvidence = false;
+      $scope.topicEvidenceCountMap = response.data.topicEvidenceCounts;
       $scope.topics = response.data.topics.map(function(topic) {
         return {
           id: topic[0],
@@ -42,6 +46,8 @@ angular.module('explore.v2.controllers')
         }
       });
       TermTopic.initialize($scope.topics);
+      $scope.terms = TermTopic.getAllTerms();
+      $scope.selected.searchTerm = $scope.terms[0];
       visualizeTopicTermDistribution();
 //      visualizeTopicTermGraph();
 //      visualizeTopicTermMatrix($scope.topics);
@@ -51,18 +57,34 @@ angular.module('explore.v2.controllers')
     });
 
     function updateTerms() {
-      var terms = TermTopic.getTopTerms('weight', termBatchSize, $scope.termStartIndex);
-      var topicAndConnections = TermTopic.getTopTopics(terms, topicBatchSize);
+      var terms = TermTopic.getTopTerms('weight', termBatchSize, $scope.termStartIndex, $scope.selectedTerms);
+      var topicAndConnections = TermTopic.getTopTopics(terms, topicBatchSize, $scope.selectedTerms);
       var topics = topicAndConnections.topics;
       var termTopicConnections = topicAndConnections.termTopicConnections;
       visualizeTopTerms(topTermContainer, 300, 600, terms);
       visualizeTermTopicConnections(termTopicConnectionContainer, 100, 600, terms, topics, termTopicConnections);
       visualizeTopTopics(topTopicContainer, 650, 600, topics);
+      updateTermTopicFills();
+      updateConnectionStrokes();
     }
+
+    $scope.selectSearchTerm = function(term) {
+      $scope.selectedTerms.push(term.term);
+      $scope.termStartIndex = 0;
+      updateTerms();
+//      updateTerms(newTerms, topics, termTopicConnections);
+    };
 
     $scope.showNextTerms = function() {
       if (TermTopic.numOfTerms() > $scope.termStartIndex + termBatchSize) {
         $scope.termStartIndex += termBatchSize;
+        /*
+        var terms = TermTopic.getTopTerms('weight', termBatchSize, $scope.termStartIndex);
+        var topicAndConnections = TermTopic.getTopTopics(terms, topicBatchSize);
+        var topics = topicAndConnections.topics;
+        var termTopicConnections = topicAndConnections.termTopicConnections;
+        updateTerms(terms, topics, termTopicConnections);
+        */
         updateTerms();
       }
     };
@@ -70,6 +92,11 @@ angular.module('explore.v2.controllers')
     $scope.showPrevTerms = function() {
       if ($scope.termStartIndex - termBatchSize >= 0) {
         $scope.termStartIndex -= termBatchSize;
+        /*
+        var terms = TermTopic.getTopTerms('weight', termBatchSize, $scope.termStartIndex);
+        var topicAndConnections = TermTopic.getTopTopics(terms, topicBatchSize);
+        var topics = topicAndConnections.topics;
+        var termTopicConnections = topicAndConnections.termTopicConnections; */
         updateTerms();
       }
     };
@@ -82,9 +109,17 @@ angular.module('explore.v2.controllers')
       var topicTerms = _.take($scope.selectedTopic.terms, 10);
       for (var i = 0; i < topicTerms.length; ++i) {
         var term = topicTerms[i].term;
+        if (matchesTerm(w, term)) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    function matchesTerm(word, term) {
         var term_parts = term.split(' ');
-        var word_parts = w.split('-');
-        if (term_parts.indexOf(w) > -1) {
+        var word_parts = word.split('-');
+        if (term_parts.indexOf(word) > -1) {
           return true;
         }
         for (var j = 0; j < word_parts.length; ++j) {
@@ -92,10 +127,9 @@ angular.module('explore.v2.controllers')
           if (term_parts.indexOf(wp) > -1) {
             return true;
           }
-        }
-      }
-      return false;
-    };
+        } 
+        return false;    
+    }
 
     $scope.selectEvidence = function(evidence) {
       $scope.selectedEvidence = evidence;
@@ -113,10 +147,12 @@ angular.module('explore.v2.controllers')
     };
 
     $scope.updateTermTopicOrdering = function() {
-      var terms = TermTopic.getTopTerms('weight', termBatchSize, $scope.termStartIndex);
+      console.log($scope.selectedTerms)
+      var terms = TermTopic.getTopTerms('weight', termBatchSize, $scope.termStartIndex, $scope.selectedTerms);
       var topicsAndConnections = TermTopic.getTopTopics(terms, topicBatchSize, $scope.selectedTerms);
       var topics = topicsAndConnections.topics;
-      var connections = topicsAndConnections.termTopicConnections;
+      var connections = topicsAndConnections.termTopicConnections;      
+      visualizeTopTerms(topTermContainer, 300, 600, terms);
       visualizeTopTopics(topTopicContainer, 650, 600, topics);
       visualizeTermTopicConnections(termTopicConnectionContainer, 100, 600, terms, topics, connections);
       updateTermTopicFills();
@@ -139,7 +175,7 @@ angular.module('explore.v2.controllers')
         height: 600,
         margin: { 
           left: 50,
-          top: 50,
+          top: 80,
           bottom: 20,
           right: 0
         },
@@ -153,17 +189,27 @@ angular.module('explore.v2.controllers')
       canvas.append('text')
         .text('Terms (' + TermTopic.numOfTerms() + ' total)')
         .attr('font-size', 18)
-        .attr('transform', 'translate(170, 30)');
+        .attr('transform', 'translate(170, 20)');
 
       canvas.append('text')
         .text('Topics (' + TermTopic.numOfTopics() + ' total)')
         .attr('font-size', 18)
-        .attr('transform', 'translate(500, 30)');
+        .attr('transform', 'translate(500, 20)');
 
       canvas.append('text')
         .text('Similar topics')
         .attr('font-size', 18)
-        .attr('transform', 'translate(1150, 30)');
+        .attr('transform', 'translate(1150, 20)');
+
+      canvas.append('text')
+        .text('# of docs')
+        .attr('font-size', 14)
+        .attr('transform', 'translate(450, 60)');
+
+      canvas.append('text')
+        .text('term distribution')
+        .attr('font-size', 14)
+        .attr('transform', 'translate(725, 60)');
 
       var terms = TermTopic.getTopTerms('weight', termBatchSize, $scope.termStartIndex);
       var topicAndConnections = TermTopic.getTopTopics(terms, topicBatchSize);
@@ -173,9 +219,7 @@ angular.module('explore.v2.controllers')
       topTermContainer = configSvgContainer(canvas.append('svg'), 300, params.height, params.margin.left, params.margin.top);
       termTopicConnectionContainer = configSvgContainer(canvas.append('svg'), 100, params.height, params.margin.left + 300, params.margin.top);
       topTopicContainer = configSvgContainer(canvas.append('svg'), 650, params.height, params.margin.left + 400, params.margin.top);
-      topicNeighborContainer = configSvgContainer(canvas.append('svg'), 600, params.height, params.margin.left + 1050, params.margin.top);
-
-      console.log(terms)
+      topicNeighborContainer = configSvgContainer(canvas.append('svg'), 600, params.height + 30, params.margin.left + 1050, params.margin.top - 30);
 
       visualizeTopTerms(topTermContainer, 300, 600, terms);
       visualizeTermTopicConnections(termTopicConnectionContainer, 100, 600, terms, topics, termTopicConnections);
@@ -208,7 +252,7 @@ angular.module('explore.v2.controllers')
         });
 
       term.exit().remove();
-      term.enter()
+      var newTerms = term.enter()
         .append('g')
         .attr('class', 'term');
       term.transition()
@@ -216,14 +260,14 @@ angular.module('explore.v2.controllers')
           return 'translate(100, ' + y(i) + ')'; // Each group is moved right by 100, to leave 100 pixels for the texts
         });
 
-      term.append('text')
+      newTerms.append('text')
         .text(function(term) {
           return term.term;
         })
         .attr('text-anchor', 'end')
         .attr('dy', 13);
 
-      term.append('rect')
+      newTerms.append('rect')
         .attr('width', function(d) {
           return x(d.properties.weight);
         })
@@ -281,8 +325,6 @@ angular.module('explore.v2.controllers')
 
     function visualizeTopTopics(container, width, height, topTopics) {
 
-      console.log(topTopics)
-
       var y = d3.scale.ordinal()
         .domain(d3.range(topicBatchSize))
         .rangeBands([0, height], 0.05);
@@ -325,7 +367,7 @@ angular.module('explore.v2.controllers')
 
       topic.append('text')
         .text(function(topic) {
-          return topic.id;
+          return $scope.topicEvidenceCountMap[topic.id];
         })
         .attr('text-anchor', 'end')
         .attr('dy', 13)
@@ -344,23 +386,8 @@ angular.module('explore.v2.controllers')
         })
         .on('click', function(d) {
           d3.selectAll('.topic-background').attr('opacity', 0);
-          d3.select('#topic-bg-' + d.id).attr('opacity', 0.5);          
-          $scope.selectedTopic = d;
-          visualizeTopicCentricGraph(topicNeighborContainer, d);
-          $scope.loadingTopicEvidence = true;
-          Core.getEvidenceByTopic(collectionId, d.id, userId, function(response) {
-            $scope.evidence = response.data.evidence;
-            var bookmarkedEvidence = response.data.evidenceBookmarks.map(function(b) {
-              return b.evidence;
-            });
-            $scope.evidence.forEach(function(e) {
-              e.metadata = JSON.parse(e.metadata);
-              e.bookmarked = bookmarkedEvidence.indexOf(e.id) >= 0;
-            })
-            $scope.loadingTopicEvidence = false;
-          }, function(errorResponse) {
-            console.log(errorResponse);
-          })
+          d3.select('#topic-bg-' + d.id).attr('opacity', 0.5);        
+          setSelectedTopic(d);
         });      
 
       var probSum = 1;
@@ -418,6 +445,28 @@ angular.module('explore.v2.controllers')
         });      
     }
 
+    function setSelectedTopic(d) {
+      $scope.selectedTopic = d;
+      visualizeTopicNeighborMatrix(topicNeighborContainer, 600, 600, d);
+      $scope.selectedDocumentTerms = _.object(_.range(10).map(function(num) {
+        return [num, false];
+      }));
+      $scope.loadingTopicEvidence = true;
+      Core.getEvidenceByTopic(collectionId, d.id, userId, function(response) {
+        $scope.evidence = response.data.evidence;
+        var bookmarkedEvidence = response.data.evidenceBookmarks.map(function(b) {
+          return b.evidence;
+        });
+        $scope.evidence.forEach(function(e) {
+          e.metadata = JSON.parse(e.metadata);
+          e.bookmarked = bookmarkedEvidence.indexOf(e.id) >= 0;
+        })
+        $scope.loadingTopicEvidence = false;
+      }, function(errorResponse) {
+        console.log(errorResponse);
+      })      
+    } 
+
     function visualizeTermTopicConnections(container, width, height, terms, topics, connections) {
 
       var termIndexMap = getItemIndexMap(terms, 'origIndex');
@@ -468,6 +517,7 @@ angular.module('explore.v2.controllers')
       }));
     }
 
+    // Deprecated - replaced by visualizeTopicNeighborMatrix
     function visualizeTopicTermMatrix(topics) {
       var params = {
         width: 1000,
@@ -553,14 +603,118 @@ angular.module('explore.v2.controllers')
         });
     }
 
+    function visualizeTopicNeighborMatrix(container, assignedWidth, assignedHeight, topic) {
+      var topTerms = _.take(topic.terms, 10);
+      var neighborTopics = TermTopic.getNeighborTopics(topic, 2);
+
+      var width = Math.min(assignedWidth, topTerms.length * 30);
+      var height = Math.min(assignedHeight, neighborTopics.length * 20);
+
+      var margin = {
+        top: 80,
+        left: 20
+      }
+
+      var x = d3.scale.ordinal()
+        .domain(topTerms.map(function(term) {
+          return term.term;
+        }))
+        .rangeBands([0, width]);
+      var y = d3.scale.ordinal()
+        .domain(_.sortBy(neighborTopics, function(topic) {
+          return topic.numSharedTerms;
+        }).map(function(topic) {
+          return topic.id;
+        }))
+        .rangeBands([0, height]);
+
+      container.selectAll('.topic-row').remove();
+      container.selectAll('.term-col').remove();
+
+      var row = container.selectAll('.topic-row')
+        .data(neighborTopics)
+        .enter()
+        .append('g')
+        .attr('class', 'topic-row')
+        .attr('transform', function(d) {
+          return 'translate(' + margin.left + ', ' + (margin.top+y(d.id)) + ')';
+        });
+
+      row.append('line')
+        .attr('x2', width)
+        .attr('y1', 20)
+        .attr('y2', 20)
+        .attr('stroke', '#ccc')
+        .attr('stroke-width', 1);
+
+      row.append('rect')
+        .attr('class', 'topic-rect')
+        .attr('height', 20)
+        .attr('width', width)
+        .attr('stroke', 'white')
+        .attr('fill', '#ccc')
+        .on('mouseover', function(d, i) {
+          d3.select(this)
+            .attr('fill', 'steelblue');
+        })
+        .on('mouseout', function(d, i) {
+          d3.select(this)
+            .attr('fill', '#ccc');          
+        })
+        .on('click', function(d, i) {
+          console.log($scope.selectedTopic)
+          console.log(d)
+          setSelectedTopic(d);
+        });      
+
+      var column = container.selectAll('.term-col')
+        .data(topTerms)
+        .enter()
+        .append('g')
+        .attr('class', 'term-col')
+        .attr('transform', function(d) {
+          return 'translate(' + (margin.left + x(d.term)) + ', ' + margin.top + ')';
+        });
+
+/*
+      column.append('line')
+        .attr('y2', height)
+        .attr('stroke', '#ccc')
+        .attr('stroke-width', 1); */
+
+      column.append('text')
+        .attr('text-anchor', 'start')
+        .attr('dx', 10)
+        .attr('transform', 'rotate(-45)')
+        .text(function(d, i) {
+          return d.term;
+        });
+
+      column.selectAll('circle')
+        .data(function(term) {
+          return _.filter(neighborTopics, function(topic) {
+            return topic.terms.map(function(t) {
+              return t.term;
+            }).indexOf(term.term) > -1;
+          });
+        })
+        .enter()
+        .append('circle')
+        .attr('r', 5)
+        .attr('fill', 'white')
+        .attr('transform', function(d) {
+          return 'translate(15, ' + (10+y(d.id)) + ')'
+        });
+    }
+
+    // Deprecated; replaced by visualizeTopicNeighborMatrix
     function visualizeTopicCentricGraph(container, topic) {
 
-      console.log('called')
       container.selectAll('.node').remove();
       container.selectAll('.link').remove();
       container.selectAll('text').remove();
 
-      var results = TermTopic.getNeighborTopics(topic);
+      var results = TermTopic.getNeighborTopics(topic, 2);
       results.topics.forEach(function(topic) {
         topic.isFixed = false;
       })
@@ -817,6 +971,85 @@ angular.module('explore.v2.controllers')
 
     }
 
+    $scope.selectTermToFilterDocuments = function(term, index) {
+      // Update the colors of the terms
+      var colorScale = d3.scale.category20()
+        .domain(_.range(10));
+      $scope.selectedDocumentTerms[index] = !$scope.selectedDocumentTerms[index];
+      d3.selectAll('.selected-topic-term')
+        .style('background-color', function(d, i){
+          return $scope.selectedDocumentTerms[i] ? colorScale(i) : 'white';
+        });
+      // Sort the documents with the selected terms
+      // #marker
+      // This could be optimized by cacheing the scores for each evidence and term pair
+      var evidenceTermMap = {};
+      $scope.evidence.forEach(function(evidence) {
+        evidenceTermMap[evidence.id] = {};
+        for (var i = 0; i < 10; ++i) {
+          evidenceTermMap[evidence.id][i] = 0;
+          var term = $scope.selectedTopic.terms[i].term;
+          var words = evidence.abstract.split(' ');
+          for (var j in words) {
+            var w = words[j];
+            evidenceTermMap[evidence.id][i] += matchesTerm(w, term) ? 1 : 0;  
+          }
+        }
+      });
+
+      console.log('visualize doc decorators');
+      // Append labels to each document to indicate which terms it contains
+      d3.selectAll('.doc-decorator')
+        .selectAll('g')
+        .remove();
+      d3.selectAll('.doc-decorator')
+        .data($scope.evidence)
+        .append('g')
+        .selectAll('rect')
+        .data(function(d, i) {
+          console.log(_.pairs(evidenceTermMap[d.id]).length);
+          return _.pairs(evidenceTermMap[d.id]).map(function(pair) {
+            return {
+              termCount: pair[1],
+              evidenceId: d.id
+            }
+          });
+        })
+        .enter()
+        .append('rect')
+        .attr('width', function(d, i) {
+          console.log(i)
+          console.log($scope.selectedDocumentTerms[i])
+          return (d.termCount > 0 && $scope.selectedDocumentTerms[i]) ? 10 : 0;
+        })
+        .attr('height', 20)
+        .attr('fill', function(d, i) {
+          return colorScale(i);
+        })
+        .attr('x', function(d, i) {
+          var shift = 0;
+          var scores = evidenceTermMap[d.evidenceId];
+          for (var j = 0; j < i; ++j) {
+            shift += (scores[j] > 0 && $scope.selectedDocumentTerms[j]) ? 10 : 0;
+          }
+          return shift;
+          return 'translate(' + shift + ', 0)';
+        })
+        .on('click', function(d, i) {
+          console.log(d, i);
+        });
+
+      $scope.evidence = _.sortBy($scope.evidence, function(evidence) {
+        var totalScore = 0;
+        for (var i = 0; i < 10; ++i) {
+          if ($scope.selectedDocumentTerms[i]) {
+            totalScore += evidenceTermMap[evidence.id][i];
+          }
+        }
+        return -totalScore;
+      });
+    };
+
     $scope.deleteEntry = function(type) {
 
       /*
@@ -855,8 +1088,7 @@ angular.module('explore.v2.controllers')
           }
         }
       }); 
-  }
-
+    }
 
     // Deprecated
     function visualizeNodeLinkGraph(texts, concepts, evidence, conceptAssociations) {

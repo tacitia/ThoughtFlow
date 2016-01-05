@@ -1,5 +1,5 @@
 angular.module('modal.controllers')
-  .controller('DeleteModalController', ['$scope', '$modalInstance', 'Core', 'id', 'content', 'type', 'userId',
+  .controller('DeleteModalController', ['$scope', '$modalInstance', 'Core', 'ids', 'content', 'type', 'userId',
     function($scope, $modalInstance, Core, ids, content, type, userId) {
 
     $scope.content = content;

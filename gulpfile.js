@@ -35,7 +35,9 @@ var packages_includes = [
     bower_dir + '/ng-page-head-meta/ng-page-head-meta.min.js',
     bower_dir + '/angular-modal-service/dst/angular-modal-service.js',
     bower_dir + '/d3/d3.min.js',
-    bower_dir + '/angular-file-upload/dist/angular-file-upload.min.js'
+    bower_dir + '/angular-file-upload/dist/angular-file-upload.min.js',
+    bower_dir + '/angular-ui-select/dist/select.min.js',
+    bower_dir + '/angular-sanitize/angular-sanitize.min.js'
 //    bower_dir + '/jquery/dist/jquery.js',
 //    bower_dir + '/bootstrap/dist/js/bootstrap.js',
 ];

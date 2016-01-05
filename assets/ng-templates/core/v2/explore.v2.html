@@ -5,13 +5,28 @@
       <div class="loading-text"><p>{{loadingStatement}}</p></div>
     </div>
   </div>
-  <svg id="topic-term-dist" style="width:1850px;height:670px">
+
+  <div class="row" id="options" style="margin:20px 20px 20px 50px">
+    <div class="col-md-3">
+      <span>Search for term: </span>
+      <ui-select ng-model="selected.searchTerm" on-select="selectSearchTerm($item)">
+          <ui-select-match>
+              <span ng-bind="$select.selected.term"></span>
+          </ui-select-match>
+          <ui-select-choices repeat="t in (terms | filter: $select.search) track by t.origIndex">
+              <span ng-bind="t.term"></span>
+          </ui-select-choices>
+      </ui-select>
+    </div>
+  </div>
+
+  <svg id="topic-term-dist" style="width:1850px;height:700x">
   </svg>
   <div id="control">
     <button class="btn btn-default" ng-click="showPrevTerms()"><img style="width:20px; height:20px"src="/static/img/caret-up-icon.png"></button>
     <button class="btn btn-default" ng-click="showNextTerms()"><img style="width:20px; height:20px"src="/static/img/caret-down-icon.png"></button>
     <button class="btn" ng-click="updateTermTopicOrdering()">Reorder term and topics given selected terms</button>
-    <p style="margin:10px 0 10px 5px;font-size:16px">Selected topic {{selectedTopic.id}}: <span ng-repeat="t in selectedTopic.terms | limitTo:10" id="topic-term-$index" class="selected-topic-term">{{t.term}} </span></p>
+    <p style="margin:10px 0 10px 5px;font-size:16px">Selected topic {{selectedTopic.id}}: <span ng-repeat="t in selectedTopic.terms | limitTo:10" id="topic-term-$index" class="selected-topic-term" ng-class="{active:hover}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectTermToFilterDocuments(t.term, $index)">   {{t.term}}   </span></p>
   </div>
     <div class="panel" id="evidence-col" style="width:1500px;margin-left:50px">
       <div class="loading" ng-if="loadingTopicEvidence">
@@ -29,24 +44,27 @@
         <span>Evidence</span>
       </div>
       <div class="body row">
-        <div class="col-md-6" id="documents">
+        <div class="col-md-7" id="documents">
           <div>
-            <div class="animate-repeat document-entry" ng-repeat="e in evidence" ng-class="{active: hover || e.id == selectedEvidence.id, bookmarked: e.bookmarked}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
-               <div ng-click="selectEvidence(e)" style="width:90%;display:inline-block;float:left">
+            <div class="animate-repeat document-entry row" ng-repeat="e in evidence" ng-class="{active: hover || e.id == selectedEvidence.id, bookmarked: e.bookmarked}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
+               <div class="col-md-9" ng-click="selectEvidence(e)">
                  <p><input type="checkbox" ng-model="evidenceSelectionMap[e.id]"><span> {{e.title}}</span></p>
                </div>
-               <div style="width:10%;display:inline-block">
+               <div class="col-md-1">
                  <div ng-if="evidenceSourceMap[e.id] === 1">
                    <img  src="/static/img/link-icon.svg" style="width:15px; height:15px"></img>
                    <span>{{countTextsReferencingEvidence(e)}}</span>
                  </div>
                  <div ng-if="evidenceSourceMap[e.id] === 0"><span class="label label-default">Search result</span></div> 
                </div>
+               <div class="col-md-2">
+                 <svg id="doc-decorator-$index" class="doc-decorator" style="width:100px;height:30px;"></svg>
+               </div>
                <div style="clear:both"></div>
             </div>
           </div>
         </div>
-        <div class="col-md-6" id="details">
+        <div class="col-md-5" id="details">
           <div ng-if="selectedEvidence!==null">
             <div class="row" style="margin:10px">
               <button class="btn btn-default btn-xs col-md-12" ng-class="{'btn-success': showCitingTexts}" ng-disabled="associationInactive('evidence')" ng-click="toggleShowCitingTexts()">Who cited me?</button>

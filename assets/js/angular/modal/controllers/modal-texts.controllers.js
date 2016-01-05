@@ -3,7 +3,7 @@ angular.module('modal.controllers')
     function($scope, $modalInstance, textsInfo, concepts, evidence, userId, Core, AssociationMap) {
 
     $scope.textsInfo = textsInfo;
-    $scope.concepts = concepts;
+    $scope.concepts = concepts !== null ? concepts : [];
     $scope.evidence = evidence;
     var associatedConceptIds = AssociationMap.getAssociatedIdsBySource('text', 'concept', textsInfo.id);
     var associatedEvidenceIds = AssociationMap.getAssociatedIdsByTarget('evidence', 'text', textsInfo.id);
