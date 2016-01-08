@@ -13,7 +13,6 @@ MEDIA_DIR = os.path.realpath(os.path.join(HOME_DIR, 'media'))
 SECRET_KEY = '4pj+-=v^pwzo$dy=gde=6^xkvy*(f5azz*fn^^&dzt8f6f9d%9'
 
 DEBUG = True
-TEMPLATE_DEBUG = True
 
 ADMINS = [('Hua', 'lillian.g621@gmail.com')]
 ALLOWED_HOSTS = ['*']
@@ -90,14 +89,31 @@ SEO_JS_USER_AGENTS = [
     'slackbot'
 ]
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.request',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
-)
+TEMPLATES = [
+{
+    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+    'DIRS': [
+        os.path.join(PROJECT_DIR, 'templates'),
+    ],
+    'APP_DIRS': True,
+    'OPTIONS': {
+        'context_processors':
+            (
+            'django.contrib.auth.context_processors.auth',
+            'django.template.context_processors.debug',
+            'django.template.context_processors.i18n',
+            'django.template.context_processors.media',
+            'django.template.context_processors.static',
+            'django.template.context_processors.tz',
+            'django.template.context_processors.csrf',
+            'django.template.context_processors.request',
+            'django.contrib.messages.context_processors.messages',
+            'sekizai.context_processors.sekizai',
+            'cms.context_processors.cms_settings',
+            )
+    }
+},
+]
 
 SWAGGER_SETTINGS = {
     "exclude_namespaces": [],  # List URL namespaces to ignore
@@ -160,7 +176,5 @@ STATICFILES_DIRS = (
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = "/media/"
 
-# Template settings
-TEMPLATE_DIRS = (os.path.join(PROJECT_DIR, 'templates'),)
 
 AUTH_USER_MODEL = 'authentication.Account'

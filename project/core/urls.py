@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from core.views import TextView, ConceptView, EvidenceView, DeleteEntryView, UserDataView, UserAssociationView
 from core.views import ConceptGrowthView, EvidenceSearchView, TermExtractionView
 from core.views import association, deleteAssociation, retrieveEvidenceTextTopics, addBookmark, deleteBookmark
@@ -9,7 +9,7 @@ from core.views import loadXploreData
 
 import views
 
-urlpatterns = patterns('',    
+urlpatterns = [
 
     # For user created data
     url(r'^api/v1/data/texts/(?P<user_id>\d+)/$', TextView.as_view(), name='text'),
@@ -44,4 +44,4 @@ urlpatterns = patterns('',
     url(r'^api/v1/ad-hoc/loadXploreData/$', loadXploreData, name='loadXploreData'),
 
     url(r'^.*$', views.index, name='index')
-)
+]
