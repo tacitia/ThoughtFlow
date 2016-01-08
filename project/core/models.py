@@ -115,4 +115,10 @@ class EvidenceTopic(models.Model):
 
   objects = EvidenceTopicManager()
 
+class Topic(models.Model):
+  collection_id = models.IntegerField()
+  index = models.IntegerField()
+  terms = models.TextField()
+  document_count = models.IntegerField()
+
 

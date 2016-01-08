@@ -1,6 +1,6 @@
 angular.module('explore.v2.controllers')
-  .controller('ExploreController', ['$scope', '$modal', 'Core', 'AssociationMap', 'Pubmed', 'TermTopic',
-    function($scope, $modal, Core, AssociationMap, Pubmed, TermTopic) {
+  .controller('ExploreController', ['$scope', '$modal', 'Core', 'AssociationMap', 'Pubmed', 'TermTopic', 'Logger',
+    function($scope, $modal, Core, AssociationMap, Pubmed, TermTopic, Logger) {
 
     var topTermContainer = null;
     var topTopicContainer = null;
@@ -20,7 +20,7 @@ angular.module('explore.v2.controllers')
     $scope.selectedTerms = [];
     $scope.selectedWords = [];
     $scope.selectedTopic = null;
-    $scope.topicEvidenceCountMap = null;
+//    $scope.topicEvidenceCountMap = null;
 
     $scope.selected = {};
 
@@ -30,21 +30,27 @@ angular.module('explore.v2.controllers')
 
     $scope.termStartIndex = 0;
 
+    Logger.logAction(userId, 'load explore view', 'v2','1', 'explore', {
+      collectionId: collectionId
+    }, function(response) {
+      console.log('action logged: load explore view');
+    });
+
     Core.getEvidenceCollection(collectionId, function(response) {
-      console.log(response.data);
       $scope.loadingEvidence = false;
-      $scope.topicEvidenceCountMap = response.data.topicEvidenceCounts;
-      $scope.topics = response.data.topics.map(function(topic) {
+      $scope.topics = response.data.map(function(topic) {
         return {
-          id: topic[0],
-          terms: topic[1].map(function(termTuple) {
+          id: topic.index,
+          terms: JSON.parse(topic.terms).map(function(termTuple) {
             return {
               term: termTuple[0],
               prob: termTuple[1]
             }
-          })
+          }),
+          evidenceCount: topic.document_count
         }
       });
+      console.log($scope.topics)
       TermTopic.initialize($scope.topics);
       $scope.terms = TermTopic.getAllTerms();
       $scope.selected.searchTerm = $scope.terms[0];
@@ -77,26 +83,28 @@ angular.module('explore.v2.controllers')
 
     $scope.showNextTerms = function() {
       if (TermTopic.numOfTerms() > $scope.termStartIndex + termBatchSize) {
+
+        Logger.logAction(userId, 'scroll terms', 'v2','1', 'explore', {
+          direction: 'forward'
+        }, function(response) {
+          console.log('action logged: scroll terms');
+        });
+
         $scope.termStartIndex += termBatchSize;
-        /*
-        var terms = TermTopic.getTopTerms('weight', termBatchSize, $scope.termStartIndex);
-        var topicAndConnections = TermTopic.getTopTopics(terms, topicBatchSize);
-        var topics = topicAndConnections.topics;
-        var termTopicConnections = topicAndConnections.termTopicConnections;
-        updateTerms(terms, topics, termTopicConnections);
-        */
         updateTerms();
       }
     };
 
     $scope.showPrevTerms = function() {
       if ($scope.termStartIndex - termBatchSize >= 0) {
+
+        Logger.logAction(userId, 'scroll terms', 'v2','1', 'explore', {
+          direction: 'backward'
+        }, function(response) {
+          console.log('action logged: scroll terms');
+        });
+
         $scope.termStartIndex -= termBatchSize;
-        /*
-        var terms = TermTopic.getTopTerms('weight', termBatchSize, $scope.termStartIndex);
-        var topicAndConnections = TermTopic.getTopTopics(terms, topicBatchSize);
-        var topics = topicAndConnections.topics;
-        var termTopicConnections = topicAndConnections.termTopicConnections; */
         updateTerms();
       }
     };
@@ -132,6 +140,12 @@ angular.module('explore.v2.controllers')
     }
 
     $scope.selectEvidence = function(evidence) {
+      Logger.logAction(userId, 'select evidence', 'v2', '1', 'explore', {
+        evidence: evidence.id,
+      }, function(response) {
+        console.log('action logged: select evidence');
+      });
+
       $scope.selectedEvidence = evidence;
       $scope.selectedWords = evidence.abstract.split(' ');
     }
@@ -147,7 +161,13 @@ angular.module('explore.v2.controllers')
     };
 
     $scope.updateTermTopicOrdering = function() {
-      console.log($scope.selectedTerms)
+
+      Logger.logAction(userId, 'reorder term and topics given selected terms', 'v2','1', 'explore', {
+        numSelectedTerms: $scope.selectedTerms.length
+      }, function(response) {
+        console.log('action logged: reorder term and topics given selected terms');
+      });
+
       var terms = TermTopic.getTopTerms('weight', termBatchSize, $scope.termStartIndex, $scope.selectedTerms);
       var topicsAndConnections = TermTopic.getTopTopics(terms, topicBatchSize, $scope.selectedTerms);
       var topics = topicsAndConnections.topics;
@@ -160,7 +180,14 @@ angular.module('explore.v2.controllers')
     };
 
     $scope.bookmarkEvidence = function(e) {
-      console.log('bookmark evidence triggered')
+      Logger.logAction(userId, 'bookmark evidence', 'v2', '1', 'explore', {
+        evidence: e.id,
+        topic: $scope.selectedTopic.id,
+        numDocuments: $scope.evidence.length
+      }, function(response) {
+        console.log('action logged: bookmark evidence');
+      });
+
       Core.addBookmark(userId, e.id, function(response) {
         console.log('bookmark evidence success');
         e.bookmarked = true;
@@ -276,9 +303,25 @@ angular.module('explore.v2.controllers')
         .attr('transform', 'translate(20, 0)') // Space between rectangles and texts
         .on('click', function(d) {
           if ($scope.selectedTerms.indexOf(d.term) >= 0) {
+            Logger.logAction(userId, 'deselect term', 'v2','1', 'explore', {
+              term: d.term,
+              numSelectedTerms: $scope.selectedTerms.length,
+              topicCount: d.properties.topicCount,
+              target: 'term index'
+            }, function(response) {
+              console.log('action logged: deselect term');
+            });
             $scope.selectedTerms = _.without($scope.selectedTerms, d.term);
           }
           else {
+            Logger.logAction(userId, 'select term', 'v2','1', 'explore', {
+              term: d.term,
+              numSelectedTerms: $scope.selectedTerms.length,
+              topicCount: d.properties.topicCount,
+              target: 'term index'
+            }, function(response) {
+              console.log('action logged: select term');
+            });
             $scope.selectedTerms.push(d.term);
           }
           updateTermTopicFills();
@@ -367,7 +410,7 @@ angular.module('explore.v2.controllers')
 
       topic.append('text')
         .text(function(topic) {
-          return $scope.topicEvidenceCountMap[topic.id];
+          return topic.evidenceCount;
         })
         .attr('text-anchor', 'end')
         .attr('dy', 13)
@@ -385,6 +428,13 @@ angular.module('explore.v2.controllers')
           });          
         })
         .on('click', function(d) {
+          Logger.logAction(userId, 'select topic', 'v2','1', 'explore', {
+            topic: d.id,
+            target: 'individual topic'
+          }, function(response) {
+            console.log('action logged: select topic');
+          });
+
           d3.selectAll('.topic-background').attr('opacity', 0);
           d3.select('#topic-bg-' + d.id).attr('opacity', 0.5);        
           setSelectedTopic(d);
@@ -424,10 +474,29 @@ angular.module('explore.v2.controllers')
         .attr('height', y.rangeBand())
         .attr('fill', '#ccc')
         .on('click', function(d) {
+          // TODO: cannot easily count topic count here, will add if necessary
           if ($scope.selectedTerms.indexOf(d.term) >= 0) {
+            Logger.logAction(userId, 'deselect term', 'v2','1', 'explore', {
+              term: d.term,
+              numSelectedTerms: $scope.selectedTerms.length,
+              prob: d.prob,
+              topic: topic.id,
+              target: 'individual topic'
+            }, function(response) {
+              console.log('action logged: deselect term');
+            });
             $scope.selectedTerms = _.without($scope.selectedTerms, d.term);
           }
           else {
+            Logger.logAction(userId, 'select term', 'v2','1', 'explore', {
+              term: d.term,
+              numSelectedTerms: $scope.selectedTerms.length,
+              prob: d.prob,
+              topic: topic.id,
+              target: 'individual topic'
+            }, function(response) {
+              console.log('action logged: select term');
+            });
             $scope.selectedTerms.push(d.term);
           }
           updateTermTopicFills();
@@ -662,8 +731,12 @@ angular.module('explore.v2.controllers')
             .attr('fill', '#ccc');          
         })
         .on('click', function(d, i) {
-          console.log($scope.selectedTopic)
-          console.log(d)
+          Logger.logAction(userId, 'select topic', 'v2','1', 'explore', {
+            topic: d.id,
+            target: 'neighbor topic matrix'
+          }, function(response) {
+            console.log('action logged: select topic');
+          });
           setSelectedTopic(d);
         });      
 
@@ -955,23 +1028,22 @@ angular.module('explore.v2.controllers')
         .attr('text-anchor', 'middle')
         .attr("x", function(d) { return d.x; })
         .attr("y", function(d) { return d.y; });
-
-
-/*
-        .on('click', function(d, i) {
-          if ($scope.selectedConcepts.indexOf(d) < 0) {
-            $scope.selectedConcepts.push(d);
-            d3.select(this).classed('selected', true);
-          }
-          else {
-            $scope.selectedConcepts = _.without([$scope.selectedConcepts], d);
-            d3.select(this).classed('selected', false);
-          }
-        }); */
-
     }
 
     $scope.selectTermToFilterDocuments = function(term, index) {
+      var numSelectedDocTerms = 0;
+      for (var i = 0; i < 10; ++i) {
+        if ($scope.selectedDocumentTerms[i]) {
+          numSelectedDocTerms += 1;
+        }
+      }
+      Logger.logAction(userId, 'select term to filter documents', 'v2','1', 'explore', {
+        topic: $scope.selectedTopic.id,
+        numSelectedTerms: numSelectedDocTerms,
+        numDocuments: $scope.evidence.length
+      }, function(response) {
+        console.log('action logged: select term to filter documents');
+      });
       // Update the colors of the terms
       var colorScale = d3.scale.category20()
         .domain(_.range(10));

@@ -8,7 +8,7 @@ import TopicModeler
 import XploreParser
 from itertools import chain
 
-from core.models import Association, Concept, Evidence, Text, EvidenceBookmark, EvidenceTopic
+from core.models import Association, Concept, Evidence, Text, EvidenceBookmark, EvidenceTopic, Topic
 
 from django.conf import settings
 from django.core import serializers
@@ -319,32 +319,17 @@ def getEvidenceCollection(request, collection_id):
     if request.method == 'GET':
         evidence_count = Evidence.objects.filter(created_by=collection_id).count()
 
-#        evidence = Evidence.objects.filter(evidencetopic__created_by=collection_id)[:100]
-#        serialized_json = serializers.serialize('json', evidence)
-#        evidence_json = flattenSerializedJson(serialized_json)
-
-#        evidenceTopics = EvidenceTopic.objects.filter(created_by=collection_id)[:100]
-#        serialized_json = serializers.serialize('json', evidenceTopics, fields=('evidence', 'primary_topic', 'primary_topic_prob', 'topic_dist'))
-#        evidenceTopics_json = flattenSerializedJson(serialized_json)
-
         names = {}
         names[10] = 'visualization'
         names[11] = 'pfc and executive functions'
         names[12] = 'virtual reality'
         names[13] = 'TVCG'
 
-        topicList = TopicModeler.get_online_lda_topics(names[int(collection_id)], evidence_count / 10)
-        output = {}
-#        output['evidence'] = json.loads(evidence_json)
-#        output['evidenceTopics'] = json.loads(evidenceTopics_json)
-        output['topics'] = topicList
-        output['topicEvidenceCounts'] = {}
-        for i in range(len(topicList)):
-            topic_id = topicList[i][0]
-            evidence_count = Evidence.objects.filter(Q(evidencetopic__primary_topic=topic_id)&Q(created_by=collection_id)).count()
-            output['topicEvidenceCounts'][topic_id] = evidence_count
+        topics = Topic.objects.filter(collection_id=int(collection_id))
+        serialized_json = serializers.serialize('json', topics)
+        topics_json = flattenSerializedJson(serialized_json)
 
-        return HttpResponse(json.dumps(output), status=status.HTTP_200_OK)
+        return HttpResponse(topics_json, status=status.HTTP_200_OK)
 
 
 # This function gets recommended evidence for a piece of user-generated argument based on 
@@ -409,6 +394,32 @@ def getEvidenceByTopic(request):
 
         return HttpResponse(json.dumps(output), status=status.HTTP_200_OK)
 
+def cacheTopics(request, collection_id):
+    if request.method == 'GET':
+        evidence_count = Evidence.objects.filter(created_by=collection_id).count()
+
+        names = {}
+        names[10] = 'visualization'
+        names[11] = 'pfc and executive functions'
+        names[12] = 'virtual reality'
+        names[13] = 'TVCG'
+
+        Topic.objects.filter(collection_id=collection_id).delete()
+
+        topicList = TopicModeler.get_online_lda_topics(names[int(collection_id)], evidence_count / 10)
+
+        for i in range(len(topicList)):
+            topic_id = topicList[i][0]
+            evidence_count = Evidence.objects.filter(Q(evidencetopic__primary_topic=topic_id)&Q(created_by=collection_id)).count()
+            t = Topic(
+                collection_id=collection_id,
+                index=topic_id,
+                terms=json.dumps(topicList[i][1]),
+                document_count=evidence_count
+            )
+            t.save()
+
+        return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)    
 
 def loadXploreData(request):
     user_id = 13

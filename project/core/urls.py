@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from core.views import TextView, ConceptView, EvidenceView, DeleteEntryView, UserDataView, UserAssociationView
 from core.views import ConceptGrowthView, EvidenceSearchView, TermExtractionView
 from core.views import association, deleteAssociation, retrieveEvidenceTextTopics, addBookmark, deleteBookmark
-from core.views import loadBatchResults, createOnlineLDA, loadOnlineLDA, createSimilarityMatrix
+from core.views import loadBatchResults, createOnlineLDA, loadOnlineLDA, createSimilarityMatrix, cacheTopics
 from core.views import getEvidenceRecommendation, getEvidenceByTopic
 from core.views import getEvidenceCollection
 from core.views import loadXploreData
@@ -40,6 +40,7 @@ urlpatterns = patterns('',
     url(r'^api/v1/ad-hoc/createOnlineLDA/$', createOnlineLDA, name='createOnlineLDA'),
     url(r'^api/v1/ad-hoc/loadOnlineLDA/$', loadOnlineLDA, name='loadOnlineLDA'),
     url(r'^api/v1/ad-hoc/createSimilarityMatrix/$', createSimilarityMatrix, name='createSimilarityMatrix'),
+    url(r'^api/v1/ad-hoc/cacheTopics/(?P<collection_id>\d+)/$', cacheTopics, name='cacheTopics'),
     url(r'^api/v1/ad-hoc/loadXploreData/$', loadXploreData, name='loadXploreData'),
 
     url(r'^.*$', views.index, name='index')
