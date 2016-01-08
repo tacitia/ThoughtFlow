@@ -21,10 +21,10 @@
     <div class="col-md-7" style="border-left:solid 1px #ccc;border-bottom: solid 1px #ccc;height:1014px">
       <h3>{{selectedText.title}}</h3>
       <div ng-repeat="p in activeParagraphs">
-        <p class="text-paragraph" contenteditable="true" ng-keydown="checkEnter($index, $event)" ng-keyup="hasMadeChanges($index, $event)" ng-click="selectParagraph($index)" class="activeParagraph" id="ap-{{$index}}" style="outline:0">{{p.text}}</p>
+        <p class="text-paragraph" contenteditable="true" ng-keydown="checkEnter($index, $event)" ng-keyup="hasMadeChanges($index, $event)" ng-click="selectParagraph($index, 'text')" class="activeParagraph" id="ap-{{$index}}" style="outline:0">{{p.text}}</p>
         <div style="width:15%;height:150px;display:inline-block;float:right">
           <div>
-            <p style="font-size:10px" ng-click="selectParagraph($index)">Topic: {{paragraphInformation[$index].topicString}}</p>
+            <p style="font-size:10px" ng-click="selectParagraph($index, 'topic')">Topic: {{paragraphInformation[$index].topicString}}</p>
             <br/>
             <p style="font-size:10px">Cited: <span ng-repeat="c in paragraphCitation[$index] | orderBy:'index'">[<a ng-click="showCitation(c)">{{c.index+1}}</a>] </span></p>
           </div>
@@ -48,13 +48,13 @@
             </div>
           </div>
           <div id="recommendedEvidence" class="citation-container">
-            <div class="animate-repeat document-entry row" ng-repeat="e in recommendedEvidence" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectEvidence(e)">
+            <div class="animate-repeat document-entry row" ng-repeat="e in recommendedEvidence" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectEvidence(e, 'recommended')">
               <div class="col-md-10">
                 <p class="citation-entry"><span>{{$index+1}}. </span><span>{{e.title}}</span></p>
               </div>          
               <div class="col-md-2" style="margin:10px 0 0 0">
                 <div class="btn-group btn-group-xs" role="group" ng-if="selectedEvidence===e">
-                  <button class="btn btn-primary" ng-click="citeEvidence(e)">Cite</button>
+                  <button class="btn btn-primary" ng-click="citeEvidence(e, 'recommended')">Cite</button>
                 </div>  
               </div>
             </div>
@@ -62,13 +62,13 @@
         </uib-tab>
         <uib-tab heading="Cited" active="citationTabs['cited'].active">
           <div id="citedEvidence" class="citation-container">
-            <div class="animate-repeat document-entry row" ng-repeat="e in citedEvidence" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectEvidence(e)">
+            <div class="animate-repeat document-entry row" ng-repeat="e in citedEvidence" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectEvidence(e, 'cited')">
               <div class="col-md-10">
                 <p class="citation-entry"><span>{{$index+1}}. </span><span>{{e.title}}</span></p>
               </div>
               <div class="col-md-2" style="margin:10px 0 0 0">
                 <div class="btn-group btn-group-xs" role="group" ng-if="selectedEvidence===e">
-                  <button class="btn btn-primary" ng-click="citeEvidence(e)">Cite</button>
+                  <button class="btn btn-primary" ng-click="citeEvidence(e, 'cited')">Cite</button>
                 </div>  
               </div>                        
             </div>
@@ -77,11 +77,11 @@
         <uib-tab heading="Bookmarked" active="citationTabs['bookmarked'].active">
           <div id="bookmarkedEvidence" class="citation-container">
             <div class="animate-repeat document-entry" ng-repeat="e in evidence" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
-              <div ng-click="selectEvidence(e)" style="width:90%;display:inline-block;float:left">
+              <div ng-click="selectEvidence(e, 'bookmarked')" style="width:90%;display:inline-block;float:left">
                 <p class="citation-entry"><span>{{$index+1}}. </span><span>{{e.title}}</span></p>
                 <div ng-if="selectedEvidence===e" style="margin-left:80%">
                   <div class="btn-group btn-group-xs" role="group">
-                    <button class="btn btn-primary" ng-click="citeEvidence(e)">Cite</button>
+                    <button class="btn btn-primary" ng-click="citeEvidence(e, 'bookmarked')">Cite</button>
                   </div>  
                 </div>
               </div>          

@@ -42,5 +42,5 @@ urlpatterns = patterns('',
     url(r'^api/v1/ad-hoc/createSimilarityMatrix/$', createSimilarityMatrix, name='createSimilarityMatrix'),
     url(r'^api/v1/ad-hoc/loadXploreData/$', loadXploreData, name='loadXploreData'),
 
-    url(r'^.*$', views.index, name='index'),
+    url(r'^.*$', views.index, name='index')
 )

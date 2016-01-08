@@ -4,6 +4,7 @@ angular.module('mainModule', [
   'ui.bootstrap', 
   'ngPageHeadMeta',
   'authentication',
+  'logger',
   'coreModule',
   'v1Module',
   'v2Module',

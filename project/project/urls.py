@@ -5,7 +5,6 @@ from rest_framework_nested import routers
 
 from authentication.views import AccountViewSet, LoginView, LogoutView
 
-
 router = routers.SimpleRouter()
 router.register(r'accounts', AccountViewSet)
 
@@ -27,6 +26,9 @@ urlpatterns = patterns('',
     # ADMIN PATH
     url(r'^admin/', include(admin.site.urls)),
 
+    url(r'^', include('logger.urls')),
     # CORE URLS
     url(r'^', include('core.urls')),
+    # Don't add anything after the above line - core.urls contains a "catch all"
+    # url at the end
 )

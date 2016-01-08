@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     # Apps
     'core',
     'authentication',
+    'logger',
 )
 
 REST_FRAMEWORK = {
