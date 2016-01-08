@@ -55,7 +55,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    'django.middleware.doc.XViewMiddleware',
+    'django.contrib.admindocs.middleware.XViewMiddleware',
     'django.middleware.common.CommonMiddleware',
 )
 
@@ -108,8 +108,6 @@ TEMPLATES = [
             'django.template.context_processors.csrf',
             'django.template.context_processors.request',
             'django.contrib.messages.context_processors.messages',
-            'sekizai.context_processors.sekizai',
-            'cms.context_processors.cms_settings',
             )
     }
 },
