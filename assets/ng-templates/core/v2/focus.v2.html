@@ -1,110 +1,122 @@
-  <div class="row" id="focus" style="height:900px">
-    <div class="col-md-2" id="argument-list" style="border-bottom: solid 1px #ccc;height:1014px">
-      <h3>Proposals</h3>
-      <table class="table">
-        <tr ng-repeat="t in texts" ng-class="{active: hover || t.id == selectedText.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
-          <td ng-click="selectText(t)">
-            <p>{{t.title}}</p>
-            <svg class="topic-info" id="topic-info-{{t.id}}" width="150" height="25"></svg>
-            <div ng-if="selectedText===t" style="margin-left:80%">
-              <div class="btn-group btn-group-xs" role="group">
-                <button class="btn btn-danger" ng-disabled="selectedText===null" ng-click="deleteText()">Delete</button>
-              </div>  
-            </div>
-          </td>
-        </tr>
-      </table>
-      <div class="btn-group btn-group-xs" role="group">
-        <button class="btn btn-default" ng-click="addTextEntry()"><img style="width:20px; height:20px"src="/static/img/plus-icon.png">Add new proposal</button>
-      </div>
-    </div>
-    <div class="col-md-7" style="border-left:solid 1px #ccc;border-bottom: solid 1px #ccc;height:1014px">
-      <h3>{{selectedText.title}}</h3>
-      <div ng-repeat="p in activeParagraphs">
-        <p class="text-paragraph" contenteditable="true" ng-keydown="checkEnter($index, $event)" ng-keyup="hasMadeChanges($index, $event)" ng-click="selectParagraph($index, 'text')" class="activeParagraph" id="ap-{{$index}}" style="outline:0">{{p.text}}</p>
-        <div style="width:15%;height:150px;display:inline-block;float:right">
-          <div>
-            <p style="font-size:10px" ng-click="selectParagraph($index, 'topic')">Topic: {{paragraphInformation[$index].topicString}}</p>
-            <br/>
-            <p style="font-size:10px">Cited: <span ng-repeat="c in paragraphCitation[$index] | orderBy:'index'">[<a ng-click="showCitation(c)">{{c.index+1}}</a>] </span></p>
+<div id="main-header" class="row">
+  <div class="col-md-11" style="margin-top:6px">
+    <span class="main-header-text">User ID: </span>
+    <span style="font-weight:lighter;padding-right:15px;">{{userId}}</span>
+    <span class="main-header-text">Document collection: </span>
+    <span style="font-weight:lighter">{{collectionName}}</span>
+  </div>
+  <div class="col-md-1">
+    <button class="btn btn-default" ui-sref="v2.explore({userId: userId, collectionId: collectionId})">Explore</button>
+  </div>
+</div>
+
+<div class="row v2" id="focus" style="height:900px;padding:15px">
+  <div class="col-md-2" id="argument-list" style="border-bottom: solid 1px #ccc;height:1014px">
+    <h3>Proposals</h3>
+    <table class="table">
+      <tr ng-repeat="t in texts" ng-class="{active: hover || t.id == selectedText.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
+        <td ng-click="selectText(t)">
+          <p>{{t.title}}</p>
+          <svg class="topic-info" id="topic-info-{{t.id}}" width="150" height="25"></svg>
+          <div ng-if="selectedText===t" style="margin-left:80%">
+            <div class="btn-group btn-group-xs" role="group">
+              <button class="btn btn-danger" ng-disabled="selectedText===null" ng-click="deleteText()">Delete</button>
+            </div>  
           </div>
-        </div>
-        <div style="clear:both"></div>        
-      </div>
-    </div>
-    <div class="col-md-3" style="border-left: solid 1px #ccc;border-bottom: solid 1px #ccc;height:1014px">
-      <h3>Citations</h3>
-      <uib-tabset>
-        <uib-tab heading="Recommended" active="citationTabs['recommended'].active">
-          <div class="loading" ng-if="loadingRecommendedEvidence">
-            <div class="loader-container">
-              <div class="spinner">
-                <div class="rect1"></div>
-                <div class="rect2"></div>
-                <div class="rect3"></div>
-                <div class="rect4"></div>
-                <div class="rect5"></div>
-              </div>
-            </div>
-          </div>
-          <div id="recommendedEvidence" class="citation-container">
-            <div class="animate-repeat document-entry row" ng-repeat="e in recommendedEvidence" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectEvidence(e, 'recommended')">
-              <div class="col-md-10">
-                <p class="citation-entry"><span>{{$index+1}}. </span><span>{{e.title}}</span></p>
-              </div>          
-              <div class="col-md-2" style="margin:10px 0 0 0">
-                <div class="btn-group btn-group-xs" role="group" ng-if="selectedEvidence===e">
-                  <button class="btn btn-primary" ng-click="citeEvidence(e, 'recommended')">Cite</button>
-                </div>  
-              </div>
-            </div>
-          </div>        
-        </uib-tab>
-        <uib-tab heading="Cited" active="citationTabs['cited'].active">
-          <div id="citedEvidence" class="citation-container">
-            <div class="animate-repeat document-entry row" ng-repeat="e in citedEvidence" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectEvidence(e, 'cited')">
-              <div class="col-md-10">
-                <p class="citation-entry"><span>{{$index+1}}. </span><span>{{e.title}}</span></p>
-              </div>
-              <div class="col-md-2" style="margin:10px 0 0 0">
-                <div class="btn-group btn-group-xs" role="group" ng-if="selectedEvidence===e">
-                  <button class="btn btn-primary" ng-click="citeEvidence(e, 'cited')">Cite</button>
-                </div>  
-              </div>                        
-            </div>
-          </div>        
-        </uib-tab>
-        <uib-tab heading="Bookmarked" active="citationTabs['bookmarked'].active">
-          <div id="bookmarkedEvidence" class="citation-container">
-            <div class="animate-repeat document-entry" ng-repeat="e in evidence" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
-              <div ng-click="selectEvidence(e, 'bookmarked')" style="width:90%;display:inline-block;float:left">
-                <p class="citation-entry"><span>{{$index+1}}. </span><span>{{e.title}}</span></p>
-                <div ng-if="selectedEvidence===e" style="margin-left:80%">
-                  <div class="btn-group btn-group-xs" role="group">
-                    <button class="btn btn-primary" ng-click="citeEvidence(e, 'bookmarked')">Cite</button>
-                  </div>  
-                </div>
-              </div>          
-            </div>
-          </div>            
-        </uib-tab>
-      </uib-tabset>
-      <div id="details" style="margin:10px;height:329px">
-        <h4>Selected citation</h4>
-        <div ng-if="selectedEvidence===null" style="300px">
-          <p style="width:70%;margin:auto;padding-top:100px">
-            <i>Please select a citation to see its details.</i>
-          </p>
-        </div>
-        <div ng-if="selectedEvidence!==null" style="overflow-y:scroll;height:300px;">
-          <div class="row" style="margin:10px">
-            <button class="btn btn-default btn-xs col-md-12" ng-class="{'btn-success': showCitingTexts}" ng-disabled="associationInactive('evidence')" ng-click="toggleShowCitingTexts()">Who cited me?</button>
-          </div>
-          <p><b>Authors</b>: {{selectedEvidence.metadata.AUTHOR}}</p>
-          <p><b>Affiliation</b>: {{selectedEvidence.metadata.AFFILIATION}}</p>
-          <p><b>Publication date</b>: {{selectedEvidence.metadata.DATE}}</p>
-          <p><b>Abstract</b>:</p>
-          <span ng-repeat="w in selectedWords track by $index" ng-class="{'is-topic-term': isTopicTerm(w)}">{{w}} </span>
-        </div>
+        </td>
+      </tr>
+    </table>
+    <div class="btn-group btn-group-xs" role="group">
+      <button class="btn btn-default" ng-click="addTextEntry()"><img style="width:20px; height:20px"src="/static/img/plus-icon.png">Add new proposal</button>
     </div>
   </div>
+  <div class="col-md-7" style="border-left:solid 1px #ccc;border-bottom: solid 1px #ccc;height:1014px">
+    <h3>{{selectedText.title}}</h3>
+    <div ng-repeat="p in activeParagraphs">
+      <p class="text-paragraph" contenteditable="true" ng-keydown="checkEnter($index, $event)" ng-keyup="hasMadeChanges($index, $event)" ng-click="selectParagraph($index, 'text')" class="activeParagraph" id="ap-{{$index}}" style="outline:0">{{p.text}}</p>
+      <div style="width:15%;height:150px;display:inline-block;float:right">
+        <div>
+          <p style="font-size:10px" ng-click="selectParagraph($index, 'topic')">Topic: {{paragraphInformation[$index].topicString}}</p>
+          <br/>
+          <p style="font-size:10px">Cited: <span ng-repeat="c in paragraphCitation[$index] | orderBy:'index'">[<a ng-click="showCitation(c)">{{c.index+1}}</a>] </span></p>
+        </div>
+      </div>
+      <div style="clear:both"></div>        
+    </div>
+  </div>
+  <div class="col-md-3" style="border-left: solid 1px #ccc;border-bottom: solid 1px #ccc;height:1014px">
+    <h3>Citations</h3>
+    <uib-tabset>
+      <uib-tab heading="Recommended" active="citationTabs['recommended'].active">
+        <div class="loading" ng-if="loadingRecommendedEvidence">
+          <div class="loader-container">
+            <div class="spinner">
+              <div class="rect1"></div>
+              <div class="rect2"></div>
+              <div class="rect3"></div>
+              <div class="rect4"></div>
+              <div class="rect5"></div>
+            </div>
+          </div>
+        </div>
+        <div id="recommendedEvidence" class="citation-container">
+          <div class="animate-repeat document-entry row" ng-repeat="e in recommendedEvidence" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectEvidence(e, 'recommended')">
+            <div class="col-md-10">
+              <p class="citation-entry"><span>{{$index+1}}. </span><span>{{e.title}}</span></p>
+            </div>          
+            <div class="col-md-2" style="margin:10px 0 0 0">
+              <div class="btn-group btn-group-xs" role="group" ng-if="selectedEvidence===e">
+                <button class="btn btn-primary" ng-click="citeEvidence(e, 'recommended')">Cite</button>
+              </div>  
+            </div>
+          </div>
+        </div>        
+      </uib-tab>
+      <uib-tab heading="Cited" active="citationTabs['cited'].active">
+        <div id="citedEvidence" class="citation-container">
+          <div class="animate-repeat document-entry row" ng-repeat="e in citedEvidence" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectEvidence(e, 'cited')">
+            <div class="col-md-10">
+              <p class="citation-entry"><span>{{$index+1}}. </span><span>{{e.title}}</span></p>
+            </div>
+            <div class="col-md-2" style="margin:10px 0 0 0">
+              <div class="btn-group btn-group-xs" role="group" ng-if="selectedEvidence===e">
+                <button class="btn btn-primary" ng-click="citeEvidence(e, 'cited')">Cite</button>
+              </div>  
+            </div>                        
+          </div>
+        </div>        
+      </uib-tab>
+      <uib-tab heading="Bookmarked" active="citationTabs['bookmarked'].active">
+        <div id="bookmarkedEvidence" class="citation-container">
+          <div class="animate-repeat document-entry" ng-repeat="e in evidence" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
+            <div ng-click="selectEvidence(e, 'bookmarked')" style="width:90%;display:inline-block;float:left">
+              <p class="citation-entry"><span>{{$index+1}}. </span><span>{{e.title}}</span></p>
+              <div ng-if="selectedEvidence===e" style="margin-left:80%">
+                <div class="btn-group btn-group-xs" role="group">
+                  <button class="btn btn-primary" ng-click="citeEvidence(e, 'bookmarked')">Cite</button>
+                </div>  
+              </div>
+            </div>          
+          </div>
+        </div>            
+      </uib-tab>
+    </uib-tabset>
+    <div id="details" style="margin:10px;height:329px">
+      <h4>Selected citation</h4>
+      <div ng-if="selectedEvidence===null" style="300px">
+        <p style="width:70%;margin:auto;padding-top:100px">
+          <i>Please select a citation to see its details.</i>
+        </p>
+      </div>
+      <div ng-if="selectedEvidence!==null" style="overflow-y:scroll;height:300px;">
+        <div class="row" style="margin:10px">
+          <button class="btn btn-default btn-xs col-md-12" ng-class="{'btn-success': showCitingTexts}" ng-disabled="associationInactive('evidence')" ng-click="toggleShowCitingTexts()">Who cited me?</button>
+        </div>
+        <p><b>Authors</b>: {{selectedEvidence.metadata.AUTHOR}}</p>
+        <p><b>Affiliation</b>: {{selectedEvidence.metadata.AFFILIATION}}</p>
+        <p><b>Publication date</b>: {{selectedEvidence.metadata.DATE}}</p>
+        <p><b>Abstract</b>:</p>
+        <span ng-repeat="w in selectedWords track by $index" ng-class="{'is-topic-term': isTopicTerm(w)}">{{w}} </span>
+      </div>
+  </div>
+</div>

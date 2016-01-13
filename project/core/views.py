@@ -7,6 +7,7 @@ import TermExtractor
 import TopicModeler
 import XploreParser
 from itertools import chain
+from nltk.metrics import edit_distance
 
 from core.models import Association, Concept, Evidence, Text, EvidenceBookmark, EvidenceTopic, Topic
 
@@ -20,6 +21,7 @@ from rest_framework import status
 from rest_framework.views import View
 from django.views.decorators.csrf import ensure_csrf_cookie
 
+from django.core.exceptions import ObjectDoesNotExist
 
 @ensure_csrf_cookie
 def index(request):
@@ -384,7 +386,7 @@ def getEvidenceByTopic(request):
         collection_id = data['collection_id']
         topic_id = data['topic_id']
         user_id = data['user_id']
-        evidence = Evidence.objects.filter(Q(evidencetopic__created_by=collection_id)&Q(evidencetopic__primary_topic=topic_id))
+        evidence = Evidence.objects.filter(Q(evidencetopic__created_by=collection_id)&Q(evidencetopic__primary_topic=topic_id)).order_by('-evidencetopic__primary_topic_prob')[:500]
         evidenceBookmarks = EvidenceBookmark.objects.filter(user_id=user_id)
         serialized_json = serializers.serialize('json', evidence)
         evidence_json = flattenSerializedJson(serialized_json)
@@ -395,6 +397,42 @@ def getEvidenceByTopic(request):
         output['evidenceBookmarks'] = json.loads(evidenceBookmark_json)
 
         return HttpResponse(json.dumps(output), status=status.HTTP_200_OK)
+
+def searchEvidenceByTitle(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        collection_id = data['collection_id']
+        title = data['title']
+        # DONE: we can alternatively change this to treat given title as a series of separated terms
+        title_terms = title.split(' ')
+        print title_terms
+        evidence = Evidence.objects.filter(Q(created_by=collection_id)&reduce(lambda x, y: x & y, [Q(title__icontains=word) for word in title_terms]))
+        serialized_json = serializers.serialize('json', evidence)
+        evidence_json = flattenSerializedJson(serialized_json)
+        evidence = json.loads(evidence_json)
+        for e in evidence:
+            e['dist'] = edit_distance(title, e['title'])
+        evidence = sorted(evidence, key=lambda e:e['dist'])[:20]
+        for e in evidence:
+            e['topic'] = -1
+            try:
+                e['topic'] = EvidenceTopic.objects.get(evidence=e['id']).primary_topic
+            except ObjectDoesNotExist:
+                print 'warning: evidence with no topic'
+        return HttpResponse(json.dumps(evidence), status=status.HTTP_200_OK)
+
+    elif request.method == 'GET':
+        collection_id = 13
+        title = 'UpSet: Visualization of Intersecting Sets'
+        evidence = Evidence.objects.filter(created_by=collection_id)
+        serialized_json = serializers.serialize('json', evidence)
+        evidence_json = flattenSerializedJson(serialized_json)
+        evidence = json.loads(evidence_json)
+        for e in evidence:
+            e['dist'] = edit_distance(title, e['title'])
+        evidence = sorted(evidence, key=lambda e:e['dist'])
+        return HttpResponse(json.dumps(evidence[:20]), status=status.HTTP_200_OK)
+
 
 def cacheTopics(request, collection_id):
     if request.method == 'GET':

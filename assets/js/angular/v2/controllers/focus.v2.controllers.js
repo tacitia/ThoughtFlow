@@ -1,6 +1,6 @@
 angular.module('focus.v2.controllers')
-  .controller('FocusController', ['$scope', '$modal', 'Core','AssociationMap', 'Argument', 'Logger', 
-  function($scope, $modal, Core, AssociationMap, Argument, Logger) {      
+  .controller('FocusController', ['$scope', '$stateParams', '$modal', 'Core','AssociationMap', 'Argument', 'Logger', 
+  function($scope, $stateParams, $modal, Core, AssociationMap, Argument, Logger) {      
     $scope.selectedText = {
       title: ''
     };
@@ -22,7 +22,22 @@ angular.module('focus.v2.controllers')
       'bookmarked': {active: false}
     };
 
-    var userId = 111;
+    $scope.collections = [
+      { id: 10, name: 'visualization'},
+      { id: 11, name: 'pfc and executive functions'},
+      { id: 12, name: 'virtual reality'},
+      { id: 13, name: 'TVCG'},
+    ];
+
+    var userId = parseInt($stateParams.userId);
+    var collectionId = parseInt($stateParams.collectionId);
+
+    $scope.userId = userId;
+    $scope.collectionId = collectionId;
+    $scope.collectionName = _.find($scope.collections, function(c) {
+      return c.id === collectionId;
+    }).name;    
+
     $scope.evidence = null;
     var textEvidenceAssociations = null;
     var evidenceIdMap = {};

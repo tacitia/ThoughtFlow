@@ -27,11 +27,12 @@ angular.module('mainModule')
                 views: {
                     "FullContentView": {
                         templateUrl: 'core/v2/landing.v2.html',
+                        controller: 'LandingController'
                     }
                 }
             })       
             .state('v2.explore', {
-                url: "/explore",
+                url: "/explore/:userId?collectionId",
                 views: {
                     'MainView@v2': {
                         templateUrl: 'core/v2/explore.v2.html',
@@ -40,7 +41,7 @@ angular.module('mainModule')
                 }
             })
             .state('v2.focus', {
-                url: "/focus",
+                url: "/focus/:userId?collectionId",
                 views: {
                     "MainView@v2": {
                         templateUrl: 'core/v2/focus.v2.html',

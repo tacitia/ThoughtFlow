@@ -1,11 +1,8 @@
 *.swp
 *.pyc
 *.mm
-*.dict
 *.index
 project/core/batchresults/
-*.lda
-*.state
 *.npy
 *.sim
 project/core/queryresults/

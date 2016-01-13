@@ -3,7 +3,7 @@ from core.views import TextView, ConceptView, EvidenceView, DeleteEntryView, Use
 from core.views import ConceptGrowthView, EvidenceSearchView, TermExtractionView
 from core.views import association, deleteAssociation, retrieveEvidenceTextTopics, addBookmark, deleteBookmark
 from core.views import loadBatchResults, createOnlineLDA, loadOnlineLDA, createSimilarityMatrix, cacheTopics
-from core.views import getEvidenceRecommendation, getEvidenceByTopic
+from core.views import getEvidenceRecommendation, getEvidenceByTopic, searchEvidenceByTitle
 from core.views import getEvidenceCollection
 from core.views import loadXploreData
 
@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^api/v1/service/retrieveEvidenceTextTopics/$', retrieveEvidenceTextTopics, name='retrieveEvidenceTextTopics'),
     url(r'^api/v1/service/getEvidenceRecommendation/$', getEvidenceRecommendation, name='getEvidenceRecommendation'),
     url(r'^api/v1/service/getEvidenceByTopic/$', getEvidenceByTopic, name='getEvidenceByTopic'),
+    url(r'^api/v1/service/searchEvidenceByTitle/$', searchEvidenceByTitle, name='searchEvidenceByTitle'),
 
     # For batch data retrieval
     url(r'^api/v1/data/user-data/(?P<user_id>\d+)/$', UserDataView.as_view(), name='get_data_for_user'),

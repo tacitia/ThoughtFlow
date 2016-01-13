@@ -5,6 +5,7 @@
   Core.$inject = ['$cookies', '$http'];
 
   function Core($cookies, $http) {
+    var csrf_token = '{% csrf_token %}';
     var Core = {
       addBookmark: addBookmark,
       deleteEntry: deleteEntry,
@@ -19,6 +20,7 @@
       getAllDataForUser: getAllDataForUser,
       getAssociationMap: getAssociationMap,
       getEvidenceByTopic: getEvidenceByTopic,
+      getEvidenceByTitle: getEvidenceByTitle,
       getEvidenceCollection: getEvidenceCollection,
       getEvidenceTextTopicsForUser: getEvidenceTextTopicsForUser
     };
@@ -90,6 +92,13 @@
         collection_id: collectionId,
         topic_id: topicId,
         user_id: userId
+      }).then(successFn, errorFn);
+    }
+
+    function getEvidenceByTitle(collectionId, title, successFn, errorFn) {
+      $http.post('/api/v1/service/searchEvidenceByTitle/', {
+        collection_id: collectionId,
+        title: title
       }).then(successFn, errorFn);
     }
 
