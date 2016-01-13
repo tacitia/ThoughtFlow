@@ -18,8 +18,10 @@ from django.shortcuts import render
 
 from rest_framework import status
 from rest_framework.views import View
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 
+@ensure_csrf_cookie
 def index(request):
     template = 'core/index.html'
     context = {'DEBUG': settings.DEBUG}
@@ -448,7 +450,7 @@ def loadBatchResults(request):
     if request.method == 'GET':
         print '>> loading batch result request...'
         current_dir = os.path.dirname(os.path.realpath(__file__))
-        query = 'cognitive control'
+        query = 'prefrontal cortex'
         f = os.path.join(current_dir, 'batchresults', query + '.txt')
         PubMedParser.load_evidence(f, True, 11)
         
@@ -456,15 +458,15 @@ def loadBatchResults(request):
 
 def loadOnlineLDA(request):
     if request.method == 'GET':
-        user_id = 13
+        user_id = 11
         evidence = Evidence.objects.filter(created_by=user_id)
         serialized_json = serializers.serialize('json', evidence)
         evidence_json = flattenSerializedJson(serialized_json)
         loaded_evidence = json.loads(evidence_json)
         abstracts = [e['abstract'] for e in loaded_evidence]
         evidencePks = [e['id'] for e in loaded_evidence]
-        name = 'TVCG'
-#        name = 'pfc and executive functions'
+#        name = 'TVCG'
+        name = 'pfc and executive functions'
         evidenceTopicMap, topicList = TopicModeler.load_online_lda(abstracts, evidencePks, name)
         saveTopicsForEvidence(evidenceTopicMap, user_id)
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
@@ -472,17 +474,17 @@ def loadOnlineLDA(request):
 def createOnlineLDA(request):
     if request.method == 'GET':
         print '>> preparing data for online lda...'
-        user_id = 13
+        user_id = 11
         evidence = Evidence.objects.filter(created_by=user_id)
         serialized_json = serializers.serialize('json', evidence)
         evidence_json = flattenSerializedJson(serialized_json)
         loaded_evidence = json.loads(evidence_json)
         abstracts = [e['abstract'] for e in loaded_evidence]
         evidencePks = [e['id'] for e in loaded_evidence]
-        name = 'TVCG'
+#        name = 'TVCG'
 #        name = 'virtual reality'
 #        name = 'visualization'
-#        name = 'pfc and executive functions'
+        name = 'pfc and executive functions'
         numDocs = len(loaded_evidence)
         evidenceTopicMap, topics = TopicModeler.create_online_lda(abstracts, evidencePks, name, math.ceil(numDocs / 10))
 #        saveTopicsForEvidence(evidenceTopicMap, user_id)
