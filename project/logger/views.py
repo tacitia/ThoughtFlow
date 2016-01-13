@@ -5,6 +5,7 @@ from django.http import HttpResponse, JsonResponse
 from rest_framework import status
 
 # Create your views here.
+@csrf_protect
 def addAction(request):
   print 'add action called'
   if request.method =='POST':
