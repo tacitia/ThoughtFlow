@@ -1,6 +1,8 @@
 angular.module('explore.v2.controllers')
-  .controller('ExploreController', ['$scope', '$modal', 'Core', 'AssociationMap', 'Pubmed', 'TermTopic', 'Logger',
-    function($scope, $modal, Core, AssociationMap, Pubmed, TermTopic, Logger) {
+  .controller('ExploreController', ['$scope', '$stateParams', '$modal', 'Core', 'AssociationMap', 'Pubmed', 'TermTopic', 'Logger',
+    function($scope, $stateParams, $modal, Core, AssociationMap, Pubmed, TermTopic, Logger) {
+
+    console.log($stateParams)
 
     var topTermContainer = null;
     var topTopicContainer = null;
@@ -10,8 +12,21 @@ angular.module('explore.v2.controllers')
 
     var defaultFill = '#ccc';
 
-    var userId = 111;
-    var collectionId = 11;
+    $scope.collections = [
+      { id: 10, name: 'visualization'},
+      { id: 11, name: 'pfc and executive functions'},
+      { id: 12, name: 'virtual reality'},
+      { id: 13, name: 'TVCG'},
+    ];
+
+    var userId = parseInt($stateParams.userId);
+    var collectionId = parseInt($stateParams.collectionId);
+
+    $scope.userId = userId;
+    $scope.collectionId = collectionId;
+    $scope.collectionName = _.find($scope.collections, function(c) {
+      return c.id === collectionId;
+    }).name;
 
     var termBatchSize = 30;
     var topicBatchSize = 30;
@@ -20,7 +35,9 @@ angular.module('explore.v2.controllers')
     $scope.selectedTerms = [];
     $scope.selectedWords = [];
     $scope.selectedTopic = null;
-//    $scope.topicEvidenceCountMap = null;
+
+    $scope.candidateEvidence = [];
+    $scope.searchTitle = '';
 
     $scope.selected = {};
 
@@ -72,6 +89,40 @@ angular.module('explore.v2.controllers')
       visualizeTopTopics(topTopicContainer, 650, 600, topics);
       updateTermTopicFills();
       updateConnectionStrokes();
+    }
+
+    $scope.searchEvidenceByTitle = function() {
+        Logger.logAction(userId, 'search evidence by title', 'v2','1', 'explore', {
+          query: $scope.searchTitle
+        }, function(response) {
+          console.log('action logged: search evidence by title');
+        });
+
+      Core.getEvidenceByTitle(collectionId, $scope.searchTitle, function(response) {
+        $scope.candidateEvidence = response.data;
+        $scope.selected.searchTitle = $scope.candidateEvidence[0];
+        $scope.selectSearchTitle($scope.selected.searchTitle);
+      });
+    };
+
+    $scope.selectSearchTitle = function(title) {
+
+        Logger.logAction(userId, 'select title by search', 'v2','1', 'explore', {
+          evidence: title.id
+        }, function(response) {
+          console.log('action logged: select title by search');
+        });
+
+      if (title.topic !== -1) {
+        $scope.selectedTopic = _.find($scope.topics, function(t) {
+          return t.id === title.topic;
+        });
+        console.log($scope.selectedTopic)
+        for (var i = 0; i < 5; ++i) {
+          $scope.selectedTerms.push($scope.selectedTopic.terms[i].term);
+        }
+        $scope.updateTermTopicOrdering();
+      }
     }
 
     $scope.selectSearchTerm = function(term) {
@@ -162,6 +213,7 @@ angular.module('explore.v2.controllers')
 
     $scope.updateTermTopicOrdering = function() {
 
+      // TODO: check whether invoked through UI or programatically
       Logger.logAction(userId, 'reorder term and topics given selected terms', 'v2','1', 'explore', {
         numSelectedTerms: $scope.selectedTerms.length
       }, function(response) {

@@ -196,7 +196,7 @@ def lda2topicMap(lda, corpus, ids, name):
   i = 0
   for c in corpus:
 #    b = dictionary.doc2bow(d)
-    evidenceTopicMap[ids[i]] = lda.get_document_topics(c, minimum_probability=0.05)
+    evidenceTopicMap[ids[i]] = lda.get_document_topics(c, minimum_probability=0.01)
     i += 1
   print len(evidenceTopicMap)
   return evidenceTopicMap

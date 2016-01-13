@@ -1,4 +1,16 @@
-<div class="center row" id="v2">
+<div id="main-header" class="row">
+  <div class="col-md-11" style="margin-top:6px">
+    <span class="main-header-text">User ID: </span>
+    <span style="font-weight:lighter;padding-right:15px;">{{userId}}</span>
+    <span class="main-header-text">Document collection: </span>
+    <span style="font-weight:lighter">{{collectionName}}</span>
+  </div>
+  <div class="col-md-1">
+    <button class="btn btn-default" ui-sref="v2.focus({userId: userId, collectionId: collectionId})">Write</button>
+  </div>
+</div>
+
+<div class="center row v2" id="explore">
   <div class="loading" ng-if="loadingEvidence">
     <div class="loader-container">
       <div class="loader"></div>
@@ -17,6 +29,27 @@
               <span ng-bind="t.term"></span>
           </ui-select-choices>
       </ui-select>
+    </div>
+    <div class="col-md-3">
+      <span>Search for paper: </span>
+      <div class="row">
+         <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for..." ng-model="searchTitle">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button" ng-click="searchEvidenceByTitle()">Search</button>
+            </span>
+          </div>      
+      </div>
+      <div class="row">
+        <ui-select ng-model="selected.searchTitle" on-select="selectSearchTitle($item)">
+            <ui-select-match placeholder="Use the search above to get a list of relevant titles">
+                <span ng-bind="$select.selected.title"></span>
+            </ui-select-match>
+            <ui-select-choices repeat="t in (candidateEvidence | filter: $select.search) track by t.id">
+                <span ng-bind="t.title"></span>
+            </ui-select-choices>
+        </ui-select>
+      </div>
     </div>
   </div>
 
