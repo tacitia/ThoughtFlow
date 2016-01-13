@@ -8,6 +8,7 @@
   Logger.$inject = ['$http'];
 
   function Logger($http) {
+    var csrf_token = '{% csrf_token %}';
     /**
     * @name Logger
     * @desc The Factory to be returned
@@ -31,7 +32,8 @@
         majorVersion: majorVersion,
         minorVersion, minorVersion,
         view: view,
-        parameters: parameters
+        parameters: parameters,
+        csrf_token: csrf_token
       }).then(successFn, errorFn);
     }
 
