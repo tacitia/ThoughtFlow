@@ -376,6 +376,7 @@ def getEvidenceRecommendationWithinTopics(topic_dist, name, collection_id):
     evidence = Evidence.objects.filter(Q(evidencetopic__primary_topic=primary_topic_tuple[0])&Q(created_by=collection_id)).distinct() # use this if later needs to get evidence by topic
     serialized_json = serializers.serialize('json', evidence)
     evidence_json = flattenSerializedJson(serialized_json)
+    evidence = json.loads(evidence_json)
     abstracts = [e['abstract'] for e in evidence]    
     evidence_ids = TopicModeler.compute_documents_similarity_sub(topic_dist, abstracts, name)
     sorted_evidence = map(lambda index:evidence[index], evidence_ids)
