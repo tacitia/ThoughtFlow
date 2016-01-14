@@ -344,9 +344,6 @@ def getEvidenceRecommendation(request):
 
 #        data = {}
 #        data['text'] = 'Using brain imaging in humans, we showed that the lateral PFC is organized as a cascade of executive processes from premotor to anterior PFC regions that control behavior according to stimuli, the present perceptual context, and the temporal episode in which stimuli occur, respectively.'
-#        name = 'pfc and executive functions'
-#        name = 'TVCG'
-#        collection_id = 11
         print data
         collection_id = int(data['collectionId'])
         name = names[collection_id]
@@ -383,6 +380,7 @@ def getEvidenceRecommendationWithinTopics(topic_dist, name, collection_id):
     abstracts = [e['abstract'] for e in evidence]    
     evidence_ids = TopicModeler.compute_documents_similarity_sub(topic_dist, abstracts, name)
     sorted_evidence = map(lambda index:evidence[index], evidence_ids)
+    print sorted_evidence
     return sorted_evidence
 
 def getEvidenceByTopic(request):
