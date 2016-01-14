@@ -389,7 +389,7 @@ def getEvidenceByTopic(request):
         collection_id = data['collection_id']
         topic_id = data['topic_id']
         user_id = data['user_id']
-        evidence = Evidence.objects.filter(Q(evidencetopic__created_by=collection_id)&Q(evidencetopic__primary_topic=topic_id)).order_by('-evidencetopic__primary_topic_prob')[:500]
+        evidence = Evidence.objects.filter(Q(evidencetopic__created_by=collection_id)&Q(evidencetopic__primary_topic=topic_id)).order_by('-evidencetopic__primary_topic_prob').distinct()[:500]
         evidenceBookmarks = EvidenceBookmark.objects.filter(user_id=user_id)
         serialized_json = serializers.serialize('json', evidence)
         evidence_json = flattenSerializedJson(serialized_json)
@@ -442,7 +442,6 @@ def cacheTopics(request, collection_id):
         evidence_count = Evidence.objects.filter(created_by=collection_id).count()
 
         Topic.objects.filter(collection_id=collection_id).delete()
-        EvidenceTopic.objects.filter(created_by=collection_id).delete()
 
         topicList = TopicModeler.get_online_lda_topics(names[int(collection_id)], evidence_count / 10)
 
@@ -535,6 +534,7 @@ def createSimilarityMatrix(request):
 
 def saveTopicsForEvidence(evidenceTopicMap, user_id):
     print '>> saving evidence topic map...'
+    EvidenceTopic.objects.filter(created_by=user_id).delete()    
     counter = 0
     for e in evidenceTopicMap:
         topic_dist = evidenceTopicMap[e]
