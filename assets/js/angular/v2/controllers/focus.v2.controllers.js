@@ -413,7 +413,7 @@ angular.module('focus.v2.controllers')
       console.log('updating evidence recommendations..');        
       $scope.loadingRecommendedEvidence = true;        
 
-      Argument.getEvidenceRecommendation(text, function(response) {
+      Argument.getEvidenceRecommendation(text, collectionId, function(response) {
         $scope.recommendedEvidence= response.data.evidence;
         $scope.recommendedEvidence.forEach(function(e) {
           e.metadata = JSON.parse(e.metadata);

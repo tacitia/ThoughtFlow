@@ -23,6 +23,12 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 from django.core.exceptions import ObjectDoesNotExist
 
+names = {}
+names[10] = 'visualization'
+names[11] = 'pfc and executive functions'
+names[12] = 'virtual reality'
+names[13] = 'TVCG'
+
 @ensure_csrf_cookie
 def index(request):
     template = 'core/index.html'
@@ -323,12 +329,6 @@ def getEvidenceCollection(request, collection_id):
     if request.method == 'GET':
         evidence_count = Evidence.objects.filter(created_by=collection_id).count()
 
-        names = {}
-        names[10] = 'visualization'
-        names[11] = 'pfc and executive functions'
-        names[12] = 'virtual reality'
-        names[13] = 'TVCG'
-
         topics = Topic.objects.filter(collection_id=int(collection_id))
         serialized_json = serializers.serialize('json', topics)
         topics_json = flattenSerializedJson(serialized_json)
@@ -341,11 +341,16 @@ def getEvidenceCollection(request, collection_id):
 def getEvidenceRecommendation(request):
     if request.method == 'POST':
         data = json.loads(request.body)
+
 #        data = {}
 #        data['text'] = 'Using brain imaging in humans, we showed that the lateral PFC is organized as a cascade of executive processes from premotor to anterior PFC regions that control behavior according to stimuli, the present perceptual context, and the temporal episode in which stimuli occur, respectively.'
-        name = 'pfc and executive functions'
+#        name = 'pfc and executive functions'
 #        name = 'TVCG'
-        collection_id = 11
+#        collection_id = 11
+        print data
+        collection_id = int(data['collectionId'])
+        name = names[collection_id]
+
         topic_dist, primary_topic_terms = TopicModeler.get_document_topics(data['text'], name)
         primary_topic_tuple = max(topic_dist, key=lambda x:x[1])
         output = {}
@@ -438,12 +443,6 @@ def cacheTopics(request, collection_id):
     if request.method == 'GET':
         evidence_count = Evidence.objects.filter(created_by=collection_id).count()
 
-        names = {}
-        names[10] = 'visualization'
-        names[11] = 'pfc and executive functions'
-        names[12] = 'virtual reality'
-        names[13] = 'TVCG'
-
         Topic.objects.filter(collection_id=collection_id).delete()
 
         topicList = TopicModeler.get_online_lda_topics(names[int(collection_id)], evidence_count / 10)
@@ -494,38 +493,37 @@ def loadBatchResults(request):
         
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
 
-def loadOnlineLDA(request):
+def loadOnlineLDA(request, collection_id):
     if request.method == 'GET':
-        user_id = 11
-        evidence = Evidence.objects.filter(created_by=user_id)
+        print '>> preparing stored evidence...'
+        collection_id = int(collection_id)
+        evidence = Evidence.objects.filter(created_by=collection_id)
         serialized_json = serializers.serialize('json', evidence)
         evidence_json = flattenSerializedJson(serialized_json)
         loaded_evidence = json.loads(evidence_json)
         abstracts = [e['abstract'] for e in loaded_evidence]
         evidencePks = [e['id'] for e in loaded_evidence]
-#        name = 'TVCG'
-        name = 'pfc and executive functions'
+        name = names[collection_id]
+        print '>> loading lda model...'
         evidenceTopicMap, topicList = TopicModeler.load_online_lda(abstracts, evidencePks, name)
-        saveTopicsForEvidence(evidenceTopicMap, user_id)
+        print '>> saving topics for evidence...'
+        saveTopicsForEvidence(evidenceTopicMap, collection_id)
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
 
-def createOnlineLDA(request):
+def createOnlineLDA(request, collection_id):
     if request.method == 'GET':
         print '>> preparing data for online lda...'
-        user_id = 11
-        evidence = Evidence.objects.filter(created_by=user_id)
+        collection_id = int(collection_id)
+        evidence = Evidence.objects.filter(created_by=collection_id)
         serialized_json = serializers.serialize('json', evidence)
         evidence_json = flattenSerializedJson(serialized_json)
         loaded_evidence = json.loads(evidence_json)
         abstracts = [e['abstract'] for e in loaded_evidence]
         evidencePks = [e['id'] for e in loaded_evidence]
-#        name = 'TVCG'
-#        name = 'virtual reality'
-#        name = 'visualization'
-        name = 'pfc and executive functions'
+        name = names[collection_id]
         numDocs = len(loaded_evidence)
         evidenceTopicMap, topics = TopicModeler.create_online_lda(abstracts, evidencePks, name, math.ceil(numDocs / 10))
-#        saveTopicsForEvidence(evidenceTopicMap, user_id)
+#        saveTopicsForEvidence(evidenceTopicMap, collection_id)
 
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
 

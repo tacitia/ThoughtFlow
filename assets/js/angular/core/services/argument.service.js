@@ -26,9 +26,10 @@ function Argument($cookies, $http) {
   }
 
   // Get evidence that are judged as most relevant to the piece of argument
-  function getEvidenceRecommendation(text, successFn, errorFn) {
+  function getEvidenceRecommendation(text, collectionId, successFn, errorFn) {
       $http.post('/api/v1/service/getEvidenceRecommendation/', {
-        text: text
+        text: text,
+        collectionId: collectionId
       }).then(successFn, errorFn);
       return;
   }

@@ -38,8 +38,8 @@ urlpatterns = [
     url(r'^api/v1/data/collection/(?P<collection_id>\d+)/$', getEvidenceCollection, name='getEvidenceCollection'), 
 
     url(r'^api/v1/ad-hoc/loadBatchResults/$', loadBatchResults, name='loadBatchResults'),
-    url(r'^api/v1/ad-hoc/createOnlineLDA/$', createOnlineLDA, name='createOnlineLDA'),
-    url(r'^api/v1/ad-hoc/loadOnlineLDA/$', loadOnlineLDA, name='loadOnlineLDA'),
+    url(r'^api/v1/ad-hoc/createOnlineLDA/(?P<collection_id>\d+)/$', createOnlineLDA, name='createOnlineLDA'),
+    url(r'^api/v1/ad-hoc/loadOnlineLDA/(?P<collection_id>\d+)/$', loadOnlineLDA, name='loadOnlineLDA'),
     url(r'^api/v1/ad-hoc/createSimilarityMatrix/$', createSimilarityMatrix, name='createSimilarityMatrix'),
     url(r'^api/v1/ad-hoc/cacheTopics/(?P<collection_id>\d+)/$', cacheTopics, name='cacheTopics'),
     url(r'^api/v1/ad-hoc/loadXploreData/$', loadXploreData, name='loadXploreData'),
