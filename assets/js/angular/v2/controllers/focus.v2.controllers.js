@@ -418,6 +418,7 @@ angular.module('focus.v2.controllers')
         $scope.recommendedEvidence.forEach(function(e) {
           e.metadata = JSON.parse(e.metadata);
         })
+        console.log($scope.recommendedEvidence);
         $scope.paragraphInformation[index].topic = response.data.topics[0];        
         $scope.paragraphInformation[index].topicString = response.data.topics[0].terms.map(function(term) {
           return term[0];
