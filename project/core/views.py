@@ -460,9 +460,18 @@ def cacheTopics(request, collection_id):
 
 def loadXploreData(request):
     user_id = 13
+    Evidence.objects.filter(created_by=user_id).delete()
     if request.method == 'GET':
         entries = XploreParser.getEntries()
         for e in entries:
+            meta_words = ['front cover', 'back cover', 'reviewer', 'editor', 'special section', 'advertisement', 'table of contents', 'visweek', 'keynote', 'capstone', 'tvcg', 'annual index', 'conference', 'committee', 'author index', 'cover2', 'cover3', 'ieee', 'vgtc', 'technical achievement', 'career award', 'corrections to', 'cover 4', 'cover4', 'prepages', 'call for participation']
+            title = e['title'].lower()
+            has_meta_word = False
+            for w in meta_words:
+                if w in title:
+                    has_meta_word = True
+            if has_meta_word:
+                continue
             evidence = Evidence.objects.create_evidence(e['title'], e['abstract'], json.dumps({
                     'PUBID': e['publicationId'],                            
                     'AUTHOR': e['authors'],
@@ -471,10 +480,10 @@ def loadXploreData(request):
                     'AFFILIATION': e['affiliations']
                 }), user_id)
             print evidence
-            for t in e['terms']:
-                concept = Concept.objects.create_concept(t, user_id)
-                print concept
-                Association.objects.create_association('concept', 'evidence', concept.id, evidence.id, 0)
+            #for t in e['terms']:
+                #concept = Concept.objects.create_concept(t, user_id)
+                # print concept
+                #Association.objects.create_association('concept', 'evidence', concept.id, evidence.id, 0)
 
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
 
