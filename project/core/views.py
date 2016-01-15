@@ -464,7 +464,7 @@ def loadXploreData(request):
     if request.method == 'GET':
         entries = XploreParser.getEntries()
         for e in entries:
-            meta_words = ['front cover', 'back cover', 'reviewer', 'editor', 'special section', 'advertisement', 'table of contents', 'visweek', 'keynote', 'capstone', 'tvcg', 'annual index', 'conference', 'committee', 'author index', 'cover2', 'cover3', 'ieee', 'vgtc', 'technical achievement', 'career award', 'corrections to', 'cover 4', 'cover4', 'prepages', 'call for participation']
+            meta_words = ['front cover', 'back cover', 'reviewer', 'editor', 'special section', 'advertisement', 'table of contents', 'visweek', 'keynote', 'capstone', 'tvcg', 'annual index', 'conference', 'committee', 'author index', 'cover2', 'cover3', 'ieee', 'vgtc', 'technical achievement', 'career award', 'corrections to', 'cover 4', 'cover4', 'prepages', 'call for participation', 'subject index', 'back matter', 'proposed']
             title = e['title'].lower()
             has_meta_word = False
             for w in meta_words:

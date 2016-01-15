@@ -39,7 +39,7 @@ def get_stopwords(language, name):
     result = stopwords.words(language)
     result.extend(['new', 'using', 'used', 'finding', 'findings'])
     if (name == 'TVCG'):
-      result.extend(['datum', 'present', 'use', 'show', 'two', 'paper', 'different', 'visual', 'visualization', 'also', 'since', 'acquired', 'thus', 'lack', 'due', 'studied', 'useful', 'possible', 'additional', 'particular', 'describe', 'without', 'reported', 'among', 'always', 'various', 'prove', 'usable', 'yet', 'ask', 'within', 'ask', 'even', 'best', 'run', 'including', 'like', 'importantly', 'six', 'look', 'along', 'one'])
+      result.extend(['datum', 'present', 'use', 'show', 'two', 'paper', 'different', 'visual', 'visualization', 'also', 'since', 'acquired', 'thus', 'lack', 'due', 'studied', 'useful', 'possible', 'additional', 'particular', 'describe', 'without', 'reported', 'among', 'always', 'various', 'prove', 'usable', 'yet', 'ask', 'within', 'even', 'best', 'run', 'including', 'like', 'importantly', 'six', 'look', 'along', 'one', 'visually', 'ha', 'wa'])
     return result
 
 def filter_stopwords(matrix):
@@ -124,7 +124,7 @@ def generate_dictionary(texts, name, numDocs):
   dictionary = gensim.corpora.Dictionary(texts)
   numDocs = len(texts)
   print numDocs
-  dictionary.filter_extremes(no_below=math.ceil(numDocs*0.0005), no_above=0.3, keep_n=100000)
+  dictionary.filter_extremes(no_below=4, no_above=0.3, keep_n=100000)
   dictionary.save(name + '.dict')
   print 'dictionary information: '
   print dictionary
@@ -137,11 +137,13 @@ def docs2corpus(docs, name, isNew):
   numDocs = len(docs)
   englishStopWords = get_stopwords('english', name)
 #  texts = [[word for word in doc.lower().split() if word not in englishStopWords and word.isalpha() and len(word) > 1] for doc in docs]
-  texts = [[singularize(word) for word in doc.lower().split() if word not in englishStopWords and word.isalpha() and len(word) > 1] for doc in docs]
+  texts = [[singularize(word) for word in doc.lower().split() if singularize(word) not in englishStopWords and word.isalpha() and len(word) > 1] for doc in docs]
   # remove words that appear only once
   frequency = defaultdict(int)
   for text in texts:
     for token in text:
+      if token == 'visual':
+        print token
       frequency[token] += 1
   texts = [[token for token in text if frequency[token] > 1] for text in texts]
   print len(texts)
@@ -157,7 +159,7 @@ def docs2corpus(docs, name, isNew):
 def get_document_topics(doc, name):
   lda = gensim.models.ldamodel.LdaModel.load(name + '.lda')
   englishStopWords = get_stopwords('english', name)
-  text = [word for word in doc.lower().split() if word not in englishStopWords and word.isalpha() and len(word) > 1]
+  text = [singularize(word) for word in doc.lower().split() if singularize(word) not in englishStopWords and word.isalpha() and len(word) > 1]
   dictionary = gensim.corpora.Dictionary.load(name + '.dict')
   document_topics = lda.get_document_topics(dictionary.doc2bow(text), minimum_probability=0.05)
   primary_topic_tuple = max(document_topics, key=lambda x:x[1])
