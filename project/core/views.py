@@ -494,9 +494,9 @@ def loadBatchResults(request):
     if request.method == 'GET':
         print '>> loading batch result request...'
         current_dir = os.path.dirname(os.path.realpath(__file__))
-        query = 'prefrontal cortex'
+        query = 'virtual reality'
         f = os.path.join(current_dir, 'batchresults', query + '.txt')
-        PubMedParser.load_evidence(f, True, 11)
+        PubMedParser.load_evidence(f, True, 12)
         
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
 
