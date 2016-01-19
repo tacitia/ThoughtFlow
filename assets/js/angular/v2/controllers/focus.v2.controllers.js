@@ -234,16 +234,20 @@ angular.module('focus.v2.controllers')
     function updateCitedEvidence() {        
       if (textEvidenceAssociations === null || _.size(evidenceIdMap) === 0) return;
 
-      $scope.citedEvidence = _.uniq(_.filter(textEvidenceAssociations, function(a) {         
-        return a.targetId.toString().split('-')[0] == $scope.selectedText.id;        
+      $scope.citedEvidence = _.uniq(_.filter(textEvidenceAssociations, function(a) {  
+        var textId = a.targetId.toString().split('-');
+        return textId[0] == $scope.selectedText.id && textId.length==2;        
       }).map(function(a) {  
+        if (evidenceIdMap[a.sourceId] === undefined) {
+          console.log('Warning: inconsistency between citations and bookmarks detected.');
+        }
         return evidenceIdMap[a.sourceId];
       }));
 
       // Identify citations for each paragraph
       textEvidenceAssociations.forEach(function(a) {          
         var textId = a.targetId.toString().split('-');
-        if (textId[0] != $scope.selectedText.id) return;
+        if (textId[0] != $scope.selectedText.id || textId.length>2) return;
         var paragraphIndex = parseInt(textId[1]);
         if (paragraphIndex >= $scope.paragraphCitation.length) return;
         var e = evidenceIdMap[a.sourceId];

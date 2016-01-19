@@ -2,8 +2,6 @@ angular.module('explore.v2.controllers')
   .controller('ExploreController', ['$scope', '$stateParams', '$modal', 'Core', 'AssociationMap', 'Pubmed', 'TermTopic', 'Logger',
     function($scope, $stateParams, $modal, Core, AssociationMap, Pubmed, TermTopic, Logger) {
 
-    console.log($stateParams)
-
     var topTermContainer = null;
     var topTopicContainer = null;
     var termTopicConnectionContainer = null;
@@ -319,7 +317,7 @@ angular.module('explore.v2.controllers')
 
       var x = d3.scale.linear()
         .domain([0, TermTopic.getTermPropertyMax('weight')])
-        .range([0, width-140]); // 100 pixels are allocated to the texts
+        .range([10, width-130]); // 100 pixels are allocated to the texts
 
       var y = d3.scale.ordinal()
         .domain(d3.range(termBatchSize))
@@ -343,6 +341,7 @@ angular.module('explore.v2.controllers')
         .text(function(term) {
           return term.term;
         })
+        .attr('font-weight', 300)
         .attr('text-anchor', 'end')
         .attr('dy', 13);
 
@@ -382,7 +381,8 @@ angular.module('explore.v2.controllers')
     }
 
     function updateTermTopicFills() {
-      termColorMap.domain($scope.selectedTerms);
+      // Uncomment the following to color terms by their position in the $scope.selectedTerms array
+//      termColorMap.domain($scope.selectedTerms);
       topTermContainer.selectAll('rect')
         .attr('fill', function(d, i) {
           if ($scope.selectedTerms.indexOf(d.term) >= 0) {
@@ -392,7 +392,7 @@ angular.module('explore.v2.controllers')
             return '#ccc';
           }
         });
-      topTopicContainer.selectAll('rect')
+      topTopicContainer.selectAll('.topic-term-selector')
         .attr('fill', function(d, i) {
           if ($scope.selectedTerms.indexOf(d.term) >= 0) {
             return termColorMap(d.term);
@@ -441,10 +441,20 @@ angular.module('explore.v2.controllers')
           return 'translate(50, ' + y(i) + ')'; // 50 is allocated to topic ids
         });
 
-      visualizeIndividualTopic(newTopics, width-50, y);
+      var numDocScale = d3.scale.linear()
+        .domain([
+            d3.min(topTopics, function(d) {
+              return d.evidenceCount;
+            }), d3.max(topTopics, function(d) {
+              return d.evidenceCount
+            })
+          ])
+        .range([5, 10]);
+
+      visualizeIndividualTopic(newTopics, width-50, y, numDocScale);
     }
 
-    function visualizeIndividualTopic(topic, width, y) {
+    function visualizeIndividualTopic(topic, width, y, numDocScale) {
 
       var termWidth = width - 10;
 
@@ -458,15 +468,7 @@ angular.module('explore.v2.controllers')
         .attr('transform', 'translate(-50, 0)')
         .attr('rx', 5)
         .attr('fill', 'steelblue')
-        .attr('opacity', 0);
-
-      topic.append('text')
-        .text(function(topic) {
-          return topic.evidenceCount;
-        })
-        .attr('text-anchor', 'end')
-        .attr('dy', 13)
-        .attr('dx', -20)
+        .attr('opacity', 0)
         .on('mouseover', function(d) {
           d3.selectAll('.topic-background').attr('opacity', 0);
           d3.select('#topic-bg-' + d.id).attr('opacity', 0.5); 
@@ -490,7 +492,29 @@ angular.module('explore.v2.controllers')
           d3.selectAll('.topic-background').attr('opacity', 0);
           d3.select('#topic-bg-' + d.id).attr('opacity', 0.5);        
           setSelectedTopic(d);
-        });      
+        });
+
+      topic.append('circle')
+        .attr('class', 'topic-selector')
+        .attr('id', function(d) {
+          return 'topic-selector-' + d.id;
+        })
+        .attr('r', function(d, i) {
+          return numDocScale(d.evidenceCount);
+        })
+        .attr('transform', 'translate(-20, 9)')
+        .attr('stroke', '#ffffff')
+        .attr('stroke-width', 2)
+        .attr('fill', '#e5e5e5');
+
+/*
+      topic.append('text')
+        .text(function(topic) {
+          return topic.evidenceCount;
+        })
+        .attr('text-anchor', 'end')
+        .attr('dy', 13)
+        .attr('dx', -20)     */
 
       var probSum = 1;
       // Hack alert!!!
@@ -520,6 +544,7 @@ angular.module('explore.v2.controllers')
         });
 
       term.append('rect') 
+        .attr('class', 'topic-term-selector')
         .attr('width', function(d) {
           return Math.max(d.prob * termWidth * (1 / probSum) - 1, 1);
         })
@@ -560,6 +585,8 @@ angular.module('explore.v2.controllers')
         })
         .attr('dy', 13)
         .attr('fill', 'white')
+        .attr('font-weight', 350)
+        .attr('font-size', 12)
         .attr('text-anchor', 'middle')
         .text(function(d, i) {
           return i < 2 ? d.term : '';
@@ -621,7 +648,7 @@ angular.module('explore.v2.controllers')
       curve
         .attr('d', function(d) {
           var termPos = 5 + termY(termIndexMap[d.term.origIndex]);
-          var topicPos = 5 + topicY(topicIndexMap[d.topic.id]);
+          var topicPos = 9 + topicY(topicIndexMap[d.topic.id]);
           var points = [
             {x: 0, y: termPos},
             {x: 50, y: termPos},
@@ -1101,8 +1128,19 @@ angular.module('explore.v2.controllers')
         .domain(_.range(10));
       $scope.selectedDocumentTerms[index] = !$scope.selectedDocumentTerms[index];
       d3.selectAll('.selected-topic-term')
-        .style('background-color', function(d, i){
-          return $scope.selectedDocumentTerms[i] ? colorScale(i) : 'white';
+        .style('font-weight', function(d, i) {
+          return $scope.selectedDocumentTerms[i] ? 600 : 400;
+        })
+
+      d3.selectAll('.selected-topic-term')
+        .style('color', function(d, i){
+          if ($scope.selectedDocumentTerms[i]) {
+            return colorScale(i);
+          }
+          else {
+            return 'black';
+//            return i % 2 === 0 ? '#eee' : '#fff';
+          }
         });
       // Sort the documents with the selected terms
       // #marker
