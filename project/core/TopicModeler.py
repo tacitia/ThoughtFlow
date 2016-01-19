@@ -142,8 +142,6 @@ def docs2corpus(docs, name, isNew):
   frequency = defaultdict(int)
   for text in texts:
     for token in text:
-      if token == 'visual':
-        print token
       frequency[token] += 1
   texts = [[token for token in text if frequency[token] > 1] for text in texts]
   print len(texts)

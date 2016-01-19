@@ -264,14 +264,16 @@ angular.module('explore.v2.controllers')
         .attr('height', params.height + params.margin.top + params.margin.bottom);
 
       canvas.append('text')
+        .attr('class', 'h4')
         .text('Terms (' + TermTopic.numOfTerms() + ' total)')
         .attr('font-size', 18)
-        .attr('transform', 'translate(170, 20)');
+        .attr('transform', 'translate(90, 20)');
 
       canvas.append('text')
+        .attr('class', 'h4')
         .text('Topics (' + TermTopic.numOfTopics() + ' total)')
         .attr('font-size', 18)
-        .attr('transform', 'translate(500, 20)');
+        .attr('transform', 'translate(470, 20)');
 
       canvas.append('text')
         .text('Similar topics')
@@ -595,6 +597,7 @@ angular.module('explore.v2.controllers')
 
     function setSelectedTopic(d) {
       $scope.selectedTopic = d;
+      $scope.selectedEvidence = null;
       visualizeTopicNeighborMatrix(topicNeighborContainer, 600, 600, d);
       $scope.selectedDocumentTerms = _.object(_.range(10).map(function(num) {
         return [num, false];
