@@ -236,7 +236,7 @@ angular.module('focus.v2.controllers')
 
       $scope.citedEvidence = _.uniq(_.filter(textEvidenceAssociations, function(a) {  
         var textId = a.targetId.toString().split('-');
-        return textId[0] == $scope.selectedText.id && textId.length==2;        
+        return textId[0] == $scope.selectedText.id;        
       }).map(function(a) {  
         if (evidenceIdMap[a.sourceId] === undefined) {
           console.log('Warning: inconsistency between citations and bookmarks detected.');
@@ -247,7 +247,7 @@ angular.module('focus.v2.controllers')
       // Identify citations for each paragraph
       textEvidenceAssociations.forEach(function(a) {          
         var textId = a.targetId.toString().split('-');
-        if (textId[0] != $scope.selectedText.id || textId.length>2) return;
+        if (textId[0] != $scope.selectedText.id) return;
         var paragraphIndex = parseInt(textId[1]);
         if (paragraphIndex >= $scope.paragraphCitation.length) return;
         var e = evidenceIdMap[a.sourceId];
