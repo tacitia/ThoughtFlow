@@ -1,3 +1,4 @@
+// TODO: add collectionId here
 angular.module('modal.controllers')
   .controller('UploadBibtexModalController', ['$scope', '$modalInstance', 'userId', 'existingEvidence', 'Core', 'Bibtex',
     function($scope, $modalInstance, userId, existingEvidence, Core, Bibtex) {

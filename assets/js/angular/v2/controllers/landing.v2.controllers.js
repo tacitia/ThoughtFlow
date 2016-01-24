@@ -8,5 +8,6 @@ angular.module('landing.v2.controllers')
         { id: 11, name: 'pfc and executive functions'},
         { id: 12, name: 'virtual reality'},
         { id: 13, name: 'TVCG'},
+        { id: 15, name: 'diffusion tensor imaging'},
       ];
   }]);
