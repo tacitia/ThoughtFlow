@@ -1,5 +1,3 @@
-var myAwesomeJSVariable = "I'm so awesome!!";
-
 angular.module('mainModule', [
   'restangular', 
   'ui.router', 
@@ -29,6 +27,8 @@ angular.module('mainModule', [
       $locationProvider.html5Mode(true);
     }]);
 })();
+var myAwesomeJSVariable = "I'm so awesome!!";
+
 (function () {
   'use strict';
 
@@ -1084,6 +1084,10 @@ angular.module('modal.controllers')
 
   }]);
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
+    $templateCache.put('core/landing.html',
+        "<page-meta-data status-code=\"200\">\n\t<title>{{ 'meta_title_core' }}</title>\n\t<meta name=\"description\" content=\"{{ 'meta_description_core'}}\"/>\n\t<meta name=\"keywords\" content=\"{{ 'meta_keywords_core' }}\"/>\n</page-meta-data>\n\n<div data-ng-controller=\"CoreCtrl\">\n    <ng-include src=\"'core/partials/version-picker.html'\"></ng-include>\n</div>\n");
+}]);
+angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('authentication/login.html',
         "<div class=\"row\">\n  <div class=\"col-md-4 col-md-offset-4\">\n    <h1>Login</h1>\n\n    <div class=\"well\">\n      <form role=\"form\" ng-submit=\"login()\">\n        <div class=\"alert alert-danger\" ng-show=\"error\" ng-bind=\"error\"></div>\n\n        <div class=\"form-group\">\n          <label for=\"login__email\">Email</label>\n          <input type=\"text\" class=\"form-control\" id=\"login__email\" ng-model=\"email\" placeholder=\"ex. john@example.com\" />\n        </div>\n\n        <div class=\"form-group\">\n          <label for=\"login__password\">Password</label>\n          <input type=\"password\" class=\"form-control\" id=\"login__password\" ng-model=\"password\" placeholder=\"ex. thisisnotgoogleplus\" />\n        </div>\n\n        <div class=\"form-group\">\n          <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n        </div>\n      </form>\n    </div>\n  </div>\n</div>");
 }]);
@@ -1094,10 +1098,6 @@ angular.module('mainModule').run(['$templateCache', function($templateCache) {
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('authentication/register.html',
         "<div class=\"row\">\n  <div class=\"col-md-4 col-md-offset-4\">\n    <h1>Register</h1>\n\n    <div class=\"well\">\n      <form role=\"form\" ng-submit=\"register()\">\n        <div class=\"form-group\">\n          <label for=\"register__email\">Email</label>\n          <input type=\"email\" class=\"form-control\" id=\"register__email\" ng-model=\"email\" placeholder=\"ex. jane@notgoogle.com\" />\n        </div>\n\n        <div class=\"form-group\">\n          <label for=\"register__username\">Username</label>\n          <input type=\"text\" class=\"form-control\" id=\"register__username\" ng-model=\"username\" placeholder=\"ex. jane\" />\n        </div>\n\n        <div class=\"form-group\">\n          <label for=\"register__password\">Password</label>\n          <input type=\"password\" class=\"form-control\" id=\"register__password\" ng-model=\"password\" placeholder=\"ex. thisisnotgoogleplus\" />\n        </div>\n\n        <div class=\"form-group\">\n          <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n        </div>\n      </form>\n    </div>\n  </div>\n</div>");
-}]);
-angular.module('mainModule').run(['$templateCache', function($templateCache) {
-    $templateCache.put('core/landing.html',
-        "<page-meta-data status-code=\"200\">\n\t<title>{{ 'meta_title_core' }}</title>\n\t<meta name=\"description\" content=\"{{ 'meta_description_core'}}\"/>\n\t<meta name=\"keywords\" content=\"{{ 'meta_keywords_core' }}\"/>\n</page-meta-data>\n\n<div data-ng-controller=\"CoreCtrl\">\n    <ng-include src=\"'core/partials/version-picker.html'\"></ng-include>\n</div>\n");
 }]);
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('errors/404.html',
@@ -3585,6 +3585,10 @@ angular.module('focus.v2.controllers')
       }, function(response) {
         console.log('action logged: download proposal');        
       });
+
+      var content = 'file content for example';
+      var blob = new Blob([ content ], { type : 'text/plain' });
+      $scope.url = (window.URL || window.webkitURL).createObjectURL( blob );      
     };
 
     $scope.deleteText = function() {

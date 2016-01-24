@@ -117,8 +117,6 @@ class EvidenceView(View):
         print evidence
         serialized_json = serializers.serialize('json', [evidence])
         evidence_json = flattenSerializedJson(serialized_json)
-        if findRelatedEvidence:
-            relatedEvidence = GoogleScholarQuerier.get_related_evidence(data['title'])
         return HttpResponse(evidence_json, status=status.HTTP_201_CREATED)
 
 
@@ -511,12 +509,8 @@ def augmentCollection(request, collection_id):
         if collection_id in names:
             return HttpResponse(json.dumps({warning: 'Collection already exists! Try with another collection id.'}), status=status.HTTP_304_NOT_MODIFIED)
         seeds = Evidence.objects.filter(Q(created_by=collection_id)&~Q(abstract=''))
-        counter = 0
         for e in seeds:
             print e.title
-            if counter < 115:
-                counter += 1
-                continue
             related_evidence = PubMedQuerier.get_related_evidence(e.title)
             print 'found ' + str(len(related_evidence)) + ' related evidence for ' + e.title
             for re in related_evidence:
