@@ -21,7 +21,8 @@
           <svg class="topic-info" id="topic-info-{{t.id}}" width="150" height="25"></svg>
           <div ng-if="selectedText===t" style="margin-left:80%">
             <div class="btn-group btn-group-xs" role="group">
-              <button class="btn btn-danger" ng-disabled="selectedText===null" ng-click="deleteText()">Delete</button>
+              <button class="btn btn-default" ng-click="downloadText()">Download</button>
+              <button class="btn btn-danger" ng-click="deleteText()">Delete</button>
             </div>  
           </div>
         </td>

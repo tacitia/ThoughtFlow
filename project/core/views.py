@@ -105,11 +105,15 @@ class EvidenceView(View):
 #        }
         # 01/20/2016 new feature: initiate a google scholar api call to get abstract if not provided
         findRelatedEvidence = True;
+        title = data['title']
         abstract = data['abstract']
         if abstract == '':
-            abstract = PubMedQuerier.get_abstract_by_title(data['title'])
-            print abstract
-        evidence = Evidence.objects.create_evidence(data['title'], abstract, data['metadata'], data['created_by'])
+            temp_title, temp_abstract = PubMedQuerier.get_abstract_by_title(data['title'])
+            if temp_title is not None:
+                title = temp_title
+                abstract = temp_abstract
+                print abstract
+        evidence = Evidence.objects.create_evidence(title, abstract, data['metadata'], data['created_by'])
         print evidence
         serialized_json = serializers.serialize('json', [evidence])
         evidence_json = flattenSerializedJson(serialized_json)
@@ -507,7 +511,12 @@ def augmentCollection(request, collection_id):
         if collection_id in names:
             return HttpResponse(json.dumps({warning: 'Collection already exists! Try with another collection id.'}), status=status.HTTP_304_NOT_MODIFIED)
         seeds = Evidence.objects.filter(Q(created_by=collection_id)&~Q(abstract=''))
+        counter = 0
         for e in seeds:
+            print e.title
+            if counter < 115:
+                counter += 1
+                continue
             related_evidence = PubMedQuerier.get_related_evidence(e.title)
             print 'found ' + str(len(related_evidence)) + ' related evidence for ' + e.title
             for re in related_evidence:

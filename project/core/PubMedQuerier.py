@@ -13,6 +13,7 @@ import linecache
 import metapub
 import math
 from nltk.metrics import edit_distance
+import sys
 
 # This new function using the metapub library instead of custom PubMed query methods (the latter is hackier)
 def get_abstract_by_title(title):
@@ -22,25 +23,24 @@ def get_abstract_by_title(title):
 	pmids = fetch.pmids_for_query(title)
 	if (len(pmids) == 0):
 		print 'warning: no entry retrieved for given title'
-		return ''
+		return None, ''
 	elif (len(pmids) == 1):
 		article = fetch.article_by_pmid(pmids[0])
-		print article.title
-		if edit_distance(article.title, title) <= len(title) * 0.1:
+		if edit_distance(article.title, title) <= math.ceil(len(title) * 0.1) and article.abstract != None:
 			print 'successfully matched title: ' + article.title
-			return article.abstract
+			return article.title, article.abstract
 		else:
 			print 'warning: found one entry but not a match'		
-			return ''
+			return None, ''
 	else:
 		print 'warning: retrieved more than one entry for given title'
 		for i in range(min(20, len(pmids))):
 			article = fetch.article_by_pmid(pmids[i])
-			if edit_distance(article.title, title) <= len(title) * 0.1:
+			if edit_distance(article.title, title) <= math.ceil(len(title) * 0.1) and article.abstract != None:
 				print 'successfully matched title: ' + article.title
-				return article.abstract
+				return article.title, article.abstract
 		print 'warning: no entry is a match'
-		return ''
+		return None, ''
 
 def get_related_evidence(title):
 	print '>>>>>>>>>>>>>>>>>>>>>>>>>>'
@@ -77,8 +77,16 @@ def _merge_related_pmids(related_pmids, fetch):
 	if 'citedin' in related_pmids and related_pmids['citedin'] < 200:
 		results += related_pmids['citedin']
 	results = list(set(results))
-	articles = [fetch.article_by_pmid(pmid) for pmid in results]
-	return [article for article in articles if article.abstract != None]
+	articles = []
+	for pmid in results:
+		try:
+			article = fetch.article_by_pmid(pmid)
+			if article.abstract != None:
+				articles.append(article)
+		except metapub.exceptions.InvalidPMID:
+			print ("Exception: ", sys.exc_info()[0])
+			continue
+	return articles
 
 
 # Takes the query and 
