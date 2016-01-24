@@ -7621,6 +7621,9 @@ body, html {
   border-bottom: solid 1px #ccc;
   margin: 5px 0 15px 0;
 }
+#focus .document-entry {
+  width: 100%;
+}
 #focus .document-entry.active {
   background-color: #f5f5f5;
 }

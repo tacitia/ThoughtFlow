@@ -22,6 +22,7 @@ from rest_framework.views import View
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from django.core.exceptions import ObjectDoesNotExist
+import GoogleScholarQuerier
 
 names = {}
 names[10] = 'visualization'
@@ -95,11 +96,25 @@ class EvidenceView(View):
 
     def post(self, request, user_id, format=None):
         data = json.loads(request.body)
-        evidence = Evidence.objects.create_evidence(data['title'], data['abstract'], data['metadata'], data['created_by'])
+        print data
+#        data = {
+#            'abstract': '',
+#            'title': 'Generalized theory of relaxation',
+#            'metadata': '',
+#            'created_by': 1001
+#        }
+        # 01/20/2016 new feature: initiate a google scholar api call to get abstract if not provided
+        findRelatedEvidence = True;
+        abstract = data['abstract']
+        if abstract == '':
+            abstract = PubMedQuerier.get_abstract_by_title(data['title'])
+            print abstract
+        evidence = Evidence.objects.create_evidence(data['title'], abstract, data['metadata'], data['created_by'])
         print evidence
         serialized_json = serializers.serialize('json', [evidence])
         evidence_json = flattenSerializedJson(serialized_json)
-
+        if findRelatedEvidence:
+            relatedEvidence = GoogleScholarQuerier.get_related_evidence(data['title'])
         return HttpResponse(evidence_json, status=status.HTTP_201_CREATED)
 
 
@@ -265,7 +280,7 @@ def deleteAssociation(request):
 
 def addBookmark(request):
     if request.method == 'POST':
-        print '???'
+        print 'adding bookmark'
         data = json.loads(request.body)
         EvidenceBookmark.objects.create_entry(evidence_id=data['evidence_id'], user_id=data['user_id'])
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
@@ -485,6 +500,25 @@ def loadXploreData(request):
                 # print concept
                 #Association.objects.create_association('concept', 'evidence', concept.id, evidence.id, 0)
 
+        return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
+
+def augmentCollection(request, collection_id):
+    if request.method == 'GET':
+        if collection_id in names:
+            return HttpResponse(json.dumps({warning: 'Collection already exists! Try with another collection id.'}), status=status.HTTP_304_NOT_MODIFIED)
+        seeds = Evidence.objects.filter(Q(created_by=collection_id)&~Q(abstract=''))
+        for e in seeds:
+            related_evidence = PubMedQuerier.get_related_evidence(e.title)
+            print 'found ' + str(len(related_evidence)) + ' related evidence for ' + e.title
+            for re in related_evidence:
+                print 'adding related evidence: ' + re.title
+                Evidence.objects.create_evidence(re.title, re.abstract, json.dumps({
+                    'PMID': re.pmid,
+                    'AUTHOR': re.authors_str,
+                    'JOURNAL': re.journal,
+                    'DATE': re.year,
+                    'AFFILIATION': ''
+                }), collection_id)
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
 
 # This is a special function that loads a large document collection, performs topic modeling over them,

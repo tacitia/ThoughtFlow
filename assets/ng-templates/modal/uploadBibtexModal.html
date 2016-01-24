@@ -1,0 +1,46 @@
+<div class="modal-header">
+    <h3>Upload Bibtex File</h3>
+</div>
+<div class="modal-body">
+  <div ng-switch on="uploadStatus">
+    <div ng-switch-default class="container" style="width:100%;margin:10px;">
+      <div class="row">
+        <div class="col-md-8" style="padding-top:4px;"><input type="file"id="bibtex-input"></div>
+        <div class="col-md-4">
+          <button class="btn btn-primary btn-sm" ng-click="processBibtexFile()">Upload</button>
+        </div>
+      </div>
+    </div>
+    <div ng-switch-when="uploading">
+      <div ng-switch on="lastUploadResult">
+        <div ng-switch-when="success" class="alert alert-success">
+          <i>{{lastUploadedEvidence}}</i> successfully uploaded.
+        </div>
+        <div ng-switch-when="failed" class="alert alert-danger">
+          <i>{{lastUploadedEvidence}}</i> was not uploaded due to server error.
+        </div>
+        <div ng-switch-when="duplicate" class="alert alert-warning">
+          <i>{{lastUploadedEvidence}}</i> has been uploaded in the past.
+        </div>
+      </div>
+      <div class="alert alert-info">
+        <p>Uploading: <i>{{currentEvidence}}</i> </p>
+        <p>Entries uploaded: {{evidenceIndex}}</p>
+        <p>Estimated remaining time: {{esmitatedTimeRemaining}} seconds</p>
+      </div>
+    </div>
+    <div ng-switch-when="uploaded-success">
+      <div class="alert alert-success">
+        <p>All {{totalToUpload}} entries uploaded.</p>
+        <p>Found and added {{totalAbstractFound}} abstracts from PubMed.</p>
+      </div>
+    </div>
+    <div ng-switch-when="uploaded-failed">
+      <div class="alert alert-danger">
+        <p>Encountered more than 10 upload failure. Upload aborted. Please notify admin at hua_guo@brown.edu about the issue if it persists.</p>
+      </div>
+    </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-default" ng-click="ok()">Close</button>
+</div>

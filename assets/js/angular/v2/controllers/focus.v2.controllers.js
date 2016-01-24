@@ -1,6 +1,6 @@
 angular.module('focus.v2.controllers')
-  .controller('FocusController', ['$scope', '$stateParams', '$modal', 'Core','AssociationMap', 'Argument', 'Logger', 
-  function($scope, $stateParams, $modal, Core, AssociationMap, Argument, Logger) {      
+  .controller('FocusController', ['$scope', '$stateParams', '$modal', 'Core','AssociationMap', 'Argument', 'Logger', 'Bibtex',
+  function($scope, $stateParams, $modal, Core, AssociationMap, Argument, Logger, Bibtex) {      
     $scope.selectedText = {
       title: ''
     };
@@ -60,19 +60,24 @@ angular.module('focus.v2.controllers')
 
     Core.getAllEvidenceForUser(userId, function(response) {
       // This includes both usercreated and bookmarked evidence; they are not necessarily cited.        
+      /*
       $scope.evidence = _.filter(response.data, function(e) {
         return e.abstract.length > 0;
       });
+      */
+
+      // TODO: apply default sorting.
+      $scope.evidence = response.data;
 
       $scope.evidence.forEach(function(e){
         e.metadata = JSON.parse(e.metadata);
         evidenceIdMap[e.id]= e;
       })
-      updateCitedEvidence();
-    }, function(response) {
-      console.log('server error when retrieving evidence for user' + userId);
-      console.log(response);
-    });
+        updateCitedEvidence();
+      }, function(response) {
+        console.log('server error when retrieving evidence for user' + userId);
+        console.log(response);
+      });
 
     var newParagraphIndex = -1;
 
@@ -188,7 +193,73 @@ angular.module('focus.v2.controllers')
 
       $scope.selectEvidence(citation.evidence);        
       $scope.citationTabs['cited'].active= true;      
-    }      
+    }
+
+    $scope.openUploadBibtexWindow = function() {
+
+      var modalInstance = $modal.open({
+        templateUrl: 'modal/uploadBibtexModal.html',          
+        controller: 'UploadBibtexModalController',          
+        resolve: {
+          userId: function() {
+            return userId;
+          },
+          existingEvidence: function() {
+            return $scope.evidence;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (uploadedEvidence) {
+        $scope.evidence = $scope.evidence.concat(uploadedEvidence);
+      });  
+    }
+
+    $scope.processBibtexFile = function() {
+      var selectedFile = document.getElementById('bibtex-input').files[0];
+      var reader = new FileReader();
+      reader.onload = function(file) {
+        var fileContent = file.currentTarget.result;
+        console.log(Bibtex)
+        console.log(Bibtex.parseBibtexFile)
+        var evidenceList = Bibtex.parseBibtexFile(fileContent);      
+        var storedEvidence = [];
+
+        var evidenceIndex = 0;
+        var totalAbstractFound = 0;
+        var uploadFunction = setInterval(function() {
+          console.log(evidenceIndex);
+          if (evidenceIndex >= evidenceList.length) {
+            clearInterval(uploadFunction);
+            return;
+          }
+          var evidence = evidenceList[evidenceIndex];
+          Core.postEvidenceByUserId(userId, evidence.title, evidence.abstract, JSON.stringify(evidence.metadata), 
+            function(response) {
+              // TODO: probably more efficient to deal with this server side
+              if ($scope.evidence.indexOf(response.data[0]) > -1 || storedEvidence.indexOf(response.data[0]) > -1) {
+                return;
+              }
+              storedEvidence.push(response.data[0]);
+              if (evidence.abstract === '' && response.data[0].abstract !== '') {
+                totalAbstractFound += 1;
+              }
+              if (storedEvidence.length === evidenceList.length) {
+                $scope.evidence = $scope.evidence.concat(storedEvidence); 
+                console.log('total bibtex entry processed: ' + evidenceList.length);
+                console.log('total abstracts found: ' + totalAbstractFound);
+//                extendEvidenceMap(storedEvidence, 1);
+              }
+            }, function(response) {
+              console.log('server error when saving new evidence');
+              console.log(response);
+            });
+
+          evidenceIndex += 1;
+        }, 3000);
+      };
+      reader.readAsText(selectedFile);
+    };    
 
     $scope.addTextEntry = function() {
       Logger.logAction(userId, 'initiate proposal creation', 'v2','1', 'focus', {

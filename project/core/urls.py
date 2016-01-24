@@ -5,7 +5,7 @@ from core.views import association, deleteAssociation, retrieveEvidenceTextTopic
 from core.views import loadBatchResults, createOnlineLDA, loadOnlineLDA, createSimilarityMatrix, cacheTopics
 from core.views import getEvidenceRecommendation, getEvidenceByTopic, searchEvidenceByTitle
 from core.views import getEvidenceCollection
-from core.views import loadXploreData
+from core.views import loadXploreData, augmentCollection
 
 import views
 
@@ -43,6 +43,7 @@ urlpatterns = [
     url(r'^api/v1/ad-hoc/createSimilarityMatrix/$', createSimilarityMatrix, name='createSimilarityMatrix'),
     url(r'^api/v1/ad-hoc/cacheTopics/(?P<collection_id>\d+)/$', cacheTopics, name='cacheTopics'),
     url(r'^api/v1/ad-hoc/loadXploreData/$', loadXploreData, name='loadXploreData'),
+    url(r'^api/v1/ad-hoc/augmentCollection/(?P<collection_id>\d+)/$', augmentCollection, name='augmentCollection'),
 
     url(r'^.*$', views.index, name='index')
 ]

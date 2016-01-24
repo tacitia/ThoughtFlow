@@ -46,7 +46,18 @@
     </div>
   </div>
   <div class="col-md-3" style="border-left: solid 1px #ccc;border-bottom: solid 1px #ccc;height:1014px">
-    <h4>Citations</h4>
+    <div class="container" style="width:100%;">
+      <div class="row">
+        <div class="col-md-7">
+          <h4>Citations</h4>
+        </div>
+        <div class="col-md-5">
+          <div style="padding-top:5px">
+            <button class="btn btn-default btn-xs" ng-click="openUploadBibtexWindow()"><img style="width:20px; height:20px"src="/static/img/plus-icon.png"> Upload bibtex file
+          </div>
+        </div>
+      </div>
+    </div>
     <uib-tabset>
       <uib-tab heading="Recommended" active="citationTabs['recommended'].active">
         <div class="loading" ng-if="loadingRecommendedEvidence">
@@ -89,11 +100,14 @@
       </uib-tab>
       <uib-tab heading="Bookmarked" active="citationTabs['bookmarked'].active">
         <div id="bookmarkedEvidence" class="citation-container">
-          <div class="animate-repeat document-entry" ng-repeat="e in evidence" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
-            <div ng-click="selectEvidence(e, 'bookmarked')" style="width:90%;display:inline-block;float:left">
-              <p class="citation-entry"><span>{{$index+1}}. </span><span class="thin-text">{{e.title}}</span></p>
-              <div ng-if="selectedEvidence===e" style="margin-left:80%">
-                <div class="btn-group btn-group-xs" role="group">
+          <div class="container animate-repeat document-entry" ng-repeat="e in evidence" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
+            <div class="row" ng-click="selectEvidence(e, 'bookmarked')">
+              <p class="col-md-10 citation-entry"><span>{{$index+1}}. </span><span class="thin-text">{{e.title}}</span></p>
+              <div class="col-md-2" style="padding-top:5px">
+                <div ng-if="e.abstract.length===0">
+                  <img style="width:15px; height:15px"src="/static/img/warning-icon.png" title="No abstract for this entry.">
+                </div>
+                <div ng-if="selectedEvidence===e" class="btn-group btn-group-xs" role="group">
                   <button class="btn btn-primary" ng-class="{disabled: selectedParagraph===-1}" ng-click="citeEvidence(e, 'bookmarked')">Cite</button>
                 </div>  
               </div>

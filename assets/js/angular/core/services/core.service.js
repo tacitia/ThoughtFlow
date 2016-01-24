@@ -79,11 +79,12 @@
     }
 
     function postEvidenceByUserId(userId, title, abstract, metadata, successFn, errorFn) {
-      return $http.post('/api/v1/data/evidence/', {
+      return $http.post('/api/v1/data/evidence/' + userId + '/', {
         created_by: userId,
         title: title,
         abstract: abstract,
-        metadata: metadata
+        metadata: metadata,
+        find_neighbors: true
       }).then(successFn, errorFn);
     }
 

@@ -10,6 +10,76 @@ import PubMedParser
 from time import sleep
 import operator
 import linecache
+import metapub
+import math
+from nltk.metrics import edit_distance
+
+# This new function using the metapub library instead of custom PubMed query methods (the latter is hackier)
+def get_abstract_by_title(title):
+	print '>>>>>>>>>>>>>>>>>>>>>>>>>>'
+	print 'searching entry with title: ' + title
+	fetch = metapub.PubMedFetcher()
+	pmids = fetch.pmids_for_query(title)
+	if (len(pmids) == 0):
+		print 'warning: no entry retrieved for given title'
+		return ''
+	elif (len(pmids) == 1):
+		article = fetch.article_by_pmid(pmids[0])
+		print article.title
+		if edit_distance(article.title, title) <= len(title) * 0.1:
+			print 'successfully matched title: ' + article.title
+			return article.abstract
+		else:
+			print 'warning: found one entry but not a match'		
+			return ''
+	else:
+		print 'warning: retrieved more than one entry for given title'
+		for i in range(min(20, len(pmids))):
+			article = fetch.article_by_pmid(pmids[i])
+			if edit_distance(article.title, title) <= len(title) * 0.1:
+				print 'successfully matched title: ' + article.title
+				return article.abstract
+		print 'warning: no entry is a match'
+		return ''
+
+def get_related_evidence(title):
+	print '>>>>>>>>>>>>>>>>>>>>>>>>>>'
+	print 'given title: ' + title
+	fetch = metapub.PubMedFetcher()
+	pmids = fetch.pmids_for_query(title)
+	if len(pmids) == 1:
+		article = fetch.article_by_pmid(pmids[0])
+		if edit_distance(article.title, title) <= len(title) * 0.1:
+			print 'matched title: ' + article.title
+			related_pmids = fetch.related_pmids(pmids[0])
+			return _merge_related_pmids(related_pmids, fetch)
+	elif len(pmids) > 1:
+		for i in range(min(20, len(pmids))):
+			article = fetch.article_by_pmid(pmids[i])
+			if edit_distance(article.title, title) <= len(title) * 0.1:
+				print 'matched title: ' + article.title
+				related_pmids = fetch.related_pmids(pmids[i])
+				return _merge_related_pmids(related_pmids, fetch)
+
+	print 'no match found'
+	return []
+
+def _merge_related_pmids(related_pmids, fetch):
+	results = []
+	if 'five' in related_pmids:
+		results += related_pmids['five']
+	if 'refs' in related_pmids:
+		results += related_pmids['refs']
+	if 'alsoviewed' in related_pmids:
+		results += related_pmids['alsoviewed']
+	if 'reviews' in related_pmids:
+		results += related_pmids['reviews']
+	if 'citedin' in related_pmids and related_pmids['citedin'] < 200:
+		results += related_pmids['citedin']
+	results = list(set(results))
+	articles = [fetch.article_by_pmid(pmid) for pmid in results]
+	return [article for article in articles if article.abstract != None]
+
 
 # Takes the query and 
 # 1) writes the query result into savefile
