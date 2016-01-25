@@ -509,8 +509,13 @@ def augmentCollection(request, collection_id):
         if collection_id in names:
             return HttpResponse(json.dumps({warning: 'Collection already exists! Try with another collection id.'}), status=status.HTTP_304_NOT_MODIFIED)
         seeds = Evidence.objects.filter(Q(created_by=collection_id)&~Q(abstract=''))
+        counter = 0
         for e in seeds:
-            print e.title
+#            print e.title
+#            counter += 1
+#            if counter < 183:
+#                continue
+#            if counter > 
             related_evidence = PubMedQuerier.get_related_evidence(e.title)
             print 'found ' + str(len(related_evidence)) + ' related evidence for ' + e.title
             for re in related_evidence:
@@ -521,7 +526,7 @@ def augmentCollection(request, collection_id):
                     'JOURNAL': re.journal,
                     'DATE': re.year,
                     'AFFILIATION': ''
-                }), collection_id)
+                }), collection_id, 1)
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
 
 # This is a special function that loads a large document collection, performs topic modeling over them,

@@ -36,8 +36,8 @@ class Concept(models.Model):
 
 
 class EvidenceManager(models.Manager):
-    def create_evidence(self, title, abstract, metadata, created_by):
-      evidence, created = self.get_or_create(title=title, abstract=abstract, metadata=metadata, created_by=created_by)
+    def create_evidence(self, title, abstract, metadata, created_by, augmentation):
+      evidence, created = self.get_or_create(title=title, abstract=abstract, metadata=metadata, created_by=created_by, augmentation=augmentation)
       return evidence
 
 class Evidence(models.Model):
@@ -48,6 +48,8 @@ class Evidence(models.Model):
   created_by = models.IntegerField()
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
+  # user provided evidence have augmentation of 0; 1st level related articles have augmentation 1, and so forth
+  augmentation = models.IntegerField(default=0)
 
   objects = EvidenceManager()
 
