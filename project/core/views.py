@@ -105,7 +105,7 @@ class EvidenceView(View):
 #        }
         # 01/20/2016 new feature: initiate a google scholar api call to get abstract if not provided
         findRelatedEvidence = True;
-        title = data['title']
+        title = data['title'].replace('{', '').replace('}', '')
         abstract = data['abstract']
         if abstract == '':
             temp_title, temp_abstract = PubMedQuerier.get_abstract_by_title(data['title'])
