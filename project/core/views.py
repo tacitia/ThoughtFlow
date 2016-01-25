@@ -113,7 +113,7 @@ class EvidenceView(View):
                 title = temp_title
                 abstract = temp_abstract
                 print abstract
-        evidence = Evidence.objects.create_evidence(title, abstract, data['metadata'], data['created_by'])
+        evidence = Evidence.objects.create_evidence(title, abstract, data['metadata'], data['created_by'], 0)
         print evidence
         serialized_json = serializers.serialize('json', [evidence])
         evidence_json = flattenSerializedJson(serialized_json)
@@ -495,7 +495,7 @@ def loadXploreData(request):
                     'JOURNAL': 'IEEE Transactions on Visualization and Computer Graphics',
                     'DATE': e['date'],
                     'AFFILIATION': e['affiliations']
-                }), user_id)
+                }), user_id, 0)
             print evidence
             #for t in e['terms']:
                 #concept = Concept.objects.create_concept(t, user_id)
