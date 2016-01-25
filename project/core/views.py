@@ -29,6 +29,7 @@ names[10] = 'visualization'
 names[11] = 'pfc and executive functions'
 names[12] = 'virtual reality'
 names[13] = 'TVCG'
+names[15] = 'diffusion tenser imaging'
 
 @ensure_csrf_cookie
 def index(request):
