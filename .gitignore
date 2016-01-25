@@ -1,3 +1,4 @@
+project/authentication/migrations
 project/core/migrations
 *.swp
 *.pyc
