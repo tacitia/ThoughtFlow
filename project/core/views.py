@@ -511,6 +511,8 @@ def augmentCollection(request, collection_id):
         seeds = Evidence.objects.filter(Q(created_by=collection_id)&~Q(abstract=''))
         counter = 0
         for e in seeds:
+            counter += 1
+            print 'processing entry #' + counter + ' out of ' + str(seeds.count())
 #            print e.title
 #            counter += 1
 #            if counter < 183:
