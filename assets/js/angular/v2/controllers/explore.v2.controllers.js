@@ -524,6 +524,7 @@ angular.module('explore.v2.controllers')
       // Hack alert!!!
       if (collectionId === 12) probSum = 0.2;
       if (collectionId === 13) probSum = 0.5;
+      if (collectionId === 15) probSum = 0.7;
 
       var term = topic.selectAll('g')
         .data(function(d, i) {
