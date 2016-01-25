@@ -512,7 +512,7 @@ def augmentCollection(request, collection_id):
         counter = 0
         for e in seeds:
             counter += 1
-            print 'processing entry #' + counter + ' out of ' + str(seeds.count())
+            print 'processing entry #' + str(counter) + ' out of ' + str(seeds.count())
 #            print e.title
 #            counter += 1
 #            if counter < 183:
