@@ -521,7 +521,6 @@ def augmentCollection(request, collection_id):
             related_evidence = PubMedQuerier.get_related_evidence(e.title)
             print 'found ' + str(len(related_evidence)) + ' related evidence for ' + e.title
             for re in related_evidence:
-                print 'adding related evidence: ' + re.title
                 Evidence.objects.create_evidence(re.title, re.abstract, json.dumps({
                     'PMID': re.pmid,
                     'AUTHOR': re.authors_str,
