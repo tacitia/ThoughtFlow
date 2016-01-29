@@ -13,7 +13,9 @@
       postConceptByUserId: postConceptByUserId,
       postEvidenceByUserId: postEvidenceByUserId,
       postAssociationByUserId: postAssociationByUserId,
+      updateAssociation: updateAssociation,
       deleteAssociationByUserId: deleteAssociationByUserId,
+      deleteAssociationById: deleteAssociationById,
       deleteBookmark: deleteBookmark,
       getAllTextsForUser: getAllTextsForUser,
       getAllEvidenceForUser: getAllEvidenceForUser,
@@ -110,7 +112,15 @@
         targetType: targetType,
         sourceId: sourceId,
         targetId: targetId
-      }).then(successFn, errorFn)      
+      }).then(successFn, errorFn);
+    }
+
+    function updateAssociation(id, sourceId, targetId, successFn, errorFn) {
+      return $http.post('/api/v1/data/association/update/', {
+        id: id,
+        sourceId: sourceId,
+        targetId: targetId
+      }).then(successFn, errorFn);      
     }
 
     function addBookmark(userId, evidenceId, successFn, errorFn) {
@@ -123,6 +133,8 @@
     }
 
     function deleteAssociationByUserId(userId, sourceType, targetType, sourceId, targetId, successFn, errorFn) {
+      console.log('deleting')
+      console.log(userId)
       return $http.post('/api/v1/data/association/delete/', {
         created_by: userId,
         sourceType: sourceType,
@@ -130,6 +142,12 @@
         sourceId: sourceId,
         targetId: targetId
       }).then(successFn, errorFn)      
+    }
+
+    function deleteAssociationById(associationId, successFn, errorFn) {
+      return $http.post('/api/v1/data/association/deleteById/', {
+        id: associationId
+      }).then(successFn, errorFn)    
     }
 
     function deleteEntry(id, type, userId, successFn, errorFn) {

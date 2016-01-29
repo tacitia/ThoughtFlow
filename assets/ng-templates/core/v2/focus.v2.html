@@ -19,10 +19,10 @@
         <td ng-click="selectText(t)">
           <p>{{t.title}}</p>
           <svg class="topic-info" id="topic-info-{{t.id}}" width="150" height="25"></svg>
-          <div ng-if="selectedText===t" style="margin-left:80%">
+          <div ng-if="selectedText===t" style="margin-left:70%">
             <div class="btn-group btn-group-xs" role="group">
-              <button class="btn btn-default" ng-click="downloadText()">Download</button>
-              <button class="btn btn-danger" ng-click="deleteText()">Delete</button>
+              <a download="{{selectedText.title}}.txt" ng-href="{{proposalUrl}}"><img style="width:20px; height:20px"src="/static/img/download-icon.png"/></a>
+              <a ng-click="deleteText()"><img style="width:20px; height:20px"src="/static/img/trash-icon.svg"/></a>
             </div>  
           </div>
         </td>

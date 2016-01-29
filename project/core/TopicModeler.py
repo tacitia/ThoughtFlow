@@ -160,11 +160,13 @@ def get_document_topics(doc, name):
   text = [singularize(word) for word in doc.lower().split() if singularize(word) not in englishStopWords and word.isalpha() and len(word) > 1]
   dictionary = gensim.corpora.Dictionary.load(name + '.dict')
   document_topics = lda.get_document_topics(dictionary.doc2bow(text), minimum_probability=0.05)
-  primary_topic_tuple = max(document_topics, key=lambda x:x[1])
-  topic_terms = lda.show_topic(primary_topic_tuple[0])
-  print topic_terms
-
-  return document_topics, topic_terms
+  if len(document_topics) > 0:
+    primary_topic_tuple = max(document_topics, key=lambda x:x[1])
+    topic_terms = lda.show_topic(primary_topic_tuple[0])
+    print topic_terms
+    return document_topics, topic_terms
+  else:
+    return [], ''
 
 def compute_documents_similarity_sub(target, docs, name):
   print 'here'

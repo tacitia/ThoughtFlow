@@ -3,7 +3,6 @@ angular
   .factory('Bibtex', Bibtex);
 
   function Bibtex($http, $q) {
-    console.log(parseBibtexFile)
     var Bibtex = {
       parseBibtexFile: parseBibtexFile
     };

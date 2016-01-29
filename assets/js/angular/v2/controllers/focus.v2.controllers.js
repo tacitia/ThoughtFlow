@@ -22,6 +22,8 @@ angular.module('focus.v2.controllers')
       'bookmarked': {active: false}
     };
 
+    var blob = null;
+
     // TODO: get the list from server
     $scope.collections = [
       { id: 10, name: 'visualization'},
@@ -47,6 +49,7 @@ angular.module('focus.v2.controllers')
 
     AssociationMap.initialize(userId, function() {
       textEvidenceAssociations = AssociationMap.getAssociationsOfType('evidence', 'text');
+      console.log(textEvidenceAssociations)
       updateCitedEvidence();
     });
 
@@ -86,8 +89,10 @@ angular.module('focus.v2.controllers')
     $scope.$watch(function() {
       return d3.selectAll('.text-paragraph')[0].length;
     }, function(newValue, oldValue) {
+      if (isDebug)
+        console.log('watch on # of .text-paragraph executing...')
       var el =document.getElementById('ap-' +newParagraphIndex);
-      if (el !== null){
+      if (el !== null && newValue > oldValue){
         el.innerText = '';
         el.focus();
       }
@@ -107,14 +112,15 @@ angular.module('focus.v2.controllers')
           proposal: text.id,
           contentLength: text.content.split(' ').length
         }, function(response) {
-          console.log('action logged: select proposal');
+          if (isDebug)
+            console.log('action logged: select proposal');
         });
       }
 
       $scope.selectedText = text;
       $scope.paragraphInformation= [];
       $scope.paragraphCitation = [];
-      $scope.activeParagraphs = _.filter(text.content.split('/n'), function(text){
+      $scope.activeParagraphs = _.filter(text.content.split('\n'), function(text){
         return text !== '';
       }).map(function(p, i) {
         $scope.paragraphInformation.push({});
@@ -125,12 +131,57 @@ angular.module('focus.v2.controllers')
       updateCitedEvidence();
     };
 
+    // TODO: known bug: if 1) add a new paragraph at the end of the proposal (it's fine if the paragraph is added in the middle), 
+    // 2) download the proposal, then the new paragraph will beome invisible in the text area 
+    // (the sorrounding spans are removed somehow), but it will appear if refresh the page (i.e. the paragraph itself is stored)
+    function prepareProposalDownload() {
+      var content = '';
+      for (var i = 0; i < $scope.activeParagraphs.length; ++i) {
+        var paragraph = $scope.activeParagraphs[i];
+        var citations = _.sortBy($scope.paragraphCitation[i], function(c) {
+          return c.index;
+        });
+        content += paragraph.text;
+        for (var j = 0; j < citations.length; ++j) {
+          content += '[' + (citations[j].index + 1) + ']';
+        }
+          content += '\n';
+      }
+      content += '\nReferences\n'
+      for (var i = 0; i < $scope.citedEvidence.length; ++i) {
+        var evidence = $scope.citedEvidence[i];
+        content += (i+1) + '. ';
+        content += evidence.metadata.AUTHOR + ' ';
+        content += evidence.title + '. ';
+        if (evidence.metadata.JOURNAL !== undefined) {
+          content += evidence.metadata.JOURNAL + ' ';
+        }
+        if (evidence.metadata.DATE !== undefined) {
+          content += evidence.metadata.DATE + ' ';
+        }
+        content += '\n';
+      }
+
+      blob = new Blob([ content ], { type : 'text/plain' });
+      $scope.proposalUrl = (window.URL || window.webkitURL).createObjectURL( blob );
+    };
+
+    // TODO
+    $scope.loadPlainTextProposalFile = function() {
+    };
+
+    // TODO
+    $scope.loadLatexProposalFile = function() {
+      // Need to find and remove latex commands...       
+    }
+
     $scope.selectEvidence = function(evidence, sourceList) {
       Logger.logAction(userId, 'select evidence', 'v2', '1', 'focus', {
         evidence: evidence.id,
         sourceList: sourceList
       }, function(response) {
-        console.log('action logged: select evidence');
+        if (isDebug)
+          console.log('action logged: select evidence');
       });
 
       $scope.selectedEvidence = evidence;
@@ -143,8 +194,9 @@ angular.module('focus.v2.controllers')
           proposal: $scope.selectedText.id,
           paragraph: index,
           clickTarget: clickTarget
-        }, function(response) {            
-          console.log('actionlogged: select paragraph');
+        }, function(response) {        
+          if (isDebug)    
+            console.log('action logged: select paragraph');
         });
 
         $scope.selectedParagraph =index;
@@ -156,31 +208,38 @@ angular.module('focus.v2.controllers')
       if ($scope.selectedParagraph === -1) {
         return;
       }
+      var textParaId = $scope.selectedText.id+ '-' + $scope.selectedParagraph;
+      console.log(textEvidenceAssociations)
+      if (AssociationMap.hasAssociation('evidence', 'text', evidence.id, textParaId)) {
+        return;
+      }
       Logger.logAction(userId, 'cite evidence', 'v2', '1', 'focus', {          
         proposal: $scope.selectedText.id,
         paragraph: $scope.selectedParagraph,
         evidence: evidence.id,
         sourceList: sourceList        
-      }, function(response) {          
-        console.log('action logged: cite evidence');
+      }, function(response) {
+        if (isDebug)
+          console.log('action logged: cite evidence');
       });        
       //Add association
-      var textParaId = $scope.selectedText.id+ '-' + $scope.selectedParagraph;      
-      AssociationMap.addAssociation(userId,'evidence', 'text', evidence.id,textParaId, function(association) {
+      AssociationMap.addAssociation(userId,'evidence', 'text', evidence.id, textParaId, function(association) {
         // Add evidence to the list of cited evidence
         var index = $scope.citedEvidence.map(function(e) {
           return e.id;
         }).indexOf(evidence.id);          
-
         if (index === -1) {
           $scope.citedEvidence.push(evidence);
           index =$scope.citedEvidence.length - 1;          
         }
-
+        // Add the association to text evidence association for book-keeping (since we need to update the association entry
+        // when new paragraphs are added)
+        textEvidenceAssociations.push(association);
         $scope.paragraphCitation[$scope.selectedParagraph].push({            
           index: index,
           evidence: evidence
         });
+        prepareProposalDownload();
       });      
     };
 
@@ -190,7 +249,8 @@ angular.module('focus.v2.controllers')
         paragraph: $scope.selectedParagraph,          
         citation: citation.evidence.id
       }, function(response) {
-        console.log('action logged: show citation');       
+        if (isDebug)
+          console.log('action logged: show citation');       
       });        
 
       $scope.selectEvidence(citation.evidence);        
@@ -222,8 +282,6 @@ angular.module('focus.v2.controllers')
       var reader = new FileReader();
       reader.onload = function(file) {
         var fileContent = file.currentTarget.result;
-        console.log(Bibtex)
-        console.log(Bibtex.parseBibtexFile)
         var evidenceList = Bibtex.parseBibtexFile(fileContent);      
         var storedEvidence = [];
 
@@ -267,7 +325,8 @@ angular.module('focus.v2.controllers')
       Logger.logAction(userId, 'initiate proposal creation', 'v2','1', 'focus', {
         totalProposals: $scope.texts.length
       }, function(response) {
-        console.log('action logged:initiate proposal creation');
+        if (isDebug)
+          console.log('action logged:initiate proposal creation');
       });
 
       var modalInstance = $modal.open({
@@ -299,7 +358,8 @@ angular.module('focus.v2.controllers')
           contentLength: newEntry.content.split(' ').length,            
           totalProposals: $scope.texts.length          
         },function(response) {
-          console.log('action logged: proposal created');          
+          if (isDebug)
+            console.log('action logged: proposal created');          
         });
 
         $scope.texts.push(newEntry);        
@@ -331,7 +391,8 @@ angular.module('focus.v2.controllers')
           index: evidenceIndex,
           evidence: e
         });
-      });      
+      }); 
+      prepareProposalDownload();
     }
 
     function insertTextAtCursor(text) { 
@@ -359,29 +420,152 @@ angular.module('focus.v2.controllers')
           proposal: $scope.selectedText.id,           
           totalParagraphs: $scope.activeParagraphs.length
         }, function(response) {
-          console.log('actionlogged: create new paragraph');
+          if (isDebug)
+            console.log('action logged: create new paragraph');
         });
-
         e.preventDefault();
-        $scope.activeParagraphs.splice(i+1, 0, {text: ''});
-        $scope.paragraphInformation.splice(i+1, 0,{});         
-        $scope.paragraphCitation.splice(i+1, 0, []);
-        newParagraphIndex = i+1;
-        updateRecommendedCitations($scope.activeParagraphs[i].text, i);
-        $scope.selectedParagraph = i+1;          
-        return;       
+        var enterPosition = getCaretCharacterOffsetWithin(document.getElementById('ap-' + i));
+        if (enterPosition === 0) {
+          newParagraphIndex = i;
+        }
+        else {
+          newParagraphIndex = i+1;
+          // TODO: handle enter in the middle of paragraph
+        }
+        updateParagraphs(newParagraphIndex, i, true);
+        updateTextEvidenceAssociations(newParagraphIndex, true);
+        return;
+      }
+      // Delete a paragraph if user presses backspace when it's already empty
+      // Known issue: Does not move the cursor anywhere if the first paragraph is deleted
+      else if (e.keyCode === 8 && $scope.activeParagraphs[i].text.trim().length === 0) {
+        console.log('deleting')
+        e.preventDefault();
+        newParagraphIndex = Math.max(0, i-1);
+        updateParagraphs(newParagraphIndex, i, false);
+        updateTextEvidenceAssociations(i, false);
+        // We are forcing a focus here instead of waiting for the watch on d3.selectAll('.text-paragraph') to trigger, 
+        // because it does not trigger sometimes or has a delay. Can't tell when it is triggered immediately when it is not
+        var el =document.getElementById('ap-' +newParagraphIndex);
+        if (el !== null){
+          el.focus();
+          setEndOfContenteditable(el);
+        }
+        return;
+        // TODO: update citedEvidence, textEvidenceAssociations
       }
       else {
+        if (e.keyCode === 8)
         Logger.logAction(userId, 'edit paragraph', 'v2', '1', 'focus', {
           proposal:$scope.selectedText.id,
           paragraph: $scope.selectedParagraph
         }, function(response) {
-          console.log('action logged: edit paragraph');          
+          if (isDebug)
+            console.log('action logged: edit paragraph');          
         },function(response) {
-          console.log('error occurred during logging: edit paragraph')
-        }, true);        
+          if (isDebug)
+            console.log('error occurred during logging: edit paragraph')
+        }, true);
+        return;
       }
-    };      
+    };
+
+    function updateParagraphs(newParagraphIndex, i, add) {
+      if (add) {
+        $scope.activeParagraphs.splice(newParagraphIndex, 0, {text: ''});
+        $scope.paragraphInformation.splice(newParagraphIndex, 0,{});         
+        $scope.paragraphCitation.splice(newParagraphIndex, 0, []);
+        updateRecommendedCitations($scope.activeParagraphs[i].text, i);
+      }
+      else {
+        $scope.activeParagraphs.splice(i, 1);
+        $scope.paragraphInformation.splice(i, 1);
+        $scope.paragraphCitation.splice(i, 1);
+        updateRecommendedCitations($scope.activeParagraphs[newParagraphIndex].text, newParagraphIndex);
+      }
+      $scope.selectedParagraph = newParagraphIndex; 
+    }
+
+    function updateTextEvidenceAssociations(startIndex, shiftRight) {
+      console.log('updating text evidence associations with start index ' + startIndex)
+      console.log(textEvidenceAssociations)
+      if (!shiftRight) {
+        var deletedAssociations = [];
+        textEvidenceAssociations.forEach(function(association) {
+          var ids = association.targetId.split('-');
+          var textId = parseInt(ids[0]);
+          var paragraphId = parseInt(ids[1]);
+          if (paragraphId === startIndex) {
+            console.log('ready to delete citation')
+            console.log(association)
+            AssociationMap.removeAssociationById(association.id, function(response) {
+              console.log('association with evidence ' + association.sourceId + ' deleted')
+              deletedAssociations.push(association.id);
+            });
+          }
+        });
+        textEvidenceAssociations = _.reject(textEvidenceAssociations, function(association) {
+          return deletedAssociations.indexOf(association.id) > -1;
+        })
+      }
+      console.log(textEvidenceAssociations)
+      // Update evidence association for all shifted paragraphs
+      textEvidenceAssociations.forEach(function(association) {
+        var ids = association.targetId.split('-');
+        var textId = parseInt(ids[0]);
+        var paragraphId = parseInt(ids[1]);
+
+        if (textId === $scope.selectedText.id && paragraphId > startIndex) {
+          var offset = shiftRight ? 1 : -1;
+          var newTargetId = $scope.selectedText.id + '-' + (paragraphId + offset);
+          AssociationMap.updateAssociation(association.id, association.sourceId, newTargetId);
+        }
+      });      
+    }
+
+    function setEndOfContenteditable(contentEditableElement) {
+        var range,selection;
+        if(document.createRange)//Firefox, Chrome, Opera, Safari, IE 9+
+        {
+            range = document.createRange();//Create a range (a range is a like the selection but invisible)
+            range.selectNodeContents(contentEditableElement);//Select the entire contents of the element with the range
+            range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
+            selection = window.getSelection();//get the selection object (allows you to change selection)
+            selection.removeAllRanges();//remove any selections already made
+            selection.addRange(range);//make the range you have just created the visible selection
+        }
+        else if(document.selection)//IE 8 and lower
+        { 
+            range = document.body.createTextRange();//Create a range (a range is a like the selection but invisible)
+            range.moveToElementText(contentEditableElement);//Select the entire contents of the element with the range
+            range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
+            range.select();//Select the range (make it the visible selection
+        }
+    }
+
+    function getCaretCharacterOffsetWithin(element) {
+        var caretOffset = 0;
+        var doc = element.ownerDocument || element.document;
+        var win = doc.defaultView || doc.parentWindow;
+        var sel;
+        if (typeof win.getSelection != "undefined") {
+            sel = win.getSelection();
+            if (sel.rangeCount > 0) {
+                var range = win.getSelection().getRangeAt(0);
+                var preCaretRange = range.cloneRange();
+                preCaretRange.selectNodeContents(element);
+                preCaretRange.setEnd(range.endContainer, range.endOffset);
+                caretOffset = preCaretRange.toString().length;
+            }
+        } else if ( (sel = doc.selection) && sel.type != "Control") {
+            var textRange = sel.createRange();
+            var preCaretTextRange = doc.body.createTextRange();
+            preCaretTextRange.moveToElementText(element);
+            preCaretTextRange.setEndPoint("EndToEnd", textRange);
+            caretOffset = preCaretTextRange.text.length;
+        }
+        return caretOffset;
+    }
 
     $scope.hasMadeChanges = function(i,e) {        
       $scope.hasUnsavedChanges = true;
@@ -393,12 +577,9 @@ angular.module('focus.v2.controllers')
         length:$scope.selectedText.content.split(' ').length,
         totalProposals: $scope.texts.length
       }, function(response) {
-        console.log('action logged: download proposal');        
+        if (isDebug)
+          console.log('action logged: download proposal');        
       });
-
-      var content = 'file content for example';
-      var blob = new Blob([ content ], { type : 'text/plain' });
-      $scope.url = (window.URL || window.webkitURL).createObjectURL( blob );      
     };
 
     $scope.deleteText = function() {
@@ -406,7 +587,8 @@ angular.module('focus.v2.controllers')
         length:$scope.selectedText.content.split(' ').length,
         totalProposals: $scope.texts.length
       }, function(response) {
-        console.log('action logged: initiate proposal deletion');        
+        if (isDebug)
+          console.log('action logged: initiate proposal deletion');        
       });
         
       var modalInstance = $modal.open({
@@ -434,7 +616,8 @@ angular.module('focus.v2.controllers')
           length: $scope.selectedText.content.split(' ').length,          
           totalProposals: $scope.texts.length   
         },function(response) {
-          console.log('action logged: proposal delete');
+          if (isDebug)
+            console.log('action logged: proposal delete');
         });
         for (var i = 0; i < deletedEntryId.length; ++i) {
           var entryId = deletedEntryId[i];
@@ -468,7 +651,7 @@ angular.module('focus.v2.controllers')
       return false;   
     };
 
-    // Check every 15 secondsif there is unsaved changes; ifthere is, .
+    // Check every 15 seconds if there is unsaved changes; ifthere is, .
     // call this function to save the content.
     function saveText() {      
       if (isDebug) {
@@ -476,7 +659,7 @@ angular.module('focus.v2.controllers')
       }        
       var newContent = $scope.activeParagraphs.map(function(p) {         
         return p.text;
-      }).join('/n');     
+      }).join('\n');     
 
       Core.postTextByUserId(userId, $scope.selectedText.title, newContent, false, $scope.selectedText.id, function(response){           
         $scope.texts.forEach(function(t) {             
@@ -501,8 +684,8 @@ angular.module('focus.v2.controllers')
           console.log('updating already in progress');
           return;
       }
-
-      console.log('updating evidence recommendations..');        
+      if (isDebug)
+        console.log('updating evidence recommendations..');        
       $scope.loadingRecommendedEvidence = true;        
 
       Argument.getEvidenceRecommendation(text, collectionId, function(response) {
@@ -510,12 +693,16 @@ angular.module('focus.v2.controllers')
         $scope.recommendedEvidence.forEach(function(e) {
           e.metadata = JSON.parse(e.metadata);
         })
-        console.log($scope.recommendedEvidence);
-        $scope.paragraphInformation[index].topic = response.data.topics[0];        
-        $scope.paragraphInformation[index].topicString = response.data.topics[0].terms.map(function(term) {
-          return term[0];
-        }).join(' ');       
-        $scope.loadingRecommendedEvidence =false;
+        $scope.paragraphInformation[index].topic = response.data.topics[0];
+        if (response.data.topics[0].terms !== '') {
+          $scope.paragraphInformation[index].topicString = response.data.topics[0].terms.map(function(term) {
+            return term[0];
+          }).join(' ');
+        }
+        else {
+          $scope.paragraphInformation[index].topicString = '';          
+        }
+        $scope.loadingRecommendedEvidence = false;
       }, function(errorResponse) {
           console.log('error occurred while recommending citations');       
           console.log(errorResponse);

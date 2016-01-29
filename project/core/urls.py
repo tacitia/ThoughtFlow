@@ -1,7 +1,7 @@
 from django.conf.urls import include, url
 from core.views import TextView, ConceptView, EvidenceView, DeleteEntryView, UserDataView, UserAssociationView
 from core.views import ConceptGrowthView, EvidenceSearchView, TermExtractionView
-from core.views import association, deleteAssociation, retrieveEvidenceTextTopics, addBookmark, deleteBookmark
+from core.views import association, updateAssociation, deleteAssociation, deleteAssociationById, retrieveEvidenceTextTopics, addBookmark, deleteBookmark
 from core.views import loadBatchResults, createOnlineLDA, loadOnlineLDA, createSimilarityMatrix, cacheTopics
 from core.views import getEvidenceRecommendation, getEvidenceByTopic, searchEvidenceByTitle
 from core.views import getEvidenceCollection
@@ -12,14 +12,19 @@ import views
 urlpatterns = [
 
     # For user created data
+    # TODO: convert to def-based instead of view-based
     url(r'^api/v1/data/texts/(?P<user_id>\d+)/$', TextView.as_view(), name='text'),
     url(r'^api/v1/data/concepts/$', ConceptView.as_view(), name='concept'),
     url(r'^api/v1/data/evidence/(?P<user_id>\d+)/$', EvidenceView.as_view(), name='evidence'),
     url(r'^api/v1/data/association/$', association, name='association'),
     url(r'^api/v1/data/bookmark/$', addBookmark, name='addBookmark'), 
 
+    # FOr data update
+    url(r'^api/v1/data/association/update/$', updateAssociation, name='updateAssociation'),
+
     # For data deletion
     url(r'^api/v1/data/association/delete/$', deleteAssociation, name='deleteAssociation'),
+    url(r'^api/v1/data/association/deleteById/$', deleteAssociationById, name='deleteAssociationById'),
     url(r'^api/v1/data/bookmark/delete/$', deleteBookmark, name='deleteBookmark'),    
     url(r'^api/v1/data/(?P<type>[a-zA-Z]+)/delete/$', DeleteEntryView.as_view(), name='delete_entry'), 
 

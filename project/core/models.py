@@ -60,6 +60,13 @@ class Evidence(models.Model):
 class AssociationManager(models.Manager):
   def create_association(self, sourceType, targetType, sourceId, targetId, created_by):
     association, created = self.get_or_create(sourceType=sourceType, targetType=targetType, sourceId=sourceId, targetId=targetId, created_by=created_by)
+    return association, created
+
+  def update_association(self, associationId, sourceId, targetId):
+    association = self.get(id=associationId)
+    association.sourceId = sourceId
+    association.targetId = targetId
+    association.save()
     return association
 
   def delete_association(self, sourceType, targetType, sourceId, targetId, created_by):

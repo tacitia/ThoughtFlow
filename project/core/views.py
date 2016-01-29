@@ -38,7 +38,6 @@ def index(request):
     return render(request, template, context)
 
 def flattenSerializedJson(input):
-    print '>> flatten serialized json...'
     output = []
     json_array = json.loads(input)
     for d in json_array:
@@ -56,7 +55,6 @@ class TextView(View):
         return HttpResponse(text_json, status=status.HTTP_200_OK)   
 
     def post(self, request, user_id, format=None):
-        print 'post request!'
         data = json.loads(request.body)
         if data['is_new']: 
             text = Text.objects.create_text(data['title'], data['content'], data['created_by'])
@@ -65,8 +63,6 @@ class TextView(View):
             text.title = data['title']
             text.content = data['content']
             text.save()
-            print text.content
-            print data['content']
         serialized_json = serializers.serialize('json', [text])
         text_json = flattenSerializedJson(serialized_json)
 
@@ -97,7 +93,6 @@ class EvidenceView(View):
 
     def post(self, request, user_id, format=None):
         data = json.loads(request.body)
-        print data
 #        data = {
 #            'abstract': '',
 #            'title': 'Generalized theory of relaxation',
@@ -113,9 +108,7 @@ class EvidenceView(View):
             if temp_title is not None:
                 title = temp_title
                 abstract = temp_abstract
-                print abstract
         evidence = Evidence.objects.create_evidence(title, abstract, data['metadata'], data['created_by'], 0)
-        print evidence
         serialized_json = serializers.serialize('json', [evidence])
         evidence_json = flattenSerializedJson(serialized_json)
         return HttpResponse(evidence_json, status=status.HTTP_201_CREATED)
@@ -176,7 +169,6 @@ class UserAssociationView(View):
 class ConceptGrowthView(View):
     def post(self, request, format=None):
         data = json.loads(request.body)
-        print data['concepts']
         neighbors = PubMedQuerier.find_neighbors_for_terms(data['concepts'], num_neighbors=10, user_id=data['requested_by'])
         output = {}
         output['counts'] = {}
@@ -208,9 +200,6 @@ class EvidenceSearchView(View):
         params = json.loads(request.body)
         terms = params['terms']
         user_id = params['user_id']
-
-        print terms
-        print user_id
 
         texts = Text.objects.filter(created_by=user_id)
         serialized_json = serializers.serialize('json', texts)
@@ -265,7 +254,8 @@ def association(request):
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
     elif request.method == 'POST':
         data = json.loads(request.body)
-        association = Association.objects.create_association(data['sourceType'], data['targetType'], str(data['sourceId']), str(data['targetId']), data['created_by'])
+        print 'add association'
+        association, created = Association.objects.create_association(data['sourceType'], data['targetType'], str(data['sourceId']), str(data['targetId']), data['created_by'])
         print association
         if (data['sourceType'] == 'evidence' and data['targetType'] == 'text'):
             EvidenceBookmark.objects.create_entry(data['sourceId'], data['created_by'])
@@ -276,23 +266,34 @@ def association(request):
 
 def deleteAssociation(request):
     if request.method == 'POST':
+        print '???'
         data = json.loads(request.body)
+        print request.body
+        print data
         Association.objects.delete_association(data['sourceType'], data['targetType'], str(data['sourceId']), str(data['targetId']), data['created_by'])
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
 
+def deleteAssociationById(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        Association.objects.get(id=data['id']).delete()
+        return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)            
+
+def updateAssociation(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        Association.objects.update_association(data['id'], str(data['sourceId']), str(data['targetId']))
+        return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
 
 def addBookmark(request):
     if request.method == 'POST':
-        print 'adding bookmark'
         data = json.loads(request.body)
         EvidenceBookmark.objects.create_entry(evidence_id=data['evidence_id'], user_id=data['user_id'])
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
 
-
 def deleteBookmark(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        print data
         EvidenceBookmark.objects.filter(evidence_id=data['evidence_id'], user_id=data['user_id']).delete()
         Association.objects.filter(created_by=data['user_id'], sourceId=str(data['evidence_id'])).delete()
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
@@ -362,12 +363,14 @@ def getEvidenceRecommendation(request):
 
 #        data = {}
 #        data['text'] = 'Using brain imaging in humans, we showed that the lateral PFC is organized as a cascade of executive processes from premotor to anterior PFC regions that control behavior according to stimuli, the present perceptual context, and the temporal episode in which stimuli occur, respectively.'
-        print data
         collection_id = int(data['collectionId'])
         name = names[collection_id]
 
         topic_dist, primary_topic_terms = TopicModeler.get_document_topics(data['text'], name)
-        primary_topic_tuple = max(topic_dist, key=lambda x:x[1])
+        if len(topic_dist) > 0:
+            primary_topic_tuple = max(topic_dist, key=lambda x:x[1])
+        else:
+            primary_topic_tuple = ('', 0)
         output = {}
         output['topics'] = [{}]
         output['topics'][0]['terms'] = primary_topic_terms
@@ -390,7 +393,10 @@ def getEvidenceRecommendationAcrossTopics(topic_dist, name):
     return json.loads(evidence_json)
 
 def getEvidenceRecommendationWithinTopics(topic_dist, name, collection_id):
-    primary_topic_tuple = max(topic_dist, key=lambda x:x[1])
+    if len(topic_dist) > 0:
+        primary_topic_tuple = max(topic_dist, key=lambda x:x[1])
+    else:
+        return []
     evidence = Evidence.objects.filter(Q(evidencetopic__primary_topic=primary_topic_tuple[0])&Q(created_by=collection_id)).distinct() # use this if later needs to get evidence by topic
     serialized_json = serializers.serialize('json', evidence)
     evidence_json = flattenSerializedJson(serialized_json)
@@ -398,7 +404,6 @@ def getEvidenceRecommendationWithinTopics(topic_dist, name, collection_id):
     abstracts = [e['abstract'] for e in evidence]    
     evidence_ids = TopicModeler.compute_documents_similarity_sub(topic_dist, abstracts, name)
     sorted_evidence = map(lambda index:evidence[index], evidence_ids)
-    print sorted_evidence
     return sorted_evidence
 
 def getEvidenceByTopic(request):
@@ -426,7 +431,6 @@ def searchEvidenceByTitle(request):
         title = data['title']
         # DONE: we can alternatively change this to treat given title as a series of separated terms
         title_terms = title.split(' ')
-        print title_terms
         evidence = Evidence.objects.filter(Q(created_by=collection_id)&reduce(lambda x, y: x & y, [Q(title__icontains=word) for word in title_terms]))
         serialized_json = serializers.serialize('json', evidence)
         evidence_json = flattenSerializedJson(serialized_json)
@@ -497,7 +501,6 @@ def loadXploreData(request):
                     'DATE': e['date'],
                     'AFFILIATION': e['affiliations']
                 }), user_id, 0)
-            print evidence
             #for t in e['terms']:
                 #concept = Concept.objects.create_concept(t, user_id)
                 # print concept

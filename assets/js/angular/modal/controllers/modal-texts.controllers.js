@@ -5,6 +5,9 @@ angular.module('modal.controllers')
     $scope.textsInfo = textsInfo;
     $scope.concepts = concepts !== null ? concepts : [];
     $scope.evidence = evidence;
+
+    $scope.uploadStatus = 'beforeUpload';
+
     var associatedConceptIds = AssociationMap.getAssociatedIdsBySource('text', 'concept', textsInfo.id);
     var associatedEvidenceIds = AssociationMap.getAssociatedIdsByTarget('evidence', 'text', textsInfo.id);
     var tempAssociatedConceptIds = [];
@@ -45,6 +48,25 @@ angular.module('modal.controllers')
           return associatedEvidenceIds.indexOf(entry.id) > -1 || tempAssociatedEvidenceIds.indexOf(entry.id) > -1;
         };
       }
+    }
+
+    $scope.processTextFile = function() {
+      $scope.uploadStatus = 'uploading'; 
+      console.log('start processing')
+      var selectedFile = document.getElementById('textfile-input').files[0];
+      var reader = new FileReader();
+      reader.onload = function(file) {
+        var fileContent = file.currentTarget.result;
+        console.log(file);
+        var title = $scope.textsInfo.title.length > 0 ? $scope.textsInfo.title : 'untitled'
+        Core.postTextByUserId(userId, title, fileContent, true, -1, function(response) {
+          console.log('upload success');
+          $scope.uploadStatus = 'uploaded-success';
+        });
+        // TODO: find and label citations, assuming brackets
+//        var paragraphs = fileContent.split('\n');
+      };
+      reader.readAsText(selectedFile);
     }
 
   }]);

@@ -11,6 +11,33 @@
       <td>{{c.term}}</td>
     </tr>
   </table>
+  <div ng-switch on="uploadStatus">
+    <div ng-switch-default class="container" style="width:100%;margin:10px;">
+      <div class="row">
+        <div class="col-md-8" style="padding-top:4px;"><input type="file"id="textfile-input"></div>
+        <div class="col-md-4">
+          <button class="btn btn-primary btn-sm" ng-click="processTextFile()">Upload</button>
+        </div>
+      </div>
+    </div>
+    <div ng-switch-when="uploading">
+      <div class="alert alert-info">
+        <p>Uploading proposal file...</p>
+      </div>
+    </div>
+    <div ng-switch-when="uploaded-success">
+      <div class="alert alert-success">
+        <p>All {{totalToUpload}} entries uploaded.</p>
+        <p>Found and added {{totalAbstractFound}} abstracts from PubMed.</p>
+      </div>
+    </div>
+    <div ng-switch-when="uploaded-failed">
+      <div class="alert alert-danger">
+        <p>Encountered more than 10 upload failure. Upload aborted. Please notify admin at hua_guo@brown.edu about the issue if it persists.</p>
+      </div>
+    </div>
+  </div>
+
 <!--  <select ng-model="selectedConcept" ng-options="c.term for c in concepts">
     <option value="">-- choose concept --</option>
   </select>

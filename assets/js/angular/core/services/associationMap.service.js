@@ -13,7 +13,9 @@ function AssociationMap(Core) {
     getAssociatedIdsByTarget: getAssociatedIdsByTarget,
     getAssociationsOfType: getAssociationsOfType,
     addAssociation: addAssociation,
+    updateAssociation: updateAssociation,
     removeAssociation: removeAssociation,
+    removeAssociationById: removeAssociationById,
     hasAssociation: hasAssociation
   };
 
@@ -69,6 +71,19 @@ function AssociationMap(Core) {
       })
   }
 
+  function updateAssociation(associationId, source, target, successFn) {
+    Core.updateAssociation(associationId, source, target, function(response) {
+      for (var i = 0; i < associationMap.length; ++i) {
+        var association = associationMap[i];
+        if (association.id === associationId) {
+          association.sourceId = source;
+          association.targetId = target;      
+          break;
+        }
+      }
+    });
+  }
+
   function removeAssociation(userId, sourceType, targetType, source, target, successFn) {
     Core.deleteAssociationByUserId(userId, sourceType, targetType, source, target, 
       function(response) {
@@ -82,7 +97,20 @@ function AssociationMap(Core) {
       })
   }
 
+  function removeAssociationById(id, successFn) {
+    Core.deleteAssociationById(id, 
+      function(response) {
+        _.pull(associationMap, _.findWhere(associationMap, {id: id}));
+        console.log('association map after deleting ' + id);
+        console.log(associationMap);
+        successFn();
+      }, function(response) {
+        console.log('server error when saving new association');
+        console.log(response);        
+      })
+  }
+
   function hasAssociation(sourceType, targetType, sourceId, targetId) {
-    return _.findWhere(associationMap, {sourceType: sourceType, targetType: targetType, sourceId: sourceId, targetId: targetId}) != undefined;
+     return _.findWhere(associationMap, {sourceType: sourceType, targetType: targetType, sourceId: sourceId.toString(), targetId: targetId}) != undefined;
   }
 }
