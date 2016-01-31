@@ -3,6 +3,7 @@ angular.module('landing.v2.controllers')
     function($scope, $modal, Core, AssociationMap, Pubmed, TermTopic, Logger) {
       $scope.userId = '';
       $scope.selected = {};
+      $scope.idGenerated = false;
       $scope.collections = [
 //        { id: 10, name: 'visualization'},
         { id: 11, name: 'pfc and executive functions'},
@@ -10,4 +11,11 @@ angular.module('landing.v2.controllers')
         { id: 13, name: 'TVCG'},
         { id: 15, name: 'diffusion tensor imaging'},
       ];
+
+      $scope.generateNewUserId = function() {
+        Core.getNewUserId(function(response) {
+          $scope.userId = response.data.userId;
+          $scope.idGenerated = true;
+        });
+      };
   }]);

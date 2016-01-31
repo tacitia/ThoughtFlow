@@ -51,17 +51,33 @@ angular.module('modal.controllers')
     }
 
     $scope.processTextFile = function() {
-      $scope.uploadStatus = 'uploading'; 
-      console.log('start processing')
       var selectedFile = document.getElementById('textfile-input').files[0];
+      if (selectedFile === undefined) {
+        $scope.fileError = true;
+        return;
+      }
+      $scope.fileError = false;      
+//      $scope.uploadStatus = 'uploading'; 
+      console.log('start processing')
+       $scope.uploadStatus = 'uploaded-success';
       var reader = new FileReader();
       reader.onload = function(file) {
         var fileContent = file.currentTarget.result;
-        console.log(file);
-        var title = $scope.textsInfo.title.length > 0 ? $scope.textsInfo.title : 'untitled'
-        Core.postTextByUserId(userId, title, fileContent, true, -1, function(response) {
-          console.log('upload success');
+        var title = $scope.textsInfo.title.length > 0 ? $scope.textsInfo.title : 'untitled';
+        // Extract the reference from the end of the text
+        var proposal = fileContent;
+        var references = '';
+        var parts = fileContent.split('References\n');
+        if (parts.length === 2) {
+          proposal = parts[0];
+          references = parts[1];
+          console.log(proposal)
+          console.log(references)
+        } 
+        Core.postTextByUserId(userId, title, proposal, true, -1, function(response) {
+          $scope.textsInfo.content = proposal;
           $scope.uploadStatus = 'uploaded-success';
+          console.log('upload success');
         });
         // TODO: find and label citations, assuming brackets
 //        var paragraphs = fileContent.split('\n');

@@ -4,40 +4,33 @@
 <div class="modal-body">
   <label for="title">Title</label>
   <input type="text" class="form-control" id="title" ng-model="textsInfo.title"/>
-  <label for="content">Content</label>  
-  <textarea class="form-control" id="content" ng-model="textsInfo.content"></textarea>
-  <table class="table">
+  <label for="content" style="margin-top:10px">Option 1: </label><span> Copy the contents of your proposal draft below</span>  
+  <textarea class="form-control" rows="10" id="content" ng-model="textsInfo.content"></textarea>
+
+<!--  <table class="table">
     <tr ng-repeat="c in concepts | filter:isAssociated('concept')">
       <td>{{c.term}}</td>
     </tr>
-  </table>
-  <div ng-switch on="uploadStatus">
-    <div ng-switch-default class="container" style="width:100%;margin:10px;">
-      <div class="row">
-        <div class="col-md-8" style="padding-top:4px;"><input type="file"id="textfile-input"></div>
-        <div class="col-md-4">
-          <button class="btn btn-primary btn-sm" ng-click="processTextFile()">Upload</button>
-        </div>
-      </div>
-    </div>
-    <div ng-switch-when="uploading">
-      <div class="alert alert-info">
-        <p>Uploading proposal file...</p>
-      </div>
-    </div>
-    <div ng-switch-when="uploaded-success">
-      <div class="alert alert-success">
-        <p>All {{totalToUpload}} entries uploaded.</p>
-        <p>Found and added {{totalAbstractFound}} abstracts from PubMed.</p>
-      </div>
-    </div>
-    <div ng-switch-when="uploaded-failed">
-      <div class="alert alert-danger">
-        <p>Encountered more than 10 upload failure. Upload aborted. Please notify admin at hua_guo@brown.edu about the issue if it persists.</p>
+  </table> -->
+  <label style="margin-top:10px">Option 2: </label><span> Upload your proposal as a plain text file <b>(uploaded texts will override contents entered above)</b></span>    
+  <div class="container" style="width:100%;margin:10px;">
+    <div class="row">
+      <div class="col-md-8" style="padding-top:4px;"><input type="file" id="textfile-input"></div>
+      <div class="col-md-4">
+        <button class="btn btn-primary btn-sm" ng-click="processTextFile()">Upload</button>
       </div>
     </div>
   </div>
-
+  <div ng-if="fileError">
+    <div class="alert alert-danger">
+      <p>No file chosen or error occurred during file processing.</p>
+    </div>
+  </div>
+  <div ng-if="uploadStatus==='uploaded-success'">
+    <div class="alert alert-success">
+      Proposal loaded!
+    </div>
+  </div>
 <!--  <select ng-model="selectedConcept" ng-options="c.term for c in concepts">
     <option value="">-- choose concept --</option>
   </select>

@@ -87,7 +87,7 @@ function AssociationMap(Core) {
   function removeAssociation(userId, sourceType, targetType, source, target, successFn) {
     Core.deleteAssociationByUserId(userId, sourceType, targetType, source, target, 
       function(response) {
-        _.pull(associationMap, _.findWhere(associationMap, {sourceType: sourceType, targetType: targetType, sourceId: source, targetId: target}));
+        _.pull(associationMap, _.findWhere(associationMap, {sourceType: sourceType, targetType: targetType, sourceId: source.toString(), targetId: target}));
         console.log('association map after deleting ' + source + ' ' + target);
         console.log(associationMap);
         successFn();

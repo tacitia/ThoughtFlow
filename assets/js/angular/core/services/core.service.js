@@ -24,16 +24,22 @@
       getEvidenceByTopic: getEvidenceByTopic,
       getEvidenceByTitle: getEvidenceByTitle,
       getEvidenceCollection: getEvidenceCollection,
-      getEvidenceTextTopicsForUser: getEvidenceTextTopicsForUser
+      getEvidenceTextTopicsForUser: getEvidenceTextTopicsForUser,
+      getNewUserId: getNewUserId
     };
 
     return Core;
 
     ////////////////////
 
+    function getNewUserId(successFn, errorFn) {
+      return $http.get('api/v1/service/getNewUserId/')
+        .then(successFn, errorFn);
+    }
+
     function getAllTextsForUser(userId, successFn, errorFn) {
       return $http.get('/api/v1/data/texts/' + userId + '/')
-       .then(successFn, errorFn);
+        .then(successFn, errorFn);
     } 
 
     function getAllEvidenceForUser(userId, successFn, errorFn) {

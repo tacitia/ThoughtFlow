@@ -16,6 +16,8 @@ angular.module('focus.v2.controllers')
     $scope.paragraphCitation = [];
 
     $scope.loadingRecommendedEvidence = false;
+    $scope.selectedEvidenceCiteStatus = 'uncited';
+    $scope.savingStatus = 'saved';
     $scope.citationTabs = {
       'recommended':{active: true},
       'cited': {active: false},
@@ -45,7 +47,7 @@ angular.module('focus.v2.controllers')
     $scope.evidence = null;
     var textEvidenceAssociations = null;
     var evidenceIdMap = {};
-    var isDebug = false;
+    var isDebug = true;
 
     AssociationMap.initialize(userId, function() {
       textEvidenceAssociations = AssociationMap.getAssociationsOfType('evidence', 'text');
@@ -58,19 +60,19 @@ angular.module('focus.v2.controllers')
       if ($scope.texts.length > 0) {
         $scope.selectText($scope.texts[0], false);
       }
+      Logger.logAction(userId, 'load focus view', 'v2','1', 'focus', {
+        numProposals: $scope.texts.length
+      }, function(response) {
+        if (isDebug)
+          console.log('action logged: load view');
+      });
     }, function(response) {
       console.log('server error when retrieving textsfor user ' + userId);
       console.log(response);
     });
 
     Core.getAllEvidenceForUser(userId, function(response) {
-      // This includes both usercreated and bookmarked evidence; they are not necessarily cited.        
-      /*
-      $scope.evidence = _.filter(response.data, function(e) {
-        return e.abstract.length > 0;
-      });
-      */
-
+      // This includes both usercreated and bookmarked evidence; they are not necessarily cited.
       // TODO: apply default sorting.
       $scope.evidence = response.data;
 
@@ -102,7 +104,7 @@ angular.module('focus.v2.controllers')
     // if there are changes,  
     setInterval(function(){
       if ($scope.hasUnsavedChanges) {
-        saveText();
+        $scope.saveText();
       }
     }, 5000);
 
@@ -138,14 +140,17 @@ angular.module('focus.v2.controllers')
       var content = '';
       for (var i = 0; i < $scope.activeParagraphs.length; ++i) {
         var paragraph = $scope.activeParagraphs[i];
-        var citations = _.sortBy($scope.paragraphCitation[i], function(c) {
+        var citations = $scope.paragraphCitation[i].map(function(c) {
           return c.index;
-        });
+        }).sort();
         content += paragraph.text;
         for (var j = 0; j < citations.length; ++j) {
-          content += '[' + (citations[j].index + 1) + ']';
+          content += '[' + (citations[j] + 1) + ']';
         }
-          content += '\n';
+        content += '\n';
+      }
+      for (var i = 0; i < $scope.activeParagraphs.length; ++i) {
+        console.assert($scope.paragraphCitation[i] !== undefined);
       }
       content += '\nReferences\n'
       for (var i = 0; i < $scope.citedEvidence.length; ++i) {
@@ -185,7 +190,16 @@ angular.module('focus.v2.controllers')
       });
 
       $scope.selectedEvidence = evidence;
-      $scope.selectedWords = evidence.abstract.split(' ');      
+      $scope.selectedWords = evidence.abstract.split(' ');
+
+      var textParaId = $scope.selectedText.id+ '-' + $scope.selectedParagraph;
+      if (AssociationMap.hasAssociation('evidence', 'text', $scope.selectedEvidence.id, textParaId)) {
+        $scope.selectedEvidenceCiteStatus = 'cited';
+      }
+      else {
+        $scope.selectedEvidenceCiteStatus = 'uncited';        
+      }
+
     };
 
     $scope.selectParagraph = function(index, clickTarget) {
@@ -205,11 +219,7 @@ angular.module('focus.v2.controllers')
     };
 
     $scope.citeEvidence = function(evidence, sourceList) {
-      if ($scope.selectedParagraph === -1) {
-        return;
-      }
       var textParaId = $scope.selectedText.id+ '-' + $scope.selectedParagraph;
-      console.log(textEvidenceAssociations)
       if (AssociationMap.hasAssociation('evidence', 'text', evidence.id, textParaId)) {
         return;
       }
@@ -230,7 +240,8 @@ angular.module('focus.v2.controllers')
         }).indexOf(evidence.id);          
         if (index === -1) {
           $scope.citedEvidence.push(evidence);
-          index =$scope.citedEvidence.length - 1;          
+          index =$scope.citedEvidence.length - 1;     
+          evidenceIdMap[evidence.id] = evidence;
         }
         // Add the association to text evidence association for book-keeping (since we need to update the association entry
         // when new paragraphs are added)
@@ -242,6 +253,34 @@ angular.module('focus.v2.controllers')
         prepareProposalDownload();
       });      
     };
+
+    $scope.unciteEvidence = function(evidence, sourceList) {
+      console.log('unciting')
+      var textParaId = $scope.selectedText.id+ '-' + $scope.selectedParagraph;
+      Logger.logAction(userId, 'uncite evidence', 'v2', '1', 'focus', {
+        proposal: $scope.selectedText.id,
+        paragraph: $scope.selectedParagraph,
+        evidence: evidence.id,
+        sourceList: sourceList        
+      }, function(response) {
+        if (isDebug)
+          console.log('action logged: uncite evidence');
+      });        
+      //Add association
+      AssociationMap.removeAssociation(userId,'evidence', 'text', evidence.id, textParaId, function(association) {
+        // Add evidence to the list of cited evidence
+        var index = $scope.citedEvidence.map(function(e) {
+          return e.id;
+        }).indexOf(evidence.id);        
+        var lengthBefore = textEvidenceAssociations.length;  
+        _.pull(textEvidenceAssociations, _.findWhere(textEvidenceAssociations, {sourceId: evidence.id.toString(), targetId: textParaId}))
+        console.assert(textEvidenceAssociations.length === lengthBefore - 1);
+        var lengthBefore = $scope.paragraphCitation[$scope.selectedParagraph].length;
+        _.pull($scope.paragraphCitation[$scope.selectedParagraph], _.findWhere($scope.paragraphCitation[$scope.selectedParagraph], {index: index, evidence: evidence}));
+        console.assert($scope.paragraphCitation[$scope.selectedParagraph].length === lengthBefore - 1);
+        prepareProposalDownload();
+      });      
+    }
 
     $scope.showCitation = function(citation) {        
       Logger.logAction(userId, 'show citation', 'v2', '1', 'focus', {
@@ -374,6 +413,8 @@ angular.module('focus.v2.controllers')
         return textId[0] == $scope.selectedText.id && textId.length===2;        
       }).map(function(a) {  
         if (evidenceIdMap[a.sourceId] === undefined) {
+          console.log(a.sourceId)
+          console.log(evidenceIdMap)
           console.log('Warning: inconsistency between citations and bookmarks detected.');
         }
         return evidenceIdMap[a.sourceId];
@@ -567,7 +608,8 @@ angular.module('focus.v2.controllers')
         return caretOffset;
     }
 
-    $scope.hasMadeChanges = function(i,e) {        
+    $scope.hasMadeChanges = function(i,e) {       
+      $scope.savingStatus = 'unsaved';
       $scope.hasUnsavedChanges = true;
       $scope.activeParagraphs[i].text = document.getElementById('ap-' + i).innerText;      
     };
@@ -653,13 +695,26 @@ angular.module('focus.v2.controllers')
 
     // Check every 15 seconds if there is unsaved changes; ifthere is, .
     // call this function to save the content.
-    function saveText() {      
+    $scope.saveText = function(userInitiated) {
+      $scope.savingStatus = 'saving';
       if (isDebug) {
-        console.log('saving text...');        
+        console.log('saving text...');
+        console.log($scope.savingStatus)        
       }        
+
       var newContent = $scope.activeParagraphs.map(function(p) {         
         return p.text;
-      }).join('\n');     
+      }).join('\n');
+
+      if (userInitiated) {
+        Logger.logAction(userId, 'save proposal', 'v2','1', 'focus', {
+          proposal: $scope.selectedText.id,
+          contentLength: newContent.split(' ').length
+        }, function(response) {
+          if (isDebug)
+            console.log('action logged: save proposal');
+        });
+      }
 
       Core.postTextByUserId(userId, $scope.selectedText.title, newContent, false, $scope.selectedText.id, function(response){           
         $scope.texts.forEach(function(t) {             
@@ -667,12 +722,13 @@ angular.module('focus.v2.controllers')
             t.content = newContent;
           }
         })
+        $scope.hasUnsavedChanges = false;
+        $scope.savingStatus = 'saved';   
       }, function(response) {
         console.log('server error when saving new concept');
         console.log(response);
+        $scope.savingStatus = 'failed';
       });
-
-      $scope.hasUnsavedChanges =false;      
     }      
       
     function updateRecommendedCitations(text,index) {

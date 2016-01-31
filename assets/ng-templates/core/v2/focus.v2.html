@@ -12,7 +12,7 @@
 </div>
 
 <div class="row v2" id="focus" style="height:900px;padding:15px">
-  <div class="col-md-2" id="argument-list" style="border-bottom: solid 1px #ccc;height:1014px">
+  <div class="col-md-2" id="argument-list" style="border-bottom: solid 1px #ccc;height:1014px;overflow-y:auto">
     <h4>Proposals</h4>
     <table class="table">
       <tr ng-repeat="t in texts" ng-class="{active: hover || t.id == selectedText.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
@@ -32,8 +32,27 @@
       <button class="btn btn-default" ng-click="addTextEntry()"><img style="width:20px; height:20px"src="/static/img/plus-icon.png">Add new proposal</button>
     </div>
   </div>
-  <div class="col-md-7" style="border-left:solid 1px #ccc;border-bottom: solid 1px #ccc;height:1014px">
-    <h4>{{selectedText.title}}</h4>
+  <div class="col-md-7" style="border-left:solid 1px #ccc;border-bottom: solid 1px #ccc;height:1014px;overflow-y:auto">
+    <div>
+      <h4 style="display:inline-block">{{selectedText.title}}</h4>
+      <div style="display:inline-block;margin-left:40px" ng-switch on="savingStatus"
+        uib-tooltip="Changes are auto-saved every 5 seconds"
+        tooltip-placement="right" tooltip-trigger="mouseenter"
+      >
+        <div ng-switch-when="saved">
+          <button class="btn btn-default btn-xs disabled"><span style="padding:0px 5px 0px 5px">Saved</span></button>
+        </div>
+        <div ng-switch-when="unsaved">
+          <button class="btn btn-primary btn-xs" ng-click="saveText(true)"><span style="padding:0px 5px 0px 5px">Save</span></button>
+        </div>
+        <div ng-switch-when="saving">
+          <button class="btn btn-default btn-xs disabled"><span style="padding:0px 5px 0px 5px">Saving...</span></button>
+        </div>
+        <div ng-switch-when="failed">
+          <button class="btn btn-danger btn-xs disabled"><span style="padding:0px 5px 0px 5px">Error occurred while saving!</span></button>
+        </div>
+      </div>
+    </div>
     <div ng-repeat="p in activeParagraphs">
       <p class="text-paragraph" contenteditable="true" ng-keydown="checkEnter($index, $event)" ng-keyup="hasMadeChanges($index, $event)" ng-click="selectParagraph($index, 'text')" class="activeParagraph" id="ap-{{$index}}" style="outline:0"><span class="thin-text" style="font-size:15px">{{p.text}}</span></p>
       <div style="width:15%;height:150px;display:inline-block;float:right">
@@ -92,9 +111,14 @@
               <p class="citation-entry"><span>{{$index+1}}. </span><span class="thin-text">{{e.title}}</span></p>
             </div>
             <div class="col-md-2" style="margin:10px 0 0 0">
-              <div class="btn-group btn-group-xs" role="group" ng-if="selectedEvidence===e">
-                <button class="btn btn-primary" ng-class="{disabled: selectedParagraph===-1}" ng-click="citeEvidence(e, 'cited')">Cite</button>
-              </div>  
+              <div ng-switch on="selectedEvidenceCiteStatus" ng-if="selectedEvidence===e">
+                <div ng-switch-when="uncited" class="btn-group btn-group-xs" role="group">
+                  <button class="btn btn-primary" ng-class="{disabled: selectedParagraph===-1}" ng-click="citeEvidence(e, 'cited')">Cite</button>
+                </div>
+                <div ng-switch-when="cited" class="btn-group btn-group-xs" role="group">
+                  <button class="btn btn-danger" ng-class="{disabled: selectedParagraph===-1}" ng-click="unciteEvidence(e, 'cited')">Uncite</button>
+                </div>
+              </div>
             </div>                        
           </div>
         </div>        

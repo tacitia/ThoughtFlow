@@ -3,6 +3,7 @@ import json
 import os
 import PubMedQuerier
 import PubMedParser
+import random
 import TermExtractor
 import TopicModeler
 import XploreParser
@@ -10,6 +11,7 @@ from itertools import chain
 from nltk.metrics import edit_distance
 
 from core.models import Association, Concept, Evidence, Text, EvidenceBookmark, EvidenceTopic, Topic
+from logger.models import Action
 
 from django.conf import settings
 from django.core import serializers
@@ -36,6 +38,7 @@ def index(request):
     template = 'core/index.html'
     context = {'DEBUG': settings.DEBUG}
     return render(request, template, context)
+
 
 def flattenSerializedJson(input):
     output = []
@@ -298,6 +301,18 @@ def deleteBookmark(request):
         Association.objects.filter(created_by=data['user_id'], sourceId=str(data['evidence_id'])).delete()
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
 
+def getNewUserId(request):
+    if request.method == 'GET':
+        actions = Action.objects.filter(user__gt=10000).values('user').distinct()
+        print actions
+        existingIds = []
+        for a in actions:
+            existingIds.append(a['user'])
+        print existingIds
+        newId = int(math.ceil(random.uniform(10001, 99998)))
+        while newId in existingIds:
+            newId = int(math.ceil(random.uniform(10001, 99998)))
+        return HttpResponse(json.dumps({'userId': newId}), status=status.HTTP_201_CREATED)
 
 def retrieveEvidenceTextTopics(request):
     if request.method == 'POST':
