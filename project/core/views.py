@@ -1,6 +1,7 @@
 import math
 import json
 import os
+import pprint
 import PubMedQuerier
 import PubMedParser
 import random
@@ -257,9 +258,7 @@ def association(request):
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
     elif request.method == 'POST':
         data = json.loads(request.body)
-        print 'add association'
         association, created = Association.objects.create_association(data['sourceType'], data['targetType'], str(data['sourceId']), str(data['targetId']), data['created_by'])
-        print association
         if (data['sourceType'] == 'evidence' and data['targetType'] == 'text'):
             EvidenceBookmark.objects.create_entry(data['sourceId'], data['created_by'])
         serialized_json = serializers.serialize('json', [association])
@@ -269,10 +268,7 @@ def association(request):
 
 def deleteAssociation(request):
     if request.method == 'POST':
-        print '???'
         data = json.loads(request.body)
-        print request.body
-        print data
         Association.objects.delete_association(data['sourceType'], data['targetType'], str(data['sourceId']), str(data['targetId']), data['created_by'])
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
 
@@ -304,11 +300,9 @@ def deleteBookmark(request):
 def getNewUserId(request):
     if request.method == 'GET':
         actions = Action.objects.filter(user__gt=10000).values('user').distinct()
-        print actions
         existingIds = []
         for a in actions:
             existingIds.append(a['user'])
-        print existingIds
         newId = int(math.ceil(random.uniform(10001, 99998)))
         while newId in existingIds:
             newId = int(math.ceil(random.uniform(10001, 99998)))
@@ -363,9 +357,11 @@ def getEvidenceCollection(request, collection_id):
     if request.method == 'GET':
         evidence_count = Evidence.objects.filter(created_by=collection_id).count()
 
+        print evidence_count
         topics = Topic.objects.filter(collection_id=int(collection_id))
         serialized_json = serializers.serialize('json', topics)
         topics_json = flattenSerializedJson(serialized_json)
+        print topics_json
 
         return HttpResponse(topics_json, status=status.HTTP_200_OK)
 
@@ -424,16 +420,30 @@ def getEvidenceRecommendationWithinTopics(topic_dist, name, collection_id):
 def getEvidenceByTopic(request):
     if request.method == 'POST':
         data = json.loads(request.body)
+        print data
         collection_id = data['collection_id']
         topic_id = data['topic_id']
         user_id = data['user_id']
         evidence = Evidence.objects.filter(Q(evidencetopic__created_by=collection_id)&Q(evidencetopic__primary_topic=topic_id)).order_by('-evidencetopic__primary_topic_prob').distinct()[:500]
         evidenceBookmarks = EvidenceBookmark.objects.filter(user_id=user_id)
+        evidencePersonal = Evidence.objects.filter(Q(created_by=user_id))
         serialized_json = serializers.serialize('json', evidence)
         evidence_json = flattenSerializedJson(serialized_json)
         serialized_json = serializers.serialize('json', evidenceBookmarks)
         evidenceBookmark_json = flattenSerializedJson(serialized_json)
+        serialized_json = serializers.serialize('json', evidencePersonal)
+        evidencePersonal_json = flattenSerializedJson(serialized_json)   
+        evidencePersonal = json.loads(evidencePersonal_json)
         output = {}
+        output['evidencePersonal'] = []
+        for e in evidencePersonal:
+            if len(e['abstract']) > 50:
+                name = names[collection_id]
+                topic_dist, primary_topic_terms = TopicModeler.get_document_topics(e['abstract'], name)
+                primary_topic_tuple = max(topic_dist, key=lambda x:x[1])
+                this_topic = primary_topic_tuple[0]
+                if this_topic == topic_id:
+                    output['evidencePersonal'].append(e)
         output['evidence'] = json.loads(evidence_json)
         output['evidenceBookmarks'] = json.loads(evidenceBookmark_json)
 
@@ -444,21 +454,35 @@ def searchEvidenceByTitle(request):
         data = json.loads(request.body)
         collection_id = data['collection_id']
         title = data['title']
+        result_limit = data['result_limit']
+        include_personal = data['include_personal']
+        user_id = data['user_id']
         # DONE: we can alternatively change this to treat given title as a series of separated terms
         title_terms = title.split(' ')
+        print title_terms
         evidence = Evidence.objects.filter(Q(created_by=collection_id)&reduce(lambda x, y: x & y, [Q(title__icontains=word) for word in title_terms]))
+        if include_personal:
+            personal_evidence = Evidence.objects.filter(Q(created_by=user_id)&reduce(lambda x, y: x & y, [Q(title__icontains=word) for word in title_terms]))
+            evidence = chain(evidence, personal_evidence)
         serialized_json = serializers.serialize('json', evidence)
         evidence_json = flattenSerializedJson(serialized_json)
         evidence = json.loads(evidence_json)
+        pprint.pprint(evidence)
         for e in evidence:
             e['dist'] = edit_distance(title, e['title'])
-        evidence = sorted(evidence, key=lambda e:e['dist'])[:20]
+        evidence = sorted(evidence, key=lambda e:e['dist'])[:result_limit]
         for e in evidence:
             e['topic'] = -1
             try:
                 e['topic'] = EvidenceTopic.objects.get(evidence=e['id']).primary_topic
             except ObjectDoesNotExist:
-                print 'warning: evidence with no topic'
+                if len(e['abstract']) > 50:
+                    name = names[collection_id]
+                    topic_dist, primary_topic_terms = TopicModeler.get_document_topics(e['abstract'], name)
+                    primary_topic_tuple = max(topic_dist, key=lambda x:x[1])
+                    e['topic'] = primary_topic_tuple[0]
+                else:
+                    print 'warning: evidence with no topic'
         return HttpResponse(json.dumps(evidence), status=status.HTTP_200_OK)
 
     elif request.method == 'GET':

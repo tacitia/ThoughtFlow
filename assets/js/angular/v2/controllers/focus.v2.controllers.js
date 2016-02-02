@@ -71,6 +71,9 @@ angular.module('focus.v2.controllers')
       console.log(response);
     });
 
+    // TODO: if later we want to get topics for these evidence, be mindful that there are 
+    // two types of evidence - personal and bookmarked - and they will require 
+    // different handlings
     Core.getAllEvidenceForUser(userId, function(response) {
       // This includes both usercreated and bookmarked evidence; they are not necessarily cited.
       // TODO: apply default sorting.
@@ -305,8 +308,13 @@ angular.module('focus.v2.controllers')
           userId: function() {
             return userId;
           },
+          collectionId: function() {
+            return collectionId;
+          },
           existingEvidence: function() {
-            return $scope.evidence;
+            return $scope.evidence.map(function(e) {
+              return e.title;
+            });
           }
         }
       });

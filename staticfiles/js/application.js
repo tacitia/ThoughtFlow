@@ -1,3 +1,5 @@
+var myAwesomeJSVariable = "I'm so awesome!!";
+
 angular.module('mainModule', [
   'restangular', 
   'ui.router', 
@@ -31,8 +33,6 @@ angular.module('mainModule', [
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|file|blob):/);
       }]);
 })();
-var myAwesomeJSVariable = "I'm so awesome!!";
-
 (function () {
   'use strict';
 
@@ -752,10 +752,14 @@ function AssociationMap(Core) {
       }).then(successFn, errorFn);
     }
 
-    function getEvidenceByTitle(collectionId, title, successFn, errorFn) {
+    function getEvidenceByTitle(collectionId, userId, title, includePersonal, resultLimit, successFn, errorFn) {
+      var limit = resultLimit > 0 ? resultLimit : 20;
       $http.post('/api/v1/service/searchEvidenceByTitle/', {
         collection_id: collectionId,
-        title: title
+        user_id: userId,
+        title: title,
+        result_limit: limit,
+        include_personal: includePersonal
       }).then(successFn, errorFn);
     }
 
@@ -1101,16 +1105,22 @@ angular.module('modal.controllers')
   }]);
 // TODO: add collectionId here
 angular.module('modal.controllers')
-  .controller('UploadBibtexModalController', ['$scope', '$modalInstance', 'userId', 'existingEvidence', 'Core', 'Bibtex',
-    function($scope, $modalInstance, userId, existingEvidence, Core, Bibtex) {
+  .controller('UploadBibtexModalController', ['$scope', '$modalInstance', 'userId', 'collectionId', 'existingEvidence', 'Core', 'Bibtex',
+    function($scope, $modalInstance, userId, collectionId, existingEvidence, Core, Bibtex) {
 
     var storedEvidence = [];
     $scope.evidenceIndex = 0;
+
     $scope.totalAbstractFound = 0;
+    $scope.totalMatchesFound = 0;
+    $scope.totalPersonalEntries = 0;
+    
     $scope.uploadStatus = 'beforeUpload';
     $scope.numErrors = 0;
 
-    var collectionId = 15;
+    $scope.seedNewCollecdtion = false;
+
+    var newCollectionId = 16;
 
     $scope.processBibtexFile = function() {
 
@@ -1127,7 +1137,9 @@ angular.module('modal.controllers')
         
         var uploadFunction = setInterval(function() {
           if ($scope.evidenceIndex >= $scope.totalToUpload) {
-            $scope.uploadStatus = 'uploaded-success';
+            $scope.$apply(function() {
+              $scope.uploadStatus = 'uploaded-success';
+            });
             clearInterval(uploadFunction);
             return;
           }
@@ -1135,6 +1147,81 @@ angular.module('modal.controllers')
           $scope.esmitatedTimeRemaining = (evidenceList.length - $scope.evidenceIndex) * 3;
           $scope.currentEvidence = evidence.title;
 
+          integrateNewEvidenceIntoCollection(evidence, collectionId);
+          $scope.evidenceIndex += 1;
+        }, 3000);
+      };
+      reader.readAsText(selectedFile);
+    };
+
+    // If the user chooses to integrate the bibtex file into a selected collection, we
+    // 1. For entries that are already in the collection, we find the existing evidence, 
+    // add a bookmark for it and we are done
+    // 2. For entries that are not in there, we 
+    // 1) create the evidence with the user as "created_by";
+    // 2) we need to make sure that every time we get user-created evidence for a user, 
+    // those entries are returned along with their assigned topics (these should be determined
+    // during loading time since we don't want to cache for every possible collection; only need 
+    // handle this for explore view for now)
+
+    // We have an implementation choice here: we can either add a server side function that 
+    // handles situation 2), or just handle it on client side using a combination of existing
+    // server calls (i.e. Core.getEvidenceByTitle followed by an addBookmark or postEvidenceByUserId)
+    // I'm going with the second option for now to reduce code duplicates; let's see if this 
+    // have an significant impact on upload speed
+    function integrateNewEvidenceIntoCollection(evidence, collectionId) {
+      Core.getEvidenceByTitle(collectionId, userId, evidence.title, false, 1, function(response) {
+        var matchedEvidence = response.data[0];
+        if (matchedEvidence !== undefined && matchedEvidence.dist <= evidence.title.length * 0.1) {
+          Core.addBookmark(userId, matchedEvidence.id, function(response) {
+            console.log('uploaded evidence bookmarked.')
+            $scope.totalMatchesFound += 1;
+            respondToSuccess(evidence, matchedEvidence);
+          }, function(error) {
+            console.log('server error when adding new bookmark');
+            console.log(response);
+            respondToError();
+          });
+        }
+        else {
+          Core.postEvidenceByUserId(userId, evidence.title, evidence.abstract, JSON.stringify(evidence.metadata), function(response) {
+            if (existingEvidence.indexOf(response.data[0].title) > -1) {
+              $scope.lastUploadResult = 'duplicate';
+              $scope.lastUploadedEvidence = $scope.currentEvidence;
+              return;
+            }
+            if (evidence.abstract === '' && response.data[0].abstract !== '') {
+              $scope.totalAbstractFound += 1;
+            }   
+            $scope.totalPersonalEntries += 1;
+            respondToSuccess(evidence, response.data[0]);
+          }, function(response) {
+            console.log('server error when saving new evidence');
+            console.log(response);
+            respondToError();     
+          });
+        }
+      });
+    }
+
+    function respondToSuccess(evidence, returnedEvidence) {
+      $scope.lastUploadResult = 'success';
+      $scope.lastUploadedEvidence = $scope.currentEvidence;
+      storedEvidence.push(returnedEvidence);   
+    }
+
+    function respondToError() {
+      $scope.lastUploadedEvidence = $scope.currentEvidence;
+      $scope.numErrors += 1;
+      $scope.lastUploadResult = 'failed';
+      if ($scope.numErrors >= 10) {
+        $scope.evidenceIndex = $scope.totalToUpload;
+        $scope.uploadStatus = 'uploaded-failed';
+      }            
+    }
+
+    function createNewCollectionFromNewEvidence(collectionId) {
+/*
           Core.postEvidenceByUserId(collectionId, evidence.title, evidence.abstract, JSON.stringify(evidence.metadata), 
             function(response) {
               Core.addBookmark(userId, response.data[0].id, function(response) {
@@ -1163,13 +1250,8 @@ angular.module('modal.controllers')
                 $scope.evidenceIndex = $scope.totalToUpload;
                 $scope.uploadStatus = 'uploaded-failed';
               }
-            });
-
-          $scope.evidenceIndex += 1;
-        }, 3000);
-      };
-      reader.readAsText(selectedFile);
-    };   
+            }); */
+    }
 
     $scope.ok = function () {
       $modalInstance.close(storedEvidence);
@@ -1188,6 +1270,14 @@ angular.module('mainModule').run(['$templateCache', function($templateCache) {
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('authentication/register.html',
         "<div class=\"row\">\n  <div class=\"col-md-4 col-md-offset-4\">\n    <h1>Register</h1>\n\n    <div class=\"well\">\n      <form role=\"form\" ng-submit=\"register()\">\n        <div class=\"form-group\">\n          <label for=\"register__email\">Email</label>\n          <input type=\"email\" class=\"form-control\" id=\"register__email\" ng-model=\"email\" placeholder=\"ex. jane@notgoogle.com\" />\n        </div>\n\n        <div class=\"form-group\">\n          <label for=\"register__username\">Username</label>\n          <input type=\"text\" class=\"form-control\" id=\"register__username\" ng-model=\"username\" placeholder=\"ex. jane\" />\n        </div>\n\n        <div class=\"form-group\">\n          <label for=\"register__password\">Password</label>\n          <input type=\"password\" class=\"form-control\" id=\"register__password\" ng-model=\"password\" placeholder=\"ex. thisisnotgoogleplus\" />\n        </div>\n\n        <div class=\"form-group\">\n          <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n        </div>\n      </form>\n    </div>\n  </div>\n</div>");
+}]);
+angular.module('mainModule').run(['$templateCache', function($templateCache) {
+    $templateCache.put('core/introduction.html',
+        "");
+}]);
+angular.module('mainModule').run(['$templateCache', function($templateCache) {
+    $templateCache.put('core/landing copy.html',
+        "<page-meta-data status-code=\"200\">\n\t<title>{{ 'meta_title_core' }}</title>\n\t<meta name=\"description\" content=\"{{ 'meta_description_core'}}\"/>\n\t<meta name=\"keywords\" content=\"{{ 'meta_keywords_core' }}\"/>\n</page-meta-data>\n\n<div data-ng-controller=\"CoreCtrl\">\n    <ng-include src=\"'core/partials/version-picker.html'\"></ng-include>\n</div>\n");
 }]);
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('core/landing.html',
@@ -1251,7 +1341,7 @@ angular.module('mainModule').run(['$templateCache', function($templateCache) {
 }]);
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('modal/uploadBibtexModal.html',
-        "<div class=\"modal-header\">\n    <h3>Upload Bibtex File</h3>\n</div>\n<div class=\"modal-body\">\n  <div ng-switch on=\"uploadStatus\">\n    <div ng-switch-default class=\"container\" style=\"width:100%;margin:10px;\">\n      <div class=\"row\">\n        <div class=\"col-md-8\" style=\"padding-top:4px;\"><input type=\"file\"id=\"bibtex-input\"></div>\n        <div class=\"col-md-4\">\n          <button class=\"btn btn-primary btn-sm\" ng-click=\"processBibtexFile()\">Upload</button>\n        </div>\n      </div>\n    </div>\n    <div ng-switch-when=\"uploading\">\n      <div ng-switch on=\"lastUploadResult\">\n        <div ng-switch-when=\"success\" class=\"alert alert-success\">\n          <i>{{lastUploadedEvidence}}</i> successfully uploaded.\n        </div>\n        <div ng-switch-when=\"failed\" class=\"alert alert-danger\">\n          <i>{{lastUploadedEvidence}}</i> was not uploaded due to server error.\n        </div>\n        <div ng-switch-when=\"duplicate\" class=\"alert alert-warning\">\n          <i>{{lastUploadedEvidence}}</i> has been uploaded in the past.\n        </div>\n      </div>\n      <div class=\"alert alert-info\">\n        <p>Uploading: <i>{{currentEvidence}}</i> </p>\n        <p>Entries uploaded: {{evidenceIndex}}</p>\n        <p>Estimated remaining time: {{esmitatedTimeRemaining}} seconds</p>\n      </div>\n    </div>\n    <div ng-switch-when=\"uploaded-success\">\n      <div class=\"alert alert-success\">\n        <p>All {{totalToUpload}} entries uploaded.</p>\n        <p>Found and added {{totalAbstractFound}} abstracts from PubMed.</p>\n      </div>\n    </div>\n    <div ng-switch-when=\"uploaded-failed\">\n      <div class=\"alert alert-danger\">\n        <p>Encountered more than 10 upload failure. Upload aborted. Please notify admin at hua_guo@brown.edu about the issue if it persists.</p>\n      </div>\n    </div>\n  </div>\n</div>\n<div class=\"modal-footer\">\n  <button class=\"btn btn-default\" ng-click=\"ok()\">Close</button>\n</div>");
+        "<div class=\"modal-header\">\n    <h3>Upload Bibtex File</h3>\n</div>\n<div class=\"modal-body\">\n  <div ng-switch on=\"uploadStatus\">\n    <div ng-switch-when=\"beforeUpload\" class=\"container\" style=\"width:100%;margin:10px;\">\n      <div class=\"alert alert-info\">\n        <p>After you upload a bibtex file, entries contained in the file will appear in the \"Bookmarked\" column, as well as becoming available during recommendation and in the Explore view.</p>\n        <p>If you are interested in working with a document collection that also contains publications <b>related to</b> (have citation relationships, share similar keywords etc.) entries in the bibtex file, please email hua_guo@brown.edu.</p>\n      </div>\n      <div class=\"row\">\n        <div class=\"col-md-8\" style=\"padding-top:4px;\"><input type=\"file\"id=\"bibtex-input\"></div>\n        <div class=\"col-md-4\">\n          <button class=\"btn btn-primary btn-sm\" ng-click=\"processBibtexFile()\">Upload</button>\n        </div>\n      </div>\n    </div>\n    <div ng-switch-when=\"uploading\">\n      <div ng-switch on=\"lastUploadResult\">\n        <div ng-switch-when=\"success\" class=\"alert alert-success\">\n          <i>{{lastUploadedEvidence}}</i> successfully processed.\n        </div>\n        <div ng-switch-when=\"failed\" class=\"alert alert-danger\">\n          <i>{{lastUploadedEvidence}}</i> was not uploaded due to server error.\n        </div>\n        <div ng-switch-when=\"duplicate\" class=\"alert alert-warning\">\n          <i>{{lastUploadedEvidence}}</i> has already been bookmarked or uploaded in the past.\n        </div>\n      </div>\n      <div class=\"alert alert-info\">\n        <p>Processing: <i>{{currentEvidence}}</i> </p>\n        <p>Entries processed: {{evidenceIndex}}</p>\n        <p>Estimated remaining time: {{esmitatedTimeRemaining}} seconds</p>\n      </div>\n    </div>\n    <div ng-switch-when=\"uploaded-success\">\n      <div class=\"alert alert-success\">\n        <p>All {{totalToUpload}} entries processed.</p>\n        <div>\n          <p>{{totalMatchesFound}} entries already exist in the collection and have been bookmarked.</p>\n          <p>{{totalPersonalEntries}} entries are not found in the collection and have been added as personal references.</p>\n        </div>\n        <p>Found and added {{totalAbstractFound}} abstracts from PubMed.</p>\n      </div>\n    </div>\n    <div ng-switch-when=\"uploaded-failed\">\n      <div class=\"alert alert-danger\">\n        <p>Encountered more than 10 upload failure. Upload aborted. Please notify admin at hua_guo@brown.edu about the issue if it persists.</p>\n      </div>\n    </div>\n  </div>\n</div>\n<div class=\"modal-footer\">\n  <button class=\"btn btn-default\" ng-click=\"ok()\">Close</button>\n</div>");
 }]);
 angular
   .module('bibtex.services')
@@ -1293,7 +1383,7 @@ angular
           var metadata = parsedEvidence[key];
           if (metadata.TITLE !== undefined) {
             results.push({
-              title: metadata.TITLE,
+              title: metadata.TITLE.split('\n').join(' '),
               abstract: metadata.ABSTRACT !== undefined ? metadata.ABSTRACT : '',
               metadata: _.omit(_.omit(metadata, 'TITLE'), 'ABSTRACT')
             });
@@ -2008,7 +2098,6 @@ angular.module('explore.v2.controllers')
           evidenceCount: topic.document_count
         }
       });
-      console.log($scope.topics)
       TermTopic.initialize($scope.topics);
       $scope.terms = TermTopic.getAllTerms();
       $scope.selected.searchTerm = $scope.terms[0];
@@ -2039,7 +2128,7 @@ angular.module('explore.v2.controllers')
           console.log('action logged: search evidence by title');
         });
 
-      Core.getEvidenceByTitle(collectionId, $scope.searchTitle, function(response) {
+      Core.getEvidenceByTitle(collectionId, userId, $scope.searchTitle, true, 1, function(response) {
         $scope.candidateEvidence = response.data;
         $scope.selected.searchTitle = $scope.candidateEvidence[0];
         $scope.selectSearchTitle($scope.selected.searchTitle);
@@ -2548,6 +2637,7 @@ angular.module('explore.v2.controllers')
       }));
       $scope.loadingTopicEvidence = true;
       Core.getEvidenceByTopic(collectionId, d.id, userId, function(response) {
+        console.log(response.data.evidencePersonal)
         $scope.evidence = response.data.evidence;
         var bookmarkedEvidence = response.data.evidenceBookmarks.map(function(b) {
           return b.evidence;
@@ -2555,6 +2645,11 @@ angular.module('explore.v2.controllers')
         $scope.evidence.forEach(function(e) {
           e.metadata = JSON.parse(e.metadata);
           e.bookmarked = bookmarkedEvidence.indexOf(e.id) >= 0;
+        })
+        response.data.evidencePersonal.forEach(function(e) {
+          e.bookmarked = true;
+          e.metadata = JSON.parse(e.metadata);
+          $scope.evidence.push(e);
         })
         $scope.loadingTopicEvidence = false;
       }, function(errorResponse) {
@@ -3355,6 +3450,9 @@ angular.module('focus.v2.controllers')
       console.log(response);
     });
 
+    // TODO: if later we want to get topics for these evidence, be mindful that there are 
+    // two types of evidence - personal and bookmarked - and they will require 
+    // different handlings
     Core.getAllEvidenceForUser(userId, function(response) {
       // This includes both usercreated and bookmarked evidence; they are not necessarily cited.
       // TODO: apply default sorting.
@@ -3589,8 +3687,13 @@ angular.module('focus.v2.controllers')
           userId: function() {
             return userId;
           },
+          collectionId: function() {
+            return collectionId;
+          },
           existingEvidence: function() {
-            return $scope.evidence;
+            return $scope.evidence.map(function(e) {
+              return e.title;
+            });
           }
         }
       });
@@ -4058,10 +4161,10 @@ angular.module('landing.v2.controllers')
       $scope.idGenerated = false;
       $scope.collections = [
 //        { id: 10, name: 'visualization'},
-        { id: 11, name: 'pfc and executive functions'},
-        { id: 12, name: 'virtual reality'},
-        { id: 13, name: 'TVCG'},
-        { id: 15, name: 'diffusion tensor imaging'},
+        { id: 11, name: 'pfc and executive functions', numPubs: 103658, description: 'PubMed search queries "cognitive control", "executive functions", and "prefrontal cortex"'},
+        { id: 12, name: 'virtual reality', numPubs: 5634, description: 'PubMed search query "virtual reality"'},
+        { id: 13, name: 'TVCG', numPubs: 2490, description: 'IEEE Transactions on Visualization and Computer Graphics'},
+        { id: 15, name: 'diffusion tensor imaging', numPubs: 2111, description: 'PubMed entries related to entries from a bibtex file compiled by a diffusion tensor imaging researcher'},
       ];
 
       $scope.generateNewUserId = function() {
@@ -4314,6 +4417,10 @@ function TermTopic(Core) {
 
 }
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
+    $templateCache.put('core/v1/landing.v1.html',
+        "<div class=\"center row\" id=\"v1\">\n  <!-- List of saved arguments -->\n  <div class=\"main col-md-10\">\n    <div class=\"panel\" id=\"texts-col\">\n      <div class=\"header\">\n        <span>Arguments</span>\n      </div>\n      <div class=\"body row\">\n        <div class=\"index col-md-3\">\n          <div style=\"height:90%\"> \n            <table class=\"table\">\n              <tr ng-repeat=\"t in texts | filter:filterColumn('text')\" ng-class=\"{active: hover || t.id == selectedEntry['text'].id, success: showCitingTexts && cites(t, selectedEntry['evidence'])}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\">\n                <td ng-click=\"selectEntry(t, 'text')\">\n                  <p>{{t.title}}</p>\n                  <svg class=\"topic-info\" id=\"topic-info-{{t.id}}\" width=\"150\" height=\"25\"></svg>\n                  <div ng-if=\"selectedEntry['text']===t\" style=\"margin-left:80%\">\n                    <div class=\"btn-group btn-group-xs\" role=\"group\">\n                      <button class=\"btn btn-danger\" ng-disabled=\"selectedEntry['text']===null\" ng-click=\"deleteEntry('text')\">Delete</button>\n                    </div>  \n                  </div>\n                </td>\n              </tr>\n            </table>\n          </div>\n          <div class=\"btn-group btn-group-xs\" role=\"group\">\n            <button class=\"btn btn-default\" ng-click=\"addTextEntry()\"><img style=\"width:20px; height:20px\"src=\"/static/img/plus-icon.png\">Add new argument</button>\n          </div>\n        </div>\n        <!-- Text area for current argument -->\n        <div class=\"content col-md-5\">\n          <textarea class=\"form-control\" id=\"textContent\" ng-model=\"activeText\" ng-keypress=\"startMakingChanges()\">\n          </textarea>\n          <div class=\"btn-group btn-group-xs\" role=\"group\">\n            <button class=\"btn btn-primary\" ng-disabled=\"!hasUnsavedChanges\" ng-click=\"saveTextEntry()\">Save</button>\n            <button class=\"btn btn-default\" ng-disabled=\"selectedEntry['text']===null\" ng-click=\"extractTerms()\">Extract terms</button>\n            <button class=\"btn btn-default\" ng-disabled=\"selectedEntry['text']===null\" ng-click=\"recommendCitations()\">Recommend citations</button>\n          </div>\n        </div>\n        <!-- Display of extracted keywords -->\n        <div class=\"side col-md-4\">\n          <div style=\"height:90%;padding:20px\">\n            <div class=\"col-md-6 padding-sm\" ng-repeat=\"t in terms | filter:filterTerms()\">\n              <button class=\"btn btn-default btn\" ng-class=\"{'btn-primary': termSelected(t)}\" ng-click=\"selectTerm(t)\">{{t.term}}</td>\n            </div>\n          </div>\n          <div class=\"btn-group btn-group-xs\" role=\"group\">\n            <button class=\"btn btn-default\" ng-click=\"addTerm()\"><img style=\"width:20px; height:20px\"src=\"/static/img/plus-icon.png\">  Add highlighted texts as new term</button>\n            <button class=\"btn btn-default\" ng-disabled=\"selectedTerms.length===0\" ng-click=\"searchEvidenceForTerms()\">Search evidence</button>\n          </div>\n        </div>   \n      </div>\n    </div>\n    <!-- List of evidence -->\n    <div class=\"panel\" id=\"evidence-col\">\n      <div class=\"loading\" ng-if=\"loadingEvidence\">\n        <div class=\"loader-container\">\n          <div class=\"loader\"></div>\n          <div class=\"loading-text\"><p>{{loadingStatement}}</p></div>\n        </div>\n      </div>\n      <div class=\"header\">\n        <span>Evidence</span>\n      </div>\n      <div class=\"body row\">\n        <div class=\"col-md-3\" id=\"topics\">\n          <div ng-repeat=\"t in topics\" class=\"topic-container\" ng-class=\"{selected: $index == selectedTopic}\" ng-click=\"selectTopic($index)\" ng-attr-id=\"topic-container-{{$index+1}}\">\n            <p style=\"margin:0\"><span ng-repeat=\"w in t\">{{w}}  </span></p>\n            <p style=\"margin-left:90%\"><img  src=\"/static/img/text-icon.svg\" style=\"width:15px; height:15px\"></img><span> {{countEvidenceWithTopic($index)}}</span></p>\n          </div>\n        </div>\n        <div class=\"col-md-5\" id=\"documents\">\n          <div>\n            <div class=\"animate-repeat document-entry\" ng-repeat=\"e in evidence | filter:filterEvidence() | orderBy:evidenceOrder\" ng-class=\"{active: hover || e.id == selectedEntry['evidence'].id, associated: isAssociated(e, selectedEntry['text'])}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\">\n               <div ng-click=\"selectEntry(e, 'evidence')\" style=\"width:90%;display:inline-block;float:left\">\n                 <p><input type=\"checkbox\" ng-model=\"evidenceSelectionMap[e.id]\"><span> {{e.title}}</span></p>\n                 <p>\n                   <span><i>Search term occurrence:</i></span>\n                   <span ng-repeat=\"t in selectedTerms\"><b>{{t.term}}</b>: {{countSearchTermOccurrence(t.term, e.abstract)}}  </span>\n                 </p>\n               </div>\n               <div style=\"width:10%;display:inline-block\">\n                 <div ng-if=\"evidenceSourceMap[e.id] === 1\">\n                   <img  src=\"/static/img/link-icon.svg\" style=\"width:15px; height:15px\"></img>\n                   <span>{{countTextsReferencingEvidence(e)}}</span>\n                 </div>\n                 <div ng-if=\"evidenceSourceMap[e.id] === 0\"><span class=\"label label-default\">Search result</span></div> \n               </div>\n               <div style=\"clear:both\"></div>\n            </div>\n          </div>\n        </div>\n        <div class=\"col-md-4\" id=\"details\">\n          <div ng-if=\"selectedEntry['evidence']!==null\">\n            <div class=\"row\" style=\"margin:10px\">\n              <button class=\"btn btn-default btn-xs col-md-12\" ng-class=\"{'btn-success': showCitingTexts}\" ng-disabled=\"associationInactive('evidence')\" ng-click=\"toggleShowCitingTexts()\">Who cited me?</button>\n            </div>\n            <p><b>Authors</b>: {{selectedEntry['evidence'].metadata.AUTHOR}}</p>\n            <p><b>Affiliation</b>: {{selectedEntry['evidence'].metadata.AFFILIATION}}</p>\n            <p><b>Publication date</b>: {{selectedEntry['evidence'].metadata.DATE}}</p>\n            <p><b>Abstract</b>:</p>\n            <span ng-repeat=\"w in selectedWords track by $index\" ng-class=\"{'is-search-term': isSearchTerm(w), 'is-topic-term': isTopicTerm(w)}\">{{w}} </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"footer\">\n        <div class=\"btn-group btn-group-sm\" role=\"group\">\n          <button class=\"btn btn-default\" ng-click=\"addEvidenceEntry()\">Add</button>\n          <button class=\"btn btn-default\">Edit</button>\n          <button class=\"btn btn-primary\" ng-disabled=\"selectedEntry['evidence']===null||selectedEntry['text']===null\" ng-click=\"updateEvidenceAssociation()\" title=\"Mark this publication as relevant to the selected article\">{{evidenceTextAssociated ? 'Mark as irrelevant' : 'Mark as relevant'}}</button>\n          <button class=\"btn btn-danger\" ng-disabled=\"selectedEntry['evidence']===null\" ng-click=\"deleteEntry('evidence')\">Delete</button>\n        </div>\n      </div>\n    </div>\n  </div>\n  <div class=\"sidebar col-md-2\">\n    <div class=\"panel\">\n      <div class=\"header\">\n        <span>Control panel</span>\n      </div>\n      <div class=\"body\">\n        <div style=\"margin:10px 0 10px 0\">\n          <h5>Import references</h5>\n          <div>\n            <div style=\"margin:10px\"><input type=\"file\"id=\"bibtex-input\"></div>\n            <div style=\"margin:10px\"><button class=\"btn btn-primary btn-xs\" ng-click=\"processBibtexFile()\">Upload</button></div>\n          </div>\n        </div>\n        <div style=\"margin:10px 0 10px 0\">\n          <h5>Export</h5>\n          <div class=\"row\" style=\"margin:0 10px 0 10px\">\n            <button class=\"btn btn-default btn-xs col-md-5\">Documents</button>\n            <span class=\"col-md-1\"></span>\n            <button class=\"btn btn-default btn-xs col-md-5\">References</button>\n            <span class=\"col-md-1\"></span>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>");
+}]);
+angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('core/partials/english.html',
         "<p class=\"padding-lg\">\n    <em>\"In the end, it's not going to matter how many breaths you took, but how many moments took your breath away.\"</em>\n</p>");
 }]);
@@ -4378,8 +4485,8 @@ angular.module('mainModule').run(['$templateCache', function($templateCache) {
         "<div class=\"text-center\">\n<!--    <h2>{{ 'label_which_language_do_you_prefer' | translate }}</h2> -->\n    <button class=\"btn btn-lg btn-default\" ui-sref-active=\"btn-success\" ui-sref=\"index.ver2.explore\">Explore</button>\n    <button class=\"btn btn-lg btn-default\" ui-sref-active=\"btn-success\" ui-sref=\"index.ver2.focus\">Focus</button>\n</div>");
 }]);
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
-    $templateCache.put('core/v1/landing.v1.html',
-        "<div class=\"center row\" id=\"v1\">\n  <!-- List of saved arguments -->\n  <div class=\"main col-md-10\">\n    <div class=\"panel\" id=\"texts-col\">\n      <div class=\"header\">\n        <span>Arguments</span>\n      </div>\n      <div class=\"body row\">\n        <div class=\"index col-md-3\">\n          <div style=\"height:90%\"> \n            <table class=\"table\">\n              <tr ng-repeat=\"t in texts | filter:filterColumn('text')\" ng-class=\"{active: hover || t.id == selectedEntry['text'].id, success: showCitingTexts && cites(t, selectedEntry['evidence'])}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\">\n                <td ng-click=\"selectEntry(t, 'text')\">\n                  <p>{{t.title}}</p>\n                  <svg class=\"topic-info\" id=\"topic-info-{{t.id}}\" width=\"150\" height=\"25\"></svg>\n                  <div ng-if=\"selectedEntry['text']===t\" style=\"margin-left:80%\">\n                    <div class=\"btn-group btn-group-xs\" role=\"group\">\n                      <button class=\"btn btn-danger\" ng-disabled=\"selectedEntry['text']===null\" ng-click=\"deleteEntry('text')\">Delete</button>\n                    </div>  \n                  </div>\n                </td>\n              </tr>\n            </table>\n          </div>\n          <div class=\"btn-group btn-group-xs\" role=\"group\">\n            <button class=\"btn btn-default\" ng-click=\"addTextEntry()\"><img style=\"width:20px; height:20px\"src=\"/static/img/plus-icon.png\">Add new argument</button>\n          </div>\n        </div>\n        <!-- Text area for current argument -->\n        <div class=\"content col-md-5\">\n          <textarea class=\"form-control\" id=\"textContent\" ng-model=\"activeText\" ng-keypress=\"startMakingChanges()\">\n          </textarea>\n          <div class=\"btn-group btn-group-xs\" role=\"group\">\n            <button class=\"btn btn-primary\" ng-disabled=\"!hasUnsavedChanges\" ng-click=\"saveTextEntry()\">Save</button>\n            <button class=\"btn btn-default\" ng-disabled=\"selectedEntry['text']===null\" ng-click=\"extractTerms()\">Extract terms</button>\n            <button class=\"btn btn-default\" ng-disabled=\"selectedEntry['text']===null\" ng-click=\"recommendCitations()\">Recommend citations</button>\n          </div>\n        </div>\n        <!-- Display of extracted keywords -->\n        <div class=\"side col-md-4\">\n          <div style=\"height:90%;padding:20px\">\n            <div class=\"col-md-6 padding-sm\" ng-repeat=\"t in terms | filter:filterTerms()\">\n              <button class=\"btn btn-default btn\" ng-class=\"{'btn-primary': termSelected(t)}\" ng-click=\"selectTerm(t)\">{{t.term}}</td>\n            </div>\n          </div>\n          <div class=\"btn-group btn-group-xs\" role=\"group\">\n            <button class=\"btn btn-default\" ng-click=\"addTerm()\"><img style=\"width:20px; height:20px\"src=\"/static/img/plus-icon.png\">  Add highlighted texts as new term</button>\n            <button class=\"btn btn-default\" ng-disabled=\"selectedTerms.length===0\" ng-click=\"searchEvidenceForTerms()\">Search evidence</button>\n          </div>\n        </div>   \n      </div>\n    </div>\n    <!-- List of evidence -->\n    <div class=\"panel\" id=\"evidence-col\">\n      <div class=\"loading\" ng-if=\"loadingEvidence\">\n        <div class=\"loader-container\">\n          <div class=\"loader\"></div>\n          <div class=\"loading-text\"><p>{{loadingStatement}}</p></div>\n        </div>\n      </div>\n      <div class=\"header\">\n        <span>Evidence</span>\n      </div>\n      <div class=\"body row\">\n        <div class=\"col-md-3\" id=\"topics\">\n          <div ng-repeat=\"t in topics\" class=\"topic-container\" ng-class=\"{selected: $index == selectedTopic}\" ng-click=\"selectTopic($index)\" ng-attr-id=\"topic-container-{{$index+1}}\">\n            <p style=\"margin:0\"><span ng-repeat=\"w in t\">{{w}}  </span></p>\n            <p style=\"margin-left:90%\"><img  src=\"/static/img/text-icon.svg\" style=\"width:15px; height:15px\"></img><span> {{countEvidenceWithTopic($index)}}</span></p>\n          </div>\n        </div>\n        <div class=\"col-md-5\" id=\"documents\">\n          <div>\n            <div class=\"animate-repeat document-entry\" ng-repeat=\"e in evidence | filter:filterEvidence() | orderBy:evidenceOrder\" ng-class=\"{active: hover || e.id == selectedEntry['evidence'].id, associated: isAssociated(e, selectedEntry['text'])}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\">\n               <div ng-click=\"selectEntry(e, 'evidence')\" style=\"width:90%;display:inline-block;float:left\">\n                 <p><input type=\"checkbox\" ng-model=\"evidenceSelectionMap[e.id]\"><span> {{e.title}}</span></p>\n                 <p>\n                   <span><i>Search term occurrence:</i></span>\n                   <span ng-repeat=\"t in selectedTerms\"><b>{{t.term}}</b>: {{countSearchTermOccurrence(t.term, e.abstract)}}  </span>\n                 </p>\n               </div>\n               <div style=\"width:10%;display:inline-block\">\n                 <div ng-if=\"evidenceSourceMap[e.id] === 1\">\n                   <img  src=\"/static/img/link-icon.svg\" style=\"width:15px; height:15px\"></img>\n                   <span>{{countTextsReferencingEvidence(e)}}</span>\n                 </div>\n                 <div ng-if=\"evidenceSourceMap[e.id] === 0\"><span class=\"label label-default\">Search result</span></div> \n               </div>\n               <div style=\"clear:both\"></div>\n            </div>\n          </div>\n        </div>\n        <div class=\"col-md-4\" id=\"details\">\n          <div ng-if=\"selectedEntry['evidence']!==null\">\n            <div class=\"row\" style=\"margin:10px\">\n              <button class=\"btn btn-default btn-xs col-md-12\" ng-class=\"{'btn-success': showCitingTexts}\" ng-disabled=\"associationInactive('evidence')\" ng-click=\"toggleShowCitingTexts()\">Who cited me?</button>\n            </div>\n            <p><b>Authors</b>: {{selectedEntry['evidence'].metadata.AUTHOR}}</p>\n            <p><b>Affiliation</b>: {{selectedEntry['evidence'].metadata.AFFILIATION}}</p>\n            <p><b>Publication date</b>: {{selectedEntry['evidence'].metadata.DATE}}</p>\n            <p><b>Abstract</b>:</p>\n            <span ng-repeat=\"w in selectedWords track by $index\" ng-class=\"{'is-search-term': isSearchTerm(w), 'is-topic-term': isTopicTerm(w)}\">{{w}} </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"footer\">\n        <div class=\"btn-group btn-group-sm\" role=\"group\">\n          <button class=\"btn btn-default\" ng-click=\"addEvidenceEntry()\">Add</button>\n          <button class=\"btn btn-default\">Edit</button>\n          <button class=\"btn btn-primary\" ng-disabled=\"selectedEntry['evidence']===null||selectedEntry['text']===null\" ng-click=\"updateEvidenceAssociation()\" title=\"Mark this publication as relevant to the selected article\">{{evidenceTextAssociated ? 'Mark as irrelevant' : 'Mark as relevant'}}</button>\n          <button class=\"btn btn-danger\" ng-disabled=\"selectedEntry['evidence']===null\" ng-click=\"deleteEntry('evidence')\">Delete</button>\n        </div>\n      </div>\n    </div>\n  </div>\n  <div class=\"sidebar col-md-2\">\n    <div class=\"panel\">\n      <div class=\"header\">\n        <span>Control panel</span>\n      </div>\n      <div class=\"body\">\n        <div style=\"margin:10px 0 10px 0\">\n          <h5>Import references</h5>\n          <div>\n            <div style=\"margin:10px\"><input type=\"file\"id=\"bibtex-input\"></div>\n            <div style=\"margin:10px\"><button class=\"btn btn-primary btn-xs\" ng-click=\"processBibtexFile()\">Upload</button></div>\n          </div>\n        </div>\n        <div style=\"margin:10px 0 10px 0\">\n          <h5>Export</h5>\n          <div class=\"row\" style=\"margin:0 10px 0 10px\">\n            <button class=\"btn btn-default btn-xs col-md-5\">Documents</button>\n            <span class=\"col-md-1\"></span>\n            <button class=\"btn btn-default btn-xs col-md-5\">References</button>\n            <span class=\"col-md-1\"></span>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>");
+    $templateCache.put('core/v3/view-picker.v3.html',
+        "<div class=\"text-center\">\n<!--    <h2>{{ 'label_which_language_do_you_prefer' | translate }}</h2> -->\n    <button class=\"btn btn-lg btn-default\" ui-sref-active=\"btn-success\" ui-sref=\"index.ver1.explore\">Explore</button>\n    <button class=\"btn btn-lg btn-default\" ui-sref-active=\"btn-success\" ui-sref=\"index.ver1.focus\">Focus</button>\n</div>");
 }]);
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('core/v2/explore.v2.html',
@@ -4391,13 +4498,9 @@ angular.module('mainModule').run(['$templateCache', function($templateCache) {
 }]);
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('core/v2/landing.v2.html',
-        "<div ui-view=\"MainView\">\n  <div class=\"v2\" id=\"init-info\">\n    <div class=\"row\" style=\"margin:10px\">\n      <div class=\"col-md-2\" style=\"padding-top:5px\"><label>User ID</label></div>\n      <div class=\"col-md-10\"><input type=\"text\" class=\"form-control\" ng-model=\"userId\"></input></div>\n    </div>\n    <div class=\"row\" style=\"margin:0px 0px 0px 3px; padding:0px\">\n      <div class=\"col-md-2\">{{newUserId}}</div>\n      <div class=\"col-md-10\"><button class=\"btn btn-link\" style=\"outline:none\" ng-click=generateNewUserId()>New User? Click here for an ID.</button></div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-md-2\"></div>\n      <div class=\"col-md-10\" ng-if=\"idGenerated\">\n        <div class=\"alert alert-success\" style=\"margin:0px 25px 0px 20px;padding:5px\">\n          <p>User ID created! <b>Please save the ID</b> - you will need it to continue working on your proposal(s) next time. If you need to recover it, please email hua_guo@brown.edu.<p>\n        </div>\n      </div>\n    </div>\n    <div class=\"row\" style=\"margin:10px\">\n      <div class=\"col-md-2\" style=\"padding-top:5px\"><label>Collection</label></div>\n      <div class=\"col-md-10\">      \n        <ui-select ng-model=\"selected.collection\" on-select=\"selectCollection($item)\">\n            <ui-select-match placeholder=\"Select a collection\">\n                <span ng-bind=\"$select.selected.name\"></span>\n            </ui-select-match>\n            <ui-select-choices repeat=\"t in (collections | filter: $select.search) track by t.id\">\n                <span ng-bind=\"t.name\"></span>\n            </ui-select-choices>\n        </ui-select>\n      </div>\n    </div>\n    <div style=\"margin:40px auto auto 20px\">\n      <div uib-tooltip=\"Please enter a user ID and select a collection before proceeding\"\n          tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\" tooltip-enable=\"userId === '' || selected.collection.id === undefined\"\n          style=\"display:inline-block\">\n        <button class=\"btn btn-primary\" \n          ng-disabled=\"userId === '' || selected.collection.id === undefined\" \n          ui-sref-active=\"btn-success\" ui-sref=\"v2.explore({userId: userId, collectionId: selected.collection.id})\" >Explore literature collection</button>\n      </div>\n      <div uib-tooltip=\"Please enter a user ID and select a collection before proceeding\"\n          tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\" tooltip-enable=\"userId === '' || selected.collection.id === undefined\"\n          style=\"display:inline-block\">\n        <button class=\"btn btn-primary\" \n          ng-disabled=\"userId === '' || selected.collection.id === undefined\" \n          ui-sref-active=\"btn-success\" ui-sref=\"v2.focus({userId: userId, collectionId: selected.collection.id})\">Write</button>\n      </div>\n    </div>\n  </div>\n</div>");
+        "<div ui-view=\"MainView\">\n  <div class=\"v2\" id=\"init-info\">\n    <div class=\"row\" style=\"margin:10px\">\n      <div class=\"col-md-2\" style=\"padding-top:5px\"><label>User ID</label></div>\n      <div class=\"col-md-10\"><input type=\"text\" class=\"form-control\" ng-model=\"userId\"></input></div>\n    </div>\n    <div class=\"row\" style=\"margin:0px 0px 0px 3px; padding:0px\">\n      <div class=\"col-md-2\">{{newUserId}}</div>\n      <div class=\"col-md-10\"><button class=\"btn btn-link\" style=\"outline:none\" ng-click=generateNewUserId()>New User? Click here for an ID.</button></div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-md-2\"></div>\n      <div class=\"col-md-10\" ng-if=\"idGenerated\">\n        <div class=\"alert alert-success\" style=\"margin:0px 25px 0px 20px;padding:5px\">\n          <p>User ID created! <b>Please save the ID</b> - you will need it to continue working on your proposal(s) next time. If you need to recover it, please email hua_guo@brown.edu.<p>\n        </div>\n      </div>\n    </div>\n    <div class=\"row\" style=\"margin:10px\">\n      <div class=\"col-md-2\" style=\"padding-top:5px\"><label>Collection</label></div>\n      <div class=\"col-md-10\">      \n        <ui-select ng-model=\"selected.collection\" on-select=\"selectCollection($item)\">\n            <ui-select-match placeholder=\"Select a collection\">\n                <span ng-bind=\"$select.selected.name\"></span>\n            </ui-select-match>\n            <ui-select-choices repeat=\"t in (collections | filter: $select.search) track by t.id\">\n                <span style=\"font-size:15px\" ng-bind=\"t.name\"></span></br>\n                <b style=\"font-size:12px\"># of publications contained: ~<span ng-bind=\"t.numPubs\"></span></b></br>\n                <i style=\"font-size:12px\">Source: <span ng-bind=\"t.description\"></span></i>\n            </ui-select-choices>\n        </ui-select>\n      </div>\n    </div>\n    <div style=\"margin:40px auto auto 20px\">\n      <div uib-tooltip=\"Please enter a user ID and select a collection before proceeding\"\n          tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\" tooltip-enable=\"userId === '' || selected.collection.id === undefined\"\n          style=\"display:inline-block\">\n        <button class=\"btn btn-primary\" \n          ng-disabled=\"userId === '' || selected.collection.id === undefined\" \n          ui-sref-active=\"btn-success\" ui-sref=\"v2.explore({userId: userId, collectionId: selected.collection.id})\" >Explore literature collection</button>\n      </div>\n      <div uib-tooltip=\"Please enter a user ID and select a collection before proceeding\"\n          tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\" tooltip-enable=\"userId === '' || selected.collection.id === undefined\"\n          style=\"display:inline-block\">\n        <button class=\"btn btn-primary\" \n          ng-disabled=\"userId === '' || selected.collection.id === undefined\" \n          ui-sref-active=\"btn-success\" ui-sref=\"v2.focus({userId: userId, collectionId: selected.collection.id})\">Write</button>\n      </div>\n    </div>\n  </div>\n  <div class=\"v2\" style=\"width: 50%;margin: 50px auto auto auto;\">\n    <p><a href=\"https://github.com/tacitia/ThoughtFlow/wiki/Overview---for-users\" target=\"_blank\">What is this tool?</a></p>\n  </div>\n</div>");
 }]);
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('core/v2/view-picker.v2.html',
         "<div class=\"text-center\">\n<!--    <h2>{{ 'label_which_language_do_you_prefer' | translate }}</h2> -->\n    <button class=\"btn btn-lg btn-default\" ui-sref-active=\"btn-success\" ui-sref=\"index.v2.explore\">Explore</button>\n    <button class=\"btn btn-lg btn-default\" ui-sref-active=\"btn-success\" ui-sref=\"index.v2.focus\">Focus</button>\n</div>");
-}]);
-angular.module('mainModule').run(['$templateCache', function($templateCache) {
-    $templateCache.put('core/v3/view-picker.v3.html',
-        "<div class=\"text-center\">\n<!--    <h2>{{ 'label_which_language_do_you_prefer' | translate }}</h2> -->\n    <button class=\"btn btn-lg btn-default\" ui-sref-active=\"btn-success\" ui-sref=\"index.ver1.explore\">Explore</button>\n    <button class=\"btn btn-lg btn-default\" ui-sref-active=\"btn-success\" ui-sref=\"index.ver1.focus\">Focus</button>\n</div>");
 }]);

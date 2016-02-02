@@ -104,10 +104,14 @@
       }).then(successFn, errorFn);
     }
 
-    function getEvidenceByTitle(collectionId, title, successFn, errorFn) {
+    function getEvidenceByTitle(collectionId, userId, title, includePersonal, resultLimit, successFn, errorFn) {
+      var limit = resultLimit > 0 ? resultLimit : 20;
       $http.post('/api/v1/service/searchEvidenceByTitle/', {
         collection_id: collectionId,
-        title: title
+        user_id: userId,
+        title: title,
+        result_limit: limit,
+        include_personal: includePersonal
       }).then(successFn, errorFn);
     }
 

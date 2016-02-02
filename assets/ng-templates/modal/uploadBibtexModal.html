@@ -3,7 +3,11 @@
 </div>
 <div class="modal-body">
   <div ng-switch on="uploadStatus">
-    <div ng-switch-default class="container" style="width:100%;margin:10px;">
+    <div ng-switch-when="beforeUpload" class="container" style="width:100%;margin:10px;">
+      <div class="alert alert-info">
+        <p>After you upload a bibtex file, entries contained in the file will appear in the "Bookmarked" column, as well as becoming available during recommendation and in the Explore view.</p>
+        <p>If you are interested in working with a document collection that also contains publications <b>related to</b> (have citation relationships, share similar keywords etc.) entries in the bibtex file, please email hua_guo@brown.edu.</p>
+      </div>
       <div class="row">
         <div class="col-md-8" style="padding-top:4px;"><input type="file"id="bibtex-input"></div>
         <div class="col-md-4">
@@ -14,24 +18,28 @@
     <div ng-switch-when="uploading">
       <div ng-switch on="lastUploadResult">
         <div ng-switch-when="success" class="alert alert-success">
-          <i>{{lastUploadedEvidence}}</i> successfully uploaded.
+          <i>{{lastUploadedEvidence}}</i> successfully processed.
         </div>
         <div ng-switch-when="failed" class="alert alert-danger">
           <i>{{lastUploadedEvidence}}</i> was not uploaded due to server error.
         </div>
         <div ng-switch-when="duplicate" class="alert alert-warning">
-          <i>{{lastUploadedEvidence}}</i> has been uploaded in the past.
+          <i>{{lastUploadedEvidence}}</i> has already been bookmarked or uploaded in the past.
         </div>
       </div>
       <div class="alert alert-info">
-        <p>Uploading: <i>{{currentEvidence}}</i> </p>
-        <p>Entries uploaded: {{evidenceIndex}}</p>
+        <p>Processing: <i>{{currentEvidence}}</i> </p>
+        <p>Entries processed: {{evidenceIndex}}</p>
         <p>Estimated remaining time: {{esmitatedTimeRemaining}} seconds</p>
       </div>
     </div>
     <div ng-switch-when="uploaded-success">
       <div class="alert alert-success">
-        <p>All {{totalToUpload}} entries uploaded.</p>
+        <p>All {{totalToUpload}} entries processed.</p>
+        <div>
+          <p>{{totalMatchesFound}} entries already exist in the collection and have been bookmarked.</p>
+          <p>{{totalPersonalEntries}} entries are not found in the collection and have been added as personal references.</p>
+        </div>
         <p>Found and added {{totalAbstractFound}} abstracts from PubMed.</p>
       </div>
     </div>

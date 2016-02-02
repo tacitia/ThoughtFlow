@@ -24,7 +24,9 @@
                 <span ng-bind="$select.selected.name"></span>
             </ui-select-match>
             <ui-select-choices repeat="t in (collections | filter: $select.search) track by t.id">
-                <span ng-bind="t.name"></span>
+                <span style="font-size:15px" ng-bind="t.name"></span></br>
+                <b style="font-size:12px"># of publications contained: ~<span ng-bind="t.numPubs"></span></b></br>
+                <i style="font-size:12px">Source: <span ng-bind="t.description"></span></i>
             </ui-select-choices>
         </ui-select>
       </div>
@@ -45,5 +47,8 @@
           ui-sref-active="btn-success" ui-sref="v2.focus({userId: userId, collectionId: selected.collection.id})">Write</button>
       </div>
     </div>
+  </div>
+  <div class="v2" style="width: 50%;margin: 50px auto auto auto;">
+    <p><a href="https://github.com/tacitia/ThoughtFlow/wiki/Overview---for-users" target="_blank">What is this tool?</a></p>
   </div>
 </div>

@@ -38,7 +38,7 @@ angular
           var metadata = parsedEvidence[key];
           if (metadata.TITLE !== undefined) {
             results.push({
-              title: metadata.TITLE,
+              title: metadata.TITLE.split('\n').join(' '),
               abstract: metadata.ABSTRACT !== undefined ? metadata.ABSTRACT : '',
               metadata: _.omit(_.omit(metadata, 'TITLE'), 'ABSTRACT')
             });

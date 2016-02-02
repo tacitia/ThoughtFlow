@@ -67,7 +67,6 @@ angular.module('explore.v2.controllers')
           evidenceCount: topic.document_count
         }
       });
-      console.log($scope.topics)
       TermTopic.initialize($scope.topics);
       $scope.terms = TermTopic.getAllTerms();
       $scope.selected.searchTerm = $scope.terms[0];
@@ -98,7 +97,7 @@ angular.module('explore.v2.controllers')
           console.log('action logged: search evidence by title');
         });
 
-      Core.getEvidenceByTitle(collectionId, $scope.searchTitle, function(response) {
+      Core.getEvidenceByTitle(collectionId, userId, $scope.searchTitle, true, 1, function(response) {
         $scope.candidateEvidence = response.data;
         $scope.selected.searchTitle = $scope.candidateEvidence[0];
         $scope.selectSearchTitle($scope.selected.searchTitle);
@@ -607,6 +606,7 @@ angular.module('explore.v2.controllers')
       }));
       $scope.loadingTopicEvidence = true;
       Core.getEvidenceByTopic(collectionId, d.id, userId, function(response) {
+        console.log(response.data.evidencePersonal)
         $scope.evidence = response.data.evidence;
         var bookmarkedEvidence = response.data.evidenceBookmarks.map(function(b) {
           return b.evidence;
@@ -614,6 +614,11 @@ angular.module('explore.v2.controllers')
         $scope.evidence.forEach(function(e) {
           e.metadata = JSON.parse(e.metadata);
           e.bookmarked = bookmarkedEvidence.indexOf(e.id) >= 0;
+        })
+        response.data.evidencePersonal.forEach(function(e) {
+          e.bookmarked = true;
+          e.metadata = JSON.parse(e.metadata);
+          $scope.evidence.push(e);
         })
         $scope.loadingTopicEvidence = false;
       }, function(errorResponse) {

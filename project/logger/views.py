@@ -8,10 +8,8 @@ from django.views.decorators.csrf import csrf_protect
 # Create your views here.
 @csrf_protect
 def addAction(request):
-  print 'add action called'
   if request.method =='POST':
     data = json.loads(request.body)
-    print data
     
     action = Action(
       user=data['userId'],

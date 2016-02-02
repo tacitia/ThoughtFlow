@@ -1,15 +1,21 @@
 // TODO: add collectionId here
 angular.module('modal.controllers')
-  .controller('UploadBibtexModalController', ['$scope', '$modalInstance', 'userId', 'existingEvidence', 'Core', 'Bibtex',
-    function($scope, $modalInstance, userId, existingEvidence, Core, Bibtex) {
+  .controller('UploadBibtexModalController', ['$scope', '$modalInstance', 'userId', 'collectionId', 'existingEvidence', 'Core', 'Bibtex',
+    function($scope, $modalInstance, userId, collectionId, existingEvidence, Core, Bibtex) {
 
     var storedEvidence = [];
     $scope.evidenceIndex = 0;
+
     $scope.totalAbstractFound = 0;
+    $scope.totalMatchesFound = 0;
+    $scope.totalPersonalEntries = 0;
+    
     $scope.uploadStatus = 'beforeUpload';
     $scope.numErrors = 0;
 
-    var collectionId = 15;
+    $scope.seedNewCollecdtion = false;
+
+    var newCollectionId = 16;
 
     $scope.processBibtexFile = function() {
 
@@ -26,7 +32,9 @@ angular.module('modal.controllers')
         
         var uploadFunction = setInterval(function() {
           if ($scope.evidenceIndex >= $scope.totalToUpload) {
-            $scope.uploadStatus = 'uploaded-success';
+            $scope.$apply(function() {
+              $scope.uploadStatus = 'uploaded-success';
+            });
             clearInterval(uploadFunction);
             return;
           }
@@ -34,6 +42,81 @@ angular.module('modal.controllers')
           $scope.esmitatedTimeRemaining = (evidenceList.length - $scope.evidenceIndex) * 3;
           $scope.currentEvidence = evidence.title;
 
+          integrateNewEvidenceIntoCollection(evidence, collectionId);
+          $scope.evidenceIndex += 1;
+        }, 3000);
+      };
+      reader.readAsText(selectedFile);
+    };
+
+    // If the user chooses to integrate the bibtex file into a selected collection, we
+    // 1. For entries that are already in the collection, we find the existing evidence, 
+    // add a bookmark for it and we are done
+    // 2. For entries that are not in there, we 
+    // 1) create the evidence with the user as "created_by";
+    // 2) we need to make sure that every time we get user-created evidence for a user, 
+    // those entries are returned along with their assigned topics (these should be determined
+    // during loading time since we don't want to cache for every possible collection; only need 
+    // handle this for explore view for now)
+
+    // We have an implementation choice here: we can either add a server side function that 
+    // handles situation 2), or just handle it on client side using a combination of existing
+    // server calls (i.e. Core.getEvidenceByTitle followed by an addBookmark or postEvidenceByUserId)
+    // I'm going with the second option for now to reduce code duplicates; let's see if this 
+    // have an significant impact on upload speed
+    function integrateNewEvidenceIntoCollection(evidence, collectionId) {
+      Core.getEvidenceByTitle(collectionId, userId, evidence.title, false, 1, function(response) {
+        var matchedEvidence = response.data[0];
+        if (matchedEvidence !== undefined && matchedEvidence.dist <= evidence.title.length * 0.1) {
+          Core.addBookmark(userId, matchedEvidence.id, function(response) {
+            console.log('uploaded evidence bookmarked.')
+            $scope.totalMatchesFound += 1;
+            respondToSuccess(evidence, matchedEvidence);
+          }, function(error) {
+            console.log('server error when adding new bookmark');
+            console.log(response);
+            respondToError();
+          });
+        }
+        else {
+          Core.postEvidenceByUserId(userId, evidence.title, evidence.abstract, JSON.stringify(evidence.metadata), function(response) {
+            if (existingEvidence.indexOf(response.data[0].title) > -1) {
+              $scope.lastUploadResult = 'duplicate';
+              $scope.lastUploadedEvidence = $scope.currentEvidence;
+              return;
+            }
+            if (evidence.abstract === '' && response.data[0].abstract !== '') {
+              $scope.totalAbstractFound += 1;
+            }   
+            $scope.totalPersonalEntries += 1;
+            respondToSuccess(evidence, response.data[0]);
+          }, function(response) {
+            console.log('server error when saving new evidence');
+            console.log(response);
+            respondToError();     
+          });
+        }
+      });
+    }
+
+    function respondToSuccess(evidence, returnedEvidence) {
+      $scope.lastUploadResult = 'success';
+      $scope.lastUploadedEvidence = $scope.currentEvidence;
+      storedEvidence.push(returnedEvidence);   
+    }
+
+    function respondToError() {
+      $scope.lastUploadedEvidence = $scope.currentEvidence;
+      $scope.numErrors += 1;
+      $scope.lastUploadResult = 'failed';
+      if ($scope.numErrors >= 10) {
+        $scope.evidenceIndex = $scope.totalToUpload;
+        $scope.uploadStatus = 'uploaded-failed';
+      }            
+    }
+
+    function createNewCollectionFromNewEvidence(collectionId) {
+/*
           Core.postEvidenceByUserId(collectionId, evidence.title, evidence.abstract, JSON.stringify(evidence.metadata), 
             function(response) {
               Core.addBookmark(userId, response.data[0].id, function(response) {
@@ -62,13 +145,8 @@ angular.module('modal.controllers')
                 $scope.evidenceIndex = $scope.totalToUpload;
                 $scope.uploadStatus = 'uploaded-failed';
               }
-            });
-
-          $scope.evidenceIndex += 1;
-        }, 3000);
-      };
-      reader.readAsText(selectedFile);
-    };   
+            }); */
+    }
 
     $scope.ok = function () {
       $modalInstance.close(storedEvidence);
