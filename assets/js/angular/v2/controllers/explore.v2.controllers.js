@@ -532,6 +532,7 @@ angular.module('explore.v2.controllers')
       if (collectionId === 12) probSum = 0.2;
       if (collectionId === 13) probSum = 0.5;
       if (collectionId === 15) probSum = 0.7;
+      if (collectionId === 16) probSum = 0.2;
 
       var term = topic.selectAll('g')
         .data(function(d, i) {
