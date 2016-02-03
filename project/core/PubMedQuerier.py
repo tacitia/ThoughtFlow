@@ -44,7 +44,11 @@ def get_abstract_by_title(title):
 
 def get_related_evidence(title):
 	print '>>>>>>>>>>>>>>>>>>>>>>>>>>'
-	print 'given title: ' + title
+	try:
+		print 'given title: ' + title
+	except UnicodeEncodeError:
+		print 'title cannot be printed - containing unicode encode error'
+		pass
 	fetch = metapub.PubMedFetcher()
 	pmids = fetch.pmids_for_query(title)
 	if len(pmids) == 1:
