@@ -1,5 +1,3 @@
-var myAwesomeJSVariable = "I'm so awesome!!";
-
 angular.module('mainModule', [
   'restangular', 
   'ui.router', 
@@ -33,6 +31,8 @@ angular.module('mainModule', [
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|file|blob):/);
       }]);
 })();
+var myAwesomeJSVariable = "I'm so awesome!!";
+
 (function () {
   'use strict';
 
@@ -2088,6 +2088,242 @@ angular.module('v1.controllers')
 
   }]);
 
+angular
+  .module('termTopic.services')
+  .factory('TermTopic', TermTopic);
+
+function TermTopic(Core) {
+  var terms = null;
+  var topics = null;
+  var termTopicMap = null;
+  var termIndexMap = null;
+  var topicIdMap = null;
+  var termOrders = {
+    weight: null
+  }
+  var termFilters = {
+    weight: null
+  }
+  var TermTopic = {
+    initialize: initialize,
+    getTopTerms: getTopTerms,
+    getTopTopics: getTopTopics,
+    getAllTerms: getAllTerms,
+    getNeighborTopics: getNeighborTopics,
+    numOfTerms: numOfTerms,
+    numOfTopics: numOfTopics,
+    getTermPropertyMax: getTermPropertyMax
+  };
+  var minTermTopicProb = 1;
+
+  return TermTopic;
+
+  ////////////////////
+  function initialize(sourceTopics) {
+    topics = sourceTopics;
+    terms = getUniqueTerms(topics);
+    termTopicMap = getTermTopicCount(terms, topics);
+    termIndexMap = _.object(terms.map(function(term, i) {
+      return [term, i];
+    }));
+    topicIdMap = _.object(topics.map(function(topic, i) {
+      return [topic.id, topic];
+    }));
+
+    termOrders.weight = d3.range(terms.length).sort(function(i, j) { 
+        return termTopicMap[terms[j]].weight - termTopicMap[terms[i]].weight;
+      });
+
+    termFilters.weight = function(topNum, start) {
+      var sortedTermIndice = _.take(_.drop(termOrders.weight, start), topNum);
+      return sortedTermIndice.map(function(i) {
+        return {
+          term: terms[i],
+          origIndex: i,
+          properties: termTopicMap[terms[i]]
+        };
+      });
+    }
+  }
+
+  function getTermPropertyMax(criteria) {
+    return _.max(terms.map(function(term) { return termTopicMap[term].weight; }))    
+  }
+
+  function numOfTerms() {
+    return terms.length;
+  }
+
+  function numOfTopics() {
+    return topics.length;
+  }
+
+
+  function getAllTerms() {
+    return termFilters.weight(terms.length, 0);
+  }
+  /*
+   * criteria: indicates how to sort the terms and topics
+   * top: specifies top X entries to be returned
+   * start [optional]: if start is specified, throw out entries that 
+   * come before the start index;
+   * selectedTerms [optional]: 
+   */
+  function getTopTerms(criteria, top, start, selectedTerms) {
+    if (selectedTerms !== undefined && selectedTerms.length > 0) {
+      // Get all topics containing the selected terms
+      var keyTopics = _.flatten(selectedTerms.map(function(term) {
+        console.log(termTopicMap[term])
+        return termTopicMap[term].topics.map(function(topic) {
+          return topicIdMap[topic.id];
+        })
+      }));
+
+      var rankedTerms = termFilters.weight(terms.length, 0);
+
+      // Assign weights to every term, based on its related topics
+      var termSelectionScoreMap = {};
+      rankedTerms.forEach(function(term) {
+        termSelectionScoreMap[term.term] = 1;
+      });
+      keyTopics.forEach(function(topic) {
+        topic.terms.forEach(function(t) {
+          termSelectionScoreMap[t.term] += 100;
+        })
+      });
+      selectedTerms.forEach(function(term) {
+        termSelectionScoreMap[term] += 10000;
+      })
+
+      var selectionWeightedTerms = _.sortBy(rankedTerms, function(term) {
+        return -termSelectionScoreMap[term.term] * term.properties.weight;
+      });
+
+      return _.take(_.drop(selectionWeightedTerms, start), top);
+    }
+    else {
+      return termFilters.weight(top, start);
+    }
+  }
+
+  /*
+   * Given the selected terms, find all terms that share the same topics with 
+   * those terms; rank them based on the number of shared topics, then 
+   */
+  function getTermsGivenSelectedTerms(selectedTerms, num) {
+
+  };
+
+  function getTopTopics(terms, top, selectedTerms) {
+    // Compute the total weight for each topic, i.e. the weight of all the topic's terms that are 
+    // among the top terms
+    var topicMap = {};
+
+    var termTopicConnections = [];
+
+    terms.forEach(function(term) {
+      term.properties.topics.forEach(function(topic) {
+        if (topicMap[topic.id] === undefined) { 
+          topicMap[topic.id] = 0;
+        }
+        var weight = 1;
+        if (selectedTerms !== undefined && selectedTerms.length > 0) {
+          if (selectedTerms.indexOf(term.term) >= 0) {
+            weight = Math.ceil(1 / minTermTopicProb);
+          }
+        }
+        topicMap[topic.id] += topic.prob * weight;
+
+        termTopicConnections.push({
+          term: term,
+          topic: topicIdMap[topic.id]
+        });
+      });
+    });
+
+    var sortedTopics = _.keys(topicMap).map(function(topicId) {
+      var topic = topicIdMap[topicId];
+      topic.variable = {};
+      topic.variable.weight = topicMap[topicId];
+      return topic;
+    }).sort(function(topic1, topic2) {
+      return topic2.variable.weight - topic1.variable.weight;
+    });
+
+    var topTopics = _.take(sortedTopics, top);
+    var topTopicIds = topTopics.map(function(t) {
+      return t.id;
+    })
+
+    return {
+      topics: topTopics,
+      termTopicConnections: _.filter(termTopicConnections, function(c) {
+        return topTopicIds.indexOf(c.topic.id) >= 0;
+      })
+    }
+  }
+
+  function getNeighborTopics(topic, minSharedTerm) {
+    var connections = [];
+    var terms = [];
+    var neighborTopicIds = _.flatten(_.take(topic.terms, 10).map(function(entry) {
+      return termTopicMap[entry.term].topics.map(function(topic) {        
+        return topic.id;
+      });
+    }));
+
+    neighborTopicIds = _.without(neighborTopicIds, topic.id);
+
+    var topicCounts = _.countBy(neighborTopicIds, function(topicId) {
+      return topicId;
+    });
+
+    var neighborTopics = _.filter(_.pairs(topicCounts), function(topicIdCountPair) {
+      return minSharedTerm === undefined ? true : topicIdCountPair[1] >= minSharedTerm;
+    }).map(function(topicIdCountPair) {
+      var topic = topicIdMap[topicIdCountPair[0]];
+      topic.numSharedTerms = topicIdCountPair[1];
+      return topic;
+    });
+
+    return neighborTopics;
+  }
+
+  function getUniqueTerms(topics) {
+    return _.uniq(_.flatten(topics.map(function(t) {
+      var termTuples = t.terms;
+      return termTuples.map(function(tuple) {
+        return tuple.term;
+      })
+    })));
+  }
+
+  function getTermTopicCount(terms, topics) {
+    var termTopicMap = _.object(terms.map(function(t) {
+      return [t, {topics: [], topicCount: 0, weight: 0}];
+    }));
+    for (var i in topics) {
+      var topic = topics[i];
+      var termTuples = topic.terms;
+      for (var j in termTuples) {
+        var term = termTuples[j].term;
+        var prob = termTuples[j].prob;
+        if (prob < minTermTopicProb) {
+          minTermTopicProb = prob;
+        }
+        var entry = termTopicMap[term];
+        entry.topics.push({
+          id: topic.id,
+          prob: prob
+        });
+        entry.topicCount += 1;
+        entry.weight += prob;
+      }
+    }
+    return termTopicMap;
+  }
+
+}
 angular.module('explore.v2.controllers')
   .controller('ExploreController', ['$scope', '$stateParams', '$modal', 'Core', 'AssociationMap', 'Pubmed', 'TermTopic', 'Logger',
     function($scope, $stateParams, $modal, Core, AssociationMap, Pubmed, TermTopic, Logger) {
@@ -2116,7 +2352,6 @@ angular.module('explore.v2.controllers')
       $scope.collectionName = _.find($scope.collections, function(c) {
         return c.id === collectionId;
       }).name;
-
     });
 /*    
     $scope.collections = [
@@ -3473,23 +3708,23 @@ angular.module('focus.v2.controllers')
 
     var blob = null;
 
-    // TODO: get the list from server
-    $scope.collections = [
-      { id: 10, name: 'visualization'},
-      { id: 11, name: 'pfc and executive functions'},
-      { id: 12, name: 'virtual reality'},
-      { id: 13, name: 'TVCG'},
-      { id: 15, name: 'diffusion tensor imaging'},
-    ];
-
     var userId = parseInt($stateParams.userId);
     var collectionId = parseInt($stateParams.collectionId);
 
-    $scope.userId = userId;
-    $scope.collectionId = collectionId;
-    $scope.collectionName = _.find($scope.collections, function(c) {
-      return c.id === collectionId;
-    }).name;    
+    Core.getCollectionList(function(response) {
+      $scope.collections = response.data.map(function(d) {
+        return {
+          id: parseInt(d.collection_id),
+          name: d.collection_name
+        };
+      });
+
+      $scope.userId = userId;
+      $scope.collectionId = collectionId;
+      $scope.collectionName = _.find($scope.collections, function(c) {
+        return c.id === collectionId;
+      }).name;
+    });
 
     $scope.evidence = null;
     var textEvidenceAssociations = null;
@@ -4261,246 +4496,6 @@ angular.module('v2.controllers')
     function($scope, $modal, Core, AssociationMap, Argument, Pubmed, Bibtex) {
   }]);
 
-angular
-  .module('termTopic.services')
-  .factory('TermTopic', TermTopic);
-
-function TermTopic(Core) {
-  var terms = null;
-  var topics = null;
-  var termTopicMap = null;
-  var termIndexMap = null;
-  var topicIdMap = null;
-  var termOrders = {
-    weight: null
-  }
-  var termFilters = {
-    weight: null
-  }
-  var TermTopic = {
-    initialize: initialize,
-    getTopTerms: getTopTerms,
-    getTopTopics: getTopTopics,
-    getAllTerms: getAllTerms,
-    getNeighborTopics: getNeighborTopics,
-    numOfTerms: numOfTerms,
-    numOfTopics: numOfTopics,
-    getTermPropertyMax: getTermPropertyMax
-  };
-  var minTermTopicProb = 1;
-
-  return TermTopic;
-
-  ////////////////////
-  function initialize(sourceTopics) {
-    topics = sourceTopics;
-    terms = getUniqueTerms(topics);
-    termTopicMap = getTermTopicCount(terms, topics);
-    termIndexMap = _.object(terms.map(function(term, i) {
-      return [term, i];
-    }));
-    topicIdMap = _.object(topics.map(function(topic, i) {
-      return [topic.id, topic];
-    }));
-
-    termOrders.weight = d3.range(terms.length).sort(function(i, j) { 
-        return termTopicMap[terms[j]].weight - termTopicMap[terms[i]].weight;
-      });
-
-    termFilters.weight = function(topNum, start) {
-      var sortedTermIndice = _.take(_.drop(termOrders.weight, start), topNum);
-      return sortedTermIndice.map(function(i) {
-        return {
-          term: terms[i],
-          origIndex: i,
-          properties: termTopicMap[terms[i]]
-        };
-      });
-    }
-  }
-
-  function getTermPropertyMax(criteria) {
-    return _.max(terms.map(function(term) { return termTopicMap[term].weight; }))    
-  }
-
-  function numOfTerms() {
-    return terms.length;
-  }
-
-  function numOfTopics() {
-    return topics.length;
-  }
-
-
-  function getAllTerms() {
-    return termFilters.weight(terms.length, 0);
-  }
-  /*
-   * criteria: indicates how to sort the terms and topics
-   * top: specifies top X entries to be returned
-   * start [optional]: if start is specified, throw out entries that 
-   * come before the start index;
-   * selectedTerms [optional]: 
-   */
-  function getTopTerms(criteria, top, start, selectedTerms) {
-    if (selectedTerms !== undefined && selectedTerms.length > 0) {
-      // Get all topics containing the selected terms
-      var keyTopics = _.flatten(selectedTerms.map(function(term) {
-        console.log(termTopicMap[term])
-        return termTopicMap[term].topics.map(function(topic) {
-          return topicIdMap[topic.id];
-        })
-      }));
-
-      var rankedTerms = termFilters.weight(terms.length, 0);
-
-      // Assign weights to every term, based on its related topics
-      var termSelectionScoreMap = {};
-      rankedTerms.forEach(function(term) {
-        termSelectionScoreMap[term.term] = 1;
-      });
-      keyTopics.forEach(function(topic) {
-        topic.terms.forEach(function(t) {
-          termSelectionScoreMap[t.term] += 100;
-        })
-      });
-      selectedTerms.forEach(function(term) {
-        termSelectionScoreMap[term] += 10000;
-      })
-
-      var selectionWeightedTerms = _.sortBy(rankedTerms, function(term) {
-        return -termSelectionScoreMap[term.term] * term.properties.weight;
-      });
-
-      return _.take(_.drop(selectionWeightedTerms, start), top);
-    }
-    else {
-      return termFilters.weight(top, start);
-    }
-  }
-
-  /*
-   * Given the selected terms, find all terms that share the same topics with 
-   * those terms; rank them based on the number of shared topics, then 
-   */
-  function getTermsGivenSelectedTerms(selectedTerms, num) {
-
-  };
-
-  function getTopTopics(terms, top, selectedTerms) {
-    // Compute the total weight for each topic, i.e. the weight of all the topic's terms that are 
-    // among the top terms
-    var topicMap = {};
-
-    var termTopicConnections = [];
-
-    terms.forEach(function(term) {
-      term.properties.topics.forEach(function(topic) {
-        if (topicMap[topic.id] === undefined) { 
-          topicMap[topic.id] = 0;
-        }
-        var weight = 1;
-        if (selectedTerms !== undefined && selectedTerms.length > 0) {
-          if (selectedTerms.indexOf(term.term) >= 0) {
-            weight = Math.ceil(1 / minTermTopicProb);
-          }
-        }
-        topicMap[topic.id] += topic.prob * weight;
-
-        termTopicConnections.push({
-          term: term,
-          topic: topicIdMap[topic.id]
-        });
-      });
-    });
-
-    var sortedTopics = _.keys(topicMap).map(function(topicId) {
-      var topic = topicIdMap[topicId];
-      topic.variable = {};
-      topic.variable.weight = topicMap[topicId];
-      return topic;
-    }).sort(function(topic1, topic2) {
-      return topic2.variable.weight - topic1.variable.weight;
-    });
-
-    var topTopics = _.take(sortedTopics, top);
-    var topTopicIds = topTopics.map(function(t) {
-      return t.id;
-    })
-
-    return {
-      topics: topTopics,
-      termTopicConnections: _.filter(termTopicConnections, function(c) {
-        return topTopicIds.indexOf(c.topic.id) >= 0;
-      })
-    }
-  }
-
-  function getNeighborTopics(topic, minSharedTerm) {
-    var connections = [];
-    var terms = [];
-    var neighborTopicIds = _.flatten(_.take(topic.terms, 10).map(function(entry) {
-      return termTopicMap[entry.term].topics.map(function(topic) {        
-        return topic.id;
-      });
-    }));
-
-    neighborTopicIds = _.without(neighborTopicIds, topic.id);
-
-    var topicCounts = _.countBy(neighborTopicIds, function(topicId) {
-      return topicId;
-    });
-
-    var neighborTopics = _.filter(_.pairs(topicCounts), function(topicIdCountPair) {
-      return minSharedTerm === undefined ? true : topicIdCountPair[1] >= minSharedTerm;
-    }).map(function(topicIdCountPair) {
-      var topic = topicIdMap[topicIdCountPair[0]];
-      topic.numSharedTerms = topicIdCountPair[1];
-      return topic;
-    });
-
-    return neighborTopics;
-  }
-
-  function getUniqueTerms(topics) {
-    return _.uniq(_.flatten(topics.map(function(t) {
-      var termTuples = t.terms;
-      return termTuples.map(function(tuple) {
-        return tuple.term;
-      })
-    })));
-  }
-
-  function getTermTopicCount(terms, topics) {
-    var termTopicMap = _.object(terms.map(function(t) {
-      return [t, {topics: [], topicCount: 0, weight: 0}];
-    }));
-    for (var i in topics) {
-      var topic = topics[i];
-      var termTuples = topic.terms;
-      for (var j in termTuples) {
-        var term = termTuples[j].term;
-        var prob = termTuples[j].prob;
-        if (prob < minTermTopicProb) {
-          minTermTopicProb = prob;
-        }
-        var entry = termTopicMap[term];
-        entry.topics.push({
-          id: topic.id,
-          prob: prob
-        });
-        entry.topicCount += 1;
-        entry.weight += prob;
-      }
-    }
-    return termTopicMap;
-  }
-
-}
-angular.module('mainModule').run(['$templateCache', function($templateCache) {
-    $templateCache.put('core/v1/landing.v1.html',
-        "<div class=\"center row\" id=\"v1\">\n  <!-- List of saved arguments -->\n  <div class=\"main col-md-10\">\n    <div class=\"panel\" id=\"texts-col\">\n      <div class=\"header\">\n        <span>Arguments</span>\n      </div>\n      <div class=\"body row\">\n        <div class=\"index col-md-3\">\n          <div style=\"height:90%\"> \n            <table class=\"table\">\n              <tr ng-repeat=\"t in texts | filter:filterColumn('text')\" ng-class=\"{active: hover || t.id == selectedEntry['text'].id, success: showCitingTexts && cites(t, selectedEntry['evidence'])}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\">\n                <td ng-click=\"selectEntry(t, 'text')\">\n                  <p>{{t.title}}</p>\n                  <svg class=\"topic-info\" id=\"topic-info-{{t.id}}\" width=\"150\" height=\"25\"></svg>\n                  <div ng-if=\"selectedEntry['text']===t\" style=\"margin-left:80%\">\n                    <div class=\"btn-group btn-group-xs\" role=\"group\">\n                      <button class=\"btn btn-danger\" ng-disabled=\"selectedEntry['text']===null\" ng-click=\"deleteEntry('text')\">Delete</button>\n                    </div>  \n                  </div>\n                </td>\n              </tr>\n            </table>\n          </div>\n          <div class=\"btn-group btn-group-xs\" role=\"group\">\n            <button class=\"btn btn-default\" ng-click=\"addTextEntry()\"><img style=\"width:20px; height:20px\"src=\"/static/img/plus-icon.png\">Add new argument</button>\n          </div>\n        </div>\n        <!-- Text area for current argument -->\n        <div class=\"content col-md-5\">\n          <textarea class=\"form-control\" id=\"textContent\" ng-model=\"activeText\" ng-keypress=\"startMakingChanges()\">\n          </textarea>\n          <div class=\"btn-group btn-group-xs\" role=\"group\">\n            <button class=\"btn btn-primary\" ng-disabled=\"!hasUnsavedChanges\" ng-click=\"saveTextEntry()\">Save</button>\n            <button class=\"btn btn-default\" ng-disabled=\"selectedEntry['text']===null\" ng-click=\"extractTerms()\">Extract terms</button>\n            <button class=\"btn btn-default\" ng-disabled=\"selectedEntry['text']===null\" ng-click=\"recommendCitations()\">Recommend citations</button>\n          </div>\n        </div>\n        <!-- Display of extracted keywords -->\n        <div class=\"side col-md-4\">\n          <div style=\"height:90%;padding:20px\">\n            <div class=\"col-md-6 padding-sm\" ng-repeat=\"t in terms | filter:filterTerms()\">\n              <button class=\"btn btn-default btn\" ng-class=\"{'btn-primary': termSelected(t)}\" ng-click=\"selectTerm(t)\">{{t.term}}</td>\n            </div>\n          </div>\n          <div class=\"btn-group btn-group-xs\" role=\"group\">\n            <button class=\"btn btn-default\" ng-click=\"addTerm()\"><img style=\"width:20px; height:20px\"src=\"/static/img/plus-icon.png\">  Add highlighted texts as new term</button>\n            <button class=\"btn btn-default\" ng-disabled=\"selectedTerms.length===0\" ng-click=\"searchEvidenceForTerms()\">Search evidence</button>\n          </div>\n        </div>   \n      </div>\n    </div>\n    <!-- List of evidence -->\n    <div class=\"panel\" id=\"evidence-col\">\n      <div class=\"loading\" ng-if=\"loadingEvidence\">\n        <div class=\"loader-container\">\n          <div class=\"loader\"></div>\n          <div class=\"loading-text\"><p>{{loadingStatement}}</p></div>\n        </div>\n      </div>\n      <div class=\"header\">\n        <span>Evidence</span>\n      </div>\n      <div class=\"body row\">\n        <div class=\"col-md-3\" id=\"topics\">\n          <div ng-repeat=\"t in topics\" class=\"topic-container\" ng-class=\"{selected: $index == selectedTopic}\" ng-click=\"selectTopic($index)\" ng-attr-id=\"topic-container-{{$index+1}}\">\n            <p style=\"margin:0\"><span ng-repeat=\"w in t\">{{w}}  </span></p>\n            <p style=\"margin-left:90%\"><img  src=\"/static/img/text-icon.svg\" style=\"width:15px; height:15px\"></img><span> {{countEvidenceWithTopic($index)}}</span></p>\n          </div>\n        </div>\n        <div class=\"col-md-5\" id=\"documents\">\n          <div>\n            <div class=\"animate-repeat document-entry\" ng-repeat=\"e in evidence | filter:filterEvidence() | orderBy:evidenceOrder\" ng-class=\"{active: hover || e.id == selectedEntry['evidence'].id, associated: isAssociated(e, selectedEntry['text'])}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\">\n               <div ng-click=\"selectEntry(e, 'evidence')\" style=\"width:90%;display:inline-block;float:left\">\n                 <p><input type=\"checkbox\" ng-model=\"evidenceSelectionMap[e.id]\"><span> {{e.title}}</span></p>\n                 <p>\n                   <span><i>Search term occurrence:</i></span>\n                   <span ng-repeat=\"t in selectedTerms\"><b>{{t.term}}</b>: {{countSearchTermOccurrence(t.term, e.abstract)}}  </span>\n                 </p>\n               </div>\n               <div style=\"width:10%;display:inline-block\">\n                 <div ng-if=\"evidenceSourceMap[e.id] === 1\">\n                   <img  src=\"/static/img/link-icon.svg\" style=\"width:15px; height:15px\"></img>\n                   <span>{{countTextsReferencingEvidence(e)}}</span>\n                 </div>\n                 <div ng-if=\"evidenceSourceMap[e.id] === 0\"><span class=\"label label-default\">Search result</span></div> \n               </div>\n               <div style=\"clear:both\"></div>\n            </div>\n          </div>\n        </div>\n        <div class=\"col-md-4\" id=\"details\">\n          <div ng-if=\"selectedEntry['evidence']!==null\">\n            <div class=\"row\" style=\"margin:10px\">\n              <button class=\"btn btn-default btn-xs col-md-12\" ng-class=\"{'btn-success': showCitingTexts}\" ng-disabled=\"associationInactive('evidence')\" ng-click=\"toggleShowCitingTexts()\">Who cited me?</button>\n            </div>\n            <p><b>Authors</b>: {{selectedEntry['evidence'].metadata.AUTHOR}}</p>\n            <p><b>Affiliation</b>: {{selectedEntry['evidence'].metadata.AFFILIATION}}</p>\n            <p><b>Publication date</b>: {{selectedEntry['evidence'].metadata.DATE}}</p>\n            <p><b>Abstract</b>:</p>\n            <span ng-repeat=\"w in selectedWords track by $index\" ng-class=\"{'is-search-term': isSearchTerm(w), 'is-topic-term': isTopicTerm(w)}\">{{w}} </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"footer\">\n        <div class=\"btn-group btn-group-sm\" role=\"group\">\n          <button class=\"btn btn-default\" ng-click=\"addEvidenceEntry()\">Add</button>\n          <button class=\"btn btn-default\">Edit</button>\n          <button class=\"btn btn-primary\" ng-disabled=\"selectedEntry['evidence']===null||selectedEntry['text']===null\" ng-click=\"updateEvidenceAssociation()\" title=\"Mark this publication as relevant to the selected article\">{{evidenceTextAssociated ? 'Mark as irrelevant' : 'Mark as relevant'}}</button>\n          <button class=\"btn btn-danger\" ng-disabled=\"selectedEntry['evidence']===null\" ng-click=\"deleteEntry('evidence')\">Delete</button>\n        </div>\n      </div>\n    </div>\n  </div>\n  <div class=\"sidebar col-md-2\">\n    <div class=\"panel\">\n      <div class=\"header\">\n        <span>Control panel</span>\n      </div>\n      <div class=\"body\">\n        <div style=\"margin:10px 0 10px 0\">\n          <h5>Import references</h5>\n          <div>\n            <div style=\"margin:10px\"><input type=\"file\"id=\"bibtex-input\"></div>\n            <div style=\"margin:10px\"><button class=\"btn btn-primary btn-xs\" ng-click=\"processBibtexFile()\">Upload</button></div>\n          </div>\n        </div>\n        <div style=\"margin:10px 0 10px 0\">\n          <h5>Export</h5>\n          <div class=\"row\" style=\"margin:0 10px 0 10px\">\n            <button class=\"btn btn-default btn-xs col-md-5\">Documents</button>\n            <span class=\"col-md-1\"></span>\n            <button class=\"btn btn-default btn-xs col-md-5\">References</button>\n            <span class=\"col-md-1\"></span>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>");
-}]);
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('core/partials/english.html',
         "<p class=\"padding-lg\">\n    <em>\"In the end, it's not going to matter how many breaths you took, but how many moments took your breath away.\"</em>\n</p>");
@@ -4564,6 +4559,10 @@ angular.module('mainModule').run(['$templateCache', function($templateCache) {
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('core/partials/view-picker.ver2.html',
         "<div class=\"text-center\">\n<!--    <h2>{{ 'label_which_language_do_you_prefer' | translate }}</h2> -->\n    <button class=\"btn btn-lg btn-default\" ui-sref-active=\"btn-success\" ui-sref=\"index.ver2.explore\">Explore</button>\n    <button class=\"btn btn-lg btn-default\" ui-sref-active=\"btn-success\" ui-sref=\"index.ver2.focus\">Focus</button>\n</div>");
+}]);
+angular.module('mainModule').run(['$templateCache', function($templateCache) {
+    $templateCache.put('core/v1/landing.v1.html',
+        "<div class=\"center row\" id=\"v1\">\n  <!-- List of saved arguments -->\n  <div class=\"main col-md-10\">\n    <div class=\"panel\" id=\"texts-col\">\n      <div class=\"header\">\n        <span>Arguments</span>\n      </div>\n      <div class=\"body row\">\n        <div class=\"index col-md-3\">\n          <div style=\"height:90%\"> \n            <table class=\"table\">\n              <tr ng-repeat=\"t in texts | filter:filterColumn('text')\" ng-class=\"{active: hover || t.id == selectedEntry['text'].id, success: showCitingTexts && cites(t, selectedEntry['evidence'])}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\">\n                <td ng-click=\"selectEntry(t, 'text')\">\n                  <p>{{t.title}}</p>\n                  <svg class=\"topic-info\" id=\"topic-info-{{t.id}}\" width=\"150\" height=\"25\"></svg>\n                  <div ng-if=\"selectedEntry['text']===t\" style=\"margin-left:80%\">\n                    <div class=\"btn-group btn-group-xs\" role=\"group\">\n                      <button class=\"btn btn-danger\" ng-disabled=\"selectedEntry['text']===null\" ng-click=\"deleteEntry('text')\">Delete</button>\n                    </div>  \n                  </div>\n                </td>\n              </tr>\n            </table>\n          </div>\n          <div class=\"btn-group btn-group-xs\" role=\"group\">\n            <button class=\"btn btn-default\" ng-click=\"addTextEntry()\"><img style=\"width:20px; height:20px\"src=\"/static/img/plus-icon.png\">Add new argument</button>\n          </div>\n        </div>\n        <!-- Text area for current argument -->\n        <div class=\"content col-md-5\">\n          <textarea class=\"form-control\" id=\"textContent\" ng-model=\"activeText\" ng-keypress=\"startMakingChanges()\">\n          </textarea>\n          <div class=\"btn-group btn-group-xs\" role=\"group\">\n            <button class=\"btn btn-primary\" ng-disabled=\"!hasUnsavedChanges\" ng-click=\"saveTextEntry()\">Save</button>\n            <button class=\"btn btn-default\" ng-disabled=\"selectedEntry['text']===null\" ng-click=\"extractTerms()\">Extract terms</button>\n            <button class=\"btn btn-default\" ng-disabled=\"selectedEntry['text']===null\" ng-click=\"recommendCitations()\">Recommend citations</button>\n          </div>\n        </div>\n        <!-- Display of extracted keywords -->\n        <div class=\"side col-md-4\">\n          <div style=\"height:90%;padding:20px\">\n            <div class=\"col-md-6 padding-sm\" ng-repeat=\"t in terms | filter:filterTerms()\">\n              <button class=\"btn btn-default btn\" ng-class=\"{'btn-primary': termSelected(t)}\" ng-click=\"selectTerm(t)\">{{t.term}}</td>\n            </div>\n          </div>\n          <div class=\"btn-group btn-group-xs\" role=\"group\">\n            <button class=\"btn btn-default\" ng-click=\"addTerm()\"><img style=\"width:20px; height:20px\"src=\"/static/img/plus-icon.png\">  Add highlighted texts as new term</button>\n            <button class=\"btn btn-default\" ng-disabled=\"selectedTerms.length===0\" ng-click=\"searchEvidenceForTerms()\">Search evidence</button>\n          </div>\n        </div>   \n      </div>\n    </div>\n    <!-- List of evidence -->\n    <div class=\"panel\" id=\"evidence-col\">\n      <div class=\"loading\" ng-if=\"loadingEvidence\">\n        <div class=\"loader-container\">\n          <div class=\"loader\"></div>\n          <div class=\"loading-text\"><p>{{loadingStatement}}</p></div>\n        </div>\n      </div>\n      <div class=\"header\">\n        <span>Evidence</span>\n      </div>\n      <div class=\"body row\">\n        <div class=\"col-md-3\" id=\"topics\">\n          <div ng-repeat=\"t in topics\" class=\"topic-container\" ng-class=\"{selected: $index == selectedTopic}\" ng-click=\"selectTopic($index)\" ng-attr-id=\"topic-container-{{$index+1}}\">\n            <p style=\"margin:0\"><span ng-repeat=\"w in t\">{{w}}  </span></p>\n            <p style=\"margin-left:90%\"><img  src=\"/static/img/text-icon.svg\" style=\"width:15px; height:15px\"></img><span> {{countEvidenceWithTopic($index)}}</span></p>\n          </div>\n        </div>\n        <div class=\"col-md-5\" id=\"documents\">\n          <div>\n            <div class=\"animate-repeat document-entry\" ng-repeat=\"e in evidence | filter:filterEvidence() | orderBy:evidenceOrder\" ng-class=\"{active: hover || e.id == selectedEntry['evidence'].id, associated: isAssociated(e, selectedEntry['text'])}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\">\n               <div ng-click=\"selectEntry(e, 'evidence')\" style=\"width:90%;display:inline-block;float:left\">\n                 <p><input type=\"checkbox\" ng-model=\"evidenceSelectionMap[e.id]\"><span> {{e.title}}</span></p>\n                 <p>\n                   <span><i>Search term occurrence:</i></span>\n                   <span ng-repeat=\"t in selectedTerms\"><b>{{t.term}}</b>: {{countSearchTermOccurrence(t.term, e.abstract)}}  </span>\n                 </p>\n               </div>\n               <div style=\"width:10%;display:inline-block\">\n                 <div ng-if=\"evidenceSourceMap[e.id] === 1\">\n                   <img  src=\"/static/img/link-icon.svg\" style=\"width:15px; height:15px\"></img>\n                   <span>{{countTextsReferencingEvidence(e)}}</span>\n                 </div>\n                 <div ng-if=\"evidenceSourceMap[e.id] === 0\"><span class=\"label label-default\">Search result</span></div> \n               </div>\n               <div style=\"clear:both\"></div>\n            </div>\n          </div>\n        </div>\n        <div class=\"col-md-4\" id=\"details\">\n          <div ng-if=\"selectedEntry['evidence']!==null\">\n            <div class=\"row\" style=\"margin:10px\">\n              <button class=\"btn btn-default btn-xs col-md-12\" ng-class=\"{'btn-success': showCitingTexts}\" ng-disabled=\"associationInactive('evidence')\" ng-click=\"toggleShowCitingTexts()\">Who cited me?</button>\n            </div>\n            <p><b>Authors</b>: {{selectedEntry['evidence'].metadata.AUTHOR}}</p>\n            <p><b>Affiliation</b>: {{selectedEntry['evidence'].metadata.AFFILIATION}}</p>\n            <p><b>Publication date</b>: {{selectedEntry['evidence'].metadata.DATE}}</p>\n            <p><b>Abstract</b>:</p>\n            <span ng-repeat=\"w in selectedWords track by $index\" ng-class=\"{'is-search-term': isSearchTerm(w), 'is-topic-term': isTopicTerm(w)}\">{{w}} </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"footer\">\n        <div class=\"btn-group btn-group-sm\" role=\"group\">\n          <button class=\"btn btn-default\" ng-click=\"addEvidenceEntry()\">Add</button>\n          <button class=\"btn btn-default\">Edit</button>\n          <button class=\"btn btn-primary\" ng-disabled=\"selectedEntry['evidence']===null||selectedEntry['text']===null\" ng-click=\"updateEvidenceAssociation()\" title=\"Mark this publication as relevant to the selected article\">{{evidenceTextAssociated ? 'Mark as irrelevant' : 'Mark as relevant'}}</button>\n          <button class=\"btn btn-danger\" ng-disabled=\"selectedEntry['evidence']===null\" ng-click=\"deleteEntry('evidence')\">Delete</button>\n        </div>\n      </div>\n    </div>\n  </div>\n  <div class=\"sidebar col-md-2\">\n    <div class=\"panel\">\n      <div class=\"header\">\n        <span>Control panel</span>\n      </div>\n      <div class=\"body\">\n        <div style=\"margin:10px 0 10px 0\">\n          <h5>Import references</h5>\n          <div>\n            <div style=\"margin:10px\"><input type=\"file\"id=\"bibtex-input\"></div>\n            <div style=\"margin:10px\"><button class=\"btn btn-primary btn-xs\" ng-click=\"processBibtexFile()\">Upload</button></div>\n          </div>\n        </div>\n        <div style=\"margin:10px 0 10px 0\">\n          <h5>Export</h5>\n          <div class=\"row\" style=\"margin:0 10px 0 10px\">\n            <button class=\"btn btn-default btn-xs col-md-5\">Documents</button>\n            <span class=\"col-md-1\"></span>\n            <button class=\"btn btn-default btn-xs col-md-5\">References</button>\n            <span class=\"col-md-1\"></span>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>");
 }]);
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('core/v2/explore.v2.html',

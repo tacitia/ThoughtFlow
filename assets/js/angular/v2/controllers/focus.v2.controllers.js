@@ -26,23 +26,23 @@ angular.module('focus.v2.controllers')
 
     var blob = null;
 
-    // TODO: get the list from server
-    $scope.collections = [
-      { id: 10, name: 'visualization'},
-      { id: 11, name: 'pfc and executive functions'},
-      { id: 12, name: 'virtual reality'},
-      { id: 13, name: 'TVCG'},
-      { id: 15, name: 'diffusion tensor imaging'},
-    ];
-
     var userId = parseInt($stateParams.userId);
     var collectionId = parseInt($stateParams.collectionId);
 
-    $scope.userId = userId;
-    $scope.collectionId = collectionId;
-    $scope.collectionName = _.find($scope.collections, function(c) {
-      return c.id === collectionId;
-    }).name;    
+    Core.getCollectionList(function(response) {
+      $scope.collections = response.data.map(function(d) {
+        return {
+          id: parseInt(d.collection_id),
+          name: d.collection_name
+        };
+      });
+
+      $scope.userId = userId;
+      $scope.collectionId = collectionId;
+      $scope.collectionName = _.find($scope.collections, function(c) {
+        return c.id === collectionId;
+      }).name;
+    });
 
     $scope.evidence = null;
     var textEvidenceAssociations = null;

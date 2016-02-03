@@ -26,7 +26,6 @@ angular.module('explore.v2.controllers')
       $scope.collectionName = _.find($scope.collections, function(c) {
         return c.id === collectionId;
       }).name;
-
     });
 /*    
     $scope.collections = [
