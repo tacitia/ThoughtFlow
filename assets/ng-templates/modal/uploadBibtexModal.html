@@ -2,11 +2,33 @@
     <h3>Upload Bibtex File</h3>
 </div>
 <div class="modal-body">
-  <div ng-switch on="uploadStatus">
+  <div ng-switch on="uploadStatus" ng-if="collectionPostProcess === 'notStarted'">
     <div ng-switch-when="beforeUpload" class="container" style="width:100%;margin:10px;">
-      <div class="alert alert-info">
-        <p>After you upload a bibtex file, entries contained in the file will appear in the "Bookmarked" column, as well as becoming available during recommendation and in the Explore view.</p>
-        <p>If you are interested in working with a document collection that also contains publications <b>related to</b> (have citation relationships, share similar keywords etc.) entries in the bibtex file, please email hua_guo@brown.edu.</p>
+      <div>
+        <p>Choose what to do with the uploaded bibtex entries</p>
+        <label>
+          <input type="radio" ng-model="userChoices.seedNewCollection" ng-value="false">
+          Bookmark the uploaded bibtex entries
+        </label><br/>
+        <label>
+          <input type="radio" ng-model="userChoices.seedNewCollection" ng-value="true">
+          Create a new collection from the uploaded bibtex entries
+        </label><br/>
+      </div>
+      <div ng-if="!userChoices.seedNewCollection" class="alert alert-info">
+        <p>Entries contained in the file will appear in the "Bookmarked" column, as well as becoming available during recommendation and in the Explore view.</p>
+      </div>
+      <div ng-if="userChoices.seedNewCollection">
+        <div class="alert alert-info">
+          <p>A document collection will be created which contain not only entries from the bibtex file but also related publications (e.g. those that have cited or share similar keywords with the uploaded entries). </p>
+        </div>
+        <div class="alert alert-danger">
+          <p>This feature is experimental and will take much longer time than the first option. For now please email hua_guo@brown.edu. to obtain more information before proceeding with this option.</p>
+        </div>
+        <label>
+          Collection Name:
+          <input type="text" name="collectionName" ng-model="newCollection.name" required>
+        </label>
       </div>
       <div class="row">
         <div class="col-md-8" style="padding-top:4px;"><input type="file"id="bibtex-input"></div>
@@ -36,7 +58,7 @@
     <div ng-switch-when="uploaded-success">
       <div class="alert alert-success">
         <p>All {{totalToUpload}} entries processed.</p>
-        <div>
+        <div ng-if="!seedNewCollection">
           <p>{{totalMatchesFound}} entries already exist in the collection and have been bookmarked.</p>
           <p>{{totalPersonalEntries}} entries are not found in the collection and have been added as personal references.</p>
         </div>
@@ -47,6 +69,23 @@
       <div class="alert alert-danger">
         <p>Encountered more than 10 upload failure. Upload aborted. Please notify admin at hua_guo@brown.edu about the issue if it persists.</p>
       </div>
+    </div>
+  </div>
+  <div ng-switch on="collectionPostProcess" class='alert alert-info' ng-if="collectionPostProcess !== 'notStarted'">
+    <div ng-switch-when="augmentation">
+      <p>Retrieving and storing related publications from PubMed...</p>
+    </div>
+    <div ng-switch-when="createModel">
+      <p>Creating Latent Dirichlet Model...</p>
+    </div>
+    <div ng-switch-when="loadModel">
+      <p>Saving evidence topic assignments...</p>
+    </div>
+    <div ng-switch-when="cacheTopics">
+      <p>Caching topic distributions...</p>
+    </div>
+    <div ng-switch-when="done">
+      <p>Document collection {{newCollection.name}} created! You'll now be able to select the collection from the landing page.</p>
     </div>
   </div>
 </div>

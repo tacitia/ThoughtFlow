@@ -25,7 +25,7 @@
             </ui-select-match>
             <ui-select-choices repeat="t in (collections | filter: $select.search) track by t.id">
                 <span style="font-size:15px" ng-bind="t.name"></span></br>
-                <b style="font-size:12px"># of publications contained: ~<span ng-bind="t.numPubs"></span></b></br>
+                <b style="font-size:12px"># of publications contained: <span ng-bind="t.numPubs"></span></b></br>
                 <i style="font-size:12px">Source: <span ng-bind="t.description"></span></i>
             </ui-select-choices>
         </ui-select>

@@ -11,12 +11,12 @@ import XploreParser
 from itertools import chain
 from nltk.metrics import edit_distance
 
-from core.models import Association, Concept, Evidence, Text, EvidenceBookmark, EvidenceTopic, Topic
+from core.models import Association, Concept, Evidence, Text, EvidenceBookmark, EvidenceTopic, Topic, Collection
 from logger.models import Action
 
 from django.conf import settings
 from django.core import serializers
-from django.db.models import Q
+from django.db.models import Q, Max
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 
@@ -308,6 +308,36 @@ def getNewUserId(request):
             newId = int(math.ceil(random.uniform(10001, 99998)))
         return HttpResponse(json.dumps({'userId': newId}), status=status.HTTP_201_CREATED)
 
+def insertDefaultCollections(request):
+    if request.method == 'GET':
+        descriptions = {}
+        descriptions[11] = 'PubMed search queries "cognitive control", "executive functions", and "prefrontal cortex"';
+        descriptions[12] = 'PubMed search query "virtual reality"';
+        descriptions[13] = 'PubMed entries related to entries from a bibtex file compiled by a diffusion tensor imaging researcher';
+        for id in names:
+            description = ''
+            if id in descriptions:
+                description = descriptions[id]
+            Collection.objects.get_or_create(collection_id=id, collection_name=names[id], description=description)
+        return HttpResponse({}, status=status.HTTP_200_OK)
+
+def initializeNewCollection(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        max_id = Collection.objects.all().aggregate(Max('collection_id'))['collection_id__max']
+        Collection.objects.create(collection_id=max_id+1, collection_name=data['name'])
+        return HttpResponse(json.dumps({'id': str(max_id+1)}), status=status.HTTP_200_OK)
+
+def getCollectionList(request):
+    if request.method == 'GET':
+        collections = Collection.objects.all()
+        for c in collections:
+            c.num_pubs = Evidence.objects.filter(created_by=c.collection_id).count()
+            c.save()
+        serialized_json = serializers.serialize('json', collections)
+        collection_json = flattenSerializedJson(serialized_json)
+        return HttpResponse(collection_json, status=status.HTTP_200_OK)
+
 def retrieveEvidenceTextTopics(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -375,7 +405,7 @@ def getEvidenceRecommendation(request):
 #        data = {}
 #        data['text'] = 'Using brain imaging in humans, we showed that the lateral PFC is organized as a cascade of executive processes from premotor to anterior PFC regions that control behavior according to stimuli, the present perceptual context, and the temporal episode in which stimuli occur, respectively.'
         collection_id = int(data['collectionId'])
-        name = names[collection_id]
+        name = Collection.objects.get(collection_id=collection_id).collection_name
 
         topic_dist, primary_topic_terms = TopicModeler.get_document_topics(data['text'], name)
         if len(topic_dist) > 0:
@@ -438,7 +468,7 @@ def getEvidenceByTopic(request):
         output['evidencePersonal'] = []
         for e in evidencePersonal:
             if len(e['abstract']) > 50:
-                name = names[collection_id]
+                name = Collection.objects.get(collection_id=collection_id).collection_name
                 topic_dist, primary_topic_terms = TopicModeler.get_document_topics(e['abstract'], name)
                 primary_topic_tuple = max(topic_dist, key=lambda x:x[1])
                 this_topic = primary_topic_tuple[0]
@@ -477,7 +507,7 @@ def searchEvidenceByTitle(request):
                 e['topic'] = EvidenceTopic.objects.get(evidence=e['id']).primary_topic
             except ObjectDoesNotExist:
                 if len(e['abstract']) > 50:
-                    name = names[collection_id]
+                    name = Collection.objects.get(collection_id=collection_id).collection_name
                     topic_dist, primary_topic_terms = TopicModeler.get_document_topics(e['abstract'], name)
                     primary_topic_tuple = max(topic_dist, key=lambda x:x[1])
                     e['topic'] = primary_topic_tuple[0]
@@ -503,8 +533,8 @@ def cacheTopics(request, collection_id):
         evidence_count = Evidence.objects.filter(created_by=collection_id).count()
 
         Topic.objects.filter(collection_id=collection_id).delete()
-
-        topicList = TopicModeler.get_online_lda_topics(names[int(collection_id)], evidence_count / 10)
+        collection_name = Collection.objects.get(collection_id=int(collection_id)).collection_name
+        topicList = TopicModeler.get_online_lda_topics(collection_name, evidence_count / 10)
 
         for i in range(len(topicList)):
             topic_id = topicList[i][0]
@@ -596,7 +626,7 @@ def loadOnlineLDA(request, collection_id):
         loaded_evidence = json.loads(evidence_json)
         abstracts = [e['abstract'] for e in loaded_evidence]
         evidencePks = [e['id'] for e in loaded_evidence]
-        name = names[collection_id]
+        name = Collection.objects.get(collection_id=collection_id).collection_name
         print '>> loading lda model...'
         evidenceTopicMap, topicList = TopicModeler.load_online_lda(abstracts, evidencePks, name)
         print '>> saving topics for evidence...'
@@ -613,7 +643,7 @@ def createOnlineLDA(request, collection_id):
         loaded_evidence = json.loads(evidence_json)
         abstracts = [e['abstract'] for e in loaded_evidence]
         evidencePks = [e['id'] for e in loaded_evidence]
-        name = names[collection_id]
+        name = Collection.objects.get(collection_id=collection_id).collection_name
         numDocs = len(loaded_evidence)
         evidenceTopicMap, topics = TopicModeler.create_online_lda(abstracts, evidencePks, name, math.ceil(numDocs / 10))
 #        saveTopicsForEvidence(evidenceTopicMap, collection_id)

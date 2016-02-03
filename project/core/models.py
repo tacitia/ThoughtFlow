@@ -130,4 +130,8 @@ class Topic(models.Model):
   terms = models.TextField()
   document_count = models.IntegerField()
 
-
+class Collection(models.Model):
+  collection_id = models.IntegerField()
+  collection_name = models.CharField(max_length=128)
+  description = models.TextField(default='')
+  num_pubs = models.IntegerField(default=0)

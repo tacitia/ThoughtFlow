@@ -6,7 +6,7 @@ from core.views import loadBatchResults, createOnlineLDA, loadOnlineLDA, createS
 from core.views import getEvidenceRecommendation, getEvidenceByTopic, searchEvidenceByTitle
 from core.views import getEvidenceCollection
 from core.views import loadXploreData, augmentCollection
-from core.views import getNewUserId
+from core.views import getNewUserId, initializeNewCollection, getCollectionList, insertDefaultCollections
 
 import views
 
@@ -38,6 +38,9 @@ urlpatterns = [
     url(r'^api/v1/service/getEvidenceByTopic/$', getEvidenceByTopic, name='getEvidenceByTopic'),
     url(r'^api/v1/service/searchEvidenceByTitle/$', searchEvidenceByTitle, name='searchEvidenceByTitle'),
     url(r'^api/v1/service/getNewUserId/$', getNewUserId, name='getNewUserId'),
+    url(r'^api/v1/service/initializeNewCollection/$', initializeNewCollection, name='initializeNewCollection'),
+    url(r'^api/v1/service/getCollectionList/$', getCollectionList, name='getCollectionList'),
+    url(r'^api/v1/service/insertDefaultCollections/$', insertDefaultCollections, name='insertDefaultCollections'),
 
     # For batch data retrieval
     url(r'^api/v1/data/user-data/(?P<user_id>\d+)/$', UserDataView.as_view(), name='get_data_for_user'),

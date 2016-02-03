@@ -1,7 +1,7 @@
 // TODO: add collectionId here
 angular.module('modal.controllers')
-  .controller('UploadBibtexModalController', ['$scope', '$modalInstance', 'userId', 'collectionId', 'existingEvidence', 'Core', 'Bibtex',
-    function($scope, $modalInstance, userId, collectionId, existingEvidence, Core, Bibtex) {
+  .controller('UploadBibtexModalController', ['$scope', '$modalInstance', 'userId', 'collectionId', 'existingEvidence', 'Core', 'Bibtex', '$http',
+    function($scope, $modalInstance, userId, collectionId, existingEvidence, Core, Bibtex, $http) {
 
     var storedEvidence = [];
     $scope.evidenceIndex = 0;
@@ -9,13 +9,20 @@ angular.module('modal.controllers')
     $scope.totalAbstractFound = 0;
     $scope.totalMatchesFound = 0;
     $scope.totalPersonalEntries = 0;
+
+    $scope.collectionPostProcess = 'notStarted';
     
     $scope.uploadStatus = 'beforeUpload';
     $scope.numErrors = 0;
 
-    $scope.seedNewCollecdtion = false;
+    $scope.userChoices = {
+      seedNewCollection: false
+    };
 
-    var newCollectionId = 16;
+    $scope.newCollection = {
+      id: -1,
+      name: 'untitled collection'
+    };
 
     $scope.processBibtexFile = function() {
 
@@ -25,29 +32,68 @@ angular.module('modal.controllers')
       reader.onload = function(file) {
         var fileContent = file.currentTarget.result;
         var evidenceList = Bibtex.parseBibtexFile(fileContent);   
-
         evidenceList = _.uniq(evidenceList);
-
         $scope.totalToUpload = evidenceList.length;
         
-        var uploadFunction = setInterval(function() {
-          if ($scope.evidenceIndex >= $scope.totalToUpload) {
-            $scope.$apply(function() {
-              $scope.uploadStatus = 'uploaded-success';
-            });
-            clearInterval(uploadFunction);
-            return;
-          }
-          var evidence = evidenceList[$scope.evidenceIndex];
-          $scope.esmitatedTimeRemaining = (evidenceList.length - $scope.evidenceIndex) * 3;
-          $scope.currentEvidence = evidence.title;
-
-          integrateNewEvidenceIntoCollection(evidence, collectionId);
-          $scope.evidenceIndex += 1;
-        }, 3000);
+        if ($scope.userChoices.seedNewCollection) {
+          Core.initializeNewCollection($scope.newCollection.name, function(response) {
+            $scope.newCollection.id = response.data.id;
+//            $scope.newCollection.id = 16;
+            configUploadFunction(evidenceList);             
+          })
+        }
+        else {
+          configUploadFunction(evidenceList);          
+        }
       };
       reader.readAsText(selectedFile);
     };
+
+    function configUploadFunction(evidenceList) {
+      var uploadFunction = setInterval(function() {
+        if ($scope.evidenceIndex >= $scope.totalToUpload) {
+          $scope.$apply(function() {
+            $scope.uploadStatus = 'uploaded-success';
+          });
+          clearInterval(uploadFunction);
+          if ($scope.userChoices.seedNewCollection) {
+            $scope.collectionPostProcess = 'augmentation';
+            $http.get('api/v1/ad-hoc/augmentCollection/' + $scope.newCollection.id + '/')
+              .then(function() {
+                $scope.collectionPostProcess = 'createModel';
+                $http.get('api/v1/ad-hoc/createOnlineLDA/' + $scope.newCollection.id + '/')
+                  .then(function() {
+                    $scope.collectionPostProcess = 'loadModel';
+                    $http.get('api/v1/ad-hoc/loadOnlineLDA/' + $scope.newCollection.id + '/')
+                      .then(function() {
+                        $scope.collectionPostProcess = 'cacheTopics';
+                        $http.get('api/v1/ad-hoc/cacheTopics/' + $scope.newCollection.id + '/')
+                          .then(function() {
+                            $scope.collectionPostProcess = 'done';
+                          });
+                      })
+                  }, function() {
+
+                  })
+              }, function(errorResponse) {
+                console.log('error occurred when calling augmentCollection')
+              });
+          }
+          return;
+        }
+        var evidence = evidenceList[$scope.evidenceIndex];
+        $scope.esmitatedTimeRemaining = (evidenceList.length - $scope.evidenceIndex) * 3;
+        $scope.currentEvidence = evidence.title;
+
+        if ($scope.userChoices.seedNewCollection) {
+          seedNewEvidenceCollection(evidence, parseInt($scope.newCollection.id));              
+        }
+        else {
+          integrateNewEvidenceIntoCollection(evidence, collectionId);
+        }
+        $scope.evidenceIndex += 1;
+      }, 3000);      
+    }
 
     // If the user chooses to integrate the bibtex file into a selected collection, we
     // 1. For entries that are already in the collection, we find the existing evidence, 
@@ -115,37 +161,30 @@ angular.module('modal.controllers')
       }            
     }
 
-    function createNewCollectionFromNewEvidence(collectionId) {
-/*
-          Core.postEvidenceByUserId(collectionId, evidence.title, evidence.abstract, JSON.stringify(evidence.metadata), 
-            function(response) {
-              Core.addBookmark(userId, response.data[0].id, function(response) {
+    function seedNewEvidenceCollection(evidence, collectionId) {
+      Core.postEvidenceByUserId(collectionId, evidence.title, evidence.abstract, JSON.stringify(evidence.metadata), 
+        function(response) {
+          Core.addBookmark(userId, response.data[0].id, function(response) {
 
-              }, function(errorResponse) {
-                console.log('warning: error occurred when bookmarking evidence.');
-              });
-              if (existingEvidence.indexOf(response.data[0]) > -1) {
-                $scope.lastUploadResult = 'duplicate';
-                $scope.lastUploadedEvidence = $scope.currentEvidence;
-                return;
-              }
-              $scope.lastUploadResult = 'success';
-              $scope.lastUploadedEvidence = $scope.currentEvidence;
-              storedEvidence.push(response.data[0]);
-              if (evidence.abstract === '' && response.data[0].abstract !== '') {
-                $scope.totalAbstractFound += 1;
-              }
-            }, function(response) {
-              $scope.numErrors += 1;
-              $scope.lastUploadResult = 'failed';
-              $scope.lastUploadedEvidence = $scope.currentEvidence;
-              console.log('server error when saving new evidence');
-              console.log(response);
-              if ($scope.numErrors >= 10) {
-                $scope.evidenceIndex = $scope.totalToUpload;
-                $scope.uploadStatus = 'uploaded-failed';
-              }
-            }); */
+          }, function(errorResponse) {
+            console.log('warning: error occurred when bookmarking evidence.');
+          });
+          if (existingEvidence.indexOf(response.data[0].title) > -1) {
+            $scope.lastUploadResult = 'duplicate';
+            $scope.lastUploadedEvidence = $scope.currentEvidence;
+            return;
+          }
+          $scope.lastUploadResult = 'success';
+          $scope.lastUploadedEvidence = $scope.currentEvidence;
+          storedEvidence.push(response.data[0]);
+          if (evidence.abstract === '' && response.data[0].abstract !== '') {
+            $scope.totalAbstractFound += 1;
+          }
+        }, function(response) {
+          respondToError();
+          console.log('server error when saving new evidence');
+          console.log(response);
+        });
     }
 
     $scope.ok = function () {

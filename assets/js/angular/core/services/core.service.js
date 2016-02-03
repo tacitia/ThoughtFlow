@@ -25,7 +25,9 @@
       getEvidenceByTitle: getEvidenceByTitle,
       getEvidenceCollection: getEvidenceCollection,
       getEvidenceTextTopicsForUser: getEvidenceTextTopicsForUser,
-      getNewUserId: getNewUserId
+      getNewUserId: getNewUserId,
+      initializeNewCollection: initializeNewCollection,
+      getCollectionList: getCollectionList
     };
 
     return Core;
@@ -34,6 +36,18 @@
 
     function getNewUserId(successFn, errorFn) {
       return $http.get('api/v1/service/getNewUserId/')
+        .then(successFn, errorFn);
+    }
+
+    function initializeNewCollection(name, successFn, errorFn) {
+      return $http.post('api/v1/service/initializeNewCollection/', {
+          name: name
+        })
+        .then(successFn, errorFn);
+    }
+
+    function getCollectionList(successFn, errorFn) {
+      return $http.get('api/v1/service/getCollectionList/')
         .then(successFn, errorFn);
     }
 
