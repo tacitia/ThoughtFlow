@@ -16,7 +16,8 @@ angular.module('modal.controllers')
     $scope.numErrors = 0;
 
     $scope.userChoices = {
-      seedNewCollection: false
+      seedNewCollection: false,
+      whatCollection: 'new'
     };
 
     $scope.newCollection = {
@@ -36,11 +37,15 @@ angular.module('modal.controllers')
         $scope.totalToUpload = evidenceList.length;
         
         if ($scope.userChoices.seedNewCollection) {
-          Core.initializeNewCollection($scope.newCollection.name, function(response) {
-            $scope.newCollection.id = response.data.id;
-//            $scope.newCollection.id = 16;
-            configUploadFunction(evidenceList);             
-          })
+          if ($scope.userChoices.whatCollection === 'new') {
+            Core.initializeNewCollection($scope.newCollection.name, function(response) {
+              $scope.newCollection.id = response.data.id;
+              configUploadFunction(evidenceList);             
+            })
+          }
+          else {
+            configUploadFunction(evidenceList);
+          }
         }
         else {
           configUploadFunction(evidenceList);          
@@ -82,6 +87,7 @@ angular.module('modal.controllers')
           return;
         }
         var evidence = evidenceList[$scope.evidenceIndex];
+        evidence.title = evidence.title.replace('{', '').replace('}', '');
         $scope.esmitatedTimeRemaining = (evidenceList.length - $scope.evidenceIndex) * 3;
         $scope.currentEvidence = evidence.title;
 

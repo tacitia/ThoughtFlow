@@ -26,8 +26,14 @@
           <p>This feature is experimental and will take much longer time than the first option. For now please email hua_guo@brown.edu. to obtain more information before proceeding with this option.</p>
         </div>
         <label>
-          Collection Name:
-          <input type="text" name="collectionName" ng-model="newCollection.name" required>
+          <input type="radio" ng-model="userChoices.whatCollection" value="existing">
+          Use an existing collection with id:
+          <input type="text" name="collectionId" ng-model="newCollection.id">
+        </label>
+        <label>
+          <input type="radio" ng-model="userChoices.whatCollection" value="new">
+          Create a new collection with name:
+          <input type="text" name="collectionName" ng-model="newCollection.name">
         </label>
       </div>
       <div class="row">
