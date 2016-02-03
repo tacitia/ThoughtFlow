@@ -592,7 +592,10 @@ def augmentCollection(request, collection_id):
 #                continue
 #            if counter > 
             related_evidence = PubMedQuerier.get_related_evidence(e.title)
-            print 'found ' + str(len(related_evidence)) + ' related evidence for ' + e.title
+            try:
+                print 'found ' + str(len(related_evidence)) + ' related evidence for ' + e.title
+            except UnicodeEncodeError:
+                pass
             for re in related_evidence:
                 Evidence.objects.create_evidence(re.title, re.abstract, json.dumps({
                     'PMID': re.pmid,
