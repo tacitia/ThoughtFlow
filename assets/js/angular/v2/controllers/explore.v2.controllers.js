@@ -254,7 +254,7 @@ angular.module('explore.v2.controllers')
         height: 600,
         margin: { 
           left: 50,
-          top: 10,
+          top: 25,
           bottom: 20,
           right: 0
         },
@@ -273,12 +273,12 @@ angular.module('explore.v2.controllers')
       canvas.append('text')
         .text('# of docs')
         .attr('font-size', 14)
-        .attr('transform', 'translate(450, ' + 0 + ')');
+        .attr('transform', 'translate(450, ' + 10 + ')');
 
       canvas.append('text')
         .text('term distribution')
         .attr('font-size', 14)
-        .attr('transform', 'translate(725, ' + 0 + ')');
+        .attr('transform', 'translate(725, ' + 10 + ')');
 
       var terms = TermTopic.getTopTerms('weight', termBatchSize, $scope.termStartIndex);
       var topicAndConnections = TermTopic.getTopTopics(terms, topicBatchSize);
@@ -450,6 +450,7 @@ angular.module('explore.v2.controllers')
     function visualizeIndividualTopic(topic, width, y, numDocScale) {
 
       var termWidth = width - 10;
+      var highlightOpacity = 0.3;
 
       topic.append('rect')
         .attr('class', 'topic-background')
@@ -464,14 +465,16 @@ angular.module('explore.v2.controllers')
         .attr('opacity', 0)
         .on('mouseover', function(d) {
           d3.selectAll('.topic-background').attr('opacity', 0);
-          d3.select('#topic-bg-' + d.id).attr('opacity', 0.5); 
+          d3.select('#topic-bg-' + d.id)
+            .attr('opacity', highlightOpacity);          
           if ($scope.selectedTopic !== null) {
-            d3.select('#topic-bg-' + $scope.selectedTopic.id).attr('opacity', 0.5); 
+            d3.select('#topic-bg-' + $scope.selectedTopic.id).attr('opacity', highlightOpacity); 
           }
+
         })
         .on('mouseout', function() {
           d3.selectAll('.topic-background').attr('opacity', function(d) {
-            return ($scope.selectedTopic !== null && d.id === $scope.selectedTopic.id) ? 0.5 : 0;
+            return ($scope.selectedTopic !== null && d.id === $scope.selectedTopic.id) ? highlightOpacity : 0;
           });          
         })
         .on('click', function(d) {
@@ -483,7 +486,7 @@ angular.module('explore.v2.controllers')
           });
 
           d3.selectAll('.topic-background').attr('opacity', 0);
-          d3.select('#topic-bg-' + d.id).attr('opacity', 0.5);        
+          d3.select('#topic-bg-' + d.id).attr('opacity', highlightOpacity);        
           setSelectedTopic(d);
         });
 
@@ -492,6 +495,7 @@ angular.module('explore.v2.controllers')
         .attr('id', function(d) {
           return 'topic-selector-' + d.id;
         })
+        .attr('pointer-events', 'none')
         .attr('r', function(d, i) {
           return numDocScale(d.evidenceCount);
         })
@@ -499,7 +503,6 @@ angular.module('explore.v2.controllers')
         .attr('stroke', '#ffffff')
         .attr('stroke-width', 2)
         .attr('fill', '#e5e5e5');
-
 /*
       topic.append('text')
         .text(function(topic) {
