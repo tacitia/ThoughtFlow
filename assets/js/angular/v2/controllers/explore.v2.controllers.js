@@ -47,6 +47,9 @@ angular.module('explore.v2.controllers')
 
     $scope.termStartIndex = 0;
 
+    $scope.numTerms = 0;
+    $scope.numTopics = 0;
+
     Logger.logAction(userId, 'load explore view', 'v2','1', 'explore', {
       collectionId: collectionId
     }, function(response) {
@@ -70,6 +73,8 @@ angular.module('explore.v2.controllers')
       TermTopic.initialize($scope.topics);
       $scope.terms = TermTopic.getAllTerms();
       $scope.selected.searchTerm = $scope.terms[0];
+      $scope.numTerms = TermTopic.numOfTerms();
+      $scope.numTopics = TermTopic.numOfTopics();
       visualizeTopicTermDistribution();
 //      visualizeTopicTermGraph();
 //      visualizeTopicTermMatrix($scope.topics);
@@ -78,16 +83,32 @@ angular.module('explore.v2.controllers')
       console.log(errorResponse);
     });
 
-    function updateTerms() {
+    $scope.updateTermTopicOrdering = function(manualUpdate, scrollToStart) {
+      if (manualUpdate) {
+        Logger.logAction(userId, 'reorder term and topics given selected terms', 'v2','1', 'explore', {
+          numSelectedTerms: $scope.selectedTerms.length
+        }, function(response) {
+          console.log('action logged: reorder term and topics given selected terms');
+        });
+      }
+
+      if (scrollToStart) {
+        $scope.termStartIndex = 0;        
+      }
       var terms = TermTopic.getTopTerms('weight', termBatchSize, $scope.termStartIndex, $scope.selectedTerms);
-      var topicAndConnections = TermTopic.getTopTopics(terms, topicBatchSize, $scope.selectedTerms);
-      var topics = topicAndConnections.topics;
-      var termTopicConnections = topicAndConnections.termTopicConnections;
+      var topicsAndConnections = TermTopic.getTopTopics(terms, topicBatchSize, $scope.selectedTerms);
+      var topics = topicsAndConnections.topics;
+      var connections = topicsAndConnections.termTopicConnections;      
       visualizeTopTerms(topTermContainer, 300, 600, terms);
-      visualizeTermTopicConnections(termTopicConnectionContainer, 100, 600, terms, topics, termTopicConnections);
       visualizeTopTopics(topTopicContainer, 650, 600, topics);
+      visualizeTermTopicConnections(termTopicConnectionContainer, 100, 600, terms, topics, connections);
       updateTermTopicFills();
       updateConnectionStrokes();
+    };
+
+    $scope.clearSelectedTerms = function() {
+      $scope.selectedTerms.length = 0;
+      $scope.updateTermTopicOrdering(false, false);
     }
 
     $scope.searchEvidenceByTitle = function() {
@@ -120,14 +141,14 @@ angular.module('explore.v2.controllers')
         for (var i = 0; i < 5; ++i) {
           $scope.selectedTerms.push($scope.selectedTopic.terms[i].term);
         }
-        $scope.updateTermTopicOrdering();
+        $scope.updateTermTopicOrdering(false, true);
       }
     }
 
     $scope.selectSearchTerm = function(term) {
       $scope.selectedTerms.push(term.term);
       $scope.termStartIndex = 0;
-      updateTerms();
+      $scope.updateTermTopicOrdering(false, true);
 //      updateTerms(newTerms, topics, termTopicConnections);
     };
 
@@ -141,7 +162,7 @@ angular.module('explore.v2.controllers')
         });
 
         $scope.termStartIndex += termBatchSize;
-        updateTerms();
+        $scope.updateTermTopicOrdering(false, false);
       }
     };
 
@@ -155,7 +176,7 @@ angular.module('explore.v2.controllers')
         });
 
         $scope.termStartIndex -= termBatchSize;
-        updateTerms();
+        $scope.updateTermTopicOrdering(false, false);
       }
     };
 
@@ -210,26 +231,6 @@ angular.module('explore.v2.controllers')
       });
     };
 
-    $scope.updateTermTopicOrdering = function() {
-
-      // TODO: check whether invoked through UI or programatically
-      Logger.logAction(userId, 'reorder term and topics given selected terms', 'v2','1', 'explore', {
-        numSelectedTerms: $scope.selectedTerms.length
-      }, function(response) {
-        console.log('action logged: reorder term and topics given selected terms');
-      });
-
-      var terms = TermTopic.getTopTerms('weight', termBatchSize, $scope.termStartIndex, $scope.selectedTerms);
-      var topicsAndConnections = TermTopic.getTopTopics(terms, topicBatchSize, $scope.selectedTerms);
-      var topics = topicsAndConnections.topics;
-      var connections = topicsAndConnections.termTopicConnections;      
-      visualizeTopTerms(topTermContainer, 300, 600, terms);
-      visualizeTopTopics(topTopicContainer, 650, 600, topics);
-      visualizeTermTopicConnections(termTopicConnectionContainer, 100, 600, terms, topics, connections);
-      updateTermTopicFills();
-      updateConnectionStrokes();
-    };
-
     $scope.bookmarkEvidence = function(e) {
       Logger.logAction(userId, 'bookmark evidence', 'v2', '1', 'explore', {
         evidence: e.id,
@@ -253,7 +254,7 @@ angular.module('explore.v2.controllers')
         height: 600,
         margin: { 
           left: 50,
-          top: 80,
+          top: 10,
           bottom: 20,
           right: 0
         },
@@ -265,18 +266,6 @@ angular.module('explore.v2.controllers')
         .attr('height', params.height + params.margin.top + params.margin.bottom);
 
       canvas.append('text')
-        .attr('class', 'h4')
-        .text('Terms (' + TermTopic.numOfTerms() + ' total)')
-        .attr('font-size', 18)
-        .attr('transform', 'translate(90, 20)');
-
-      canvas.append('text')
-        .attr('class', 'h4')
-        .text('Topics (' + TermTopic.numOfTopics() + ' total)')
-        .attr('font-size', 18)
-        .attr('transform', 'translate(470, 20)');
-
-      canvas.append('text')
         .text('Similar topics')
         .attr('font-size', 18)
         .attr('transform', 'translate(1150, 20)');
@@ -284,12 +273,12 @@ angular.module('explore.v2.controllers')
       canvas.append('text')
         .text('# of docs')
         .attr('font-size', 14)
-        .attr('transform', 'translate(450, 60)');
+        .attr('transform', 'translate(450, ' + 0 + ')');
 
       canvas.append('text')
         .text('term distribution')
         .attr('font-size', 14)
-        .attr('transform', 'translate(725, 60)');
+        .attr('transform', 'translate(725, ' + 0 + ')');
 
       var terms = TermTopic.getTopTerms('weight', termBatchSize, $scope.termStartIndex);
       var topicAndConnections = TermTopic.getTopTopics(terms, topicBatchSize);
@@ -378,6 +367,7 @@ angular.module('explore.v2.controllers')
             });
             $scope.selectedTerms.push(d.term);
           }
+//          $scope.updateTermTopicOrdering();
           updateTermTopicFills();
           updateConnectionStrokes();
         });

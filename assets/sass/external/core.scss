@@ -2,6 +2,11 @@ body, html {
   height: 100%;
 }
 
+.btn-img-default {
+  width:15px; 
+  height:15px;
+}
+
 .center-box {
   height: 100%;
   width: 100%;
@@ -248,8 +253,8 @@ body, html {
     margin-bottom: 30px;
   }
 
-  #control {
-    margin-left: 50px;
+  .control {
+    margin-left: 90px;
     .selected-topic-term {
       border-top:2px solid #eee;
       border-bottom:1px solid #eee;

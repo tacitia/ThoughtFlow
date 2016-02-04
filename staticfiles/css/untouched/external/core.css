@@ -2,6 +2,11 @@ body, html {
   height: 100%;
 }
 
+.btn-img-default {
+  width: 15px;
+  height: 15px;
+}
+
 .center-box {
   height: 100%;
   width: 100%;
@@ -250,21 +255,21 @@ body, html {
 .v2 h4 {
   margin-bottom: 30px;
 }
-.v2 #control {
-  margin-left: 50px;
+.v2 .control {
+  margin-left: 90px;
 }
-.v2 #control .selected-topic-term {
+.v2 .control .selected-topic-term {
   border-top: 2px solid #eee;
   border-bottom: 1px solid #eee;
   font-size: 13px;
 }
-.v2 #control .selected-topic-term.active {
+.v2 .control .selected-topic-term.active {
   background-color: #ccc;
 }
-.v2 #control .selected-topic-term.dark {
+.v2 .control .selected-topic-term.dark {
   background-color: #eee;
 }
-.v2 #control .selected-topic-term.active.dark {
+.v2 .control .selected-topic-term.active.dark {
   background-color: #ccc;
 }
 
