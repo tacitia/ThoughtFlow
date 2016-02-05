@@ -178,6 +178,7 @@ body, html {
 }
 
 #documents {
+  overflow-x: hidden;
   overflow-y: auto;
   height: 380px;
 
@@ -200,6 +201,7 @@ body, html {
 }
 
 #details {
+  overflow-x: hidden;
   overflow-y: auto;
   height: 380px;
 

@@ -12,6 +12,12 @@
 </div>
 
 <div class="row v2" id="focus" style="height:900px;padding:15px">
+  <div class="loading" ng-if="loadingTexts">
+    <div class="loader-container">
+      <div class="loader"></div>
+      <div class="loading-text"><p>{{loadingStatement}}</p></div>
+    </div>
+  </div>
   <div class="col-md-2" id="argument-list" style="border-bottom: solid 1px #ccc;height:1014px;overflow-y:auto">
     <h4>Proposals</h4>
     <table class="table">
@@ -97,8 +103,14 @@
               <p class="citation-entry"><span>{{$index+1}}. </span><span class="thin-text">{{e.title}}</span></p>
             </div>          
             <div class="col-md-2" style="margin:10px 0 0 0">
-              <div class="btn-group btn-group-xs" role="group" ng-if="selectedEvidence===e">
-                <button class="btn btn-primary" ng-class="{disabled: selectedParagraph===-1}" ng-click="citeEvidence(e, 'recommended')">Cite</button>
+              <img ng-if="!e.bookmarked" class="btn-img-default" src="/static/img/bookmark-no-icon.png" 
+                uib-tooltip="Not in your bookmark" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="bookmarkEvidence(e, 'recommendation')" style="cursor:pointer; cursor:hand;"/>
+              <img ng-if="e.bookmarked" class="btn-img-default" src="/static/img/bookmark-yes-icon.png"
+                uib-tooltip="From your bookmark" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="unbookmarkEvidence(e, 'recommendation')" style="cursor:pointer; cursor:hand;"/>
+              <div ng-if="selectedEvidence===e" && selectedParagraph!==-1>
+                <img class="btn-img-default" src="/static/img/link-icon.svg"
+                  uib-tooltip="Cite" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="citeEvidence(e, 'recommended')"
+                  style="cursor:pointer; cursor:hand;"/>
               </div>  
             </div>
           </div>
@@ -111,12 +123,16 @@
               <p class="citation-entry"><span>{{$index+1}}. </span><span class="thin-text">{{e.title}}</span></p>
             </div>
             <div class="col-md-2" style="margin:10px 0 0 0">
-              <div ng-switch on="selectedEvidenceCiteStatus" ng-if="selectedEvidence===e">
-                <div ng-switch-when="uncited" class="btn-group btn-group-xs" role="group">
-                  <button class="btn btn-primary" ng-class="{disabled: selectedParagraph===-1}" ng-click="citeEvidence(e, 'cited')">Cite</button>
+              <div ng-switch on="selectedEvidenceCiteStatus" ng-if="selectedEvidence===e && selectedParagraph !== -1">
+                <div ng-switch-when="uncited">
+                <img class="btn-img-default" src="/static/img/link-icon.svg"
+                  uib-tooltip="Cite" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="citeEvidence(e, 'cited')"
+                  style="cursor:pointer; cursor:hand;"/>
                 </div>
                 <div ng-switch-when="cited" class="btn-group btn-group-xs" role="group">
-                  <button class="btn btn-danger" ng-class="{disabled: selectedParagraph===-1}" ng-click="unciteEvidence(e, 'cited')">Uncite</button>
+                  <button class="btn btn-danger" ng-class="{disabled: selectedParagraph===-1}" ng-click="unciteEvidence(e, 'cited')"
+                    uib-tooltip="Uncite" tooltip-placement="top" tooltip-trigger="mouseenter"
+                    ><img class="btn-img-default" src="/static/img/uncite-icon.png"</button>
                 </div>
               </div>
             </div>                        
@@ -130,10 +146,13 @@
               <p class="col-md-10 citation-entry"><span>{{$index+1}}. </span><span class="thin-text">{{e.title}}</span></p>
               <div class="col-md-2" style="padding-top:5px">
                 <div ng-if="e.abstract.length===0">
-                  <img style="width:15px; height:15px"src="/static/img/warning-icon.png" title="No abstract for this entry.">
+                  <img style="width:15px; height:15px"src="/static/img/warning-icon.png"
+                    uib-tooltip="No abstract found." tooltip-placement="top" tooltip-trigger="mouseenter"/>
                 </div>
-                <div ng-if="selectedEvidence===e" class="btn-group btn-group-xs" role="group">
-                  <button class="btn btn-primary" ng-class="{disabled: selectedParagraph===-1}" ng-click="citeEvidence(e, 'bookmarked')">Cite</button>
+                <div ng-if="selectedEvidence===e && selectedParagraph !== -1" class="btn-group btn-group-xs" role="group">
+                  <img class="btn-img-default" src="/static/img/link-icon.svg"
+                    uib-tooltip="Cite" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="citeEvidence(e, 'bookmarked')"
+                    style="cursor:pointer; cursor:hand;"/>
                 </div>  
               </div>
             </div>          

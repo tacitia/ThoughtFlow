@@ -15,6 +15,9 @@ angular.module('focus.v2.controllers')
     $scope.paragraphInformation =[];
     $scope.paragraphCitation = [];
 
+    $scope.loadingTexts = true;
+    $scope.loadingStatement = 'Retrieving proposals and bookmarked evidence...';
+
     $scope.loadingRecommendedEvidence = false;
     $scope.selectedEvidenceCiteStatus = 'uncited';
     $scope.savingStatus = 'saved';
@@ -55,35 +58,20 @@ angular.module('focus.v2.controllers')
       updateCitedEvidence();
     });
 
-    Core.getAllTextsForUser(userId, function(response) {
-      $scope.texts = response.data;
-      if ($scope.texts.length > 0) {
-        $scope.selectText($scope.texts[0], false);
-      }
-      Logger.logAction(userId, 'load focus view', 'v2','1', 'focus', {
-        numProposals: $scope.texts.length
-      }, function(response) {
-        if (isDebug)
-          console.log('action logged: load view');
-      });
-    }, function(response) {
-      console.log('server error when retrieving textsfor user ' + userId);
-      console.log(response);
-    });
-
     // TODO: if later we want to get topics for these evidence, be mindful that there are 
     // two types of evidence - personal and bookmarked - and they will require 
     // different handlings
     Core.getAllEvidenceForUser(userId, function(response) {
-      // This includes both usercreated and bookmarked evidence; they are not necessarily cited.
-      // TODO: apply default sorting.
-      $scope.evidence = response.data;
+        // This includes both usercreated and bookmarked evidence; they are not necessarily cited.
+        // TODO: apply default sorting.
+        $scope.evidence = response.data;
 
-      $scope.evidence.forEach(function(e){
-        e.metadata = JSON.parse(e.metadata);
-        evidenceIdMap[e.id]= e;
-      })
-        updateCitedEvidence();
+        $scope.evidence.forEach(function(e){
+          e.metadata = JSON.parse(e.metadata);
+          evidenceIdMap[e.id]= e;
+        })
+          updateCitedEvidence();
+          loadTexts();
       }, function(response) {
         console.log('server error when retrieving evidence for user' + userId);
         console.log(response);
@@ -110,6 +98,25 @@ angular.module('focus.v2.controllers')
         $scope.saveText();
       }
     }, 5000);
+
+    function loadTexts() {
+      Core.getAllTextsForUser(userId, function(response) {
+        $scope.texts = response.data;
+        if ($scope.texts.length > 0) {
+          $scope.selectText($scope.texts[0], false);
+        }
+        $scope.loadingTexts = false;
+        Logger.logAction(userId, 'load focus view', 'v2','1', 'focus', {
+          numProposals: $scope.texts.length
+        }, function(response) {
+          if (isDebug)
+            console.log('action logged: load view');
+        });
+      }, function(response) {
+        console.log('server error when retrieving textsfor user ' + userId);
+        console.log(response);
+      });
+    }
 
     $scope.selectText = function(text, userInitiated) {
       if (userInitiated) {
@@ -220,6 +227,40 @@ angular.module('focus.v2.controllers')
         updateRecommendedCitations($scope.activeParagraphs[index].text, index);
       }      
     };
+
+    $scope.bookmarkEvidence = function(e, source) {
+      Logger.logAction(userId, 'bookmark evidence', 'v2', '1', 'focus', {
+        evidence: e.id,
+        numDocuments: $scope.evidence.length,
+        source: source
+      }, function(response) {
+        console.log('action logged: bookmark evidence');
+      });
+      Core.addBookmark(userId, e.id, function(response) {
+        $scope.evidence.push(e);
+        e.bookmarked = true;
+        console.log('bookmark evidence success');
+      }, function(errorResponse) {
+        console.log(errorResponse);
+      });  
+    }
+
+    $scope.unbookmarkEvidence = function(e, source) {
+      Logger.logAction(userId, 'remove evidence bookmark', 'v2', '1', 'focus', {
+        evidence: e.id,
+        numDocuments: $scope.evidence.length,
+        source: source
+      }, function(response) {
+        console.log('action logged: remove evidence bookmark');
+      });
+      Core.deleteBookmark(userId, e.id, function(response) {
+        $scope.evidence = _.without($scope.evidence, e);
+        e.bookmarked = false;
+        console.log('remove evidence bookmark success');
+      }, function(errorResponse) {
+        console.log(errorResponse);
+      });  
+    }
 
     $scope.citeEvidence = function(evidence, sourceList) {
       var textParaId = $scope.selectedText.id+ '-' + $scope.selectedParagraph;
@@ -409,7 +450,8 @@ angular.module('focus.v2.controllers')
             console.log('action logged: proposal created');          
         });
 
-        $scope.texts.push(newEntry);        
+        $scope.texts.push(newEntry);
+        $scope.selectText(newEntry, false);
       });      
     }
 
@@ -488,7 +530,6 @@ angular.module('focus.v2.controllers')
       // Delete a paragraph if user presses backspace when it's already empty
       // Known issue: Does not move the cursor anywhere if the first paragraph is deleted
       else if (e.keyCode === 8 && $scope.activeParagraphs[i].text.trim().length === 0) {
-        console.log('deleting')
         e.preventDefault();
         newParagraphIndex = Math.max(0, i-1);
         updateParagraphs(newParagraphIndex, i, false);
@@ -737,7 +778,7 @@ angular.module('focus.v2.controllers')
         console.log(response);
         $scope.savingStatus = 'failed';
       });
-    }      
+    }
       
     function updateRecommendedCitations(text,index) {
       if (text.split(' ').length < 5) {        
@@ -753,9 +794,17 @@ angular.module('focus.v2.controllers')
       $scope.loadingRecommendedEvidence = true;        
 
       Argument.getEvidenceRecommendation(text, collectionId, function(response) {
-        $scope.recommendedEvidence= response.data.evidence;
+        $scope.recommendedEvidence = response.data.evidence;
+        var bookmarkedEvidenceIds = $scope.evidence === null ? [] : $scope.evidence.map(function(e) { return e.id; })
         $scope.recommendedEvidence.forEach(function(e) {
           e.metadata = JSON.parse(e.metadata);
+          if ($scope.evidence !== null) {
+            e.bookmarked = bookmarkedEvidenceIds.indexOf(e.id) > -1;
+            console.log(e.bookmarked)
+          }
+          else {
+            e.bookmarked = false;
+          }
         })
         $scope.paragraphInformation[index].topic = response.data.topics[0];
         if (response.data.topics[0].terms !== '') {

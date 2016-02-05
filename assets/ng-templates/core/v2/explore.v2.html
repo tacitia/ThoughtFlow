@@ -100,20 +100,28 @@
             </div>
             <div>
               <div class="animate-repeat document-entry row" ng-repeat="e in evidence" ng-class="{active: hover || e.id == selectedEvidence.id, bookmarked: e.bookmarked}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
-                 <div class="col-md-9" ng-click="selectEvidence(e)">
-                   <p><input type="checkbox" ng-model="evidenceSelectionMap[e.id]"><span style="font-weight:300"> {{e.title}}</span></p>
-                 </div>
-                 <div class="col-md-1">
+                <div class="col-md-9" ng-click="selectEvidence(e)">
+                  <p>
+                    <span ng-switch on="e.bookmarked">
+                      <img ng-switch-when="false" class="btn-img-default" src="/static/img/bookmark-no-icon.png" 
+                        uib-tooltip="Not bookmarked" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="updateBookmark(e)" style="cursor:pointer; cursor:hand;"/>
+                      <img ng-switch-when="true" class="btn-img-default" src="/static/img/bookmark-yes-icon.png"
+                        uib-tooltip="Bookmarked" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="updateBookmark(e)" style="cursor:pointer; cursor:hand;"/>
+                    </span>                    
+<!--                    <input type="checkbox" ng-model="e.bookmarked" ng-click="updateBookmark(e)"> -->
+                    <span style="font-weight:300"> {{e.title}}</span>
+                  </p>
+                </div>
+                <div class="col-md-1">
                    <div ng-if="evidenceSourceMap[e.id] === 1">
                      <img  src="/static/img/link-icon.svg" style="width:15px; height:15px"></img>
                      <span>{{countTextsReferencingEvidence(e)}}</span>
                    </div>
                    <div ng-if="evidenceSourceMap[e.id] === 0"><span class="label label-default">Search result</span></div> 
-                 </div>
-                 <div class="col-md-2">
+                </div>
+                <div class="col-md-2">
                    <svg id="doc-decorator-$index" class="doc-decorator" style="width:100px;height:30px;"></svg>
-                 </div>
-                 <div style="clear:both"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -137,6 +145,10 @@
                 <b><span class="small-cap-text">Publication date</span></b>: 
                 <span class="thin-text">{{selectedEvidence.metadata.DATE}}</span>
               </p>
+              <p>
+                <b><span class="small-cap-text">Journal</span></b>: 
+                <span class="thin-text">{{selectedEvidence.metadata.JOURNAL}}</span>
+              </p>
               <p
               ><b><span class="small-cap-text">Abstract</span></b>:</p>
               <span style="font-size:13px" ng-repeat="w in selectedWords track by $index" ng-class="{'is-topic-term': isTopicTerm(w)}">{{w}} </span>
@@ -144,12 +156,12 @@
           </div>
         </div>
       </div>
-      <div class="panel-footer">
+<!--      <div class="panel-footer">
         <div class="btn-group btn-group-sm" role="group">
           <button class="btn btn-primary" ng-disabled="selectedEvidence===null" ng-click="bookmarkEvidence(selectedEvidence)" title="Bookmark this publication">Bookmark</button>
           <button class="btn btn-danger" ng-disabled="selectedEvidence===null" ng-click="deleteEntry('evidence')">Delete</button>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

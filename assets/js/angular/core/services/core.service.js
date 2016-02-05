@@ -184,7 +184,6 @@
 
     function deleteBookmark(userId, evidenceId, successFn, errorFn) {
       return $http.post('/api/v1/data/bookmark/delete/', {
-        // switch to using the id of the currently active user
         user_id: userId,
         evidence_id: evidenceId
       }).then(successFn, errorFn);      

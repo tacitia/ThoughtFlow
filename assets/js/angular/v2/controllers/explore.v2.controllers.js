@@ -231,22 +231,40 @@ angular.module('explore.v2.controllers')
       });
     };
 
-    $scope.bookmarkEvidence = function(e) {
-      Logger.logAction(userId, 'bookmark evidence', 'v2', '1', 'explore', {
-        evidence: e.id,
-        topic: $scope.selectedTopic.id,
-        numDocuments: $scope.evidence.length
-      }, function(response) {
-        console.log('action logged: bookmark evidence');
-      });
-
-      Core.addBookmark(userId, e.id, function(response) {
-        console.log('bookmark evidence success');
-        e.bookmarked = true;
-      }, function(errorResponse) {
-        console.log(errorResponse);
-      });
-    };
+    $scope.updateBookmark = function(e) {
+      console.log('update bookmark')
+      console.log(e.bookmarked)
+      if (!e.bookmarked) {
+        Logger.logAction(userId, 'bookmark evidence', 'v2', '1', 'explore', {
+          evidence: e.id,
+          topic: $scope.selectedTopic.id,
+          numDocuments: $scope.evidence.length
+        }, function(response) {
+          console.log('action logged: bookmark evidence');
+        });
+        Core.addBookmark(userId, e.id, function(response) {
+          e.bookmarked = true;
+          console.log('bookmark evidence success');
+        }, function(errorResponse) {
+          console.log(errorResponse);
+        });   
+      } 
+      else {
+        Logger.logAction(userId, 'remove evidence bookmark', 'v2', '1', 'explore', {
+          evidence: e.id,
+          topic: $scope.selectedTopic.id,
+          numDocuments: $scope.evidence.length
+        }, function(response) {
+          console.log('action logged: remove evidence bookmark');
+        });
+        Core.deleteBookmark(userId, e.id, function(response) {
+          e.bookmarked = false;
+          console.log('remove bookmark evidence success');
+        }, function(errorResponse) {
+          console.log(errorResponse);
+        });  
+      }   
+    }
 
     function visualizeTopicTermDistribution(topics) {
       var params = {
