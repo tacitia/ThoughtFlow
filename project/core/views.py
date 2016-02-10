@@ -603,7 +603,7 @@ def augmentCollection(request, collection_id, seed_level):
                     'JOURNAL': re.journal,
                     'DATE': re.year,
                     'AFFILIATION': ''
-                }), collection_id, seed_level)
+                }), collection_id, seed_level+1)
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
 
 # This is a special function that loads a large document collection, performs topic modeling over them,
