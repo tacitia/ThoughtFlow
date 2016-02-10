@@ -207,7 +207,7 @@ def lda2topicMap(lda, corpus, ids, name):
 def create_online_lda(docs, ids, name, numTopics):
   corpus, dictionary = docs2corpus(docs, name, True)
   print '>> generating online lda model...'
-  lda = gensim.models.ldamodel.LdaModel(corpus, num_topics=numTopics, id2word=dictionary)
+  lda = gensim.models.ldamodel.LdaModel(corpus, num_topics=numTopics, id2word=dictionary, passes=10)
   print lda
   lda.save(name + '.lda')
   return lda2topicMap(lda, corpus, ids, name), lda.show_topics(formatted=False)
