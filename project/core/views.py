@@ -577,11 +577,11 @@ def loadXploreData(request):
 
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
 
-def augmentCollection(request, collection_id):
+def augmentCollection(request, collection_id, seed_level):
     if request.method == 'GET':
         if collection_id in names:
             return HttpResponse(json.dumps({warning: 'Collection already exists! Try with another collection id.'}), status=status.HTTP_304_NOT_MODIFIED)
-        seeds = Evidence.objects.filter(Q(created_by=collection_id)&~Q(abstract='')&Q(augmentation=0))
+        seeds = Evidence.objects.filter(Q(created_by=collection_id)&~Q(abstract='')&Q(augmentation=seed_level))
         counter = 0
         for e in seeds:
             counter += 1

@@ -52,7 +52,7 @@ urlpatterns = [
     url(r'^api/v1/ad-hoc/createSimilarityMatrix/$', createSimilarityMatrix, name='createSimilarityMatrix'),
     url(r'^api/v1/ad-hoc/cacheTopics/(?P<collection_id>\d+)/$', cacheTopics, name='cacheTopics'),
     url(r'^api/v1/ad-hoc/loadXploreData/$', loadXploreData, name='loadXploreData'),
-    url(r'^api/v1/ad-hoc/augmentCollection/(?P<collection_id>\d+)/$', augmentCollection, name='augmentCollection'),
+    url(r'^api/v1/ad-hoc/augmentCollection/(?P<collection_id>\d+)/(?P<seed_level>\d+)/$', augmentCollection, name='augmentCollection'),
     url(r'^api/v1/ad-hoc/insertDefaultCollections/$', insertDefaultCollections, name='insertDefaultCollections'),
 
     url(r'^.*$', views.index, name='index')
