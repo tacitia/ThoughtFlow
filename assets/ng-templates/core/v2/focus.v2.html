@@ -98,7 +98,7 @@
           </div>
         </div>
         <div id="recommendedEvidence" class="citation-container">
-          <div class="animate-repeat document-entry row" ng-repeat="e in recommendedEvidence" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectEvidence(e, 'recommended')">
+          <div class="animate-repeat document-entry row" ng-repeat="e in recommendedEvidence" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectEvidence(e, 'recommended', true)">
             <div class="col-md-10">
               <p class="citation-entry"><span>{{$index+1}}. </span><span class="thin-text">{{e.title}}</span></p>
             </div>          
@@ -118,7 +118,7 @@
       </uib-tab>
       <uib-tab heading="Cited" active="citationTabs['cited'].active">
         <div id="citedEvidence" class="citation-container">
-          <div class="animate-repeat document-entry row" ng-repeat="e in citedEvidence" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectEvidence(e, 'cited')">
+          <div class="animate-repeat document-entry row" ng-repeat="e in citedEvidence" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectEvidence(e, 'cited', true)">
             <div class="col-md-10">
               <p class="citation-entry"><span>{{$index+1}}. </span><span class="thin-text">{{e.title}}</span></p>
             </div>
@@ -142,7 +142,7 @@
       <uib-tab heading="Bookmarked" active="citationTabs['bookmarked'].active">
         <div id="bookmarkedEvidence" class="citation-container">
           <div class="container animate-repeat document-entry" ng-repeat="e in evidence" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
-            <div class="row" ng-click="selectEvidence(e, 'bookmarked')">
+            <div class="row" ng-click="selectEvidence(e, 'bookmarked', true)">
               <p class="col-md-10 citation-entry"><span>{{$index+1}}. </span><span class="thin-text">{{e.title}}</span></p>
               <div class="col-md-2" style="padding-top:5px">
                 <div ng-if="e.abstract.length===0">

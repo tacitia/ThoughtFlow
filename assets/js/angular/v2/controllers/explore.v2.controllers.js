@@ -107,16 +107,21 @@ angular.module('explore.v2.controllers')
     };
 
     $scope.clearSelectedTerms = function() {
+      Logger.logAction(userId, 'clear selected terms', 'v2','1', 'explore', {
+        numSelectedTerms: $scope.selectedTerms.length
+      }, function(response) {
+        console.log('action logged: clear selected terms');
+      });
       $scope.selectedTerms.length = 0;
       $scope.updateTermTopicOrdering(false, false);
     }
 
     $scope.searchEvidenceByTitle = function() {
-        Logger.logAction(userId, 'search evidence by title', 'v2','1', 'explore', {
-          query: $scope.searchTitle
-        }, function(response) {
-          console.log('action logged: search evidence by title');
-        });
+      Logger.logAction(userId, 'search evidence by title', 'v2','1', 'explore', {
+        query: $scope.searchTitle
+      }, function(response) {
+        console.log('action logged: search evidence by title');
+      });
 
       Core.getEvidenceByTitle(collectionId, userId, $scope.searchTitle, true, 1, function(response) {
         $scope.candidateEvidence = response.data;
@@ -126,12 +131,11 @@ angular.module('explore.v2.controllers')
     };
 
     $scope.selectSearchTitle = function(title) {
-
-        Logger.logAction(userId, 'select title by search', 'v2','1', 'explore', {
-          evidence: title.id
-        }, function(response) {
-          console.log('action logged: select title by search');
-        });
+      Logger.logAction(userId, 'select title by search', 'v2','1', 'explore', {
+        evidence: title.id
+      }, function(response) {
+        console.log('action logged: select title by search');
+      });
 
       if (title.topic !== -1) {
         $scope.selectedTopic = _.find($scope.topics, function(t) {
@@ -146,10 +150,13 @@ angular.module('explore.v2.controllers')
     }
 
     $scope.selectSearchTerm = function(term) {
+      Logger.logAction(userId, 'select search term', 'v2','1', 'explore', {
+      }, function(response) {
+        console.log('action logged: select search term');
+      });
       $scope.selectedTerms.push(term.term);
       $scope.termStartIndex = 0;
       $scope.updateTermTopicOrdering(false, true);
-//      updateTerms(newTerms, topics, termTopicConnections);
     };
 
     $scope.showNextTerms = function() {
@@ -618,7 +625,6 @@ angular.module('explore.v2.controllers')
       }));
       $scope.loadingTopicEvidence = true;
       Core.getEvidenceByTopic(collectionId, d.id, userId, function(response) {
-        console.log(response.data.evidencePersonal)
         $scope.evidence = response.data.evidence;
         var bookmarkedEvidence = response.data.evidenceBookmarks.map(function(b) {
           return b.evidence;

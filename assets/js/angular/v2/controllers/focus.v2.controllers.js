@@ -190,14 +190,16 @@ angular.module('focus.v2.controllers')
       // Need to find and remove latex commands...       
     }
 
-    $scope.selectEvidence = function(evidence, sourceList) {
-      Logger.logAction(userId, 'select evidence', 'v2', '1', 'focus', {
-        evidence: evidence.id,
-        sourceList: sourceList
-      }, function(response) {
-        if (isDebug)
-          console.log('action logged: select evidence');
-      });
+    $scope.selectEvidence = function(evidence, sourceList, userInitiated) {
+      if (userInitiated) {
+        Logger.logAction(userId, 'select evidence', 'v2', '1', 'focus', {
+          evidence: evidence.id,
+          sourceList: sourceList
+        }, function(response) {
+          if (isDebug)
+            console.log('action logged: select evidence');
+        });
+      }
 
       $scope.selectedEvidence = evidence;
       $scope.selectedWords = evidence.abstract.split(' ');
@@ -336,11 +338,16 @@ angular.module('focus.v2.controllers')
           console.log('action logged: show citation');       
       });        
 
-      $scope.selectEvidence(citation.evidence);        
+      $scope.selectEvidence(citation.evidence, null, false);        
       $scope.citationTabs['cited'].active= true;      
     }
 
     $scope.openUploadBibtexWindow = function() {
+      Logger.logAction(userId, 'open upload bibtex window', 'v2', '1', 'focus', {
+      }, function(response) {
+        if (isDebug)
+          console.log('action logged: open upload bibtex window');       
+      });        
 
       var modalInstance = $modal.open({
         templateUrl: 'modal/uploadBibtexModal.html',          
@@ -577,8 +584,6 @@ angular.module('focus.v2.controllers')
     }
 
     function updateTextEvidenceAssociations(startIndex, shiftRight) {
-      console.log('updating text evidence associations with start index ' + startIndex)
-      console.log(textEvidenceAssociations)
       if (!shiftRight) {
         var deletedAssociations = [];
         textEvidenceAssociations.forEach(function(association) {
