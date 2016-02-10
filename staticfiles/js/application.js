@@ -1,5 +1,3 @@
-var myAwesomeJSVariable = "I'm so awesome!!";
-
 angular.module('mainModule', [
   'restangular', 
   'ui.router', 
@@ -33,6 +31,8 @@ angular.module('mainModule', [
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|file|blob):/);
       }]);
 })();
+var myAwesomeJSVariable = "I'm so awesome!!";
+
 (function () {
   'use strict';
 
@@ -2632,6 +2632,7 @@ angular.module('explore.v2.controllers')
       if (collectionId === 13) probSum = 0.5;
       if (collectionId === 15) probSum = 0.7;
       if (collectionId === 16) probSum = 0.2;
+      if (collectionId === 17) probSum = 0.25;
 
       var term = topic.selectAll('g')
         .data(function(d, i) {
@@ -3277,7 +3278,6 @@ angular.module('explore.v2.controllers')
         }
       });
 
-      console.log('visualize doc decorators');
       // Append labels to each document to indicate which terms it contains
       d3.selectAll('.doc-decorator')
         .selectAll('g')
@@ -3368,6 +3368,19 @@ angular.module('explore.v2.controllers')
           }
         }
       }); 
+    }
+
+    function visualizeProposalThumbnails() {
+      // 1. An index containing thumbnails
+      // 2. An area for selected / enlarged thumbnail
+
+      // Implementation steps:
+      // 1. Get user texts
+      // 2. Assigns gray rectangles / dimmed texts / highlighted texts according to distance 
+      // to each selected texts
+
+      // TODO: substitute this with user selections in focus mode
+      var focusKeywords = ['evaluate', 'insight'];
     }
 
     // Deprecated
