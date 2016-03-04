@@ -1,0 +1,1961 @@
+
+PMID- 26474605
+OWN - NLM
+STAT- Publisher
+DA  - 20151017
+LR  - 20151018
+IS  - 1553-3514 (Electronic)
+IS  - 1553-3506 (Linking)
+DP  - 2015 Oct 15
+TI  - Indocyanine Green Fluorescence for Free-Flap Perfusion Imaging Revisited:
+      Advanced Decision Making by Virtual Perfusion Reality in Visionsense Fusion
+      Imaging Angiography.
+LID - 1553350615610651 [pii]
+AB  - BACKGROUND: Near-infrared indocyanine green video angiography (ICG-NIR-VA) has
+      been introduced for free-flap surgery and may provide intraoperative flap
+      designing as well as postoperative monitoring. Nevertheless, the technique has
+      not been established in clinical routine because of controversy over benefits.
+      Improved technical features of the novel Visionsense ICG-NIR-VA surgery system
+      are promising to revisit the field of application. It features a unique real-time
+      fusion image of simultaneous NIR and white light visualization, with highlighted 
+      perfusion, including a color-coded perfusion flow scale for optimized anatomical 
+      understanding. METHODS: In a feasibility study, the Visionsense ICG-NIR-VA system
+      was applied during 10 free-flap surgeries in 8 patients at our center.
+      Indications included anterior lateral thigh (ALT) flap (n = 4), latissimus dorsi 
+      muscle flap (n = 1), tensor fascia latae flap (n = 1), and two bilateral deep
+      inferior epigastric artery perforator flaps (n = 4). The system was used
+      intraoperatively and postoperatively to investigate its impact on surgical
+      decision making and to observe perfusion patterns correlated to clinical
+      monitoring. RESULTS: Visionsense ICG-NIR-VA aided assessing free-flap design and 
+      perfusion patterns in all cases and correlated with clinical observations.
+      Additional interventions were performed in 2 cases (22%). One venous anastomosis 
+      was revised, and 1 flap was redesigned. Indicated by ICG-NIR-VA, 1 ALT flap
+      developed partial flap necrosis (11%). CONCLUSIONS: The Visionsense ICG-NIR-VA
+      system allowed a virtual view of flap perfusion anatomy by fusion imaging in
+      real-time. The system improved decision making for flap design and surgical
+      decisions. Clinical and ICG-NIR-VA parameters correlated. Its future
+      implementation may aid in improving outcomes for free-flap surgery, but
+      additional experience is needed to define its final role.
+CI  - (c) The Author(s) 2015.
+FAU - Bigdeli, Amir Khosrow
+AU  - Bigdeli AK
+AD  - University of Heidelberg, Heidelberg, Germany.
+FAU - Gazyakan, Emre
+AU  - Gazyakan E
+AD  - University of Heidelberg, Heidelberg, Germany.
+FAU - Schmidt, Volker Juergen
+AU  - Schmidt VJ
+AD  - University of Heidelberg, Heidelberg, Germany.
+FAU - Hernekamp, Frederick Jochen
+AU  - Hernekamp FJ
+AD  - University of Heidelberg, Heidelberg, Germany.
+FAU - Harhaus, Leila
+AU  - Harhaus L
+AD  - University of Heidelberg, Heidelberg, Germany.
+FAU - Henzler, Thomas
+AU  - Henzler T
+AD  - Medical Faculty Mannheim, University of Heidelberg, Mannheim, Germany.
+FAU - Kremer, Thomas
+AU  - Kremer T
+AD  - University of Heidelberg, Heidelberg, Germany.
+FAU - Kneser, Ulrich
+AU  - Kneser U
+AD  - University of Heidelberg, Heidelberg, Germany.
+FAU - Hirche, Christoph
+AU  - Hirche C
+AD  - University of Heidelberg, Heidelberg, Germany
+      Christoph.Hirche@bgu-ludwigshafen.de.
+LA  - ENG
+PT  - JOURNAL ARTICLE
+DEP - 20151015
+TA  - Surg Innov
+JT  - Surgical innovation
+JID - 101233809
+OTO - NOTNLM
+OT  - 3D anatomy
+OT  - ICG
+OT  - Visionsense
+OT  - angiography
+OT  - free flap
+OT  - fusion image
+OT  - indocyanine green
+OT  - microsurgery
+EDAT- 2015/10/18 06:00
+MHDA- 2015/10/18 06:00
+CRDT- 2015/10/18 06:00
+AID - 1553350615610651 [pii]
+AID - 10.1177/1553350615610651 [doi]
+PST - aheadofprint
+SO  - Surg Innov. 2015 Oct 15. pii: 1553350615610651.
+
+PMID- 26024818
+OWN - NLM
+STAT- In-Process
+DA  - 20150817
+IS  - 1361-8423 (Electronic)
+IS  - 1361-8415 (Linking)
+VI  - 25
+IP  - 1
+DP  - 2015 Oct
+TI  - Pico Lantern: Surface reconstruction and augmented reality in laparoscopic
+      surgery using a pick-up laser projector.
+PG  - 95-102
+LID - 10.1016/j.media.2015.04.008 [doi]
+LID - S1361-8415(15)00058-4 [pii]
+AB  - The Pico Lantern is a miniature projector developed for structured light surface 
+      reconstruction, augmented reality and guidance in laparoscopic surgery. During
+      surgery it will be dropped into the patient and picked up by a laparoscopic tool.
+      While inside the patient it projects a known coded pattern and images onto the
+      surface of the tissue. The Pico Lantern is visually tracked in the laparoscope's 
+      field of view for the purpose of stereo triangulation between it and the
+      laparoscope. In this paper, the first application is surface reconstruction.
+      Using a stereo laparoscope and an untracked Pico Lantern, the absolute error for 
+      surface reconstruction for a plane, cylinder and ex vivo kidney, is 2.0 mm, 3.0
+      mm and 5.6 mm, respectively. Using a mono laparoscope and a tracked Pico Lantern 
+      for the same plane, cylinder and kidney the absolute error is 1.4 mm, 1.5 mm and 
+      1.5 mm, respectively. These results confirm the benefit of the wider baseline
+      produced by tracking the Pico Lantern. Virtual viewpoint images are generated
+      from the kidney surface data and an in vivo proof-of-concept porcine trial is
+      reported. Surface reconstruction of the neck of a volunteer shows that the
+      pulsatile motion of the tissue overlying a major blood vessel can be detected and
+      displayed in vivo. Future work will integrate the Pico Lantern into standard and 
+      robot-assisted laparoscopic surgery.
+CI  - Copyright (c) 2015 Elsevier B.V. All rights reserved.
+FAU - Edgcumbe, Philip
+AU  - Edgcumbe P
+AD  - MD/PhD Program, Biomedical Engineering Program, University of British Columbia,
+      Vancouver, BC, Canada. Electronic address: edgcumbe@ece.ubc.ca.
+FAU - Pratt, Philip
+AU  - Pratt P
+AD  - Hamlyn Centre for Robotic Surgery, Imperial College of Science, Technology and
+      Medicine, London, UK.
+FAU - Yang, Guang-Zhong
+AU  - Yang GZ
+AD  - Hamlyn Centre for Robotic Surgery, Imperial College of Science, Technology and
+      Medicine, London, UK.
+FAU - Nguan, Christopher
+AU  - Nguan C
+AD  - Department of Urologic Sciences, University of British Columbia, Vancouver, BC,
+      Canada.
+FAU - Rohling, Robert
+AU  - Rohling R
+AD  - Department of Electrical Engineering and Computer Engineering, University of
+      British Columbia, Vancouver, BC, Canada; Department of Mechanical Engineering,
+      University of British Columbia, Vancouver, BC, Canada.
+LA  - eng
+GR  - Canadian Institutes of Health Research/Canada
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20150507
+PL  - Netherlands
+TA  - Med Image Anal
+JT  - Medical image analysis
+JID - 9713490
+SB  - IM
+OTO - NOTNLM
+OT  - Augmented reality
+OT  - Laparoscopic surgery
+OT  - Pico Lantern
+OT  - Pico projector
+EDAT- 2015/05/31 06:00
+MHDA- 2015/05/31 06:00
+CRDT- 2015/05/31 06:00
+PHST- 2014/11/17 [received]
+PHST- 2015/04/08 [revised]
+PHST- 2015/04/09 [accepted]
+PHST- 2015/05/07 [aheadofprint]
+AID - S1361-8415(15)00058-4 [pii]
+AID - 10.1016/j.media.2015.04.008 [doi]
+PST - ppublish
+SO  - Med Image Anal. 2015 Oct;25(1):95-102. doi: 10.1016/j.media.2015.04.008. Epub
+      2015 May 7.
+
+PMID- 25486264
+OWN - NLM
+STAT- MEDLINE
+DA  - 20150209
+DCOM- 20151104
+IS  - 1743-9159 (Electronic)
+IS  - 1743-9159 (Linking)
+VI  - 13
+DP  - 2015 Jan
+TI  - An over-view of robot assisted surgery curricula and the status of their
+      validation.
+PG  - 115-23
+LID - 10.1016/j.ijsu.2014.11.033 [doi]
+LID - S1743-9191(14)00993-5 [pii]
+AB  - INTRODUCTION: Robotic surgery is a rapidly expanding field. Thus far training for
+      robotic techniques has been unstructured and the requirements are variable across
+      various regions. Several projects are currently underway to develop a robotic
+      surgery curriculum and are in various stages of validation. We aimed to outline
+      the structures of available curricula, their process of development, validation
+      status and current utilization. METHODS: We undertook a literature review of
+      papers including the MeSH terms "Robotics" and "Education". When we had an
+      overview of curricula in development, we searched recent conference abstracts to 
+      gain up to date information. RESULTS: The main curricula are the FRS, the FSRS,
+      the Canadian BSTC and the ERUS initiative. They are in various stages of
+      validation and offer a mixture of theoretical and practical training, using both 
+      physical and simulated models. DISCUSSION: Whilst the FSRS is based on tasks on
+      the RoSS virtual reality simulator, FRS and BSTC are designed for use on
+      simulators and the robot itself. The ERUS curricula benefits from a combination
+      of dry lab, wet lab and virtual reality components, which may allow skills to be 
+      more transferable to the OR as tasks are completed in several formats. Finally,
+      the ERUS curricula includes the OR modular training programme as table assistant 
+      and console surgeon. CONCLUSION: Curricula are a crucial step in global
+      standardisation of training and certification of surgeons for robotic surgical
+      procedures. Many curricula are in early stages of development and more work is
+      needed in development and validation of these programmes before training can be
+      standardised.
+CI  - Copyright (c) 2014 Surgical Associates Ltd. Published by Elsevier Ltd. All rights
+      reserved.
+FAU - Fisher, Rebecca A
+AU  - Fisher RA
+AD  - MRC Centre for Transplantation, King's College London, King's Health Partners,
+      Department of Urology, Guy's Hospital, St Thomas Street, London SE1 9RT, UK.
+FAU - Dasgupta, Prokar
+AU  - Dasgupta P
+AD  - MRC Centre for Transplantation, King's College London, King's Health Partners,
+      Department of Urology, Guy's Hospital, St Thomas Street, London SE1 9RT, UK.
+FAU - Mottrie, Alex
+AU  - Mottrie A
+AD  - MRC Centre for Transplantation, King's College London, King's Health Partners,
+      Department of Urology, Guy's Hospital, St Thomas Street, London SE1 9RT, UK.
+FAU - Volpe, Alessandro
+AU  - Volpe A
+AD  - MRC Centre for Transplantation, King's College London, King's Health Partners,
+      Department of Urology, Guy's Hospital, St Thomas Street, London SE1 9RT, UK.
+FAU - Khan, Mohammed S
+AU  - Khan MS
+AD  - MRC Centre for Transplantation, King's College London, King's Health Partners,
+      Department of Urology, Guy's Hospital, St Thomas Street, London SE1 9RT, UK.
+FAU - Challacombe, Ben
+AU  - Challacombe B
+AD  - MRC Centre for Transplantation, King's College London, King's Health Partners,
+      Department of Urology, Guy's Hospital, St Thomas Street, London SE1 9RT, UK.
+FAU - Ahmed, Kamran
+AU  - Ahmed K
+AD  - MRC Centre for Transplantation, King's College London, King's Health Partners,
+      Department of Urology, Guy's Hospital, St Thomas Street, London SE1 9RT, UK.
+      Electronic address: kamran.ahmed@kcl.ac.uk.
+LA  - eng
+PT  - Journal Article
+PT  - Review
+DEP - 20141206
+PL  - England
+TA  - Int J Surg
+JT  - International journal of surgery (London, England)
+JID - 101228232
+SB  - IM
+MH  - Clinical Competence
+MH  - Computer Simulation
+MH  - *Curriculum
+MH  - Humans
+MH  - Reproducibility of Results
+MH  - Robotic Surgical Procedures/*education
+MH  - Specialties, Surgical/*education
+OTO - NOTNLM
+OT  - Curriculum
+OT  - Education
+OT  - Robotic
+OT  - Surgery
+OT  - Training
+OT  - Urology
+EDAT- 2014/12/09 06:00
+MHDA- 2015/11/05 06:00
+CRDT- 2014/12/09 06:00
+PHST- 2014/08/04 [received]
+PHST- 2014/11/20 [revised]
+PHST- 2014/11/25 [accepted]
+PHST- 2014/12/06 [aheadofprint]
+AID - S1743-9191(14)00993-5 [pii]
+AID - 10.1016/j.ijsu.2014.11.033 [doi]
+PST - ppublish
+SO  - Int J Surg. 2015 Jan;13:115-23. doi: 10.1016/j.ijsu.2014.11.033. Epub 2014 Dec 6.
+
+PMID- 25361359
+OWN - NLM
+STAT- MEDLINE
+DA  - 20141101
+DCOM- 20151007
+LR  - 20141213
+IS  - 1938-2367 (Electronic)
+IS  - 0147-7447 (Linking)
+VI  - 37
+IP  - 11
+DP  - 2014 Nov
+TI  - Emerging technology in surgical education: combining real-time augmented reality 
+      and wearable computing devices.
+PG  - 751-7
+LID - 10.3928/01477447-20141023-05 [doi]
+AB  - The authors describe the first surgical case adopting the combination of
+      real-time augmented reality and wearable computing devices such as Google Glass
+      (Google Inc, Mountain View, California). A 66-year-old man presented to their
+      institution for a total shoulder replacement after 5 years of progressive right
+      shoulder pain and decreased range of motion. Throughout the surgical procedure,
+      Google Glass was integrated with the Virtual Interactive Presence and Augmented
+      Reality system (University of Alabama at Birmingham, Birmingham, Alabama),
+      enabling the local surgeon to interact with the remote surgeon within the local
+      surgical field. Surgery was well tolerated by the patient and early surgical
+      results were encouraging, with an improvement of shoulder pain and greater range 
+      of motion. The combination of real-time augmented reality and wearable computing 
+      devices such as Google Glass holds much promise in the field of surgery.
+CI  - Copyright 2014, SLACK Incorporated.
+FAU - Ponce, Brent A
+AU  - Ponce BA
+FAU - Menendez, Mariano E
+AU  - Menendez ME
+FAU - Oladeji, Lasun O
+AU  - Oladeji LO
+FAU - Fryberger, Charles T
+AU  - Fryberger CT
+FAU - Dantuluri, Phani K
+AU  - Dantuluri PK
+LA  - eng
+PT  - Case Reports
+PT  - Journal Article
+PL  - United States
+TA  - Orthopedics
+JT  - Orthopedics
+JID - 7806107
+SB  - IM
+MH  - Aged
+MH  - Cooperative Behavior
+MH  - Humans
+MH  - Male
+MH  - Microsurgery/methods
+MH  - Shoulder Impingement Syndrome/radiography/*surgery
+MH  - *Telemedicine
+MH  - *User-Computer Interface
+EDAT- 2014/11/02 06:00
+MHDA- 2015/10/08 06:00
+CRDT- 2014/11/01 06:00
+PHST- 2013/12/04 [received]
+PHST- 2014/02/20 [accepted]
+AID - 10.3928/01477447-20141023-05 [doi]
+PST - ppublish
+SO  - Orthopedics. 2014 Nov;37(11):751-7. doi: 10.3928/01477447-20141023-05.
+
+PMID- 24875655
+OWN - NLM
+STAT- MEDLINE
+DA  - 20150124
+DCOM- 20150730
+IS  - 1861-6429 (Electronic)
+IS  - 1861-6410 (Linking)
+VI  - 10
+IP  - 2
+DP  - 2015 Feb
+TI  - Tissue surface information for intraoperative incision planning and focus
+      adjustment in laser surgery.
+PG  - 171-81
+LID - 10.1007/s11548-014-1077-x [doi]
+AB  - PURPOSE: Introducing computational methods to laser surgery are an emerging
+      field. Focusing on endoscopic laser interventions, a novel approach is presented 
+      to enhance intraoperative incision planning and laser focusing by means of tissue
+      surface information obtained by stereoscopic vision. METHODS: Tissue surface is
+      estimated with stereo-based methods using nonparametric image transforms.
+      Subsequently, laser-to-camera registration is obtained by ablating a pattern on
+      tissue substitutes and performing a principle component analysis for precise
+      laser axis estimation. Furthermore, a virtual laser view is computed utilizing
+      trifocal transfer. Depth-based laser focus adaptation is integrated into a custom
+      experimental laser setup in order to achieve optimal ablation morphology.
+      Experimental validation is conducted on tissue substitutes and ex vivo animal
+      tissue. RESULTS: Laser-to-camera registration gives an error between planning and
+      ablation of less than 0.2 mm. As a result, the laser workspace can accurately be 
+      highlighted within the live views and incision planning can directly be
+      performed. Experiments related to laser focus adaptation demonstrate that
+      ablation geometry can be kept almost uniform within a depth range of 7.9 mm,
+      whereas cutting quality significantly decreases when the laser is defocused.
+      CONCLUSIONS: An automatic laser focus adjustment on tissue surfaces based on
+      stereoscopic scene information is feasible and has the potential to become an
+      effective methodology for optimal ablation. Laser-to-camera registration
+      facilitates advanced surgical planning for prospective user interfaces and
+      augmented reality extensions.
+FAU - Schoob, Andreas
+AU  - Schoob A
+AD  - Institute of Mechatronic Systems, Leibniz Universitat Hannover, 30167 , Hanover, 
+      Germany, andreas.schoob@imes.uni-hannover.de.
+FAU - Kundrat, Dennis
+AU  - Kundrat D
+FAU - Kleingrothe, Lukas
+AU  - Kleingrothe L
+FAU - Kahrs, Luder A
+AU  - Kahrs LA
+FAU - Andreff, Nicolas
+AU  - Andreff N
+FAU - Ortmaier, Tobias
+AU  - Ortmaier T
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20140530
+PL  - Germany
+TA  - Int J Comput Assist Radiol Surg
+JT  - International journal of computer assisted radiology and surgery
+JID - 101499225
+SB  - IM
+MH  - Depth Perception
+MH  - Endoscopy/*methods
+MH  - Humans
+MH  - Laser Therapy/*methods
+MH  - *Lasers
+MH  - Surgery, Computer-Assisted/*methods
+EDAT- 2014/05/31 06:00
+MHDA- 2015/08/01 06:00
+CRDT- 2014/05/31 06:00
+PHST- 2014/01/10 [received]
+PHST- 2014/05/16 [accepted]
+PHST- 2014/05/30 [aheadofprint]
+AID - 10.1007/s11548-014-1077-x [doi]
+PST - ppublish
+SO  - Int J Comput Assist Radiol Surg. 2015 Feb;10(2):171-81. doi:
+      10.1007/s11548-014-1077-x. Epub 2014 May 30.
+
+PMID- 24619331
+OWN - NLM
+STAT- MEDLINE
+DA  - 20140701
+DCOM- 20141204
+LR  - 20150801
+IS  - 1432-2218 (Electronic)
+IS  - 0930-2794 (Linking)
+VI  - 28
+IP  - 8
+DP  - 2014 Aug
+TI  - A comparison of NOTES transvaginal and laparoscopic cholecystectomy procedures
+      based upon task analysis.
+PG  - 2443-51
+LID - 10.1007/s00464-014-3495-9 [doi]
+AB  - BACKGROUND: A virtual reality-based simulator for natural orifice translumenal
+      endoscopic surgery (NOTES) procedures may be used for training and discovery of
+      new tools and procedures. Our previous study (Sankaranarayanan et al. in Surg
+      Endosc 27:1607-1616, 2013) shows that developing such a simulator for the
+      transvaginal cholecystectomy procedure using a rigid endoscope will have the most
+      impact on the field. However, prior to developing such a simulator, a thorough
+      task analysis is necessary to determine the most important phases, tasks, and
+      subtasks of this procedure. METHODS: 19 rigid endoscope transvaginal hybrid NOTES
+      cholecystectomy procedures and 11 traditional laparoscopic procedures have been
+      recorded and de-identified prior to analysis. Hierarchical task analysis was
+      conducted for the rigid endoscope transvaginal NOTES cholecystectomy. A time
+      series analysis was conducted to evaluate the performance of the transvaginal
+      NOTES and laparoscopic cholecystectomy procedures. Finally, a comparison of
+      electrosurgery-based errors was performed by two independent qualified personnel.
+      RESULTS: The most time-consuming tasks for both laparoscopic and NOTES
+      cholecystectomy are removing areolar and connective tissue surrounding the
+      gallbladder, exposing Calot's triangle, and dissecting the gallbladder off the
+      liver bed with electrosurgery. There is a positive correlation of performance
+      time between the removal of areolar and connective tissue and electrosurgery
+      dissection tasks in NOTES (r = 0.415) and laparoscopic cholecystectomy (r =
+      0.684) with p < 0.10. During the electrosurgery task, the NOTES procedures had
+      fewer errors related to lack of progress in gallbladder removal. Contrarily,
+      laparoscopic procedures had fewer errors due to the instrument being out of the
+      camera view. CONCLUSION: A thorough task analysis and video-based quantification 
+      of NOTES cholecystectomy has identified the most time-consuming tasks. A
+      comparison of the surgical errors during electrosurgery gallbladder dissection
+      establishes that the NOTES procedure, while still new, is not inferior to the
+      established laparoscopic procedure.
+FAU - Nemani, Arun
+AU  - Nemani A
+AD  - Center for Modeling, Simulation and Imaging in Medicine (CeMSIM), Rensselaer
+      Polytechnic Institute, Troy, NY, USA, nemana@rpi.edu.
+FAU - Sankaranarayanan, Ganesh
+AU  - Sankaranarayanan G
+FAU - Olasky, Jaisa S
+AU  - Olasky JS
+FAU - Adra, Souheil
+AU  - Adra S
+FAU - Roberts, Kurt E
+AU  - Roberts KE
+FAU - Panait, Lucian
+AU  - Panait L
+FAU - Schwaitzberg, Steven D
+AU  - Schwaitzberg SD
+FAU - Jones, Daniel B
+AU  - Jones DB
+FAU - De, Suvranu
+AU  - De S
+LA  - eng
+GR  - 1R01EB009362/EB/NIBIB NIH HHS/United States
+GR  - 2R01EB00580/EB/NIBIB NIH HHS/United States
+GR  - 5R01EB010037/EB/NIBIB NIH HHS/United States
+GR  - R01 EB005807/EB/NIBIB NIH HHS/United States
+GR  - R01 EB009362/EB/NIBIB NIH HHS/United States
+GR  - R01 EB010037/EB/NIBIB NIH HHS/United States
+GR  - R01 EB014305/EB/NIBIB NIH HHS/United States
+PT  - Comparative Study
+PT  - Journal Article
+PT  - Research Support, N.I.H., Extramural
+DEP - 20140312
+PL  - Germany
+TA  - Surg Endosc
+JT  - Surgical endoscopy
+JID - 8806653
+SB  - IM
+MH  - Cholecystectomy, Laparoscopic/*methods
+MH  - Electrosurgery
+MH  - Endoscopes
+MH  - Female
+MH  - Gallbladder/*surgery
+MH  - Humans
+MH  - *Interrupted Time Series Analysis
+MH  - Intraoperative Complications
+MH  - Natural Orifice Endoscopic Surgery/*methods
+MH  - Operative Time
+MH  - Vagina/*surgery
+MH  - Videotape Recording
+PMC - PMC4077992
+MID - NIHMS574840
+OID - NLM: NIHMS574840
+OID - NLM: PMC4077992
+EDAT- 2014/03/13 06:00
+MHDA- 2014/12/15 06:00
+CRDT- 2014/03/13 06:00
+PHST- 2013/08/06 [received]
+PHST- 2014/02/17 [accepted]
+PHST- 2014/03/12 [aheadofprint]
+AID - 10.1007/s00464-014-3495-9 [doi]
+PST - ppublish
+SO  - Surg Endosc. 2014 Aug;28(8):2443-51. doi: 10.1007/s00464-014-3495-9. Epub 2014
+      Mar 12.
+
+PMID- 24132469
+OWN - NLM
+STAT- In-Process
+DA  - 20150408
+IS  - 1553-3514 (Electronic)
+IS  - 1553-3506 (Linking)
+VI  - 21
+IP  - 3
+DP  - 2014 Jun
+TI  - A multicenter prospective cohort study on camera navigation training for key user
+      groups in minimally invasive surgery.
+PG  - 312-9
+LID - 10.1177/1553350613505714 [doi]
+AB  - BACKGROUND: Untrained laparoscopic camera assistants in minimally invasive
+      surgery (MIS) may cause suboptimal view of the operating field, thereby
+      increasing risk for errors. Camera navigation is often performed by the least
+      experienced member of the operating team, such as inexperienced surgical
+      residents, operating room nurses, and medical students. The operating room nurses
+      and medical students are currently not included as key user groups in structured 
+      laparoscopic training programs. A new virtual reality laparoscopic camera
+      navigation (LCN) module was specifically developed for these key user groups.
+      METHODS: This multicenter prospective cohort study assesses face validity and
+      construct validity of the LCN module on the Simendo virtual reality simulator.
+      Face validity was assessed through a questionnaire on resemblance to reality and 
+      perceived usability of the instrument among experts and trainees. Construct
+      validity was assessed by comparing scores of groups with different levels of
+      experience on outcome parameters of speed and movement proficiency. RESULTS: The 
+      results obtained show uniform and positive evaluation of the LCN module among
+      expert users and trainees, signifying face validity. Experts and intermediate
+      experience groups performed significantly better in task time and camera
+      stability during three repetitions, compared to the less experienced user groups 
+      (P < .007). Comparison of learning curves showed significant improvement of
+      proficiency in time and camera stability for all groups during three repetitions 
+      (P < .007). CONCLUSION: The results of this study show face validity and
+      construct validity of the LCN module. The module is suitable for use in training 
+      curricula for operating room nurses and novice surgical trainees, aimed at
+      improving team performance in minimally invasive surgery.
+CI  - (c) The Author(s) 2013.
+FAU - Graafland, Maurits
+AU  - Graafland M
+AD  - Department of Surgery, Academic Medical Centre, Amsterdam, The Netherlands.
+FAU - Bok, Kiki
+AU  - Bok K
+AD  - Division of Woman & Baby, Department of Reproductive Medicine and Gynaecology,
+      University Medical Centre Utrecht, Utrecht, The Netherlands.
+FAU - Schreuder, Henk W R
+AU  - Schreuder HW
+AD  - Division of Woman & Baby, Department of Reproductive Medicine and Gynaecology,
+      University Medical Centre Utrecht, Utrecht, The Netherlands.
+FAU - Schijven, Marlies P
+AU  - Schijven MP
+AD  - Department of Surgery, Academic Medical Centre, Amsterdam, The Netherlands
+      m.p.schijven@amc.uva.nl.
+LA  - eng
+PT  - Journal Article
+DEP - 20131016
+PL  - United States
+TA  - Surg Innov
+JT  - Surgical innovation
+JID - 101233809
+SB  - IM
+OTO - NOTNLM
+OT  - ergonomics
+OT  - evidence-based medicine/surgery
+OT  - human factors study
+OT  - simulation
+OT  - surgical education
+EDAT- 2013/10/18 06:00
+MHDA- 2013/10/18 06:00
+CRDT- 2013/10/18 06:00
+PHST- 2013/10/16 [aheadofprint]
+AID - 1553350613505714 [pii]
+AID - 10.1177/1553350613505714 [doi]
+PST - ppublish
+SO  - Surg Innov. 2014 Jun;21(3):312-9. doi: 10.1177/1553350613505714. Epub 2013 Oct
+      16.
+
+PMID- 23649730
+OWN - NLM
+STAT- MEDLINE
+DA  - 20131101
+DCOM- 20141029
+IS  - 1861-6429 (Electronic)
+IS  - 1861-6410 (Linking)
+VI  - 8
+IP  - 6
+DP  - 2013 Nov
+TI  - Projection-based visual guidance for robot-aided RF needle insertion.
+PG  - 1015-25
+LID - 10.1007/s11548-013-0897-4 [doi]
+AB  - PURPOSE: The use of projector-based augmented reality (AR) in surgery may enable 
+      surgeons to directly view anatomical models and surgical data from the patient's 
+      surface (skin). It has the advantages of a consistent viewing focus on the
+      patient, an extended field of view and augmented interaction. This paper presents
+      an AR guidance mechanism with a projector-camera system to provide the surgeon
+      with direct visual feedback for supervision of robotic needle insertion in
+      radiofrequency (RF) ablation treatment. METHODS: The registration of target organ
+      models to specific positions on the patient body is performed using a
+      surface-matching algorithm and point-based registration. An algorithm based on
+      the extended Kalman filter and spatial transformation is used to intraoperatively
+      compute the virtual needle's depth in the patient's body for AR display. RESULTS:
+      Experiments of this AR system on a mannequin were conducted to evaluate AR
+      visualization and accuracy of virtual RF needle insertion. The average accuracy
+      of 1.86 mm for virtual needle insertion met the clinical requirement of 2 mm or
+      better. The feasibility of augmented interaction with a surgical robot using the 
+      proposed open AR interface with active visual feedback was demonstrated.
+      CONCLUSIONS: The experimental results demonstrate that this guidance system is
+      effective in assisting a surgeon to perform a robot-assisted radiofrequency
+      ablation procedure. The novelty of the work lies in establishing a navigational
+      procedure for percutaneous surgical augmented intervention integrating a
+      projection-based AR guidance and robotic implementation for surgical needle
+      insertion.
+FAU - Wen, Rong
+AU  - Wen R
+AD  - Department of Mechanical Engineering, National University of Singapore,
+      Singapore, 117576, Singapore, g0801390@nus.edu.sg.
+FAU - Chui, Chee-Kong
+AU  - Chui CK
+FAU - Ong, Sim-Heng
+AU  - Ong SH
+FAU - Lim, Kah-Bin
+AU  - Lim KB
+FAU - Chang, Stephen Kin-Yong
+AU  - Chang SK
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20130507
+PL  - Germany
+TA  - Int J Comput Assist Radiol Surg
+JT  - International journal of computer assisted radiology and surgery
+JID - 101499225
+SB  - IM
+MH  - Catheter Ablation/instrumentation/*methods
+MH  - Humans
+MH  - Models, Anatomic
+MH  - *Needles
+MH  - Robotics/*instrumentation
+MH  - Software
+MH  - Surgery, Computer-Assisted/instrumentation/*methods
+EDAT- 2013/05/08 06:00
+MHDA- 2014/10/30 06:00
+CRDT- 2013/05/08 06:00
+PHST- 2013/01/07 [received]
+PHST- 2013/04/22 [accepted]
+PHST- 2013/05/07 [aheadofprint]
+AID - 10.1007/s11548-013-0897-4 [doi]
+PST - ppublish
+SO  - Int J Comput Assist Radiol Surg. 2013 Nov;8(6):1015-25. doi:
+      10.1007/s11548-013-0897-4. Epub 2013 May 7.
+
+PMID- 23562204
+OWN - NLM
+STAT- MEDLINE
+DA  - 20130408
+DCOM- 20131028
+IS  - 1945-8932 (Electronic)
+IS  - 1945-8932 (Linking)
+VI  - 27
+IP  - 2
+DP  - 2013 Mar-Apr
+TI  - Toward photorealism in endoscopic sinus surgery simulation.
+PG  - 138-43
+LID - 10.2500/ajra.2013.27.3861 [doi]
+AB  - BACKGROUND: Endoscopic sinus surgery (ESS) is the surgical standard treatment for
+      chronic rhinitis/rhinosinusitis and nasal polyposis. There is a reported
+      complication rate of 5-10% associated with this type of surgery. Simulation has
+      been advocated as a means to improve surgical training and minimize the rates of 
+      complication and medical error. This study aimed to show how a virtual reality
+      ESS simulator was developed, with particular emphasis on achieving satisfactory
+      photorealism and surgical verisimilitude. METHODS: Sinus computed tomography
+      scans were processed to create a triangle-based three-dimensional mesh model;
+      this was incorporated into a spring-damper model of thousands of interconnected
+      nodes, which is allowed to deform in response to user interactions. Dual haptic
+      handpiece devices were programmed to simulate an endoscope and various surgical
+      instruments. Textures and lighting effects were added to the mesh model to
+      provide an accurate representation of the surgical field. Effects such as
+      vasoconstriction in response to "virtual" decongestant were added. RESULTS: The
+      final simulated endoscopic view of the sinuses accurately simulates the moist and
+      glossy appearance of the sinuses. The interactive tissue simulation system
+      enables the user to interactively cut and remove tissue while receiving accurate 
+      haptic feedback. A working prototype of the simulator has been developed that
+      leverages recent advances in computer hardware to deliver a realistic user
+      experience, both visually and haptically. CONCLUSION: This new computer-based
+      training tool for practicing ESS provides a risk-free environment for surgical
+      trainees to practice and develop core skills. The novel use of customized
+      precision force feedback (haptic) devices enables trainees to use movements
+      during training that closely mimic those used during the actual procedure, which 
+      we anticipate will improve learning, retention, and recall.
+FAU - Ruthenbeck, Greg S
+AU  - Ruthenbeck GS
+AD  - School of Science, Engineering and Mathematics, Flinders University, South
+      Australia, Australia.
+FAU - Hobson, Jonathan
+AU  - Hobson J
+FAU - Carney, A Simon
+AU  - Carney AS
+FAU - Sloan, Steve
+AU  - Sloan S
+FAU - Sacks, Raymond
+AU  - Sacks R
+FAU - Reynolds, Karen J
+AU  - Reynolds KJ
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+PL  - United States
+TA  - Am J Rhinol Allergy
+JT  - American journal of rhinology & allergy
+JID - 101490775
+SB  - IM
+MH  - Chronic Disease
+MH  - Computer Simulation
+MH  - Computer-Assisted Instruction
+MH  - Endoscopy/adverse effects/*methods
+MH  - Humans
+MH  - Imaging, Three-Dimensional
+MH  - Nasal Polyps/radiography/*surgery
+MH  - Paranasal Sinuses/radiography/*surgery
+MH  - Photography
+MH  - Postoperative Complications/prevention & control
+MH  - Professional Practice
+MH  - Rhinitis/radiography/*surgery
+MH  - Sinusitis/radiography/*surgery
+MH  - Software
+MH  - Tomography, X-Ray Computed
+MH  - User-Computer Interface
+EDAT- 2013/04/09 06:00
+MHDA- 2013/10/29 06:00
+CRDT- 2013/04/09 06:00
+AID - 10.2500/ajra.2013.27.3861 [doi]
+PST - ppublish
+SO  - Am J Rhinol Allergy. 2013 Mar-Apr;27(2):138-43. doi: 10.2500/ajra.2013.27.3861.
+
+PMID- 23400197
+OWN - NLM
+STAT- MEDLINE
+DA  - 20130212
+DCOM- 20130702
+IS  - 0926-9630 (Print)
+IS  - 0926-9630 (Linking)
+VI  - 184
+DP  - 2013
+TI  - Laparoscopic surgery simulator using first person view and guidance force.
+PG  - 431-5
+AB  - In general, minimally invasive surgery is seen as the most difficult surgery
+      because there is limited field of view with an endoscope and force sensation from
+      surgical instruments such as forceps is poor. Especially in early clinical
+      education for medical students, a virtual reality surgical simulator would be an 
+      effective tool. In this paper, we propose a visuohaptic surgery training system
+      for laparoscopical techniques. We recorded a video from a first person point of
+      view of the instructor (expert). And we also recorded operation information (i.e.
+      trajectory) of surgical instruments of the instructor. Then, we displayed the
+      recorded video and the guidance force to trainees. We constructed a prototype
+      surgery training system and the effectiveness of our approach was confirmed.
+FAU - Tagawa, Kazuyoshi
+AU  - Tagawa K
+AD  - Ritsumeikan University. tagawa@tagawa.info
+FAU - Tanaka, Hiromi T
+AU  - Tanaka HT
+FAU - Kurumi, Yoshimasa
+AU  - Kurumi Y
+FAU - Komori, Masaru
+AU  - Komori M
+FAU - Morikawa, Shigehiro
+AU  - Morikawa S
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+PL  - Netherlands
+TA  - Stud Health Technol Inform
+JT  - Studies in health technology and informatics
+JID - 9214582
+SB  - T
+MH  - Computer-Assisted Instruction/*methods
+MH  - *Expert Systems
+MH  - Imaging, Three-Dimensional/*methods
+MH  - Laparoscopy/*education/*methods
+MH  - Surgery, Computer-Assisted/*methods
+MH  - Teaching/*methods
+MH  - *User-Computer Interface
+EDAT- 2013/02/13 06:00
+MHDA- 2013/07/03 06:00
+CRDT- 2013/02/13 06:00
+PST - ppublish
+SO  - Stud Health Technol Inform. 2013;184:431-5.
+
+PMID- 23389366
+OWN - NLM
+STAT- MEDLINE
+DA  - 20130207
+DCOM- 20130329
+IS  - 2038-2529 (Electronic)
+IS  - 0300-8916 (Linking)
+VI  - 98
+IP  - 6
+DP  - 2012 Nov
+TI  - Percutaneous computed tomography-guided lung biopsies: preliminary results using 
+      an augmented reality navigation system.
+PG  - 775-82
+LID - 10.1700/1217.13503 [doi]
+AB  - AIMS AND BACKGROUND: "Augmented reality" is a technique to create a composite
+      view by augmenting the real intervention field, visualized by the doctor, with
+      additional information coming from a virtual volume generated using computed
+      tomography (CT), magnetic resonance or ultrasound images previously acquired from
+      the same patient. In the present study we verified the accuracy and validated the
+      clinical use of an augmented reality navigation system produced to perform
+      percutaneous CT-guided lung biopsies. METHODS: One hundred and eighty consecutive
+      patients with solitary parenchymal lung lesions, enrolled using a nonrandom
+      enrollment system, underwent percutaneous CT-guided aspiration and core biopsy
+      using a traditional technique (group C, 90 patients) and navigation system
+      assistance (group S, 90 patients). For each patient we recorded the largest
+      lesion diameter, procedure time, overall number of CT scans, radiation dose, and 
+      complications. The entire experimental project was evaluated and approved by the 
+      local institutional review board (ethics committee). RESULTS: Each procedure was 
+      concluded successfully and a pathological diagnosis was reached in 96% of cases
+      in group S and 90% of cases in group C. Procedure time, overall number of CT
+      scans and incident x-ray radiation dose (CTDIvol) were significantly reduced in
+      navigation system-assisted procedures (P <0.001; z = 5.64) compared with
+      traditional CT-guided procedures. The percentage of procedural complications was 
+      14% in group S and 17% in group C. CONCLUSION: The augmented reality navigation
+      system used in this study was a highly safe, technically reliable and effective
+      support tool in percutaneous CT-guided lung biopsy, allowing to shorten the
+      procedure time and reduce the incident x-ray radiation dose to patients and the
+      rate of insufficient specimens. Furthermore, it has the potential to increase the
+      number of procedures executed in the allocated time without increasing the number
+      of complications.
+FAU - Grasso, Rosario Francesco
+AU  - Grasso RF
+AD  - Universita Campus Bio-Medico, Via Alvaro Del Portillo 200, Rome, Italy.
+FAU - Luppi, Giacomo
+AU  - Luppi G
+FAU - Cazzato, Roberto Luigi
+AU  - Cazzato RL
+FAU - Faiella, Eliodoro
+AU  - Faiella E
+FAU - D'Agostino, Francesco
+AU  - D'Agostino F
+FAU - Beomonte Zobel, Daniela
+AU  - Beomonte Zobel D
+FAU - De Lena, Mario
+AU  - De Lena M
+LA  - eng
+PT  - Clinical Trial
+PT  - Journal Article
+PT  - Validation Studies
+PL  - Italy
+TA  - Tumori
+JT  - Tumori
+JID - 0111356
+SB  - IM
+MH  - Adult
+MH  - Aged
+MH  - Biopsy, Needle/instrumentation/*methods
+MH  - Female
+MH  - Humans
+MH  - Italy
+MH  - Lung/*pathology/radiography/surgery
+MH  - Lung Neoplasms/*diagnosis/pathology/radiography/surgery
+MH  - Male
+MH  - Middle Aged
+MH  - Operative Time
+MH  - Prospective Studies
+MH  - Radiation Dosage
+MH  - Surgery, Computer-Assisted/instrumentation/*methods
+MH  - *Tomography, X-Ray Computed/instrumentation
+MH  - *User-Computer Interface
+EDAT- 2013/02/08 06:00
+MHDA- 2013/03/30 06:00
+CRDT- 2013/02/08 06:00
+AID - 10.1700/1217.13503 [doi]
+PST - ppublish
+SO  - Tumori. 2012 Nov;98(6):775-82. doi: 10.1700/1217.13503.
+
+PMID- 23239589
+OWN - NLM
+STAT- MEDLINE
+DA  - 20130912
+DCOM- 20140425
+LR  - 20141120
+IS  - 1478-596X (Electronic)
+IS  - 1478-5951 (Linking)
+VI  - 9
+IP  - 3
+DP  - 2013 Sep
+TI  - Augmented reality to the rescue of the minimally invasive surgeon. The usefulness
+      of the interposition of stereoscopic images in the Da Vinci robotic console.
+PG  - e34-8
+LID - 10.1002/rcs.1471 [doi]
+AB  - BACKGROUND: Computerized management of medical information and 3D imaging has
+      become the norm in everyday medical practice. Surgeons exploit these emerging
+      technologies and bring information previously confined to the radiology rooms
+      into the operating theatre. The paper reports the authors' experience with
+      integrated stereoscopic 3D-rendered images in the da Vinci surgeon console.
+      METHODS: Volume-rendered images were obtained from a standard computed tomography
+      dataset using the OsiriX DICOM workstation. A custom OsiriX plugin was created
+      that permitted the 3D-rendered images to be displayed in the da Vinci surgeon
+      console and to appear stereoscopic. These rendered images were displayed in the
+      robotic console using the TilePro multi-input display. The upper part of the
+      screen shows the real endoscopic surgical field and the bottom shows the
+      stereoscopic 3D-rendered images. These are controlled by a 3D joystick installed 
+      on the console, and are updated in real time. RESULTS: Five patients underwent a 
+      robotic augmented reality-enhanced procedure. The surgeon was able to switch
+      between the classical endoscopic view and a combined virtual view during the
+      procedure. Subjectively, the addition of the rendered images was considered to be
+      an undeniable help during the dissection phase. CONCLUSION: With the rapid
+      evolution of robotics, computer-aided surgery is receiving increasing interest.
+      This paper details the authors' experience with 3D-rendered images projected
+      inside the surgical console. The use of this intra-operative mixed reality
+      technology is considered very useful by the surgeon. It has been shown that the
+      usefulness of this technique is a step toward computer-aided surgery that will
+      progress very quickly over the next few years.
+CI  - Copyright (c) 2012 John Wiley & Sons, Ltd.
+FAU - Volonte, Francesco
+AU  - Volonte F
+AD  - Clinic for Visceral and Transplantation Surgery, Department of Surgery, Geneva
+      University Hospital, Rue Gabrielle-Perret-Gentil 4, 1211, Geneva 14, Switzerland.
+FAU - Buchs, Nicolas C
+AU  - Buchs NC
+FAU - Pugin, Francois
+AU  - Pugin F
+FAU - Spaltenstein, Joel
+AU  - Spaltenstein J
+FAU - Schiltz, Boris
+AU  - Schiltz B
+FAU - Jung, Minoa
+AU  - Jung M
+FAU - Hagen, Monika
+AU  - Hagen M
+FAU - Ratib, Osman
+AU  - Ratib O
+FAU - Morel, Philippe
+AU  - Morel P
+LA  - eng
+PT  - Journal Article
+DEP - 20121213
+PL  - England
+TA  - Int J Med Robot
+JT  - The international journal of medical robotics + computer assisted surgery : MRCAS
+JID - 101250764
+SB  - IM
+MH  - Depth Perception
+MH  - Humans
+MH  - Image Processing, Computer-Assisted
+MH  - *Imaging, Three-Dimensional
+MH  - Minimally Invasive Surgical Procedures/*instrumentation/statistics & numerical
+      data
+MH  - Models, Anatomic
+MH  - Robotics/*instrumentation/statistics & numerical data
+MH  - Surgery, Computer-Assisted/*instrumentation/statistics & numerical data
+MH  - Tomography, X-Ray Computed/statistics & numerical data
+MH  - User-Computer Interface
+OTO - NOTNLM
+OT  - augmented reality
+OT  - mixed reality
+OT  - osiriX
+OT  - robotic surgery
+EDAT- 2012/12/15 06:00
+MHDA- 2014/04/26 06:00
+CRDT- 2012/12/15 06:00
+PHST- 2012/10/31 [accepted]
+PHST- 2012/12/13 [aheadofprint]
+AID - 10.1002/rcs.1471 [doi]
+PST - ppublish
+SO  - Int J Med Robot. 2013 Sep;9(3):e34-8. doi: 10.1002/rcs.1471. Epub 2012 Dec 13.
+
+PMID- 22105016
+OWN - NLM
+STAT- MEDLINE
+DA  - 20120727
+DCOM- 20121001
+IS  - 1941-0506 (Electronic)
+IS  - 1077-2626 (Linking)
+VI  - 18
+IP  - 7
+DP  - 2012 Jul
+TI  - Interactive visibility retargeting in VR using conformal visualization.
+PG  - 1027-40
+LID - 10.1109/TVCG.2011.278 [doi]
+AB  - In Virtual Reality, immersive systems such as the CAVE provide an important tool 
+      for the collaborative exploration of large 3D data. Unlike head-mounted displays,
+      these systems are often only partially immersive due to space, access, or cost
+      constraints. The resulting loss of visual information becomes a major obstacle
+      for critical tasks that need to utilize the users' entire field of vision. We
+      have developed a conformal visualization technique that establishes a conformal
+      mapping between the full 360 degrees field of view and the display geometry of a 
+      given visualization system. The mapping is provably angle-preserving and has the 
+      desirable property of preserving shapes locally, which is important for
+      identifying shape-based features in the visual data. We apply the conformal
+      visualization to both forward and backward rendering pipelines in a variety of
+      retargeting scenarios, including CAVEs and angled arrangements of flat panel
+      displays. In contrast to image-based retargeting approaches, our technique
+      constructs accurate stereoscopic images that are free of resampling artifacts.
+      Our user study shows that on the visual polyp detection task in Immersive Virtual
+      Colonoscopy, conformal visualization leads to improved sensitivity at comparable 
+      examination times against the traditional rendering approach. We also develop a
+      novel user interface based on the interactive recreation of the conformal mapping
+      and the real-time regeneration of the view direction correspondence.
+FAU - Petkov, Kaloian
+AU  - Petkov K
+AD  - Department of Computer Science, Stony Brook University, Stony Brook, NY 11794,
+      USA. kpetkov@cs.stonybrook.edu
+FAU - Papadopoulos, Charilaos
+AU  - Papadopoulos C
+FAU - Zhang, Min
+AU  - Zhang M
+FAU - Kaufman, Arie E
+AU  - Kaufman AE
+FAU - Gu, Xianfeng David
+AU  - Gu XD
+LA  - eng
+GR  - R01EB7530/EB/NIBIB NIH HHS/United States
+PT  - Journal Article
+PT  - Research Support, N.I.H., Extramural
+PT  - Research Support, Non-U.S. Gov't
+PT  - Research Support, U.S. Gov't, Non-P.H.S.
+PL  - United States
+TA  - IEEE Trans Vis Comput Graph
+JT  - IEEE transactions on visualization and computer graphics
+JID - 9891704
+SB  - IM
+MH  - Algorithms
+MH  - Colonic Polyps/diagnosis
+MH  - Colonoscopy/methods
+MH  - *Computer Graphics
+MH  - Depth Perception/*physiology
+MH  - Humans
+MH  - *Models, Theoretical
+MH  - Sensitivity and Specificity
+MH  - *User-Computer Interface
+EDAT- 2011/11/23 06:00
+MHDA- 2012/10/02 06:00
+CRDT- 2011/11/23 06:00
+AID - 10.1109/TVCG.2011.278 [doi]
+PST - ppublish
+SO  - IEEE Trans Vis Comput Graph. 2012 Jul;18(7):1027-40. doi: 10.1109/TVCG.2011.278.
+
+PMID- 21802281
+OWN - NLM
+STAT- MEDLINE
+DA  - 20110816
+DCOM- 20111208
+LR  - 20141120
+IS  - 1879-3320 (Electronic)
+IS  - 0960-7404 (Linking)
+VI  - 20
+IP  - 3
+DP  - 2011 Sep
+TI  - Augmented reality in laparoscopic surgical oncology.
+PG  - 189-201
+LID - 10.1016/j.suronc.2011.07.002 [doi]
+AB  - Minimally invasive surgery represents one of the main evolutions of surgical
+      techniques aimed at providing a greater benefit to the patient. However,
+      minimally invasive surgery increases the operative difficulty since the depth
+      perception is usually dramatically reduced, the field of view is limited and the 
+      sense of touch is transmitted by an instrument. However, these drawbacks can
+      currently be reduced by computer technology guiding the surgical gesture. Indeed,
+      from a patient's medical image (US, CT or MRI), Augmented Reality (AR) can
+      increase the surgeon's intra-operative vision by providing a virtual transparency
+      of the patient. AR is based on two main processes: the 3D visualization of the
+      anatomical or pathological structures appearing in the medical image, and the
+      registration of this visualization on the real patient. 3D visualization can be
+      performed directly from the medical image without the need for a pre-processing
+      step thanks to volume rendering. But better results are obtained with surface
+      rendering after organ and pathology delineations and 3D modelling. Registration
+      can be performed interactively or automatically. Several interactive systems have
+      been developed and applied to humans, demonstrating the benefit of AR in surgical
+      oncology. It also shows the current limited interactivity due to soft organ
+      movements and interaction between surgeon instruments and organs. If the current 
+      automatic AR systems show the feasibility of such system, it is still relying on 
+      specific and expensive equipment which is not available in clinical routine.
+      Moreover, they are not robust enough due to the high complexity of developing a
+      real-time registration taking organ deformation and human movement into account. 
+      However, the latest results of automatic AR systems are extremely encouraging and
+      show that it will become a standard requirement for future computer-assisted
+      surgical oncology. In this article, we will explain the concept of AR and its
+      principles. Then, we will review the existing interactive and automatic AR
+      systems in digestive surgical oncology, highlighting their benefits and
+      limitations. Finally, we will discuss the future evolutions and the issues that
+      still have to be tackled so that this technology can be seamlessly integrated in 
+      the operating room.
+CI  - Copyright (c) 2011 Elsevier Ltd. All rights reserved.
+FAU - Nicolau, Stephane
+AU  - Nicolau S
+AD  - IRCAD/EITS, Hopitaux Universitaires de Strasbourg, Digestive and Endocrine
+      Surgery, 1 Place de l'Hopital, 67091 Strasbourg Cedex, France.
+FAU - Soler, Luc
+AU  - Soler L
+FAU - Mutter, Didier
+AU  - Mutter D
+FAU - Marescaux, Jacques
+AU  - Marescaux J
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20110728
+PL  - Netherlands
+TA  - Surg Oncol
+JT  - Surgical oncology
+JID - 9208188
+SB  - IM
+MH  - Computer Simulation
+MH  - *Diagnostic Imaging
+MH  - *General Surgery
+MH  - Humans
+MH  - Image Processing, Computer-Assisted
+MH  - *Laparoscopy
+MH  - *Medical Oncology
+MH  - *Minimally Invasive Surgical Procedures
+MH  - Neoplasms/pathology/*surgery
+MH  - Software
+EDAT- 2011/08/02 06:00
+MHDA- 2011/12/13 00:00
+CRDT- 2011/08/02 06:00
+PHST- 2011/07/28 [aheadofprint]
+AID - S0960-7404(11)00052-1 [pii]
+AID - 10.1016/j.suronc.2011.07.002 [doi]
+PST - ppublish
+SO  - Surg Oncol. 2011 Sep;20(3):189-201. doi: 10.1016/j.suronc.2011.07.002. Epub 2011 
+      Jul 28.
+
+PMID- 21668293
+OWN - NLM
+STAT- MEDLINE
+DA  - 20110616
+DCOM- 20111024
+LR  - 20140730
+IS  - 1097-0150 (Electronic)
+IS  - 1092-9088 (Linking)
+VI  - 16
+IP  - 4
+DP  - 2011
+TI  - Fusion and visualization of intraoperative cortical images with preoperative
+      models for epilepsy surgical planning and guidance.
+PG  - 149-60
+LID - 10.3109/10929088.2011.585805 [doi]
+AB  - OBJECTIVE: During epilepsy surgery it is important for the surgeon to correlate
+      the preoperative cortical morphology (from preoperative images) with the
+      intraoperative environment. Augmented Reality (AR) provides a solution for
+      combining the real environment with virtual models. However, AR usually requires 
+      the use of specialized displays, and its effectiveness in the surgery still needs
+      to be evaluated. The objective of this research was to develop an alternative
+      approach to provide enhanced visualization by fusing a direct (photographic) view
+      of the surgical field with the 3D patient model during image guided epilepsy
+      surgery. MATERIALS AND METHODS: We correlated the preoperative plan with the
+      intraoperative surgical scene, first by a manual landmark-based registration and 
+      then by an intensity-based perspective 3D-2D registration for camera pose
+      estimation. The 2D photographic image was then texture-mapped onto the 3D
+      preoperative model using the solved camera pose. In the proposed method, we
+      employ direct volume rendering to obtain a perspective view of the brain image
+      using GPU-accelerated ray-casting. The algorithm was validated by a phantom study
+      and also in the clinical environment with a neuronavigation system. RESULTS: In
+      the phantom experiment, the 3D Mean Registration Error (MRE) was 2.43 +/- 0.32 mm
+      with a success rate of 100%. In the clinical experiment, the 3D MRE was 5.15 +/- 
+      0.49 mm with 2D in-plane error of 3.30 +/- 1.41 mm. A clinical application of our
+      fusion method for enhanced and augmented visualization for integrated image and
+      functional guidance during neurosurgery is also presented. CONCLUSIONS: This
+      paper presents an alternative approach to a sophisticated AR environment for
+      assisting in epilepsy surgery, whereby a real intraoperative scene is mapped onto
+      the surface model of the brain. In contrast to the AR approach, this method needs
+      no specialized display equipment. Moreover, it requires minimal changes to
+      existing systems and workflow, and is therefore well suited to the OR
+      environment. In the phantom and in vivo clinical experiments, we demonstrate that
+      the fusion method can achieve a level of accuracy sufficient for the requirements
+      of epilepsy surgery.
+FAU - Wang, A
+AU  - Wang A
+AD  - Imaging Research Laboratories, Robarts Research Institute , London, Ontario.
+FAU - Mirsattari, S M
+AU  - Mirsattari SM
+FAU - Parrent, A G
+AU  - Parrent AG
+FAU - Peters, T M
+AU  - Peters TM
+LA  - eng
+GR  - MOP 184807/Canadian Institutes of Health Research/Canada
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20110613
+PL  - England
+TA  - Comput Aided Surg
+JT  - Computer aided surgery : official journal of the International Society for
+      Computer Aided Surgery
+JID - 9708375
+SB  - IM
+MH  - Cerebral Cortex/*surgery
+MH  - Craniotomy
+MH  - Electroencephalography
+MH  - Epilepsy, Temporal Lobe/*surgery
+MH  - Humans
+MH  - Image Processing, Computer-Assisted
+MH  - Magnetic Resonance Imaging
+MH  - Neuronavigation/*methods
+MH  - Phantoms, Imaging
+EDAT- 2011/06/15 06:00
+MHDA- 2011/10/25 06:00
+CRDT- 2011/06/15 06:00
+PHST- 2011/06/13 [aheadofprint]
+AID - 10.3109/10929088.2011.585805 [doi]
+PST - ppublish
+SO  - Comput Aided Surg. 2011;16(4):149-60. doi: 10.3109/10929088.2011.585805. Epub
+      2011 Jun 13.
+
+PMID- 22275200
+OWN - NLM
+STAT- MEDLINE
+DA  - 20120125
+DCOM- 20120820
+LR  - 20141120
+IS  - 1941-1189 (Electronic)
+IS  - 1937-3333 (Linking)
+VI  - 3
+DP  - 2010
+TI  - Virtual and augmented medical imaging environments: enabling technology for
+      minimally invasive cardiac interventional guidance.
+PG  - 25-47
+LID - 10.1109/RBME.2010.2082522 [doi]
+AB  - Virtual and augmented reality environments have been adopted in medicine as a
+      means to enhance the clinician's view of the anatomy and facilitate the
+      performance of minimally invasive procedures. Their value is truly appreciated
+      during interventions where the surgeon cannot directly visualize the targets to
+      be treated, such as during cardiac procedures performed on the beating heart.
+      These environments must accurately represent the real surgical field and require 
+      seamless integration of pre- and intra-operative imaging, surgical tracking, and 
+      visualization technology in a common framework centered around the patient. This 
+      review begins with an overview of minimally invasive cardiac interventions,
+      describes the architecture of a typical surgical guidance platform including
+      imaging, tracking, registration and visualization, highlights both clinical and
+      engineering accuracy limitations in cardiac image guidance, and discusses the
+      translation of the work from the laboratory into the operating room together with
+      typically encountered challenges.
+FAU - Linte, Cristian A
+AU  - Linte CA
+AD  - Biomedical Engineering Graduate Program, University of Western Ontario, London.
+      clinte@imaging.robarts.ca
+FAU - White, James
+AU  - White J
+FAU - Eagleson, Roy
+AU  - Eagleson R
+FAU - Guiraudon, Gerard M
+AU  - Guiraudon GM
+FAU - Peters, Terry M
+AU  - Peters TM
+LA  - eng
+GR  - Canadian Institutes of Health Research/Canada
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+PT  - Review
+PL  - United States
+TA  - IEEE Rev Biomed Eng
+JT  - IEEE reviews in biomedical engineering
+JID - 101493803
+SB  - IM
+MH  - Cardiac Surgical Procedures/*methods
+MH  - Diagnostic Imaging/*methods
+MH  - Humans
+MH  - Magnetic Resonance Imaging
+MH  - Minimally Invasive Surgical Procedures/instrumentation/*methods
+EDAT- 2010/01/01 00:00
+MHDA- 2012/08/21 06:00
+CRDT- 2012/01/26 06:00
+AID - 10.1109/RBME.2010.2082522 [doi]
+PST - ppublish
+SO  - IEEE Rev Biomed Eng. 2010;3:25-47. doi: 10.1109/RBME.2010.2082522.
+
+PMID- 19574833
+OWN - NLM
+STAT- MEDLINE
+DA  - 20090703
+DCOM- 20090915
+IS  - 1524-4040 (Electronic)
+IS  - 0148-396X (Linking)
+VI  - 65
+IP  - 1
+DP  - 2009 Jul
+TI  - Prediction of surgical view of neurovascular decompression using interactive
+      computer graphics.
+PG  - 121-8; discussion 128-9
+LID - 10.1227/01.NEU.0000347890.19718.0A [doi]
+AB  - OBJECTIVE: To assess the value of an interactive visualization method for
+      detecting the offending vessels in neurovascular compression syndrome in patients
+      with facial spasm and trigeminal neuralgia. Computer graphics models are created 
+      by fusion of fast imaging employing steady-state acquisition and magnetic
+      resonance angiography. METHODS: High-resolution magnetic resonance angiography
+      and fast imaging employing steady-state acquisition were performed preoperatively
+      in 17 patients with neurovascular compression syndromes (facial spasm, n = 10;
+      trigeminal neuralgia, n = 7) using a 3.0-T magnetic resonance imaging scanner.
+      Computer graphics models were created with computer software and observed
+      interactively for detection of offending vessels by rotation, enlargement,
+      reduction, and retraction on a graphic workstation. Two-dimensional images were
+      reviewed by 2 radiologists blinded to the clinical details, and 2 neurosurgeons
+      predicted the offending vessel with the interactive visualization method before
+      surgery. Predictions from the 2 imaging approaches were compared with surgical
+      findings. The vessels identified during surgery were assumed to be the true
+      offending vessels. RESULTS: Offending vessels were identified correctly in 16 of 
+      17 patients (94%) using the interactive visualization method and in 10 of 17
+      patients using 2-dimensional images. These data demonstrated a significant
+      difference (P = 0.015 by Fisher's exact method). CONCLUSION: The interactive
+      visualization method data corresponded well with surgical findings (surgical
+      field, offending vessels, and nerves). Virtual reality 3-dimensional computer
+      graphics using fusion magnetic resonance angiography and fast imaging employing
+      steady-state acquisition may be helpful for preoperative simulation.
+FAU - Kin, Taichi
+AU  - Kin T
+AD  - Department of Neurosurgery, University of Tokyo, Tokyo, Japan.
+      tkin-tky@umin.ac.jp
+FAU - Oyama, Hiroshi
+AU  - Oyama H
+FAU - Kamada, Kyousuke
+AU  - Kamada K
+FAU - Aoki, Shigeki
+AU  - Aoki S
+FAU - Ohtomo, Kuni
+AU  - Ohtomo K
+FAU - Saito, Nobuhito
+AU  - Saito N
+LA  - eng
+PT  - Journal Article
+PL  - United States
+TA  - Neurosurgery
+JT  - Neurosurgery
+JID - 7802914
+SB  - IM
+MH  - Adult
+MH  - Aged
+MH  - Decompression, Surgical/methods
+MH  - Female
+MH  - Hemifacial Spasm/*radiography/surgery
+MH  - Humans
+MH  - Image Processing, Computer-Assisted/*methods
+MH  - Magnetic Resonance Angiography/*methods
+MH  - Magnetic Resonance Imaging/methods
+MH  - Male
+MH  - Microcirculation
+MH  - Middle Aged
+MH  - Predictive Value of Tests
+MH  - Preoperative Care/*methods
+MH  - Retrospective Studies
+MH  - Surgery, Computer-Assisted/methods
+MH  - Trigeminal Neuralgia/*radiography/surgery
+EDAT- 2009/07/04 09:00
+MHDA- 2009/09/16 06:00
+CRDT- 2009/07/04 09:00
+AID - 10.1227/01.NEU.0000347890.19718.0A [doi]
+AID - 00006123-200907000-00024 [pii]
+PST - ppublish
+SO  - Neurosurgery. 2009 Jul;65(1):121-8; discussion 128-9. doi:
+      10.1227/01.NEU.0000347890.19718.0A.
+
+PMID- 19151879
+OWN - NLM
+STAT- MEDLINE
+DA  - 20090119
+DCOM- 20090305
+IS  - 0026-1270 (Print)
+IS  - 0026-1270 (Linking)
+VI  - 48
+IP  - 1
+DP  - 2009
+TI  - Medical image computing for computer-supported diagnostics and therapy. Advances 
+      and perspectives.
+PG  - 11-7
+AB  - OBJECTIVES: Medical image computing has become one of the most challenging fields
+      in medical informatics. In image-based diagnostics of the future software
+      assistance will become more and more important, and image analysis systems
+      integrating advanced image computing methods are needed to extract quantitative
+      image parameters to characterize the state and changes of image structures of
+      interest (e.g. tumors, organs, vessels, bones etc.) in a reproducible and
+      objective way. Furthermore, in the field of software-assisted and navigated
+      surgery medical image computing methods play a key role and have opened up new
+      perspectives for patient treatment. However, further developments are needed to
+      increase the grade of automation, accuracy, reproducibility and robustness.
+      Moreover, the systems developed have to be integrated into the clinical workflow.
+      METHODS: For the development of advanced image computing systems methods of
+      different scientific fields have to be adapted and used in combination. The
+      principal methodologies in medical image computing are the following: image
+      segmentation, image registration, image analysis for quantification and computer 
+      assisted image interpretation, modeling and simulation as well as visualization
+      and virtual reality. Especially, model-based image computing techniques open up
+      new perspectives for prediction of organ changes and risk analysis of patients
+      and will gain importance in diagnostic and therapy of the future. RESULTS: From a
+      methodical point of view the authors identify the following future trends and
+      perspectives in medical image computing: development of optimized
+      application-specific systems and integration into the clinical workflow, enhanced
+      computational models for image analysis and virtual reality training systems,
+      integration of different image computing methods, further integration of
+      multimodal image data and biosignals and advanced methods for 4D medical image
+      computing. CONCLUSIONS: The development of image analysis systems for diagnostic 
+      support or operation planning is a complex interdisciplinary process. Image
+      computing methods enable new insights into the patient's image data and have the 
+      future potential to improve medical diagnostics and patient treatment.
+FAU - Handels, H
+AU  - Handels H
+AD  - Department of Medical Informatics, University Medical Center Hamburg-Eppendorf,
+      Martinistrasse 52, 20246 Hamburg, Germany. h.handels@uke.uni-hamburg.de
+FAU - Ehrhardt, J
+AU  - Ehrhardt J
+LA  - eng
+PT  - Journal Article
+PL  - Germany
+TA  - Methods Inf Med
+JT  - Methods of information in medicine
+JID - 0210453
+SB  - IM
+MH  - Diagnosis, Computer-Assisted/*instrumentation/methods
+MH  - Echocardiography, Four-Dimensional/instrumentation/methods
+MH  - Humans
+MH  - Image Processing, Computer-Assisted/*instrumentation/methods
+MH  - Medical Informatics/*trends
+MH  - Therapy, Computer-Assisted/*instrumentation/methods
+EDAT- 2009/01/20 09:00
+MHDA- 2009/03/06 09:00
+CRDT- 2009/01/20 09:00
+AID - 09010011 [pii]
+PST - ppublish
+SO  - Methods Inf Med. 2009;48(1):11-7.
+
+PMID- 18051092
+OWN - NLM
+STAT- MEDLINE
+DA  - 20071204
+DCOM- 20080103
+LR  - 20091211
+VI  - 10
+IP  - Pt 1
+DP  - 2007
+TI  - Evaluation of a novel calibration technique for optically tracked oblique
+      laparoscopes.
+PG  - 467-74
+AB  - This paper proposes an evaluation of a novel calibration method for an optically 
+      tracked oblique laparoscope. We present the necessary tools to track an oblique
+      scope and a camera model which includes changes to the intrinsic camera
+      parameters thereby extending previously proposed methods. Because oblique scopes 
+      offer a wide 'virtual' view on the surgical field, the method is of great
+      interest for augmented reality guidance of laparoscopic interventions using an
+      oblique scope. The model and an approximated version are evaluated in an
+      extensive validation study. Using 5 sets of 40 calibration images, we compare
+      both camera models (i.e. model and approximation) and 2 interpolation schemes.
+      The selected model and interpolation scheme reaches an average accuracy of 2.60
+      pixel and an equivalent 3D error of 0.60 mm. Finally, we present initial
+      experience of the presented approach with an oblique scope and optical tracking
+      in a clinical setup. During a laparoscopic rectum resection surgery the setup was
+      used to augment the scene with a model of the pelvis. The method worked properly 
+      and the attached probes did not interfere with normal procedure.
+FAU - De Buck, Stijn
+AU  - De Buck S
+AD  - Faculty of Medicine, Medical Image Computing (ESAT and Radiology), K. U. Leuven, 
+      Herestraat 49, 3000 Leuven, Belgium. stijn.debuck@uz.kuleuven.ac.be
+FAU - Maes, Frederik
+AU  - Maes F
+FAU - D'Hoore, Andre
+AU  - D'Hoore A
+FAU - Suetens, Paul
+AU  - Suetens P
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+PL  - Germany
+TA  - Med Image Comput Comput Assist Interv
+JT  - Medical image computing and computer-assisted intervention : MICCAI ...
+      International Conference on Medical Image Computing and Computer-Assisted
+      Intervention
+JID - 101249582
+SB  - IM
+MH  - Calibration
+MH  - Equipment Design
+MH  - Equipment Failure Analysis/*methods/*standards
+MH  - Image Interpretation, Computer-Assisted/*methods
+MH  - Laparoscopes/*standards
+MH  - Optics and Photonics/*instrumentation
+MH  - Reference Values
+MH  - Reproducibility of Results
+MH  - Sensitivity and Specificity
+MH  - Surgery, Computer-Assisted/*instrumentation/standards
+EDAT- 2007/12/07 09:00
+MHDA- 2008/01/04 09:00
+CRDT- 2007/12/07 09:00
+PST - ppublish
+SO  - Med Image Comput Comput Assist Interv. 2007;10(Pt 1):467-74.
+
+PMID- 15183704
+OWN - NLM
+STAT- MEDLINE
+DA  - 20040608
+DCOM- 20041021
+LR  - 20041117
+IS  - 0020-1383 (Print)
+IS  - 0020-1383 (Linking)
+VI  - 35 Suppl 1
+DP  - 2004 Jun
+TI  - Computer aided long bone fracture treatment.
+PG  - S-A57-64
+AB  - Intraoperative fluoroscopy is the tool for intraoperative control of long bone
+      fracture reduction and osteosynthesis. Limitations of this technology include:
+      High radiation exposure to the patient and the surgical team, limited field of
+      view, image distortion, limitation to 2-D representations, and cumbersome
+      updating of verification images. Fluoroscopy based navigation systems partially
+      address these limitations by allowing fluoroscopic images to be used for
+      real-time surgical localization and instrument tracking. In a clinical study on
+      computer guidance by virtual fluoroscopy for distal locking, the capability to
+      provide online guidance with significantly reduced fluoroscopy times is
+      demonstrated. Virtual fluoroscopy applied for guidewire placement in a laboratory
+      setup demonstrated the potential of the method to reduce procedure times, and the
+      potential to increase precision of implant placement with decreased fluoroscopy
+      times. By using virtual reality enhancement, starting from multiple registered
+      fluoroscopy images, a virtual 3-D cylinder model for each principal bone fragment
+      is reconstructed. This spatial cylinder model is not only used to supply a 3-D
+      image of the fracture, but also allows effective fragment projection extraction
+      from the fluoroscopic images and further achieves radiation-free updates of
+      in-situ surgical fluoroscopic images through a non-linear interpolation and
+      warping algorithm. After primary image acquisition, the image intensifier was
+      replaced by the virtual reality system. It was shown that all the steps of the
+      procedure, including fracture reduction and LISS osteosynthesis can be performed 
+      completely in virtual reality.
+FAU - Grutzner, Paul Alfred
+AU  - Grutzner PA
+AD  - BG Trauma Center Ludwigshafen, University of Heidelberg, 67071 Ludwigshafen,
+      Germany. pa.gruetzner@urz.uni-heidelberg.de
+FAU - Suhm, Norbert
+AU  - Suhm N
+LA  - eng
+PT  - Clinical Trial
+PT  - Controlled Clinical Trial
+PT  - Journal Article
+PL  - England
+TA  - Injury
+JT  - Injury
+JID - 0226040
+SB  - IM
+MH  - Fluoroscopy
+MH  - Fracture Fixation, Intramedullary/*methods
+MH  - Hip Fractures/radiography/surgery
+MH  - Humans
+MH  - Image Processing, Computer-Assisted/methods
+MH  - Imaging, Three-Dimensional
+MH  - Intraoperative Care/methods
+MH  - Leg Injuries/*surgery
+MH  - Pilot Projects
+MH  - Surgery, Computer-Assisted/*methods
+EDAT- 2004/06/09 05:00
+MHDA- 2004/10/22 09:00
+CRDT- 2004/06/09 05:00
+AID - 10.1016/j.injury.2004.05.011 [doi]
+AID - S002013830400155X [pii]
+PST - ppublish
+SO  - Injury. 2004 Jun;35 Suppl 1:S-A57-64.
+
+PMID- 15070110
+OWN - NLM
+STAT- MEDLINE
+DA  - 20040408
+DCOM- 20040421
+LR  - 20051116
+IS  - 0022-3085 (Print)
+IS  - 0022-3085 (Linking)
+VI  - 100
+IP  - 4
+DP  - 2004 Apr
+TI  - Intraoperative stereoscopic QuickTime Virtual Reality.
+PG  - 591-6
+AB  - OBJECT: The aim of this study was to acquire intraoperative images during
+      neurosurgical procedures for later reconstruction into a stereoscopic image
+      system (QuickTime Virtual Reality [QTVR]) that would improve visualization of
+      complex neurosurgical procedures. METHODS: A robotic microscope and digital
+      cameras were used to acquire left and right image pairs during cranial surgery; a
+      grid system facilitated image acquisition with the microscope. The surgeon
+      determined a field of interest and a target or pivot point for image acquisition.
+      Images were processed with commercially available software and hardware.
+      Two-dimensional (2D) or interlaced left and right 2D images were reconstructed
+      into a standard or stereoscopic QTVR format. Standard QTVR images were produced
+      if stereoscopy was not needed. Intraoperative image sequences of regions of
+      interest were captured in six patients. Relatively wide and deep dissections
+      afford an opportunity for excellent QTVR production. Narrow or restricted
+      surgical corridors can be reconstructed into the stereoscopic QTVR mode by using 
+      a keyhole mode of image acquisition. The stereoscopic effect is unimpressive with
+      shallow or cortical surface dissections, which can be reconstructed into standard
+      QTVR images. CONCLUSIONS: The QTVR system depicts multiple views of the same
+      anatomy from different angles. By tilting, panning, or rotating the reconstructed
+      images, the user can view a virtual three-dimensional tour of a neurosurgical
+      dissection, with images acquired intraoperatively. The stereoscopic QTVR format
+      provides depth to the montage. The system recreates the dissection environment
+      almost completely and provides a superior anatomical frame of reference compared 
+      with the images captured by still or video photography in the operating room.
+FAU - Balogh, Attila
+AU  - Balogh A
+AD  - Division of Neurological Surgery, Barrow Neurological Institute, St. Joseph's
+      Hospital and Medical Center, Phoenix, Arizona 85013, USA.
+FAU - Preul, Mark C
+AU  - Preul MC
+FAU - Schornak, Mark
+AU  - Schornak M
+FAU - Hickman, Michael
+AU  - Hickman M
+FAU - Spetzler, Robert F
+AU  - Spetzler RF
+LA  - eng
+PT  - Journal Article
+PT  - Review
+PL  - United States
+TA  - J Neurosurg
+JT  - Journal of neurosurgery
+JID - 0253357
+SB  - AIM
+SB  - IM
+CIN - J Neurosurg. 2004 Apr;100(4):583; discussion 583-4. PMID: 15070108
+MH  - Brain/*anatomy & histology/radiography
+MH  - Humans
+MH  - Imaging, Three-Dimensional
+MH  - Intraoperative Period
+MH  - Microscopy
+MH  - Neurosurgery/education
+MH  - Neurosurgical Procedures/*methods
+MH  - Photography
+MH  - Robotics
+MH  - Signal Processing, Computer-Assisted
+MH  - Software
+MH  - Stereotaxic Techniques
+MH  - *User-Computer Interface
+MH  - Video Recording
+RF  - 19
+EDAT- 2004/04/09 05:00
+MHDA- 2004/04/22 05:00
+CRDT- 2004/04/09 05:00
+AID - 10.3171/jns.2004.100.4.0591 [doi]
+PST - ppublish
+SO  - J Neurosurg. 2004 Apr;100(4):591-6.
+
+PMID- 12089824
+OWN - NLM
+STAT- MEDLINE
+DA  - 20020701
+DCOM- 20021001
+LR  - 20061115
+IS  - 0009-4722 (Print)
+IS  - 0009-4722 (Linking)
+VI  - 73
+IP  - 5
+DP  - 2002 May
+TI  - [Image fusion, virtual reality, robotics and navigation. Effects on surgical
+      practice].
+PG  - 422-7
+AB  - In the new minimally invasive surgical era, virtual reality, robotics, and image 
+      merging have become topics on their own, offering the potential to revolutionize 
+      current surgical treatment and assessment. Improved patient care in the digital
+      age seems to be the primary impetus for continued efforts in the field of
+      telesurgery. The progress in endoscopic surgery with regard to telesurgery is
+      manifested by digitization of the pre-, intra-, and postoperative interaction
+      with the patients' surgical disease via computer system integration: so-called
+      Computer Assisted Surgery (CAS). The preoperative assessment can be improved by
+      3D organ reconstruction, as in virtual colonoscopy or cholangiography, and by
+      planning and practicing surgery using virtual or simulated organs. When
+      integrating all of the data recorded during this preoperative stage, an enhanced 
+      reality can be made possible to improve intra-operative patient interactions. CAS
+      allows for increased three-dimensional accuracy, improved precision and the
+      reproducibility of procedures. The ability to store the actions of the surgeon as
+      digitized information also allows for universal, rapid distribution: i.e., the
+      surgeon's activity can be transmitted to the other side of the operating room or 
+      to a remote site via high-speed communications links, as was recently
+      demonstrated by our own team during the Lindbergh operation. Furthermore, the
+      surgeon will be able to share his expertise and skill through teleconsultation
+      and telemanipulation, bringing the patient closer to the expert surgical team
+      through electronic means and opening the way to advanced and continuous surgical 
+      learning. Finally, for postoperative interaction, virtual reality and simulation 
+      can provide us with 4 dimensional images, time being the fourth dimension. This
+      should allow physicians to have a better idea of the disease process in
+      evolution, and treatment modifications based on this view can be anticipated. We 
+      are presently determining the accuracy and efficacy of 4 dimensional imaging
+      compared to conventional evaluations.
+FAU - Maresceaux, J
+AU  - Maresceaux J
+AD  - Institut de Recherche sur les Cancers de l'Appareil Digestif (IRCAD)-European
+      Institute of Telesurgery (EITS), Universitat Louis Pasteur, 67091 Strasbourg,
+      Frankreich. Jacques.Marescaux@ircad.u-strasbg.fr
+FAU - Soler, L
+AU  - Soler L
+FAU - Ceulemans, R
+AU  - Ceulemans R
+FAU - Garcia, A
+AU  - Garcia A
+FAU - Henri, M
+AU  - Henri M
+FAU - Dutson, E
+AU  - Dutson E
+LA  - ger
+PT  - English Abstract
+PT  - Journal Article
+TT  - Bildfusion, virtuelle Realitat, Robotik und Navigation. Einfluss auf die
+      chirurgische Praxis.
+PL  - Germany
+TA  - Chirurg
+JT  - Der Chirurg; Zeitschrift fur alle Gebiete der operativen Medizen
+JID - 16140410R
+SB  - IM
+MH  - Computer Systems/trends
+MH  - Diagnostic Imaging/*instrumentation
+MH  - Forecasting
+MH  - Germany
+MH  - Humans
+MH  - Image Processing, Computer-Assisted/*instrumentation
+MH  - Imaging, Three-Dimensional/*instrumentation
+MH  - Surgery, Computer-Assisted/*instrumentation
+MH  - Telemedicine/*instrumentation
+MH  - *User-Computer Interface
+EDAT- 2002/07/02 10:00
+MHDA- 2002/10/03 04:00
+CRDT- 2002/07/02 10:00
+AID - 10.1007/s00104-002-0473-x [doi]
+PST - ppublish
+SO  - Chirurg. 2002 May;73(5):422-7.
+
+PMID- 10601525
+OWN - NLM
+STAT- MEDLINE
+DA  - 20000210
+DCOM- 20000210
+LR  - 20081121
+IS  - 1055-3207 (Print)
+IS  - 1055-3207 (Linking)
+VI  - 9
+IP  - 1
+DP  - 2000 Jan
+TI  - Virtual reality in surgical training.
+PG  - 61-79, vii
+AB  - Virtual reality in surgery and, more specifically, in surgical training, faces a 
+      number of challenges in the future. These challenges are building realistic
+      models of the human body, creating interface tools to view, hear, touch, feel,
+      and manipulate these human body models, and integrating virtual reality systems
+      into medical education and treatment. A final system would encompass simulators
+      specifically for surgery, performance machines, telemedicine, and telesurgery.
+      Each of these areas will need significant improvement for virtual reality to
+      impact medicine successfully in the next century. This article gives an overview 
+      of, and the challenges faced by, current systems in the fast-changing field of
+      virtual reality technology, and provides a set of specific milestones for a truly
+      realistic virtual human body.
+FAU - Lange, T
+AU  - Lange T
+AD  - Hannover Medical School, Hannover, Germany.
+FAU - Indelicato, D J
+AU  - Indelicato DJ
+FAU - Rosen, J M
+AU  - Rosen JM
+LA  - eng
+PT  - Journal Article
+PT  - Review
+PL  - UNITED STATES
+TA  - Surg Oncol Clin N Am
+JT  - Surgical oncology clinics of North America
+JID - 9211789
+SB  - IM
+MH  - Computer Simulation
+MH  - Computer-Assisted Instruction/instrumentation/*methods/trends
+MH  - Education, Medical, Graduate/*methods/trends
+MH  - Forecasting
+MH  - General Surgery/*education
+MH  - Humans
+MH  - Models, Anatomic
+MH  - Telemedicine/organization & administration
+MH  - *User-Computer Interface
+RF  - 51
+EDAT- 1999/12/22
+MHDA- 1999/12/22 00:01
+CRDT- 1999/12/22 00:00
+PST - ppublish
+SO  - Surg Oncol Clin N Am. 2000 Jan;9(1):61-79, vii.
+
+PMID- 9635304
+OWN - NLM
+STAT- MEDLINE
+DA  - 19980811
+DCOM- 19980811
+LR  - 20061115
+IS  - 0301-2603 (Print)
+IS  - 0301-2603 (Linking)
+VI  - 26
+IP  - 6
+DP  - 1998 Jun
+TI  - [Discrepancy between surgeon's binocular parallax perception and manipulation in 
+      the neurosurgical operation].
+PG  - 517-22
+AB  - The application of virtual reality (VR) to the neurosurgical field has been
+      increasing recently, however, the relation between the surgeon and the VR
+      environment is rarely studied. We examined the trajectory of a surgical
+      instrument during manipulation of a virtual object using a video-see-through
+      microscope and a neurosurgical navigator (CANS Navigator) to find better
+      surgeon-microscope interface. A resin cylindrical phantom was produced
+      representing the surgical field, which included two 3 dimensionally arranged
+      small spheres and a virtual 'gate'. The phantom was fixed and set under the
+      microscope with a skull clamp mimicking conditions in an ordinary craniotomy.
+      Firstly, the binocular parallax perception under microscope was examined.
+      Experienced and inexperienced neurosurgeons were asked to learn the position of
+      the virtual 'gate' for 3 minutes. Then, after 5 minutes to point with the
+      navigator probe (suction tube), under various conditions; under the naked eyes,
+      under the microscope, under the navigator without observing the phantom, and
+      under the microscope with picture in picture (PIP) display of the navigational
+      image. The positions of the suction tube were recorded at real time into the
+      navigator for later analysis. Secondly, the task performance in this VR
+      environment was studied by analyzing the trajectory of the suction tube from one 
+      sphere to the other sphere passing the virtual 'gate' under various conditions. A
+      significant difference in pointing precision between experienced and
+      inexperienced neurosurgeons was able to be observed only under microscope. This
+      difference was mainly derived from overestimation of the depth of the virtual
+      'gate' by the inexperienced neurosurgeons. Among the above conditions, pointing
+      under the microscope with PIP was able to be performed the most precisely and the
+      most promptly. This study disclosed the presence of stereoscopic distortion in
+      the microscope. The PIP display of the navigational image in the microscopic view
+      remarkably improved the task performance, which could be accounted for by the
+      correction of the somewhat distorted binocular parallax perception under the
+      neurosurgical microscope by the provision of another visual key.
+FAU - Kato, A
+AU  - Kato A
+AD  - Department of Neurosurgery, Osaka University Medical School, Japan.
+FAU - Hirata, M
+AU  - Hirata M
+FAU - Yoshimine, T
+AU  - Yoshimine T
+FAU - Tamura, S
+AU  - Tamura S
+FAU - Kishino, F
+AU  - Kishino F
+FAU - Hayakawa, T
+AU  - Hayakawa T
+LA  - jpn
+PT  - English Abstract
+PT  - Journal Article
+PL  - JAPAN
+TA  - No Shinkei Geka
+JT  - No shinkei geka. Neurological surgery
+JID - 0377015
+SB  - IM
+MH  - Brain/*surgery
+MH  - *Computer Simulation
+MH  - *Depth Perception
+MH  - Humans
+MH  - User-Computer Interface
+EDAT- 1998/06/23
+MHDA- 1998/06/23 00:01
+CRDT- 1998/06/23 00:00
+PST - ppublish
+SO  - No Shinkei Geka. 1998 Jun;26(6):517-22.
+
+PMID- 9276874
+OWN - NLM
+STAT- MEDLINE
+DA  - 19971202
+DCOM- 19971202
+LR  - 20121115
+IS  - 0301-4894 (Print)
+IS  - 0301-4894 (Linking)
+VI  - 98
+IP  - 7
+DP  - 1997 Jul
+TI  - [Surgical treatment and research of esophageal cancer in the past and the present
+      era in our department--for the view point of the future].
+PG  - 649-54
+AB  - We describe the result of esophageal cancer treatment in the past era of the
+      Department of Surgery, Chiba University School of Medicine directed by Professor 
+      Seo, Nakayama and Sato and the improved results of the treatment at the present
+      time from the view point of diagnosis (early superficial cancer, lymph node
+      metastasis and adjacent organ invasion) and treatment (three-field lymph node
+      dissection, improved result of operative mortality and morbidity, improvement of 
+      long-term survival rate). In addition, we prospect the future through the present
+      study such as mutation of P53 gene and malignancy, immunotherapy using cytokine
+      gene transfer, cancer inhibition therapy by induction of cancer suppressor gene, 
+      prodrug therapy, heavy particle iron therapy, and clinical application of virtual
+      reality to the surgical field.
+FAU - Isono, K
+AU  - Isono K
+AD  - Department of Surgery, Chiba University School of Medicine, Japan.
+LA  - jpn
+PT  - English Abstract
+PT  - Lectures
+PL  - JAPAN
+TA  - Nihon Geka Gakkai Zasshi
+JT  - Nihon Geka Gakkai zasshi
+JID - 0405405
+SB  - IM
+MH  - Esophageal Neoplasms/diagnosis/*surgery
+MH  - Genes, p53
+MH  - Genetic Therapy
+MH  - Humans
+MH  - Immunotherapy
+MH  - Lymph Node Excision
+MH  - Lymphatic Metastasis
+MH  - Medical Oncology/*trends
+MH  - Mutation
+MH  - Tomography, Emission-Computed
+EDAT- 1997/07/01
+MHDA- 1997/07/01 00:01
+CRDT- 1997/07/01 00:00
+PST - ppublish
+SO  - Nihon Geka Gakkai Zasshi. 1997 Jul;98(7):649-54.
+
+PMID- 9228336
+OWN - NLM
+STAT- MEDLINE
+DA  - 19970930
+DCOM- 19970930
+LR  - 20141120
+IS  - 0946-7211 (Print)
+IS  - 0946-7211 (Linking)
+VI  - 40
+IP  - 2
+DP  - 1997 Jun
+TI  - Enhancing neurosurgical endoscopy with the use of 'virtual reality' headgear.
+PG  - 47-9
+AB  - Widespread use of neurosurgical endoscopy has been hampered by the necessity of
+      looking up from the surgical field to view the endoscopic image on a video
+      monitor. Here is demonstrated a simple, lightweight headpiece with a small,
+      built-in video monitor that reflects the video image to the dominant eye, thus
+      allowing the operator to continuously observe the surgical field either via
+      peripheral vision or via the non-dominant eye. Successful use of the device is
+      documented here in a minimally invasive fenestration of an arachnoid cyst into
+      the lateral ventricle via a flexible endoscopic procedure.
+FAU - McGregor, J M
+AU  - McGregor JM
+AD  - Division of Neurosurgery, The Ohio State University, Columbus 43210, USA.
+LA  - eng
+PT  - Case Reports
+PT  - Journal Article
+PL  - GERMANY
+TA  - Minim Invasive Neurosurg
+JT  - Minimally invasive neurosurgery : MIN
+JID - 9440973
+SB  - IM
+MH  - Adult
+MH  - Arachnoid Cysts/*surgery
+MH  - Computer Terminals
+MH  - *Data Display
+MH  - *Endoscopes
+MH  - Endoscopy/methods
+MH  - Female
+MH  - Humans
+MH  - Minimally Invasive Surgical Procedures/instrumentation/methods
+MH  - Monitoring, Intraoperative/*instrumentation
+MH  - *User-Computer Interface
+EDAT- 1997/06/01
+MHDA- 1997/06/01 00:01
+CRDT- 1997/06/01 00:00
+AID - 10.1055/s-2008-1053414 [doi]
+PST - ppublish
+SO  - Minim Invasive Neurosurg. 1997 Jun;40(2):47-9.

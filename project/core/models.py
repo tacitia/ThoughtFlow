@@ -135,3 +135,8 @@ class Collection(models.Model):
   collection_name = models.CharField(max_length=128)
   description = models.TextField(default='')
   num_pubs = models.IntegerField(default=0)
+
+class Citation(models.Model):
+  paper_id = models.IntegerField()
+  citation_id = models.IntegerField()
+  collection_id = models.IntegerField()

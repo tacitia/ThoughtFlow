@@ -200,12 +200,12 @@ function TermTopic(Core) {
   }
 
   function getUniqueTerms(topics) {
-    return _.uniq(_.flatten(topics.map(function(t) {
+    return _.without(_.uniq(_.flatten(topics.map(function(t) {
       var termTuples = t.terms;
       return termTuples.map(function(tuple) {
         return tuple.term;
       })
-    })));
+    }))), 'other terms');
   }
 
   function getTermTopicCount(terms, topics) {
@@ -218,6 +218,7 @@ function TermTopic(Core) {
       for (var j in termTuples) {
         var term = termTuples[j].term;
         var prob = termTuples[j].prob;
+        if (term === 'other terms') continue;
         if (prob < minTermTopicProb) {
           minTermTopicProb = prob;
         }

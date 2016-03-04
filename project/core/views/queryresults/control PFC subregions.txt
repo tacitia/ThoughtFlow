@@ -1,0 +1,2876 @@
+
+PMID- 26200928
+OWN - NLM
+STAT- In-Data-Review
+DA  - 20150903
+LR  - 20150904
+IS  - 2168-6238 (Electronic)
+IS  - 2168-622X (Linking)
+VI  - 72
+IP  - 9
+DP  - 2015 Sep 1
+TI  - Functional and Neuroanatomic Specificity of Episodic Memory Dysfunction in
+      Schizophrenia: A Functional Magnetic Resonance Imaging Study of the Relational
+      and Item-Specific Encoding Task.
+PG  - 909-16
+LID - 10.1001/jamapsychiatry.2015.0276 [doi]
+AB  - IMPORTANCE: Individuals with schizophrenia can encode item-specific information
+      to support familiarity-based recognition but are disproportionately impaired
+      encoding interitem relationships (relational encoding) and recollecting
+      information. The Relational and Item-Specific Encoding (RiSE) paradigm has been
+      used to disentangle these encoding and retrieval processes, which may depend on
+      specific medial temporal lobe (MTL) and prefrontal cortex (PFC) subregions.
+      Functional magnetic resonance (fMRI) imaging during RiSE task performance could
+      help to specify dysfunctional neural circuits in schizophrenia that can be
+      targeted for interventions to improve memory and functioning in the illness.
+      OBJECTIVES: To use fMRI to test the hypothesis that schizophrenia
+      disproportionately affects MTL and PFC subregions during relational encoding and 
+      retrieval relative to item-specific memory processes, and to use fMRI results
+      from healthy individuals serving as controls to establish neural construct
+      validity for RiSE. DESIGN, SETTING, AND PARTICIPANTS: This multisite,
+      case-control, cross-sectional fMRI study was conducted between November 1, 2010, 
+      and May 30, 2012, at 5 Cognitive Neuroscience Test Reliability and Clinical
+      Applications for Schizophrenia sites. The final sample included 52 outpatients
+      with clinically stable schizophrenia and 57 demographically matched healthy
+      control participants. Data analysis was performed between February 1, 2013, and
+      May 30, 2014. MAIN OUTCOMES AND MEASURES: Behavioral performance speed and
+      accuracy (d') on item recognition and associative recognition tasks. Voxelwise
+      statistical parametric maps for a priori MTL and PFC regions of interest to test 
+      activation differences between relational and item-specific memory during
+      encoding and retrieval. RESULTS: Item recognition was disproportionately impaired
+      in patients with schizophrenia relative to healthy control participants following
+      relational encoding (F1,107 = 4.7; P = .03). The differential deficit was
+      accompanied by reduced dorsolateral PFC activation during relational encoding in 
+      patients with schizophrenia compared with healthy control participants (z > 2.3; 
+      P < .05 corrected). Retrieval success (hits > misses) was associated with
+      hippocampal activation in healthy control participants during relational item
+      recognition and associative recognition conditions, and hippocampal activation
+      was specifically reduced in schizophrenia for recognition of relational but not
+      item-specific information (z > 2.3; P < .05 corrected). CONCLUSIONS AND
+      RELEVANCE: In this unique, multisite fMRI study, results in the healthy control
+      group supported RiSE construct validity by revealing expected memory effects in
+      PFC and MTL subregions during encoding and retrieval. Comparison of schizophrenic
+      and healthy control participants revealed disproportionate memory deficits in
+      schizophrenia for relational vs item-specific information, accompanied by
+      regionally and functionally specific deficits in dorsolateral PFC and hippocampal
+      activation.
+FAU - Ragland, J Daniel
+AU  - Ragland JD
+AD  - Department of Psychiatry, University of California, Davis, Sacramento.
+FAU - Ranganath, Charan
+AU  - Ranganath C
+AD  - Department of Psychology, University of California, Davis, Sacramento.
+FAU - Harms, Michael P
+AU  - Harms MP
+AD  - Department of Psychiatry, School of Medicine, Washington University, St Louis,
+      Missouri.
+FAU - Barch, Deanna M
+AU  - Barch DM
+AD  - Department of Psychiatry, School of Medicine, Washington University, St Louis,
+      Missouri.
+FAU - Gold, James M
+AU  - Gold JM
+AD  - Maryland Psychiatric Research Center, University of Maryland, Baltimore.
+FAU - Layher, Evan
+AU  - Layher E
+AD  - Department of Psychiatry, University of California, Davis, Sacramento.
+FAU - Lesh, Tyler A
+AU  - Lesh TA
+AD  - Department of Psychiatry, University of California, Davis, Sacramento.
+FAU - MacDonald, Angus W 3rd
+AU  - MacDonald AW 3rd
+AD  - Department of Psychology, University of Minnesota, Minneapolis.
+FAU - Niendam, Tara A
+AU  - Niendam TA
+AD  - Department of Psychiatry, University of California, Davis, Sacramento.
+FAU - Phillips, Joshua
+AU  - Phillips J
+AD  - Department of Psychiatry, University of California, Davis, Sacramento.
+FAU - Silverstein, Steven M
+AU  - Silverstein SM
+AD  - Department of Psychiatry, Rutgers University, New Brunswick, New Jersey.
+FAU - Yonelinas, Andrew P
+AU  - Yonelinas AP
+AD  - Department of Psychology, University of California, Davis, Sacramento.
+FAU - Carter, Cameron S
+AU  - Carter CS
+AD  - Department of Psychiatry, University of California, Davis, Sacramento2Department 
+      of Psychology, University of California, Davis, Sacramento.
+LA  - eng
+GR  - R01 MH059352/MH/NIMH NIH HHS/United States
+GR  - R01 MH084821/MH/NIMH NIH HHS/United States
+GR  - R01 MH084826/MH/NIMH NIH HHS/United States
+GR  - R01 MH084828/MH/NIMH NIH HHS/United States
+GR  - R01 MH084840/MH/NIMH NIH HHS/United States
+GR  - R01 MH084861/MH/NIMH NIH HHS/United States
+GR  - R01 MH084895/MH/NIMH NIH HHS/United States
+PT  - Journal Article
+PL  - United States
+TA  - JAMA Psychiatry
+JT  - JAMA psychiatry
+JID - 101589550
+SB  - AIM
+SB  - IM
+PMC - PMC4558363
+MID - NIHMS685493
+OID - NLM: NIHMS685493 [Available on 09/01/16]
+OID - NLM: PMC4558363 [Available on 09/01/16]
+EDAT- 2015/07/23 06:00
+MHDA- 2015/07/23 06:00
+CRDT- 2015/07/23 06:00
+PMCR- 2016/09/01 00:00
+AID - 2398183 [pii]
+AID - 10.1001/jamapsychiatry.2015.0276 [doi]
+PST - ppublish
+SO  - JAMA Psychiatry. 2015 Sep 1;72(9):909-16. doi: 10.1001/jamapsychiatry.2015.0276.
+
+PMID- 25529632
+OWN - NLM
+STAT- Publisher
+DA  - 20150116
+LR  - 20150621
+IS  - 1872-6240 (Electronic)
+IS  - 0006-8993 (Linking)
+DP  - 2014 Dec 18
+TI  - Differential roles of medial prefrontal subregions in the regulation of drug
+      seeking.
+LID - S0006-8993(14)01708-9 [pii]
+LID - 10.1016/j.brainres.2014.12.024 [doi]
+AB  - The prefrontal cortex plays an important role in shaping cognition and behavior. 
+      Many studies have shown that medial prefrontal cortex (mPFC) plays a key role in 
+      seeking, extinction, and reinstatement of cocaine seeking in rodent models of
+      relapse. Subregions of mPFC appear to play distinct roles in these behaviors,
+      such that the prelimbic cortex (PL) is proposed to drive cocaine seeking and the 
+      infralimbic cortex (IL) is proposed to suppress cocaine seeking after extinction.
+      This dichotomy of mPFC function may be a general attribute, as similar
+      dorsal-ventral distinctions exist for expression vs. extinction of fear
+      conditioning. However, other results indicate that the role of mPFC neurons in
+      reward processing is more complex than a simple PL-seek vs. IL-extinguish
+      dichotomy. Both PL and IL have been shown to drive and inhibit drug seeking (and 
+      other types of behaviors) depending on a range of factors including the
+      behavioral context, the drug-history of the animal, and the type of drug
+      investigated. This heterogeneity of findings may reflect multiple subcircuits
+      within each of these PFC areas supporting unique functions. It may also reflect
+      the fact that the mPFC plays a multifaceted role in shaping cognition and
+      behavior, including those overlapping with cocaine seeking and extinction. Here
+      we discuss research leading to the hypothesis that dorsal and ventral mPFC
+      differentially control drug seeking and extinction. We also present recent
+      results calling the absolute nature of a PL vs. IL dichotomy into question.
+      Finally, we consider alternate functions for mPFC that correspond less to
+      response execution and inhibition and instead incorporate the complex cognitive
+      behavior for which the mPFC is broadly appreciated. This article is part of a
+      Special Issue entitled Addiction circuits.
+CI  - Copyright (c) 2014 Elsevier B.V. All rights reserved.
+FAU - Moorman, David E
+AU  - Moorman DE
+AD  - Department of Psychological and Brain Sciences & Neuroscience and Behavior
+      Graduate Program, University of Massachusetts Amherst, Amherst, MA 01003, United 
+      States. Electronic address: moorman@cns.umass.edu.
+FAU - James, Morgan H
+AU  - James MH
+AD  - Brain Health Institute, Rutgers University, Piscataway, NJ 08854, United States.
+FAU - McGlinchey, Ellen M
+AU  - McGlinchey EM
+AD  - Brain Health Institute, Rutgers University, Piscataway, NJ 08854, United States; 
+      Program in Neurosciences, Medical University of South Carolina, Charleston, SC
+      29425, United States.
+FAU - Aston-Jones, Gary
+AU  - Aston-Jones G
+AD  - Brain Health Institute, Rutgers University, Piscataway, NJ 08854, United States.
+LA  - ENG
+GR  - F31 DA035561/DA/NIDA NIH HHS/United States
+GR  - R01 DA006214/DA/NIDA NIH HHS/United States
+GR  - R21 DA032005/DA/NIDA NIH HHS/United States
+PT  - JOURNAL ARTICLE
+DEP - 20141218
+TA  - Brain Res
+JT  - Brain research
+JID - 0045503
+PMC - PMC4472631
+MID - NIHMS650762
+OTO - NOTNLM
+OT  - Addiction
+OT  - Cocaine
+OT  - Cognition
+OT  - Cortex
+OT  - Drugs
+OT  - Frontal
+OT  - Infralimbic
+OT  - Networks
+OT  - Prefrontal
+OT  - Prelimbic
+EDAT- 2014/12/23 06:00
+MHDA- 2014/12/23 06:00
+CRDT- 2014/12/23 06:00
+PMCR- 2016/06/18 00:00
+PHST- 2014/12/02 [received]
+PHST- 2014/12/09 [accepted]
+AID - S0006-8993(14)01708-9 [pii]
+AID - 10.1016/j.brainres.2014.12.024 [doi]
+PST - aheadofprint
+SO  - Brain Res. 2014 Dec 18. pii: S0006-8993(14)01708-9. doi:
+      10.1016/j.brainres.2014.12.024.
+
+PMID- 25342495
+OWN - NLM
+STAT- MEDLINE
+DA  - 20141107
+DCOM- 20150706
+LR  - 20150110
+IS  - 1421-9859 (Electronic)
+IS  - 0378-5866 (Linking)
+VI  - 36
+IP  - 6
+DP  - 2014
+TI  - Prenatal malnutrition leads to deficits in attentional set shifting and decreases
+      metabolic activity in prefrontal subregions that control executive function.
+PG  - 532-41
+LID - 10.1159/000366057 [doi]
+AB  - Globally, over 25% of all children under the age of 5 years experience
+      malnutrition leading to cognitive and emotional impairments that can persist into
+      adulthood and beyond. We use a rodent model to determine the impact of prenatal
+      protein malnutrition on executive functions in an attentional set-shifting task
+      and metabolic activity in prefrontal cortex (PFC) subregions critical to these
+      behaviors. Long-Evans dams were provided with a low (6% casein) or adequate (25% 
+      casein) protein diet 5 weeks before mating and during pregnancy. At birth, the
+      litters were culled to 8 pups and fostered to control dams on the 25% casein
+      diet. At postnatal day 90, prenatally malnourished rats were less able to shift
+      attentional set and reverse reward contingencies than controls, demonstrating
+      cognitive rigidity. Naive same-sexed littermates were assessed for regional brain
+      activity using the metabolic marker (14)C-2-deoxyglucose (2DG). The prenatally
+      malnourished rats had lower metabolic activity than controls in prelimbic,
+      infralimbic, anterior cingulate, and orbitofrontal cortices, but had comparable
+      activity in the nearby piriform cortex and superior colliculus. This study
+      demonstrates that prenatal protein malnutrition in a well-described animal model 
+      produces cognitive deficits in tests of attentional set shifting and reversal
+      learning, similar to findings of cognitive inflexibility reported in humans
+      exposed to early childhood malnutrition.
+CI  - (c) 2014 S. Karger AG, Basel.
+FAU - McGaughy, Jill A
+AU  - McGaughy JA
+AD  - Department of Psychology, University of New Hampshire, Durham, N.H., USA.
+FAU - Amaral, Ana C
+AU  - Amaral AC
+FAU - Rushmore, R Jarrett
+AU  - Rushmore RJ
+FAU - Mokler, David J
+AU  - Mokler DJ
+FAU - Morgane, Peter J
+AU  - Morgane PJ
+FAU - Rosene, Douglas L
+AU  - Rosene DL
+FAU - Galler, Janina R
+AU  - Galler JR
+LA  - eng
+GR  - HD060986/HD/NICHD NIH HHS/United States
+GR  - MH074811/MH/NIMH NIH HHS/United States
+GR  - R01 HD060986/HD/NICHD NIH HHS/United States
+GR  - R01 MH074811/MH/NIMH NIH HHS/United States
+PT  - Journal Article
+PT  - Research Support, N.I.H., Extramural
+DEP - 20141022
+PL  - Switzerland
+TA  - Dev Neurosci
+JT  - Developmental neuroscience
+JID - 7809375
+RN  - 9G2MP84A8W (Deoxyglucose)
+SB  - IM
+MH  - Animals
+MH  - Attention/*physiology
+MH  - *Cerebral Cortex/metabolism/physiopathology
+MH  - *Cognition Disorders/etiology/metabolism/physiopathology
+MH  - Deoxyglucose/diagnostic use
+MH  - Disease Models, Animal
+MH  - Executive Function/*physiology
+MH  - Female
+MH  - *Fetal Nutrition Disorders
+MH  - Male
+MH  - *Prefrontal Cortex/metabolism/physiopathology
+MH  - Pregnancy
+MH  - Rats
+MH  - Rats, Long-Evans
+MH  - Reward
+EDAT- 2014/10/25 06:00
+MHDA- 2015/07/07 06:00
+CRDT- 2014/10/25 06:00
+PHST- 2014/04/04 [received]
+PHST- 2014/07/22 [accepted]
+PHST- 2014/10/22 [aheadofprint]
+AID - 000366057 [pii]
+AID - 10.1159/000366057 [doi]
+PST - ppublish
+SO  - Dev Neurosci. 2014;36(6):532-41. doi: 10.1159/000366057. Epub 2014 Oct 22.
+
+PMID- 24781514
+OWN - NLM
+STAT- MEDLINE
+DA  - 20141011
+DCOM- 20151012
+LR  - 20151001
+IS  - 1432-2072 (Electronic)
+IS  - 0033-3158 (Linking)
+VI  - 231
+IP  - 21
+DP  - 2014 Oct
+TI  - Prefrontal dopamine D1 receptors and working memory in schizotypal personality
+      disorder: a PET study with [(1)(1)C]NNC112.
+PG  - 4231-40
+LID - 10.1007/s00213-014-3566-6 [doi]
+AB  - RATIONALE: Schizotypal personality disorder (SPD) is associated with working
+      memory (WM) impairments that are similar to those observed in schizophrenia.
+      Imaging studies have suggested that schizophrenia is associated with alterations 
+      in dopamine D1 receptor availability in the prefrontal cortex (PFC) that may be
+      related to the WM impairments that characterize this disorder. OBJECTIVES: The
+      aim of this study was to characterize prefrontal D1 receptor availability and its
+      relation to WM performance in SPD. METHODS: We used positron emission tomography 
+      (PET) and the radiotracer [(11)C]NNC112 with 18 unmedicated SPD and 21 healthy
+      control participants; as an index of D1 receptor availability, binding potential 
+      (BP) measures (BPF, BPND, and BPP) were calculated for prefrontal and striatal
+      subregions. To assess WM, SPD participants completed the 2-back and Paced
+      Auditory Serial Addition Test (PASAT). RESULTS: There were no significant group
+      differences in PFC BP. BPF and BPP in the medial PFC were significantly
+      negatively related to PASAT performance (r s = -0.551, p = .022 and r s = -0.488,
+      p = .047, respectively), but BP was not related to 2-back performance.
+      CONCLUSIONS: In contrast to what has been found in schizophrenia, SPD was not
+      associated with significant alterations in prefrontal D1 receptor availability.
+      Similar to previous schizophrenia findings, however, higher prefrontal D1
+      receptor availability was associated with poorer WM performance (as measured by
+      the PASAT) in SPD. These findings suggest that schizophrenia and SPD may share a 
+      common pathophysiological feature related to prefrontal dopamine functioning that
+      contributes to WM dysfunction, but that in SPD, alterations in D1 may occur only 
+      in a subset of individuals and/or to an extent that is minor relative to what
+      occurs in schizophrenia.
+FAU - Thompson, Judy L
+AU  - Thompson JL
+AD  - Department of Psychiatry, Columbia University College of Physicians and Surgeons,
+      New York, NY, 10032, USA, judy.thompson@rutgers.edu.
+FAU - Rosell, Daniel R
+AU  - Rosell DR
+FAU - Slifstein, Mark
+AU  - Slifstein M
+FAU - Girgis, Ragy R
+AU  - Girgis RR
+FAU - Xu, Xiaoyan
+AU  - Xu X
+FAU - Ehrlich, Yosefa
+AU  - Ehrlich Y
+FAU - Kegeles, Lawrence S
+AU  - Kegeles LS
+FAU - Hazlett, Erin A
+AU  - Hazlett EA
+FAU - Abi-Dargham, Anissa
+AU  - Abi-Dargham A
+FAU - Siever, Larry J
+AU  - Siever LJ
+LA  - eng
+GR  - MH56140/MH/NIMH NIH HHS/United States
+GR  - R01 MH056140/MH/NIMH NIH HHS/United States
+PT  - Journal Article
+PT  - Research Support, N.I.H., Extramural
+PT  - Research Support, U.S. Gov't, Non-P.H.S.
+DEP - 20140430
+PL  - Germany
+TA  - Psychopharmacology (Berl)
+JT  - Psychopharmacology
+JID - 7608025
+RN  - 0 (Receptors, Dopamine D1)
+RN  - VTD58H1Z2X (Dopamine)
+SB  - IM
+MH  - Adult
+MH  - Corpus Striatum/metabolism/radionuclide imaging
+MH  - Dopamine/*metabolism
+MH  - Female
+MH  - Humans
+MH  - Male
+MH  - Memory, Short-Term/*physiology
+MH  - Middle Aged
+MH  - Neuropsychological Tests
+MH  - Prefrontal Cortex/metabolism/*radionuclide imaging
+MH  - Receptors, Dopamine D1/*metabolism
+MH  - Schizotypal Personality Disorder/metabolism/psychology/*radionuclide imaging
+PMC - PMC4194223
+MID - NIHMS590893
+OID - NLM: NIHMS590893
+OID - NLM: PMC4194223
+EDAT- 2014/05/02 06:00
+MHDA- 2015/10/13 06:00
+CRDT- 2014/05/01 06:00
+PHST- 2013/10/02 [received]
+PHST- 2014/03/31 [accepted]
+PHST- 2014/04/30 [aheadofprint]
+AID - 10.1007/s00213-014-3566-6 [doi]
+PST - ppublish
+SO  - Psychopharmacology (Berl). 2014 Oct;231(21):4231-40. doi:
+      10.1007/s00213-014-3566-6. Epub 2014 Apr 30.
+
+PMID- 24773416
+OWN - NLM
+STAT- MEDLINE
+DA  - 20140708
+DCOM- 20150220
+IS  - 1931-1559 (Electronic)
+IS  - 0894-4105 (Linking)
+VI  - 28
+IP  - 4
+DP  - 2014 Jul
+TI  - Impaired facial emotion recognition in patients with ventromedial prefrontal
+      hypoperfusion.
+PG  - 605-12
+LID - 10.1037/neu0000057 [doi]
+AB  - Empathy refers to our ability to recognize and share emotions by another human
+      being. Impairment may underlie many of the emotional deficits commonly associated
+      with a range of neuropsychiatric and neurological conditions. The prefrontal
+      cortex (PFC) has long been implicated in these processes, but the specific
+      contribution of subregions of the PFC remain unclear. Studies regarding the role 
+      of subregions of the prefrontal cortex such as the ventromedial prefrontal cortex
+      (vmPFC)-in facial emotion recognition have yielded inconsistent results. The
+      present study aimed to investigate the capacity to recognize nonverbal emotional 
+      facial expressions in a group of patients with the following: (a) perfusion
+      deficits in the vmPFC (vmPFC group; N = 13), (b) hypoperfusions sparing the vmPFC
+      (nonvmPFC group; N = 12), and in (c) a control group of healthy volunteers
+      (control group; N = 17). Regions of hypoperfusion were identified by means of
+      Single Photon Emission Computed Tomography (SPECT). Participants were asked to
+      recognize facial expressions of the 7 basic emotions (happiness, fear, surprise, 
+      anger, disgust, sadness, or neutral). Detection of facial expressions of fear,
+      disgust, and surprise was affected after functional disruption of the vmPFC. The 
+      present study confirms the role of the vmPFC in recognizing emotional facial
+      expressions.
+FAU - Vandekerckhove, Marie
+AU  - Vandekerckhove M
+AD  - Research Group of Biological Psychology, Vrije Universiteit Brussel.
+FAU - Plessers, Maarten
+AU  - Plessers M
+AD  - Department of Experimental Psychology, Ghent University.
+FAU - Van Mieghem, Arno
+AU  - Van Mieghem A
+AD  - Department of Nuclear Medicine, AZ Sint Maarten.
+FAU - Beeckmans, Kurt
+AU  - Beeckmans K
+AD  - Centrum voor Epilepsie en Psycho-Organische Stoornissen (CEPOS).
+FAU - Van Acker, Frederik
+AU  - Van Acker F
+AD  - Faculty of Psychology, Open Universiteit Heerlen.
+FAU - Maex, Reinoud
+AU  - Maex R
+AD  - Group for Neural Theory, and Computational Sciences, Ecole Normale Superieure.
+FAU - Markowitsch, Hans
+AU  - Markowitsch H
+AD  - Research group of Physiological Psychology, University of Bielefeld.
+FAU - Marien, Peter
+AU  - Marien P
+AD  - Vrije Universiteit Brussel.
+FAU - Van Overwalle, Frank
+AU  - Van Overwalle F
+AD  - Research Group of Social Neuroscience, Vrije Universiteit Brussel.
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20140428
+PL  - United States
+TA  - Neuropsychology
+JT  - Neuropsychology
+JID - 8904467
+SB  - IM
+MH  - Adult
+MH  - Analysis of Variance
+MH  - Brain Diseases/*complications/pathology/radionuclide imaging
+MH  - *Empathy
+MH  - *Facial Expression
+MH  - Female
+MH  - Humans
+MH  - Male
+MH  - Memory Disorders/*etiology/radionuclide imaging
+MH  - Middle Aged
+MH  - Prefrontal Cortex/*pathology/radionuclide imaging
+MH  - Recognition (Psychology)/*physiology
+MH  - Tomography, Emission-Computed, Single-Photon
+EDAT- 2014/04/30 06:00
+MHDA- 2015/02/24 06:00
+CRDT- 2014/04/30 06:00
+PHST- 2014/04/28 [aheadofprint]
+AID - 2014-15225-001 [pii]
+AID - 10.1037/neu0000057 [doi]
+PST - ppublish
+SO  - Neuropsychology. 2014 Jul;28(4):605-12. doi: 10.1037/neu0000057. Epub 2014 Apr
+      28.
+
+PMID- 24666129
+OWN - NLM
+STAT- MEDLINE
+DA  - 20140801
+DCOM- 20150330
+IS  - 1530-8898 (Electronic)
+IS  - 0898-929X (Linking)
+VI  - 26
+IP  - 9
+DP  - 2014 Sep
+TI  - Functional specialization within macaque dorsolateral prefrontal cortex for the
+      maintenance of task rules and cognitive control.
+PG  - 1918-27
+LID - 10.1162/jocn_a_00608 [doi]
+AB  - The abilities of switching between and maintaining task rules are fundamental
+      aspects of goal-oriented behavior. The PFC is thought to implement the cognitive 
+      processes underling such rule-based behavior, but the specific contributions of
+      the several cytoarchitecturally distinct subfields of PFC remain poorly
+      understood. Here, we used bilateral cryogenic deactivation to investigate the
+      relative contributions of two regions of the dorsolateral PFC (dlPFC)--the
+      inferior dlPFC (idlPFC) area, consisting of the cortex lining the caudal
+      principal sulcus, and the dorsally adjacent superior dlPFC (sdlPFC)--to different
+      aspects of rule-based behavior. Macaque monkeys performed two variants of a task 
+      that required them to alternate unpredictably between eye movements toward
+      (prosaccade) or away from (antisaccade) a visual stimulus. In one version of the 
+      task, the current rule was overtly cued. In the second, the task rule was uncued,
+      and successful performance required the animals to detect rule changes on the
+      basis of reward outcome and subsequently maintain the current task rule within
+      working memory. Deactivation of the idlPFC impaired the monkeys' ability to
+      perform pro- and antisaccades in the uncued task only. In contrast, deactivation 
+      of the sdlPFC had no effect on performance in either task. Combined deactivation 
+      of idlPFC and sdlPFC impaired performance on antisaccade, but not prosaccade,
+      trials in both task variants. These results suggest that the idlPFC is required
+      for mnemonic processes involved in maintenance of task rules, whereas both idlPFC
+      and sdlPFC together are necessary for the deployment of the cognitive control
+      required to perform antisaccades. Together, these data support the concept of a
+      functional specialization of subregions within the dlPFC for rule-guided
+      behavior.
+FAU - Hussein, Sabeeha
+AU  - Hussein S
+AD  - University of Western Ontario.
+FAU - Johnston, Kevin
+AU  - Johnston K
+FAU - Belbeck, Brandon
+AU  - Belbeck B
+FAU - Lomber, Stephen G
+AU  - Lomber SG
+FAU - Everling, Stefan
+AU  - Everling S
+LA  - eng
+GR  - Canadian Institutes of Health Research/Canada
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20140325
+PL  - United States
+TA  - J Cogn Neurosci
+JT  - Journal of cognitive neuroscience
+JID - 8910747
+RN  - Y4S76JWI15 (Methanol)
+SB  - IM
+MH  - Analysis of Variance
+MH  - Animals
+MH  - Attention/*physiology
+MH  - Cognition/*physiology
+MH  - Cues
+MH  - Eye Movements/*physiology
+MH  - Functional Laterality/physiology
+MH  - *Goals
+MH  - Macaca mulatta
+MH  - Male
+MH  - Memory, Short-Term/physiology
+MH  - Methanol/pharmacology
+MH  - Photic Stimulation
+MH  - Prefrontal Cortex/drug effects/*physiology
+MH  - Reaction Time/physiology
+EDAT- 2014/03/29 06:00
+MHDA- 2015/03/31 06:00
+CRDT- 2014/03/27 06:00
+PHST- 2014/03/25 [aheadofprint]
+AID - 10.1162/jocn_a_00608 [doi]
+PST - ppublish
+SO  - J Cogn Neurosci. 2014 Sep;26(9):1918-27. doi: 10.1162/jocn_a_00608. Epub 2014 Mar
+      25.
+
+PMID- 24602177
+OWN - NLM
+STAT- MEDLINE
+DA  - 20140523
+DCOM- 20150903
+IS  - 1467-9450 (Electronic)
+IS  - 0036-5564 (Linking)
+VI  - 55
+IP  - 3
+DP  - 2014 Jun
+TI  - Effects of focal prefrontal cortex lesions on electrophysiological indices of
+      executive attention and action control.
+PG  - 233-43
+LID - 10.1111/sjop.12106 [doi]
+AB  - The human capacity to maintain an overarching control over mental states and
+      behavior relies on multiple, distributed and dynamically interacting brain
+      networks, in which prefrontal cortex (PFC) plays a critical role. PFC exerts
+      top-down executive control over subcortical and posterior cortical areas via
+      extensive reciprocal connections. The orbital, lateral, and medial PFC
+      subdivisions are associated with distinct executive functions, but their precise 
+      roles in large-scale neural networks remain to be determined. The main objective 
+      of our research program is to specify cognitive and neural mechanisms that govern
+      executive control functions. We study effects of focal PFC lesions on behavioral 
+      and electrophysiological correlates of attention and action control utilizing
+      experiments that relate to real-life requirements for executive control. We
+      provide a selective review of studies on the impact of lesions to PFC subregions 
+      on novelty processing, anticipatory attention, and action preparation and motor
+      inhibition. The studies provide evidence for the contribution of both lateral,
+      dorsomedial and orbital PFC in novelty processing and dynamic contextual
+      updating. We also report evidence for a role of lateral PFC in motor preparation 
+      and anticipatory attention. In contrast to the common view that orbitofrontal
+      cortex plays a general role in inhibitory control, we report findings indicating 
+      an involvement in action outcome monitoring rather than in behavioral inhibition 
+      as such. We argue that improved understanding of how basic aspects of attentional
+      control and inhibition is regulated in the brain, will shed light on the complex 
+      behavioral, cognitive and emotional problems experienced by patients with
+      executive dysfunction.
+CI  - (c) 2014 Scandinavian Psychological Associations and John Wiley & Sons Ltd.
+FAU - Solbakk, Anne-Kristin
+AU  - Solbakk AK
+AD  - Department of Neurosurgery, Division of Surgery and Clinical Neuroscience, Oslo
+      University Hospital-Rikshospitalet, Norway; Department of Psychosomatic Medicine,
+      Division of Surgery and Clinical Neuroscience, Oslo University
+      Hospital-Rikshospitalet, Norway.
+FAU - Lovstad, Marianne
+AU  - Lovstad M
+LA  - eng
+PT  - Journal Article
+PT  - Review
+DEP - 20140306
+PL  - England
+TA  - Scand J Psychol
+JT  - Scandinavian journal of psychology
+JID - 0404510
+SB  - IM
+MH  - Attention/*physiology
+MH  - Evoked Potentials/*physiology
+MH  - Executive Function/*physiology
+MH  - Humans
+MH  - Prefrontal Cortex/*pathology/*physiopathology
+OTO - NOTNLM
+OT  - Neuropsychology
+OT  - attention
+OT  - cognitive electrophysiology
+OT  - event-related potentials
+OT  - executive function
+EDAT- 2014/03/08 06:00
+MHDA- 2015/09/04 06:00
+CRDT- 2014/03/08 06:00
+PHST- 2013/10/15 [received]
+PHST- 2014/01/05 [accepted]
+PHST- 2014/03/06 [aheadofprint]
+AID - 10.1111/sjop.12106 [doi]
+PST - ppublish
+SO  - Scand J Psychol. 2014 Jun;55(3):233-43. doi: 10.1111/sjop.12106. Epub 2014 Mar 6.
+
+PMID- 24380673
+OWN - NLM
+STAT- MEDLINE
+DA  - 20140203
+DCOM- 20141006
+IS  - 1872-7549 (Electronic)
+IS  - 0166-4328 (Linking)
+VI  - 261
+DP  - 2014 Mar 15
+TI  - Perseveration in the presence of punishment: the effects of chronic cocaine
+      exposure and lesions to the prefrontal cortex.
+PG  - 185-92
+LID - 10.1016/j.bbr.2013.12.025 [doi]
+LID - S0166-4328(13)00768-7 [pii]
+AB  - Perseveration is the repetition of a previously appropriate response in a manner,
+      or context, which is detrimental to the individual. Although both cocaine
+      exposure and prefrontal cortex (PFC) dysfunctions have been implicated in
+      perseverative-like behaviours, the underlying nature of the impairments has been 
+      debated. The current study tested whether chronic cocaine exposure and PFC
+      lesions induce perseverative-like behaviours by causing insensitivity to
+      punishment. Food-restricted male Sprague-Dawley rats were trained to respond for 
+      sucrose on concurrent schedules of reinforcement. After initial training, rats
+      received either a sensitizing regimen of cocaine exposure, or excitotoxic lesions
+      to subregions of the PFC. The test of perseveration involved a choice of
+      responding between two levers associated with fixed ratio and progressive ratio
+      (PR) schedules. Responding on the PR lever was punished by a 1 min timeout
+      period. It was found that, unlike control subjects, those exposed to chronic
+      cocaine, or with lesions to the medial prefrontal cortex, were significantly
+      slower in adapting their responding to avoid punishment. The current study
+      provides evidence that both cocaine exposure and lesions to the prefrontal cortex
+      can increase perseverative-like responding, although the magnitude and permanence
+      of these effects are contingent on the nature of the task.
+CI  - Copyright (c) 2013 Elsevier B.V. All rights reserved.
+FAU - Allen, Craig P
+AU  - Allen CP
+AD  - Department of Psychology, University of Guelph, Guelph, ON, Canada.
+FAU - Leri, Francesco
+AU  - Leri F
+AD  - Department of Psychology, University of Guelph, Guelph, ON, Canada. Electronic
+      address: fleri@uoguelph.ca.
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20131228
+PL  - Netherlands
+TA  - Behav Brain Res
+JT  - Behavioural brain research
+JID - 8004872
+RN  - 0 (Dopamine Uptake Inhibitors)
+RN  - I5Y540LHVR (Cocaine)
+SB  - IM
+MH  - Animals
+MH  - Cocaine/*administration & dosage
+MH  - Dopamine Uptake Inhibitors/*administration & dosage
+MH  - Learning Disorders/*etiology
+MH  - Male
+MH  - Prefrontal Cortex/*injuries/physiology
+MH  - *Punishment
+MH  - Rats
+MH  - Rats, Sprague-Dawley
+MH  - Reinforcement Schedule
+OTO - NOTNLM
+OT  - Cocaine
+OT  - Perseveration
+OT  - Prefrontal cortex
+OT  - Prelimbic cortex
+OT  - Reversal learning
+OT  - Sensitization
+EDAT- 2014/01/02 06:00
+MHDA- 2014/10/07 06:00
+CRDT- 2014/01/02 06:00
+PHST- 2013/09/26 [received]
+PHST- 2013/11/26 [revised]
+PHST- 2013/12/18 [accepted]
+PHST- 2013/12/28 [aheadofprint]
+AID - S0166-4328(13)00768-7 [pii]
+AID - 10.1016/j.bbr.2013.12.025 [doi]
+PST - ppublish
+SO  - Behav Brain Res. 2014 Mar 15;261:185-92. doi: 10.1016/j.bbr.2013.12.025. Epub
+      2013 Dec 28.
+
+PMID- 24316198
+OWN - NLM
+STAT- MEDLINE
+DA  - 20140124
+DCOM- 20140924
+LR  - 20150422
+IS  - 1873-3514 (Electronic)
+IS  - 0028-3932 (Linking)
+VI  - 53
+DP  - 2014 Jan
+TI  - The effects of lateral prefrontal transcranial magnetic stimulation on item
+      memory encoding.
+PG  - 197-202
+LID - 10.1016/j.neuropsychologia.2013.11.021 [doi]
+LID - S0028-3932(13)00418-1 [pii]
+AB  - Previous neuroimaging research has established that the left ventrolateral
+      prefrontal cortex (VLPFC) is involved in long-term memory (LTM) encoding for
+      individual items. Dorsolateral prefrontal cortex (DLPFC) is implicated less
+      frequently, and one theory that has gained support to explain this discrepancy is
+      that DLPFC is involved in forming item-item relational but not item LTM. Given
+      that neuroimaging results are correlational, complimentary methods such as
+      repetitive transcranial magnetic stimulation (TMS) have been used to test causal 
+      hypotheses generated from imaging data. Most TMS studies of LTM encoding have
+      found that disruption of lateral PFC activity impairs subsequent memory. However 
+      these studies have lacked methods to precisely localize and directly compare TMS 
+      effects from frontal subregions implicated by the neuroimaging literature. Here, 
+      we target specific subregions of lateral PFC with TMS to test the prediction from
+      the item/relational framework that temporary disruption of VLPFC during encoding 
+      will impair subsequent memory whereas TMS to DLPFC during item encoding will not.
+      Frontal TMS was administered prior to a LTM encoding task in which participants
+      were presented with a list of individual nouns and asked to judge whether each
+      noun was concrete or abstract. After a 40 min delay period, item recognition
+      memory was tested. Results indicate that VLPFC and DLPFC TMS have differential
+      effects on subsequent item memory. VLPFC TMS reliably disrupted subsequent item
+      memory whereas DLPFC TMS led to numerical enhancement in item memory, relative to
+      TMS to a control region.
+CI  - (c) 2013 Published by Elsevier Ltd.
+FAU - Blumenfeld, Robert S
+AU  - Blumenfeld RS
+AD  - Department of Neurology, University of California, Irvine, CA 92697, United
+      States. Electronic address: rblumenf@uci.edu.
+FAU - Lee, Taraz G
+AU  - Lee TG
+AD  - Department of Psychological and Brain Sciences, University of California, Santa
+      Barbara, CA, United States.
+FAU - D'Esposito, Mark
+AU  - D'Esposito M
+AD  - Helen Wills Neuroscience Institute and Department of Psychology, University of
+      California, Berkeley, CA 94720, United States; Department of Psychology,
+      University of California, Berkeley, CA 94720, United States.
+LA  - eng
+GR  - F32 MH087047/MH/NIMH NIH HHS/United States
+GR  - F32MH087047/MH/NIMH NIH HHS/United States
+GR  - MH63901/MH/NIMH NIH HHS/United States
+GR  - NS40813/NS/NINDS NIH HHS/United States
+GR  - R01 MH063901/MH/NIMH NIH HHS/United States
+PT  - Journal Article
+PT  - Research Support, N.I.H., Extramural
+DEP - 20131204
+PL  - England
+TA  - Neuropsychologia
+JT  - Neuropsychologia
+JID - 0020713
+SB  - IM
+MH  - Adult
+MH  - Female
+MH  - Functional Laterality
+MH  - Humans
+MH  - Magnetic Resonance Imaging
+MH  - Male
+MH  - Memory/*physiology
+MH  - Neuropsychological Tests
+MH  - Prefrontal Cortex/anatomy & histology/*physiology
+MH  - Recognition (Psychology)/physiology
+MH  - Task Performance and Analysis
+MH  - *Transcranial Magnetic Stimulation/methods
+MH  - Vocabulary
+PMC - PMC4394733
+MID - NIHMS549830
+OID - NLM: NIHMS549830
+OID - NLM: PMC4394733
+OTO - NOTNLM
+OT  - Brain stimulation
+OT  - Cognitive control
+OT  - DLPFC
+OT  - Memory
+OT  - TMS
+OT  - VLPFC
+EDAT- 2013/12/10 06:00
+MHDA- 2014/09/25 06:00
+CRDT- 2013/12/10 06:00
+PHST- 2013/10/22 [received]
+PHST- 2013/11/22 [revised]
+PHST- 2013/11/25 [accepted]
+PHST- 2013/12/04 [aheadofprint]
+AID - S0028-3932(13)00418-1 [pii]
+AID - 10.1016/j.neuropsychologia.2013.11.021 [doi]
+PST - ppublish
+SO  - Neuropsychologia. 2014 Jan;53:197-202. doi:
+      10.1016/j.neuropsychologia.2013.11.021. Epub 2013 Dec 4.
+
+PMID- 23568326
+OWN - NLM
+STAT- MEDLINE
+DA  - 20130816
+DCOM- 20140324
+LR  - 20150311
+IS  - 1740-634X (Electronic)
+IS  - 0893-133X (Linking)
+VI  - 38
+IP  - 10
+DP  - 2013 Sep
+TI  - Social play behavior in adolescent rats is mediated by functional activity in
+      medial prefrontal cortex and striatum.
+PG  - 1899-909
+LID - 10.1038/npp.2013.83 [doi]
+AB  - Social play behavior is a characteristic, vigorous form of social interaction in 
+      young mammals. It is highly rewarding and thought to be of major importance for
+      social and cognitive development. The neural substrates of social play are
+      incompletely understood, but there is evidence to support a role for the
+      prefrontal cortex (PFC) and striatum in this behavior. Using pharmacological
+      inactivation methods, ie, infusions of GABA receptor agonists (baclofen and
+      muscimol; B&M) or the AMPA/kainate receptor antagonist
+      6,7-dinitroquinoxaline-2,3(1H,4H)-dione (DNQX), we investigated the involvement
+      of several subregions of the medial PFC and striatum in social play. Inactivation
+      of the prelimbic cortex, infralimbic cortex, and medial/ventral orbitofrontal
+      cortex using B&M markedly reduced frequency and duration of social play behavior.
+      Local administration of DNQX into the dorsomedial striatum increased the
+      frequency and duration of social play, whereas infusion of B&M tended to have the
+      same effect. Inactivation of the nucleus accumbens (NAcc) core using B&M
+      increased duration but not frequency of social play, whereas B&M infusion into
+      the NAcc shell did not influence social play behavior. Thus, functional integrity
+      of the medial PFC is important for the expression of social play behavior.
+      Glutamatergic inputs into the dorsomedial striatum exert an inhibitory influence 
+      on social play, and functional activity in the NAcc core acts to limit the length
+      of playful interactions. These results highlight the importance of prefrontal and
+      striatal circuits implicated in cognitive control, decision making, behavioral
+      inhibition, and reward-associated processes in social play behavior.
+FAU - van Kerkhof, Linda W M
+AU  - van Kerkhof LW
+AD  - Rudolf Magnus Institute of Neuroscience, Department of Neuroscience and
+      Pharmacology, University Medical Centre Utrecht, Utrecht, The Netherlands.
+FAU - Damsteegt, Ruth
+AU  - Damsteegt R
+FAU - Trezza, Viviana
+AU  - Trezza V
+FAU - Voorn, Pieter
+AU  - Voorn P
+FAU - Vanderschuren, Louk J M J
+AU  - Vanderschuren LJ
+LA  - eng
+GR  - R01 DA022628/DA/NIDA NIH HHS/United States
+GR  - R01 DA022628/DA/NIDA NIH HHS/United States
+PT  - Journal Article
+PT  - Research Support, N.I.H., Extramural
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20130408
+PL  - England
+TA  - Neuropsychopharmacology
+JT  - Neuropsychopharmacology : official publication of the American College of
+      Neuropsychopharmacology
+JID - 8904907
+RN  - 0 (Excitatory Amino Acid Antagonists)
+RN  - 0 (GABA-B Receptor Agonists)
+RN  - 0 (Quinoxalines)
+RN  - 2379-57-9 (FG 9041)
+RN  - 2763-96-4 (Muscimol)
+RN  - H789N3FKE8 (Baclofen)
+SB  - IM
+MH  - Animals
+MH  - Baclofen/administration & dosage/pharmacology
+MH  - Corpus Striatum/drug effects/*physiology
+MH  - Excitatory Amino Acid Antagonists/administration & dosage/pharmacology
+MH  - GABA-B Receptor Agonists/administration & dosage/pharmacology
+MH  - Male
+MH  - Microinjections
+MH  - Muscimol/administration & dosage/pharmacology
+MH  - Nucleus Accumbens/drug effects/physiology
+MH  - Prefrontal Cortex/drug effects/*physiology
+MH  - Quinoxalines/administration & dosage/pharmacology
+MH  - Rats
+MH  - *Social Behavior
+PMC - PMC3746695
+OID - NLM: PMC3746695
+EDAT- 2013/04/10 06:00
+MHDA- 2014/03/25 06:00
+CRDT- 2013/04/10 06:00
+PHST- 2012/12/07 [received]
+PHST- 2013/03/29 [revised]
+PHST- 2013/04/03 [accepted]
+PHST- 2013/04/08 [aheadofprint]
+AID - npp201383 [pii]
+AID - 10.1038/npp.2013.83 [doi]
+PST - ppublish
+SO  - Neuropsychopharmacology. 2013 Sep;38(10):1899-909. doi: 10.1038/npp.2013.83. Epub
+      2013 Apr 8.
+
+PMID- 23268191
+OWN - NLM
+STAT- MEDLINE
+DA  - 20130328
+DCOM- 20130919
+IS  - 1878-4216 (Electronic)
+IS  - 0278-5846 (Linking)
+VI  - 43
+DP  - 2013 Jun 3
+TI  - Synaptic plasticity in depression: molecular, cellular and functional correlates.
+PG  - 168-84
+LID - 10.1016/j.pnpbp.2012.12.012 [doi]
+LID - S0278-5846(12)00323-5 [pii]
+AB  - Synaptic plasticity confers environmental adaptability through modification of
+      the connectivity between neurons and neuronal circuits. This is achieved through 
+      changes to synapse-associated signaling systems and supported by complementary
+      changes to cellular morphology and metabolism within the tripartite synapse.
+      Mounting evidence suggests region-specific changes to synaptic form and function 
+      occur as a result of chronic stress and in depression. Within subregions of the
+      prefrontal cortex (PFC) and hippocampus structural and synapse-related findings
+      seem consistent with a deficit in long-term potentiation (LTP) and facilitation
+      of long-term depression (LTD), particularly at excitatory pyramidal synapses.
+      Other brain regions are less well-studied; however the amygdala may feature a
+      somewhat opposite synaptic pathology including reduced inhibitory tone. Changes
+      to synaptic plasticity in stress and depression may correlate those to several
+      signal transduction pathways (e.g. NOS-NO, cAMP-PKA, Ras-ERK, PI3K-Akt, GSK-3,
+      mTOR and CREB) and upstream receptors (e.g. NMDAR, TrkB and p75NTR). Deficits in 
+      synaptic plasticity may further correlate disrupted brain redox and
+      bioenergetics. Finally, at a functional level region-specific changes to synaptic
+      plasticity in depression may relate to maladapted neurocircuitry and parallel
+      reduced cognitive control over negative emotion.
+CI  - Copyright (c) 2012 Elsevier Inc. All rights reserved.
+FAU - Marsden, W N
+AU  - Marsden WN
+AD  - Highclere Court, Woking, Surrey, GU21 2QP, UK. wm_wire@yahoo.co.uk
+LA  - eng
+PT  - Journal Article
+PT  - Review
+DEP - 20121223
+PL  - England
+TA  - Prog Neuropsychopharmacol Biol Psychiatry
+JT  - Progress in neuro-psychopharmacology & biological psychiatry
+JID - 8211617
+SB  - IM
+MH  - Depression/*physiopathology/psychology
+MH  - Energy Metabolism
+MH  - Hippocampus/physiopathology
+MH  - Humans
+MH  - Neuronal Plasticity/*physiology
+MH  - Prefrontal Cortex/physiopathology
+MH  - Signal Transduction/physiology
+MH  - Stress, Psychological/*physiopathology/psychology
+MH  - Synapses/*physiology
+EDAT- 2012/12/27 06:00
+MHDA- 2013/09/21 06:00
+CRDT- 2012/12/27 06:00
+PHST- 2012/03/17 [received]
+PHST- 2012/12/14 [revised]
+PHST- 2012/12/15 [accepted]
+PHST- 2012/12/23 [aheadofprint]
+AID - S0278-5846(12)00323-5 [pii]
+AID - 10.1016/j.pnpbp.2012.12.012 [doi]
+PST - ppublish
+SO  - Prog Neuropsychopharmacol Biol Psychiatry. 2013 Jun 3;43:168-84. doi:
+      10.1016/j.pnpbp.2012.12.012. Epub 2012 Dec 23.
+
+PMID- 22985696
+OWN - NLM
+STAT- MEDLINE
+DA  - 20130122
+DCOM- 20130628
+LR  - 20131121
+IS  - 1873-2402 (Electronic)
+IS  - 0006-3223 (Linking)
+VI  - 73
+IP  - 3
+DP  - 2013 Feb 1
+TI  - Discriminative inhibitory control of cocaine seeking involves the prelimbic
+      prefrontal cortex.
+PG  - 271-9
+LID - 10.1016/j.biopsych.2012.08.011 [doi]
+LID - S0006-3223(12)00721-4 [pii]
+AB  - BACKGROUND: Recent neuroimaging studies have shown that people with cocaine
+      addiction retain some degree of control over drug craving that correlates with
+      neural activity in the lateral prefrontal cortex (PFC). Here, we report similar
+      findings in a rat model of inhibitory control of cocaine seeking. METHODS: Rats
+      actively responding for cocaine were trained to stop responding when presented
+      with a discriminative stimulus that signaled lack of reinforcement. Rats were
+      then tested for inhibitory control of cocaine seeking in novel behavioral
+      contexts and in circumstances when cocaine seeking is particularly intense (e.g.,
+      following drug priming). The role of neuronal activity in different subregions of
+      the PFC was assessed using local pharmacologic inactivation and c-Fos
+      immunohistochemistry. RESULTS: Rats progressively acquired the ability to stop
+      cocaine seeking, even during drug intoxication and after a long history of
+      cocaine self-administration. Inhibitory control of cocaine seeking was flexible, 
+      sufficiently strong to block cocaine-primed reinstatement, and selectively
+      depended on increased neuronal activity within the prelimbic PFC, which is
+      considered the rodent functional homolog of the human lateral PFC. CONCLUSIONS:
+      Parallel evidence in both animal models and humans indicate that recruitment of
+      prefrontal inhibitory control of drug seeking is still functional after prolonged
+      cocaine use. Preclinical investigation of the mechanisms underlying this capacity
+      may contribute to designing new behavioral and/or pharmacologic strategies to
+      promote its use for the prevention of relapse in addiction.
+CI  - Copyright (c) 2013 Society of Biological Psychiatry. Published by Elsevier Inc.
+      All rights reserved.
+FAU - Mihindou, Claudia
+AU  - Mihindou C
+AD  - Universite de Bordeaux and the Centre National de la Recherche Scientifique,
+      Institut des Maladies Neurodegeneratives, Bordeaux, France.
+FAU - Guillem, Karine
+AU  - Guillem K
+FAU - Navailles, Sylvia
+AU  - Navailles S
+FAU - Vouillac, Caroline
+AU  - Vouillac C
+FAU - Ahmed, Serge H
+AU  - Ahmed SH
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20120915
+PL  - United States
+TA  - Biol Psychiatry
+JT  - Biological psychiatry
+JID - 0213264
+RN  - 0 (Dopamine Uptake Inhibitors)
+RN  - I5Y540LHVR (Cocaine)
+SB  - IM
+MH  - Animals
+MH  - Behavior, Animal/drug effects/physiology
+MH  - Cocaine/*administration & dosage
+MH  - Conditioning, Operant/drug effects/physiology
+MH  - Discrimination Learning/drug effects/*physiology
+MH  - Dopamine Uptake Inhibitors/*administration & dosage
+MH  - Drug-Seeking Behavior/drug effects/*physiology
+MH  - Extinction, Psychological/drug effects/physiology
+MH  - *Inhibition (Psychology)
+MH  - Male
+MH  - Motor Activity/drug effects/physiology
+MH  - Prefrontal Cortex/drug effects/*physiology
+MH  - Rats
+MH  - Rats, Wistar
+MH  - Self Administration
+EDAT- 2012/09/19 06:00
+MHDA- 2013/07/03 06:00
+CRDT- 2012/09/19 06:00
+PHST- 2012/05/26 [received]
+PHST- 2012/08/09 [revised]
+PHST- 2012/08/09 [accepted]
+PHST- 2012/09/15 [aheadofprint]
+AID - S0006-3223(12)00721-4 [pii]
+AID - 10.1016/j.biopsych.2012.08.011 [doi]
+PST - ppublish
+SO  - Biol Psychiatry. 2013 Feb 1;73(3):271-9. doi: 10.1016/j.biopsych.2012.08.011.
+      Epub 2012 Sep 15.
+
+PMID- 22557959
+OWN - NLM
+STAT- PubMed-not-MEDLINE
+DA  - 20120504
+DCOM- 20121002
+LR  - 20130813
+IS  - 1662-5161 (Electronic)
+IS  - 1662-5161 (Linking)
+VI  - 6
+DP  - 2012
+TI  - Spatial and temporal dynamics of cortical networks engaged in memory encoding and
+      retrieval.
+PG  - 109
+LID - 10.3389/fnhum.2012.00109 [doi]
+AB  - Memory operations such as encoding and retrieval require the coordinated
+      interplay of cortical regions with distinct functional contributions. The
+      mechanistic nature of these interactions, however, remains unspecified. During
+      the performance of a face memory task during fMRI scanning, we measured the
+      magnitude (a measure of the strength of coupling between areas) and phase (a
+      measure of the relative timing across areas) of coherence between regions of
+      interest and the rest of the brain. The fusiform face area (FFA) showed robust
+      coherence with a distributed network of subregions in the prefrontal cortex
+      (PFC), posterior parietal cortex (PPC), precuneus, and hippocampus across both
+      memory operations. While these findings reveal significant overlap in the
+      cortical networks underlying mnemonic encoding and retrieval, coherence phase
+      analyses revealed context-dependent differences in cortical dynamics. During both
+      encoding and retrieval, PFC and PPC exhibited earlier activity than in the FFA
+      and hippocampus. Also, during retrieval, PFC activity preceded PPC activity.
+      These findings are consistent with prior physiology studies suggesting an early
+      contribution of PFC and PPC in mnemonic control. Together, these findings
+      contribute to the growing literature exploring the spatio-temporal dynamics of
+      basic memory operations.
+FAU - Miller, Brian T
+AU  - Miller BT
+AD  - Helen Wills Neuroscience Institute, University of California, Berkeley CA, USA.
+FAU - D'Esposito, Mark
+AU  - D'Esposito M
+LA  - eng
+PT  - Journal Article
+DEP - 20120501
+PL  - Switzerland
+TA  - Front Hum Neurosci
+JT  - Frontiers in human neuroscience
+JID - 101477954
+PMC - PMC3340945
+OID - NLM: PMC3340945
+OTO - NOTNLM
+OT  - effective connectivity
+OT  - episodic memory
+OT  - fMRI
+OT  - functional connectivity
+OT  - hippocampus
+OT  - posterior parietal cortex
+OT  - prefrontal cortex
+EDAT- 2012/05/05 06:00
+MHDA- 2012/05/05 06:01
+CRDT- 2012/05/05 06:00
+PHST- 2012/01/17 [received]
+PHST- 2012/04/11 [accepted]
+PHST- 2012/05/01 [epublish]
+AID - 10.3389/fnhum.2012.00109 [doi]
+PST - epublish
+SO  - Front Hum Neurosci. 2012 May 1;6:109. doi: 10.3389/fnhum.2012.00109. eCollection 
+      2012.
+
+PMID- 22492751
+OWN - NLM
+STAT- MEDLINE
+DA  - 20120411
+DCOM- 20120904
+LR  - 20141016
+IS  - 1471-2970 (Electronic)
+IS  - 0962-8436 (Linking)
+VI  - 367
+IP  - 1594
+DP  - 2012 May 19
+TI  - The neural basis of metacognitive ability.
+PG  - 1338-49
+LID - 10.1098/rstb.2011.0417 [doi]
+AB  - Ability in various cognitive domains is often assessed by measuring task
+      performance, such as the accuracy of a perceptual categorization. A similar
+      analysis can be applied to metacognitive reports about a task to quantify the
+      degree to which an individual is aware of his or her success or failure. Here, we
+      review the psychological and neural underpinnings of metacognitive accuracy,
+      drawing on research in memory and decision-making. These data show that
+      metacognitive accuracy is dissociable from task performance and varies across
+      individuals. Convergent evidence indicates that the function of the rostral and
+      dorsal aspect of the lateral prefrontal cortex (PFC) is important for the
+      accuracy of retrospective judgements of performance. In contrast, prospective
+      judgements of performance may depend upon medial PFC. We close with a discussion 
+      of how metacognitive processes relate to concepts of cognitive control, and
+      propose a neural synthesis in which dorsolateral and anterior prefrontal cortical
+      subregions interact with interoceptive cortices (cingulate and insula) to promote
+      accurate judgements of performance.
+FAU - Fleming, Stephen M
+AU  - Fleming SM
+AD  - Center for Neural Science, New York University, 6 Washington Place, Room 809, New
+      York, NY 10003, USA. fleming.sm@gmail.com
+FAU - Dolan, Raymond J
+AU  - Dolan RJ
+LA  - eng
+GR  - 078865/Z/05/Z/Wellcome Trust/United Kingdom
+GR  - 091593/Wellcome Trust/United Kingdom
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+PT  - Review
+PL  - England
+TA  - Philos Trans R Soc Lond B Biol Sci
+JT  - Philosophical transactions of the Royal Society of London. Series B, Biological
+      sciences
+JID - 7503623
+SB  - IM
+MH  - Animals
+MH  - Cognition/*physiology
+MH  - Decision Making/physiology
+MH  - Humans
+MH  - Memory/physiology
+MH  - Neural Pathways/*physiology
+MH  - Prefrontal Cortex/*physiology
+PMC - PMC3318765
+OID - NLM: PMC3318765
+EDAT- 2012/04/12 06:00
+MHDA- 2012/09/05 06:00
+CRDT- 2012/04/12 06:00
+AID - rstb.2011.0417 [pii]
+AID - 10.1098/rstb.2011.0417 [doi]
+PST - ppublish
+SO  - Philos Trans R Soc Lond B Biol Sci. 2012 May 19;367(1594):1338-49. doi:
+      10.1098/rstb.2011.0417.
+
+PMID- 22098260
+OWN - NLM
+STAT- MEDLINE
+DA  - 20120530
+DCOM- 20130325
+LR  - 20150310
+IS  - 1530-8898 (Electronic)
+IS  - 0898-929X (Linking)
+VI  - 24
+IP  - 7
+DP  - 2012 Jul
+TI  - Structural integrity of the prefrontal cortex modulates electrocortical
+      sensitivity to reward.
+PG  - 1560-70
+LID - 10.1162/jocn_a_00166 [doi]
+AB  - The P300 is a known ERP component assessing stimulus value, including the value
+      of a monetary reward. In parallel, the incentive value of reinforcers relies on
+      the PFC, a major cortical projection region of the mesocortical reward pathway.
+      Here we show a significant positive correlation between P300 response to money
+      (vs. no money) with PFC gray matter volume in the OFC, ACC, and dorsolateral and 
+      ventrolateral PFC in healthy control participants. In contrast, individuals with 
+      cocaine use disorders showed compromises in both P300 sensitivity to money and
+      PFC gray matter volume in the ventrolateral PFC and OFC and their
+      interdependence. These results document for the first time the importance of gray
+      matter structural integrity of subregions of PFC to the reward-modulated P300
+      response.
+FAU - Parvaz, Muhammad A
+AU  - Parvaz MA
+AD  - Brookhaven National Laboratory, Upton, NY, USA.
+FAU - Konova, Anna B
+AU  - Konova AB
+FAU - Tomasi, Dardo
+AU  - Tomasi D
+FAU - Volkow, Nora D
+AU  - Volkow ND
+FAU - Goldstein, Rita Z
+AU  - Goldstein RZ
+LA  - eng
+GR  - 1R01DA023579/DA/NIDA NIH HHS/United States
+GR  - 5-MO1-RR-10710/RR/NCRR NIH HHS/United States
+GR  - R01 DA023579/DA/NIDA NIH HHS/United States
+PT  - Journal Article
+PT  - Randomized Controlled Trial
+PT  - Research Support, N.I.H., Extramural
+DEP - 20111118
+PL  - United States
+TA  - J Cogn Neurosci
+JT  - Journal of cognitive neuroscience
+JID - 8910747
+SB  - IM
+MH  - Adult
+MH  - Electroencephalography/*methods
+MH  - Event-Related Potentials, P300/*physiology
+MH  - Female
+MH  - Humans
+MH  - Male
+MH  - Middle Aged
+MH  - Prefrontal Cortex/*anatomy & histology/*physiology
+MH  - *Reward
+PMC - PMC4353578
+MID - NIHMS667148
+OID - NLM: NIHMS667148
+OID - NLM: PMC4353578
+EDAT- 2011/11/22 06:00
+MHDA- 2013/03/26 06:00
+CRDT- 2011/11/22 06:00
+PHST- 2011/11/18 [aheadofprint]
+AID - 10.1162/jocn_a_00166 [doi]
+PST - ppublish
+SO  - J Cogn Neurosci. 2012 Jul;24(7):1560-70. doi: 10.1162/jocn_a_00166. Epub 2011 Nov
+      18.
+
+PMID- 21855643
+OWN - NLM
+STAT- MEDLINE
+DA  - 20111010
+DCOM- 20120222
+IS  - 1095-9564 (Electronic)
+IS  - 1074-7427 (Linking)
+VI  - 96
+IP  - 3
+DP  - 2011 Oct
+TI  - An analysis of rat prefrontal cortex in mediating executive function.
+PG  - 417-31
+LID - 10.1016/j.nlm.2011.07.002 [doi]
+AB  - While it is acknowledged that species specific differences are an implicit
+      condition of comparative studies, rodent models of prefrontal function serve a
+      significant role in the acquisition of converging evidence on prefrontal function
+      across levels of analysis and research techniques. The purpose of the present
+      review is to examine whether the prefrontal cortex (PFC) in rats supports a
+      variety of processes associated with executive function including working memory,
+      temporal processing, planning (prospective coding), flexibility, rule learning,
+      and decision making. Therefore, in this review we examined changes associated
+      with working memory processes for spatial locations, visual objects, odors,
+      tastes, and response domains or attributes, temporal processes including temporal
+      order, sequence learning, prospective coding, behavioral flexibility associated
+      with reversal learning and set shifting, paired associate learning, and decision 
+      making based on effort, time discounting, and uncertainty following damage to the
+      PFC in rats. In addition, potential parallel processes of executive function in
+      monkeys and humans based on several theories of subregional differentiation
+      within the PFC will be presented. Specifically, theories based on domain or
+      attribute specificity (Goldman-Rakic, 1996), level of processing (Petrides,
+      1996), rule learning based on complexity (Wise, Murray, & Gerfen, 1996),
+      executive functions based on connectivity with other brain regions associated
+      with top-down control (Miller & Cohen, 2001), are presented and applied to PFC
+      function in rats with the aim of understanding subregional specificity in the rat
+      PFC. The data suggest that there is subregional specificity within the PFC of
+      rats, monkey and humans and there are parallel cognitive functions of the
+      different subregions of the PFC in rats, monkeys and humans.
+CI  - Copyright (c) 2011. Published by Elsevier Inc.
+FAU - Kesner, Raymond P
+AU  - Kesner RP
+AD  - Department of Psychology, University of Utah, Salt Lake City, UT, USA.
+      ray.kesner@psych.utah.edu
+FAU - Churchwell, John C
+AU  - Churchwell JC
+LA  - eng
+PT  - Journal Article
+PT  - Review
+DEP - 20110809
+PL  - United States
+TA  - Neurobiol Learn Mem
+JT  - Neurobiology of learning and memory
+JID - 9508166
+SB  - IM
+MH  - Animals
+MH  - Association Learning/*physiology
+MH  - *Brain Mapping
+MH  - Decision Making/physiology
+MH  - Executive Function/*physiology
+MH  - Haplorhini
+MH  - Humans
+MH  - Memory, Short-Term/physiology
+MH  - Models, Animal
+MH  - Prefrontal Cortex/*physiology
+MH  - Rats
+MH  - Time Perception/*physiology
+EDAT- 2011/08/23 06:00
+MHDA- 2012/02/23 06:00
+CRDT- 2011/08/23 06:00
+PHST- 2011/04/13 [received]
+PHST- 2011/07/22 [revised]
+PHST- 2011/07/26 [accepted]
+PHST- 2011/08/09 [aheadofprint]
+AID - S1074-7427(11)00142-0 [pii]
+AID - 10.1016/j.nlm.2011.07.002 [doi]
+PST - ppublish
+SO  - Neurobiol Learn Mem. 2011 Oct;96(3):417-31. doi: 10.1016/j.nlm.2011.07.002. Epub 
+      2011 Aug 9.
+
+PMID- 21402920
+OWN - NLM
+STAT- MEDLINE
+DA  - 20110330
+DCOM- 20110610
+LR  - 20140821
+IS  - 1091-6490 (Electronic)
+IS  - 0027-8424 (Linking)
+VI  - 108
+IP  - 13
+DP  - 2011 Mar 29
+TI  - Fiber density between rhinal cortex and activated ventrolateral prefrontal
+      regions predicts episodic memory performance in humans.
+PG  - 5408-13
+LID - 10.1073/pnas.1013287108 [doi]
+AB  - The prefrontal cortex (PFC) is assumed to contribute to goal-directed episodic
+      encoding by exerting cognitive control on medial temporal lobe (MTL) memory
+      processes. However, it is thus far unclear to what extent the contribution of
+      PFC-MTL interactions to memory manifests at a structural anatomical level. We
+      combined functional magnetic resonance imaging and fiber tracking based on
+      diffusion tensor imaging in 28 young, healthy adults to quantify the density of
+      white matter tracts between PFC regions that were activated during the encoding
+      period of a verbal free-recall task and MTL subregions. Across the cohort, the
+      strength of fiber bundles linking activated ventrolateral PFC regions and the
+      rhinal cortex (comprising the peri- and entorhinal cortices) of the MTL
+      correlated positively with free-recall performance. These direct white matter
+      connections provide a basis through which activated regions in the PFC can
+      interact with the MTL and contribute to interindividual differences in human
+      episodic memory.
+FAU - Schott, Bjorn H
+AU  - Schott BH
+AD  - Leibniz-Institute for Neurobiology, 39118 Magdeburg, Germany.
+      bschott@neuro2.med.uni-magdeburg.de
+FAU - Niklas, Christoph
+AU  - Niklas C
+FAU - Kaufmann, Jorn
+AU  - Kaufmann J
+FAU - Bodammer, Nils C
+AU  - Bodammer NC
+FAU - Machts, Judith
+AU  - Machts J
+FAU - Schutze, Hartmut
+AU  - Schutze H
+FAU - Duzel, Emrah
+AU  - Duzel E
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20110314
+PL  - United States
+TA  - Proc Natl Acad Sci U S A
+JT  - Proceedings of the National Academy of Sciences of the United States of America
+JID - 7505876
+SB  - IM
+CIN - Proc Natl Acad Sci U S A. 2011 Aug 30;108(35):E598; author reply E599. PMID:
+      21821788
+MH  - Adult
+MH  - Behavior/physiology
+MH  - Brain Mapping/methods
+MH  - Diffusion Tensor Imaging/methods
+MH  - Female
+MH  - Humans
+MH  - Magnetic Resonance Imaging/methods
+MH  - Male
+MH  - Mental Recall/*physiology
+MH  - Neural Pathways/*anatomy & histology
+MH  - Prefrontal Cortex/*cytology/*physiology
+MH  - Temporal Lobe/*cytology/*physiology
+MH  - Young Adult
+PMC - PMC3069158
+OID - NLM: PMC3069158
+EDAT- 2011/03/16 06:00
+MHDA- 2011/06/11 06:00
+CRDT- 2011/03/16 06:00
+PHST- 2011/03/14 [aheadofprint]
+AID - 1013287108 [pii]
+AID - 10.1073/pnas.1013287108 [doi]
+PST - ppublish
+SO  - Proc Natl Acad Sci U S A. 2011 Mar 29;108(13):5408-13. doi:
+      10.1073/pnas.1013287108. Epub 2011 Mar 14.
+
+PMID- 21352923
+OWN - NLM
+STAT- MEDLINE
+DA  - 20110502
+DCOM- 20110725
+IS  - 1095-9572 (Electronic)
+IS  - 1053-8119 (Linking)
+VI  - 56
+IP  - 3
+DP  - 2011 Jun 1
+TI  - A gateway system in rostral PFC? Evidence from biasing attention to perceptual
+      information and internal representations.
+PG  - 1666-76
+LID - 10.1016/j.neuroimage.2011.02.056 [doi]
+AB  - Some situations require us to be highly sensitive to information in the
+      environment, whereas in other situations, our attention is mainly focused on
+      internally represented information. It has been hypothesized that a control
+      system located in the rostral prefrontal cortex (PFC) acts as gateway between
+      these two forms of attention. Here, we examined the neural underpinnings of this 
+      'gateway system' using fMRI and functional connectivity analysis. We designed
+      different tasks, in which the demands for attending to external or internal
+      information were manipulated, and tested 1) whether there is a functional
+      specialization within the rostral PFC along a medial-lateral dimension, and 2)
+      whether these subregions can influence attentional weighting processes by
+      specifically interacting with other parts of the brain. Our results show that
+      lateral aspects of the rostral PFC are preferentially activated when attention is
+      directed to internal representations, whereas anterior medial aspects are
+      activated when attention is directed to sensory events. Furthermore, the
+      rostrolateral subregion was preferentially connected to regions in the prefrontal
+      and parietal cortex during internal attending, whereas the rostromedial subregion
+      was connected to the basal ganglia, thalamus, and sensory association cortices
+      during external attending. Finally, both subregions interacted with another
+      important prefrontal region involved in cognitive control, the inferior frontal
+      junction, in a task-specific manner, depending on the current attentional
+      demands. These findings suggest that the rostrolateral and rostromedial part of
+      the anterior PFC have dissociable roles in attentional control, and that they
+      might, as part of larger networks, be involved in dynamically adjusting the
+      contribution of internal and external information to current cognition.
+CI  - Copyright (c) 2011 Elsevier Inc. All rights reserved.
+FAU - Henseler, Ilona
+AU  - Henseler I
+AD  - Max Planck Institute for Human Cognitive and Brain Sciences, Leipzig, Germany.
+      henseler@cbs.mpg.de
+FAU - Kruger, Sebastian
+AU  - Kruger S
+FAU - Dechent, Peter
+AU  - Dechent P
+FAU - Gruber, Oliver
+AU  - Gruber O
+LA  - eng
+PT  - Journal Article
+DEP - 20110223
+PL  - United States
+TA  - Neuroimage
+JT  - NeuroImage
+JID - 9215515
+SB  - IM
+MH  - Adult
+MH  - Attention/*physiology
+MH  - Female
+MH  - Humans
+MH  - Magnetic Resonance Imaging
+MH  - Male
+MH  - Mental Processes/physiology
+MH  - Neural Pathways/physiology
+MH  - Photic Stimulation
+MH  - Prefrontal Cortex/*physiology
+MH  - Psychomotor Performance/physiology
+MH  - Visual Perception/*physiology
+MH  - Young Adult
+EDAT- 2011/03/01 06:00
+MHDA- 2011/07/26 06:00
+CRDT- 2011/03/01 06:00
+PHST- 2010/09/20 [received]
+PHST- 2011/01/13 [revised]
+PHST- 2011/02/17 [accepted]
+PHST- 2011/02/23 [aheadofprint]
+AID - S1053-8119(11)00212-6 [pii]
+AID - 10.1016/j.neuroimage.2011.02.056 [doi]
+PST - ppublish
+SO  - Neuroimage. 2011 Jun 1;56(3):1666-76. doi: 10.1016/j.neuroimage.2011.02.056. Epub
+      2011 Feb 23.
+
+PMID- 21147230
+OWN - NLM
+STAT- MEDLINE
+DA  - 20110307
+DCOM- 20110628
+IS  - 1095-9572 (Electronic)
+IS  - 1053-8119 (Linking)
+VI  - 55
+IP  - 3
+DP  - 2011 Apr 1
+TI  - Improved modulation of rostrolateral prefrontal cortex using real-time fMRI
+      training and meta-cognitive awareness.
+PG  - 1298-305
+LID - 10.1016/j.neuroimage.2010.12.016 [doi]
+AB  - Recent real-time fMRI (rt-fMRI) training studies have demonstrated that subjects 
+      can achieve improved control over localized brain regions by using real-time
+      feedback about the level of fMRI signal in these regions. It has remained
+      unknown, however, whether subjects can gain control over anterior prefrontal
+      cortex (PFC) regions that support some of the most complex forms of human
+      thought. In this study, we used rt-fMRI training to examine whether subjects can 
+      learn to regulate the rostrolateral prefrontal cortex (RLPFC), or the lateral
+      part of the anterior PFC, by using a meta-cognitive awareness strategy. We show
+      that individuals can achieve improved regulation over the level of fMRI signal in
+      their RLPFC by turning attention towards or away from their own thoughts. The
+      ability to achieve improved modulation was contingent on observing veridical
+      real-time feedback about the level of RLPFC activity during training; a
+      sham-feedback control group demonstrated no improvement in modulation ability and
+      neither did control subjects who received no rt-fMRI feedback but underwent
+      otherwise identical training. Prior to training, meta-cognitive awareness was
+      associated with recruitment of anterior PFC subregions, including both RLPFC and 
+      medial PFC, as well as a number of other midline and posterior cortical regions. 
+      Following training, however, regulation improvement was specific to RLPFC and was
+      not observed in other frontal, midline, or parietal cortical regions. These
+      results demonstrate the feasibility of acquiring control over high-level
+      prefrontal regions through rt-fMRI training and offer a novel view into the
+      correspondence between observable neuroscientific measures and highly subjective 
+      mental states.
+CI  - Copyright (c) 2010 Elsevier Inc. All rights reserved.
+FAU - McCaig, R Graeme
+AU  - McCaig RG
+AD  - Department of Psychology, University of British Columbia, Vancouver, BC V6T 1Z4, 
+      Canada.
+FAU - Dixon, Matt
+AU  - Dixon M
+FAU - Keramatian, Kamyar
+AU  - Keramatian K
+FAU - Liu, Irene
+AU  - Liu I
+FAU - Christoff, Kalina
+AU  - Christoff K
+LA  - eng
+GR  - MOP 81188/Canadian Institutes of Health Research/Canada
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20101213
+PL  - United States
+TA  - Neuroimage
+JT  - NeuroImage
+JID - 9215515
+SB  - IM
+MH  - Awareness/*physiology
+MH  - Cognition/*physiology
+MH  - Computer Systems
+MH  - Data Interpretation, Statistical
+MH  - Executive Function/physiology
+MH  - Feedback, Psychological
+MH  - Female
+MH  - Humans
+MH  - Image Processing, Computer-Assisted
+MH  - Learning/*physiology
+MH  - Magnetic Resonance Imaging/*methods
+MH  - Male
+MH  - Photic Stimulation
+MH  - Prefrontal Cortex/anatomy & histology/*physiology
+MH  - Recruitment, Neurophysiological/physiology
+MH  - Sensation/physiology
+MH  - Young Adult
+EDAT- 2010/12/15 06:00
+MHDA- 2011/06/29 06:00
+CRDT- 2010/12/15 06:00
+PHST- 2010/07/10 [received]
+PHST- 2010/10/01 [revised]
+PHST- 2010/12/06 [accepted]
+PHST- 2010/12/13 [aheadofprint]
+AID - S1053-8119(10)01598-3 [pii]
+AID - 10.1016/j.neuroimage.2010.12.016 [doi]
+PST - ppublish
+SO  - Neuroimage. 2011 Apr 1;55(3):1298-305. doi: 10.1016/j.neuroimage.2010.12.016.
+      Epub 2010 Dec 13.
+
+PMID- 20837060
+OWN - NLM
+STAT- MEDLINE
+DA  - 20101214
+DCOM- 20111111
+LR  - 20140908
+IS  - 1872-6321 (Electronic)
+IS  - 0165-0173 (Linking)
+VI  - 65
+IP  - 2
+DP  - 2011 Jan 1
+TI  - Prefrontal cortex and drug abuse vulnerability: translation to prevention and
+      treatment interventions.
+PG  - 124-49
+LID - 10.1016/j.brainresrev.2010.09.001 [doi]
+AB  - Vulnerability to drug abuse is related to both reward seeking and impulsivity,
+      two constructs thought to have a biological basis in the prefrontal cortex (PFC).
+      This review addresses similarities and differences in neuroanatomy,
+      neurochemistry and behavior associated with PFC function in rodents and humans.
+      Emphasis is placed on monoamine and amino acid neurotransmitter systems located
+      in anatomically distinct subregions: medial prefrontal cortex (mPFC); lateral
+      prefrontal cortex (lPFC); anterior cingulate cortex (ACC); and orbitofrontal
+      cortex (OFC). While there are complex interconnections and overlapping functions 
+      among these regions, each is thought to be involved in various functions related 
+      to health-related risk behaviors and drug abuse vulnerability. Among the various 
+      functions implicated, evidence suggests that mPFC is involved in reward
+      processing, attention and drug reinstatement; lPFC is involved in
+      decision-making, behavioral inhibition and attentional gating; ACC is involved in
+      attention, emotional processing and self-monitoring; and OFC is involved in
+      behavioral inhibition, signaling of expected outcomes and reward/punishment
+      sensitivity. Individual differences (e.g., age and sex) influence functioning of 
+      these regions, which, in turn, impacts drug abuse vulnerability. Implications for
+      the development of drug abuse prevention and treatment strategies aimed at
+      engaging PFC inhibitory processes that may reduce risk-related behaviors are
+      discussed, including the design of effective public service announcements,
+      cognitive exercises, physical activity, direct current stimulation, feedback
+      control training and pharmacotherapies. A major challenge in drug abuse
+      prevention and treatment rests with improving intervention strategies aimed at
+      strengthening PFC inhibitory systems among at-risk individuals.
+CI  - Copyright (c) 2010 Elsevier B.V. All rights reserved.
+FAU - Perry, Jennifer L
+AU  - Perry JL
+AD  - Center for Drug Abuse Research Translation, University of Kentucky, Lexington, KY
+      40536-0509, USA.
+FAU - Joseph, Jane E
+AU  - Joseph JE
+FAU - Jiang, Yang
+AU  - Jiang Y
+FAU - Zimmerman, Rick S
+AU  - Zimmerman RS
+FAU - Kelly, Thomas H
+AU  - Kelly TH
+FAU - Darna, Mahesh
+AU  - Darna M
+FAU - Huettl, Peter
+AU  - Huettl P
+FAU - Dwoskin, Linda P
+AU  - Dwoskin LP
+FAU - Bardo, Michael T
+AU  - Bardo MT
+LA  - eng
+GR  - P50 DA005312/DA/NIDA NIH HHS/United States
+GR  - P50 DA005312-20/DA/NIDA NIH HHS/United States
+GR  - P50 DA005312-200011/DA/NIDA NIH HHS/United States
+GR  - P50 DA005312-21/DA/NIDA NIH HHS/United States
+GR  - P50 DA05312/DA/NIDA NIH HHS/United States
+GR  - R01 DA012964/DA/NIDA NIH HHS/United States
+GR  - R21 DA024401/DA/NIDA NIH HHS/United States
+GR  - T32 DA007304/DA/NIDA NIH HHS/United States
+PT  - Journal Article
+PT  - Research Support, N.I.H., Extramural
+PT  - Review
+DEP - 20100915
+PL  - Netherlands
+TA  - Brain Res Rev
+JT  - Brain research reviews
+JID - 101300366
+SB  - IM
+MH  - Animals
+MH  - Executive Function/*physiology
+MH  - Exploratory Behavior/drug effects/physiology
+MH  - Genetic Predisposition to Disease/genetics
+MH  - Humans
+MH  - Impulsive Behavior/drug therapy/*physiopathology/prevention & control
+MH  - Motivation/drug effects/physiology
+MH  - Prefrontal Cortex/anatomy & histology/*drug effects/*physiology
+MH  - Rats
+MH  - *Reward
+MH  - Risk Factors
+MH  - Risk Reduction Behavior
+MH  - Substance-Related Disorders/drug therapy/*physiopathology/prevention & control
+PMC - PMC3005953
+MID - NIHMS236651
+OID - NLM: NIHMS236651
+OID - NLM: PMC3005953
+EDAT- 2010/09/15 06:00
+MHDA- 2011/11/15 06:00
+CRDT- 2010/09/15 06:00
+PHST- 2009/12/17 [received]
+PHST- 2010/08/19 [revised]
+PHST- 2010/09/02 [accepted]
+PHST- 2010/09/15 [aheadofprint]
+AID - S0165-0173(10)00100-1 [pii]
+AID - 10.1016/j.brainresrev.2010.09.001 [doi]
+PST - ppublish
+SO  - Brain Res Rev. 2011 Jan 1;65(2):124-49. doi: 10.1016/j.brainresrev.2010.09.001.
+      Epub 2010 Sep 15.
+
+PMID- 20720103
+OWN - NLM
+STAT- MEDLINE
+DA  - 20100819
+DCOM- 20100903
+LR  - 20140921
+IS  - 1529-2401 (Electronic)
+IS  - 0270-6474 (Linking)
+VI  - 30
+IP  - 33
+DP  - 2010 Aug 18
+TI  - Separable prefrontal cortex contributions to free recall.
+PG  - 10967-76
+LID - 10.1523/JNEUROSCI.2611-10.2010 [doi]
+AB  - In everyday life, we often must remember the past in the absence of helpful cues 
+      in the environment. In these cases, the brain directs retrieval by relying on
+      internally maintained cues and strategies. Free recall is a widely used
+      behavioral paradigm for studying retrieval with minimal cue support. During free 
+      recall, individuals often recall semantically related items consecutively--an
+      effect termed semantic clustering--and previous studies have sought to understand
+      clustering to gain leverage on the basic mechanisms supporting strategic recall. 
+      Successful recall and semantic clustering depend on the prefrontal cortex (PFC). 
+      However, as a result of methodological limitations, few functional magnetic
+      resonance imaging (fMRI) studies have assessed the neural mechanisms at encoding 
+      that support subsequent recall, and none have tested the event-related correlates
+      of recall itself. Thus, it remains open whether one or several frontal control
+      mechanisms operate during encoding and recall. Here, we applied a recently
+      developed method (Oztekin et al., 2010) to assess event-related fMRI signal
+      changes during free recall. During encoding, dorsolateral prefrontal cortex
+      (DLPFC) activation was predictive of subsequent semantic clustering. In contrast,
+      subregions of ventrolateral prefrontal cortex (VLPFC) were predictive of
+      subsequent recall, whether clustered or nonclustered, and were inversely
+      associated with clustering during recall. These results suggest that DLPFC
+      supports relational processes at encoding that are sufficient to produce category
+      clustering effects during recall. Conversely, controlled retrieval mechanisms
+      supported by VLPFC support item-specific search during recall.
+FAU - Long, Nicole M
+AU  - Long NM
+AD  - Department of Cognitive, Linguistic, and Psychological Sciences, Brown
+      University, Providence, Rhode Island 02912, USA. niclong@sas.upenn.edu
+FAU - Oztekin, Ilke
+AU  - Oztekin I
+FAU - Badre, David
+AU  - Badre D
+LA  - eng
+GR  - R01 NS065046/NS/NINDS NIH HHS/United States
+GR  - R01 NS065046-02/NS/NINDS NIH HHS/United States
+PT  - Journal Article
+PT  - Research Support, U.S. Gov't, Non-P.H.S.
+PL  - United States
+TA  - J Neurosci
+JT  - The Journal of neuroscience : the official journal of the Society for
+      Neuroscience
+JID - 8102140
+SB  - IM
+MH  - Adolescent
+MH  - Adult
+MH  - Brain/physiology
+MH  - Caudate Nucleus/physiology
+MH  - Cues
+MH  - Female
+MH  - Humans
+MH  - Magnetic Resonance Imaging
+MH  - Male
+MH  - Mental Recall/*physiology
+MH  - Models, Psychological
+MH  - Neuropsychological Tests
+MH  - Prefrontal Cortex/*physiology
+MH  - Recognition (Psychology)/physiology
+MH  - Semantics
+MH  - Temporal Lobe/physiology
+MH  - Young Adult
+PMC - PMC3265965
+MID - NIHMS347277
+OID - NLM: NIHMS347277
+OID - NLM: PMC3265965
+EDAT- 2010/08/20 06:00
+MHDA- 2010/09/04 06:00
+CRDT- 2010/08/20 06:00
+AID - 30/33/10967 [pii]
+AID - 10.1523/JNEUROSCI.2611-10.2010 [doi]
+PST - ppublish
+SO  - J Neurosci. 2010 Aug 18;30(33):10967-76. doi: 10.1523/JNEUROSCI.2611-10.2010.
+
+PMID- 20156841
+OWN - NLM
+STAT- MEDLINE
+DA  - 20101011
+DCOM- 20110808
+LR  - 20140827
+IS  - 1460-2199 (Electronic)
+IS  - 1047-3211 (Linking)
+VI  - 20
+IP  - 11
+DP  - 2010 Nov
+TI  - Specialization of the rostral prefrontal cortex for distinct analogy processes.
+PG  - 2647-59
+LID - 10.1093/cercor/bhq012 [doi]
+AB  - Analogical reasoning is central to learning and abstract thinking. It involves
+      using a more familiar situation (source) to make inferences about a less familiar
+      situation (target). According to the predominant cognitive models, analogical
+      reasoning includes 1) generation of structured mental representations and 2)
+      mapping based on structural similarities between them. This study used functional
+      magnetic resonance imaging to specify the role of rostral prefrontal cortex (PFC)
+      in these distinct processes. An experimental paradigm was designed that enabled
+      differentiation between these processes, by temporal separation of the
+      presentation of the source and the target. Within rostral PFC, a lateral
+      subregion was activated by analogy task both during study of the source (before
+      the source could be compared with a target) and when the target appeared. This
+      may suggest that this subregion supports fundamental analogy processes such as
+      generating structured representations of stimuli but is not specific to one
+      particular processing stage. By contrast, a dorsomedial subregion of rostral PFC 
+      showed an interaction between task (analogy vs. control) and period (more
+      activated when the target appeared). We propose that this region is involved in
+      comparison or mapping processes. These results add to the growing evidence for
+      functional differentiation between rostral PFC subregions.
+FAU - Volle, Emmanuelle
+AU  - Volle E
+AD  - Institute of Cognitive Neuroscience, UCL (University College London), London, UK.
+      emmavolle@gmail.com
+FAU - Gilbert, Sam J
+AU  - Gilbert SJ
+FAU - Benoit, Roland G
+AU  - Benoit RG
+FAU - Burgess, Paul W
+AU  - Burgess PW
+LA  - eng
+GR  - 061171/Wellcome Trust/United Kingdom
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20100215
+PL  - United States
+TA  - Cereb Cortex
+JT  - Cerebral cortex (New York, N.Y. : 1991)
+JID - 9110718
+SB  - IM
+MH  - Adult
+MH  - Cognition/*physiology
+MH  - Female
+MH  - Humans
+MH  - Male
+MH  - Mental Processes/*physiology
+MH  - Prefrontal Cortex/*anatomy & histology/cytology/*physiology
+MH  - Problem Solving/*physiology
+MH  - Thinking/*physiology
+MH  - Young Adult
+PMC - PMC2951846
+OID - NLM: PMC2951846
+EDAT- 2010/02/17 06:00
+MHDA- 2011/08/09 06:00
+CRDT- 2010/02/17 06:00
+PHST- 2010/02/15 [aheadofprint]
+AID - bhq012 [pii]
+AID - 10.1093/cercor/bhq012 [doi]
+PST - ppublish
+SO  - Cereb Cortex. 2010 Nov;20(11):2647-59. doi: 10.1093/cercor/bhq012. Epub 2010 Feb 
+      15.
+
+PMID- 19505444
+OWN - NLM
+STAT- MEDLINE
+DA  - 20090807
+DCOM- 20091020
+IS  - 1872-6240 (Electronic)
+IS  - 0006-8993 (Linking)
+VI  - 1286
+DP  - 2009 Aug 25
+TI  - Prefrontal organization of cognitive control according to levels of abstraction.
+PG  - 94-105
+LID - 10.1016/j.brainres.2009.05.096 [doi]
+AB  - The prefrontal cortex (PFC) plays a crucial role in cognitive control and higher 
+      mental functions by maintaining working memory representations of currently
+      relevant information, thereby inducing a mindset that facilitates the processing 
+      of such information. Using fMRI, we examined how the human PFC implements
+      mindsets for information at varying levels of abstraction. Subjects solved
+      anagrams grouped into three kinds of blocks (concrete, moderately abstract, and
+      highly abstract) according to the degree of abstraction of their solutions.
+      Mindsets were induced by cuing subjects at the beginning of every block as to the
+      degree of abstraction of solutions they should look for. Different levels of
+      abstraction were matched for accuracy and reaction time, allowing us to examine
+      the effects of varying abstraction in the absence of variations in cognitive
+      complexity. Mindsets for concrete, moderately abstract, and highly abstract
+      information were associated with stronger relative recruitment of ventrolateral, 
+      dorsolateral, and rostrolateral PFC regions, respectively, suggesting a
+      functional topography whereby increasingly anterior regions are preferentially
+      associated with representations of increasing abstraction. Rather than being a
+      structural property of the neurons in different prefrontal subregions, this
+      relative specialization may reflect one of the principles according to which
+      lateral PFC adaptively codes and organizes task-relevant information.
+FAU - Christoff, Kalina
+AU  - Christoff K
+AD  - Department of Psychology, University of British Columbia, Vancouver, BC, Canada
+      V6T 1Z4. kchristoff@psych.ubc.ca
+FAU - Keramatian, Kamyar
+AU  - Keramatian K
+FAU - Gordon, Alan M
+AU  - Gordon AM
+FAU - Smith, Rachelle
+AU  - Smith R
+FAU - Madler, Burkhard
+AU  - Madler B
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20090606
+PL  - Netherlands
+TA  - Brain Res
+JT  - Brain research
+JID - 0045503
+SB  - IM
+MH  - Adolescent
+MH  - Adult
+MH  - *Brain Mapping
+MH  - Cognition/*physiology
+MH  - Female
+MH  - Humans
+MH  - Magnetic Resonance Imaging
+MH  - Male
+MH  - Prefrontal Cortex/*anatomy & histology/*physiology
+MH  - Young Adult
+EDAT- 2009/06/10 09:00
+MHDA- 2009/10/21 06:00
+CRDT- 2009/06/10 09:00
+PHST- 2009/02/13 [received]
+PHST- 2009/04/29 [revised]
+PHST- 2009/05/23 [accepted]
+PHST- 2009/06/06 [aheadofprint]
+AID - S0006-8993(09)01123-8 [pii]
+AID - 10.1016/j.brainres.2009.05.096 [doi]
+PST - ppublish
+SO  - Brain Res. 2009 Aug 25;1286:94-105. doi: 10.1016/j.brainres.2009.05.096. Epub
+      2009 Jun 6.
+
+PMID- 18266213
+OWN - NLM
+STAT- MEDLINE
+DA  - 20090219
+DCOM- 20090430
+LR  - 20150814
+IS  - 1097-0193 (Electronic)
+IS  - 1065-9471 (Linking)
+VI  - 30
+IP  - 3
+DP  - 2009 Mar
+TI  - Dynamic neural responses to cue-reactivity paradigms in heroin-dependent users:
+      an fMRI study.
+PG  - 766-75
+LID - 10.1002/hbm.20542 [doi]
+AB  - Neuroimaging methods have been employed to study cue-reactivity-induced neural
+      correlates in the human brain. However, very few studies have focused on
+      characterizing the dynamic neural responses to the factorial interactions between
+      the cues and the subjects. Fifteen right-handed heroin-dependent subjects and 12 
+      age-matched nondrug using subjects participated in this study. Cue-reactivity
+      paradigms were employed, while changes in blood oxygenation level-dependent
+      (BOLD) signals were acquired by functional MRI (fMRI). The fMRI datasets were
+      analyzed with AFNI software and repeated two-way ANOVA was employed for factorial
+      analyses. Neural correlates of factorial interactions between cue-factor and
+      subject-factor were identified in the regions of the ventral tegmental area
+      (VTA), the left and right amygdala, the left and right fusiform cortex, and the
+      precuneus in the mesocorticolimbic system, and in the superior frontal, dorsal
+      lateral prefrontal, and orbitofrontal cortices in the prefrontal cortex system.
+      The neural response patterns in the prefrontal systems are dynamic: decreased
+      response to neutral-cues and increased response to heroin-cues. Further,
+      heroin-cue-induced neural responses within the subregions in the PFC system are
+      significantly intercorrelated. In conclusion, the cue-reactivity paradigms
+      significantly activated the dynamic neural activations in the prefrontal system. 
+      It is suggested that the dynamic response patterns in the PFC system characterize
+      the impaired brain control functions in heroin-dependent subjects.
+FAU - Yang, Zheng
+AU  - Yang Z
+AD  - Center of Brain and Cognition, Beijing Institute of Basic Medical Science,
+      Beijing, China.
+FAU - Xie, Jun
+AU  - Xie J
+FAU - Shao, Yong-Cong
+AU  - Shao YC
+FAU - Xie, Chun-Ming
+AU  - Xie CM
+FAU - Fu, Li-Ping
+AU  - Fu LP
+FAU - Li, De-Jun
+AU  - Li DJ
+FAU - Fan, Ming
+AU  - Fan M
+FAU - Ma, Lin
+AU  - Ma L
+FAU - Li, Shi-Jiang
+AU  - Li SJ
+LA  - eng
+GR  - DA10214/DA/NIDA NIH HHS/United States
+GR  - R01 DA010214/DA/NIDA NIH HHS/United States
+PT  - Journal Article
+PT  - Research Support, N.I.H., Extramural
+PT  - Research Support, Non-U.S. Gov't
+PL  - United States
+TA  - Hum Brain Mapp
+JT  - Human brain mapping
+JID - 9419065
+SB  - IM
+MH  - Adult
+MH  - Brain/*physiopathology
+MH  - *Brain Mapping
+MH  - Cues
+MH  - Female
+MH  - Heroin Dependence/*physiopathology
+MH  - Humans
+MH  - Image Interpretation, Computer-Assisted
+MH  - Magnetic Resonance Imaging
+MH  - Male
+MH  - Neural Pathways/physiology
+MH  - Neurons/*physiology
+PMC - PMC4533912
+MID - NIHMS710666
+OID - NLM: NIHMS710666
+OID - NLM: PMC4533912
+EDAT- 2008/02/13 09:00
+MHDA- 2009/05/01 09:00
+CRDT- 2008/02/13 09:00
+AID - 10.1002/hbm.20542 [doi]
+PST - ppublish
+SO  - Hum Brain Mapp. 2009 Mar;30(3):766-75. doi: 10.1002/hbm.20542.
+
+PMID- 17892391
+OWN - NLM
+STAT- MEDLINE
+DA  - 20080429
+DCOM- 20080620
+LR  - 20131121
+IS  - 0898-929X (Print)
+IS  - 0898-929X (Linking)
+VI  - 19
+IP  - 12
+DP  - 2007 Dec
+TI  - Functional magnetic resonance imaging evidence for a hierarchical organization of
+      the prefrontal cortex.
+PG  - 2082-99
+AB  - The prefrontal cortex (PFC) is central to flexible and organized action. Recent
+      theoretical and empirical results suggest that the rostro-caudal axis of the
+      frontal lobes may reflect a hierarchical organization of control. Here, we test
+      whether the rostro-caudal axis of the PFC is organized hierarchically, based on
+      the level of abstraction at which multiple representations compete to guide
+      selection of action. Four functional magnetic resonance imaging (fMRI)
+      experiments parametrically manipulated the set of task-relevant (a) responses,
+      (b) features, (c) dimensions, and (d) overlapping cue-to-dimension mappings. A
+      systematic posterior to anterior gradient was evident within the PFC depending on
+      the manipulated level of representation. Furthermore, across four fMRI
+      experiments, activation in PFC subregions was consistent with the sub- and
+      superordinate relationships that define an abstract representational hierarchy.
+      In addition to providing further support for a representational hierarchy account
+      of the rostro-caudal gradient in the PFC, these data provide important empirical 
+      constraints on current theorizing about control hierarchies and the PFC.
+FAU - Badre, David
+AU  - Badre D
+AD  - University of California, Berkeley. dbadre@berkeley.edu
+FAU - D'Esposito, Mark
+AU  - D'Esposito M
+LA  - eng
+GR  - F32 NS053337/NS/NINDS NIH HHS/United States
+GR  - MH63901/MH/NIMH NIH HHS/United States
+GR  - NS40813/NS/NINDS NIH HHS/United States
+PT  - Journal Article
+PT  - Research Support, N.I.H., Extramural
+PT  - Research Support, U.S. Gov't, Non-P.H.S.
+PL  - United States
+TA  - J Cogn Neurosci
+JT  - Journal of cognitive neuroscience
+JID - 8910747
+RN  - S88TT14065 (Oxygen)
+SB  - IM
+MH  - Adolescent
+MH  - Adult
+MH  - *Brain Mapping
+MH  - Female
+MH  - Humans
+MH  - Image Processing, Computer-Assisted
+MH  - *Magnetic Resonance Imaging
+MH  - Male
+MH  - Mental Processes/*physiology
+MH  - Oxygen/blood
+MH  - Photic Stimulation/methods
+MH  - Prefrontal Cortex/*blood supply/*physiology
+MH  - Psychomotor Performance
+MH  - Visual Perception/physiology
+EDAT- 2007/09/26 09:00
+MHDA- 2008/06/21 09:00
+CRDT- 2007/09/26 09:00
+AID - 10.1162/jocn.2007.19.12.2082 [doi]
+PST - ppublish
+SO  - J Cogn Neurosci. 2007 Dec;19(12):2082-99.
+
+PMID- 17131230
+OWN - NLM
+STAT- MEDLINE
+DA  - 20061128
+DCOM- 20070831
+IS  - 0340-5354 (Print)
+IS  - 0340-5354 (Linking)
+VI  - 253 Suppl 7
+DP  - 2006 Dec
+TI  - Apathy and the basal ganglia.
+PG  - VII54-61
+AB  - We should like to emphasize the following points: 1. Apathy is defined here as a 
+      quantified and observable behavioral syndrome consisting in a quantitative
+      reduction of voluntary (or goal-directed) behaviors; 2. Therefore, apathy occurs 
+      when the systems that generate and control voluntary actions are altered; 3.
+      These systems are mostly represented by the different subregions embedded in the 
+      Prefrontal cortex (PFC) and in the basal ganglia regions that are closely
+      connected with the PFC; 4. In consequence, clinically, apathy is a prefrontal
+      syndrome either due to direct lesions of the PFC or to lesions of basal ganglia
+      areas that are closely related to the PFC; 5. Apathy is not a single entity but
+      rather heterogeneous. Several different mechanisms may lead to apathy; Because
+      there are several anatomical-functional prefrontal-basal ganglia circuits, the
+      underlying mechanisms responsible for apathy may differ according to which
+      prefrontal-basal ganglia circuit is affected; 6. In this context, apathy is the
+      macroscopic results of the disruption of one or several elementary steps
+      necessary for goal-directed behavior that are subserved by different
+      prefrontal-basal ganglia circuits; 7. Intense apathy is related to caudate
+      nucleus and GPi, disrupting associative and limbic pathways from/to the PFC; 8.
+      in progressive supranuclear palsy (PSP) and focal lesions (caudate nuclei, GPi), 
+      apathy may be due to a loss of PFC activation; 9. In Parkinson's disease (PD),
+      apathy may be due to a loss of signal focalization; 10. More globally, we propose
+      that apathy may be explained by the impact of lesions or dysfunctions of the BG, 
+      because these lesions or dysfunctions lead to a loss of amplification of the
+      relevant signal and/or to a loss of temporal and spatial focalization, both of
+      which result in a diminished extraction of the relevant signal within the frontal
+      cortex, thereby inhibiting the capacity of the frontal cortex to select,
+      initiate, maintain and shift programs of action.
+FAU - Levy, Richard
+AU  - Levy R
+AD  - Department of Neurology and INSERM U 0.610, Hopital de la Salpetriere, Paris,
+      France.
+FAU - Czernecki, Virginie
+AU  - Czernecki V
+LA  - eng
+PT  - Journal Article
+PT  - Review
+PL  - Germany
+TA  - J Neurol
+JT  - Journal of neurology
+JID - 0423161
+SB  - IM
+MH  - Basal Ganglia/*physiology/physiopathology
+MH  - Humans
+MH  - Mental Disorders/complications/*pathology
+MH  - Parkinson Disease/complications
+RF  - 112
+EDAT- 2006/11/30 09:00
+MHDA- 2007/09/01 09:00
+CRDT- 2006/11/30 09:00
+AID - 10.1007/s00415-006-7012-5 [doi]
+PST - ppublish
+SO  - J Neurol. 2006 Dec;253 Suppl 7:VII54-61.
+
+PMID- 17123479
+OWN - NLM
+STAT- MEDLINE
+DA  - 20070507
+DCOM- 20070801
+LR  - 20071203
+IS  - 0006-3223 (Print)
+IS  - 0006-3223 (Linking)
+VI  - 61
+IP  - 10
+DP  - 2007 May 15
+TI  - Levels-of-processing effects in first-degree relatives of individuals with
+      schizophrenia.
+PG  - 1141-7
+AB  - BACKGROUND: First-degree relatives of individuals with schizophrenia show
+      cognitive impairments that are similar to but less severe than their ill
+      relatives. We have shown that memory impairments can be improved and prefrontal
+      cortical (PFC) activity increased in individuals with schizophrenia by providing 
+      beneficial encoding strategies. The current study used a similar paradigm to
+      determine whether siblings of individuals with schizophrenia (SIBs) also show
+      increases in brain activity when presented with beneficial encoding strategies.
+      METHODS: Twenty-one SIBs and 38 siblings of healthy comparison subjects underwent
+      functional magnetic resonance imaging scans while engaged in deep
+      (abstract/concrete judgments) and shallow (orthographic judgments) encoding.
+      Subjects were then given a recognition memory test. RESULTS: The groups did not
+      differ on encoding or recognition accuracy, and the SIBs benefited from deep
+      encoding to a similar degree as control subjects. The SIBs showed deep
+      encoding-related activity in a number of PFC regions typically activated during
+      semantic processing. However, SIBs showed more activity than control subjects in 
+      three subregions of PFC (left BA 44 & BA 47 bilaterally). CONCLUSIONS: Siblings
+      of individuals with schizophrenia benefit from supportive verbal encoding
+      conditions. Like individuals with schizophrenia, SIBs also show increased
+      task-related activity in a larger number of PFC subregions than control subjects 
+      during deep verbal encoding.
+FAU - Bonner-Jackson, Aaron
+AU  - Bonner-Jackson A
+AD  - Washington University, Department of Psychology, St. Louis, Missouri 63130, USA. 
+      abonnerj@artsci.wustl.edu
+FAU - Csernansky, John G
+AU  - Csernansky JG
+FAU - Barch, Deanna M
+AU  - Barch DM
+LA  - eng
+GR  - MH071616/MH/NIMH NIH HHS/United States
+GR  - MH56584/MH/NIMH NIH HHS/United States
+GR  - MH60887/MH/NIMH NIH HHS/United States
+PT  - Journal Article
+PT  - Research Support, N.I.H., Extramural
+DEP - 20061121
+PL  - United States
+TA  - Biol Psychiatry
+JT  - Biological psychiatry
+JID - 0213264
+SB  - IM
+MH  - Adolescent
+MH  - Adult
+MH  - *Attention
+MH  - Brain Mapping
+MH  - Dominance, Cerebral/physiology
+MH  - Female
+MH  - Frontal Lobe/physiopathology
+MH  - Genetic Predisposition to Disease/*genetics
+MH  - Humans
+MH  - *Judgment
+MH  - *Magnetic Resonance Imaging
+MH  - Male
+MH  - *Mental Recall
+MH  - Prefrontal Cortex/physiopathology
+MH  - Reaction Time/genetics/physiology
+MH  - Schizophrenia/diagnosis/*genetics/physiopathology
+MH  - *Schizophrenic Psychology
+MH  - Siblings
+MH  - *Verbal Learning
+EDAT- 2006/11/25 09:00
+MHDA- 2007/08/02 09:00
+CRDT- 2006/11/25 09:00
+PHST- 2006/06/08 [received]
+PHST- 2006/07/11 [revised]
+PHST- 2006/07/13 [accepted]
+PHST- 2006/11/21 [aheadofprint]
+AID - S0006-3223(06)00897-3 [pii]
+AID - 10.1016/j.biopsych.2006.07.006 [doi]
+PST - ppublish
+SO  - Biol Psychiatry. 2007 May 15;61(10):1141-7. Epub 2006 Nov 21.
+
+PMID- 16796996
+OWN - NLM
+STAT- MEDLINE
+DA  - 20060710
+DCOM- 20061006
+LR  - 20071114
+IS  - 0006-8993 (Print)
+IS  - 0006-8993 (Linking)
+VI  - 1097
+IP  - 1
+DP  - 2006 Jun 30
+TI  - Organization of mnemonic and response operations within prefrontal cortex.
+PG  - 133-41
+AB  - There is mounting evidence that prefrontal cortex (PFC) is activated during
+      mnemonic operations such as working memory maintenance and also during
+      response-related operations. In the current study, we examine the neural
+      organization of mnemonic and response operations with respect to each other
+      within PFC. Stimulus-evoked and sustained functional MRI activity was recorded
+      during performance of a mental calculation task. The presence or absence of
+      mnemonic and response demands was manipulated in a 2 x 2 factorial design with
+      conditions requiring: (1) memory encoding and maintenance (M+); (2) response
+      selection and execution (R+); (3) encoding, maintenance, and response execution
+      (M+R+); (4) neither mnemonic nor response-related processes (M-R-). The first
+      step of the analyses identified PFC voxels exhibiting differential activity
+      during (M+) vs. (R+) trials. Within these voxels, we then examined activity
+      during multiple phases of (M+R+) trials. Greater stimulus-evoked and sustained
+      activity was observed within the anterior extent of dorsolateral prefrontal
+      cortex (BA 46) during R+ vs. M+ trials. In contrast, greater activity was
+      observed in the posterior extent of dorsolateral PFC during M+ vs. R+ trials.
+      Importantly, both regions were activated during (M+R+) trials. Activity levels
+      during all of these conditions exceeded levels observed during (M-R-) control
+      trials. These results suggest that integrative functions of PFC that allow past
+      information to guide future actions may emerge from communication between
+      discrete subregions supporting mnemonic and response operations.
+FAU - Jha, Amishi P
+AU  - Jha AP
+AD  - Center for Cognitive Neuroscience and Department of Psychology, University of
+      Pennsylvania, 3401 Walnut Rm 302C, Philadelphia, PA 19104, USA.
+      apjha@psych.upenn.edu
+FAU - Ranucci, Melissa B
+AU  - Ranucci MB
+FAU - Giuliani, Nicole R
+AU  - Giuliani NR
+LA  - eng
+GR  - P30 NS045839/NS/NINDS NIH HHS/United States
+PT  - Comparative Study
+PT  - Journal Article
+PT  - Research Support, N.I.H., Extramural
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20060622
+PL  - Netherlands
+TA  - Brain Res
+JT  - Brain research
+JID - 0045503
+SB  - IM
+MH  - Adolescent
+MH  - Adult
+MH  - Analysis of Variance
+MH  - Brain Mapping/methods
+MH  - Female
+MH  - Humans
+MH  - Male
+MH  - Memory/*physiology
+MH  - Photic Stimulation/methods
+MH  - Prefrontal Cortex/*physiology
+MH  - Psychomotor Performance/*physiology
+MH  - Reaction Time/*physiology
+EDAT- 2006/06/27 09:00
+MHDA- 2006/10/07 09:00
+CRDT- 2006/06/27 09:00
+PHST- 2005/10/26 [received]
+PHST- 2006/02/06 [revised]
+PHST- 2006/02/07 [accepted]
+PHST- 2006/06/22 [aheadofprint]
+AID - S0006-8993(06)00420-3 [pii]
+AID - 10.1016/j.brainres.2006.02.039 [doi]
+PST - ppublish
+SO  - Brain Res. 2006 Jun 30;1097(1):133-41. Epub 2006 Jun 22.
+
+PMID- 16421331
+OWN - NLM
+STAT- MEDLINE
+DA  - 20061102
+DCOM- 20070508
+LR  - 20070813
+IS  - 1047-3211 (Print)
+IS  - 1047-3211 (Linking)
+VI  - 16
+IP  - 12
+DP  - 2006 Dec
+TI  - Differential functions of lateral and medial rostral prefrontal cortex (area 10) 
+      revealed by brain-behavior associations.
+PG  - 1783-9
+AB  - We analyzed the behavioral data from 104 neuroimaging studies using positron
+      emission tomography or functional magnetic resonance imaging that reported
+      activation peaks in rostral prefrontal cortex (PFC), approximating Brodmann's
+      area 10. The distribution of absolute x coordinates of activation peaks (i.e., x 
+      coordinate regardless of hemisphere) differed significantly from a unimodal
+      normal distribution, reflecting distinct clusters of activation in lateral and
+      medial subregions. These 2 clusters were associated with different patterns of
+      behavioral data. Lateral activations were associated with contrasts between
+      experimental and control conditions where response times (RTs) were slower in the
+      experimental condition. Medial activations were associated with contrasts where
+      RTs were, if anything, faster in experimental than control conditions. These
+      findings place important constraints on theories of rostral PFC functions.
+FAU - Gilbert, Sam J
+AU  - Gilbert SJ
+AD  - Institute of Cognitive Neuroscience and Department of Psychology, University
+      College London, London, UK. sam.gilbert@ucl.ac.uk
+FAU - Spengler, Stephanie
+AU  - Spengler S
+FAU - Simons, Jon S
+AU  - Simons JS
+FAU - Frith, Christopher D
+AU  - Frith CD
+FAU - Burgess, Paul W
+AU  - Burgess PW
+LA  - eng
+GR  - Wellcome Trust/United Kingdom
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20060118
+PL  - United States
+TA  - Cereb Cortex
+JT  - Cerebral cortex (New York, N.Y. : 1991)
+JID - 9110718
+SB  - IM
+MH  - Adult
+MH  - Behavior/*physiology
+MH  - Brain Mapping
+MH  - Humans
+MH  - Magnetic Resonance Imaging
+MH  - Positron-Emission Tomography
+MH  - Prefrontal Cortex/anatomy & histology/*physiology/radionuclide imaging
+MH  - Reaction Time
+EDAT- 2006/01/20 09:00
+MHDA- 2007/05/09 09:00
+CRDT- 2006/01/20 09:00
+PHST- 2006/01/18 [aheadofprint]
+AID - bhj113 [pii]
+AID - 10.1093/cercor/bhj113 [doi]
+PST - ppublish
+SO  - Cereb Cortex. 2006 Dec;16(12):1783-9. Epub 2006 Jan 18.
+
+PMID- 16247760
+OWN - NLM
+STAT- MEDLINE
+DA  - 20060126
+DCOM- 20060613
+LR  - 20071114
+IS  - 1091-4269 (Print)
+IS  - 1091-4269 (Linking)
+VI  - 23
+IP  - 1
+DP  - 2006
+TI  - Regional differences of the prefrontal cortex in pediatric PTSD: an MRI study.
+PG  - 17-25
+AB  - Previous studies have revealed altered structural development of the frontal
+      lobes and prefrontal cortex (PFC) in children with symptoms of posttraumatic
+      stress disorder (PTSD). This study is the first to provide a detailed structural 
+      analysis of the PFC in children with and without PTSD symptoms. We compared gray 
+      and white matter volume in four subregions of the PFC between said groups, then
+      explored whether volume was associated with PTSD symptom severity and functional 
+      impairment. PFC measurements were extracted from magnetic resonance imaging (MRI)
+      data from a sample of 23 children (ages 7-14) with a history of trauma and
+      symptoms of PTSD, who had undergone assessment for PTSD symptoms and functional
+      impairment using the Child and Adolescent version of the Clinician-Administered
+      PTSD Scale (CAPS-CA). These measurements were compared to data from an
+      age-equivalent control group of 24 healthy children. Children with PTSD symptoms 
+      showed a significantly larger volume of gray matter in the delineated
+      middle-inferior and ventral regions of the PFC than did control children.
+      Decreased volume of gray matter in the dorsal PFC correlated with increased
+      functional impairment scores. Results indicate that increased volume of the
+      middle-inferior and ventral PFC may be associated with trauma and PTSD symptoms
+      in children. Furthermore, the neuroanatomy of the dorsal PFC may influence the
+      degree of functional impairment experienced by children with PTSD symptoms.
+CI  - Copyright 2005 Wiley-Liss, Inc.
+FAU - Richert, Katherine A
+AU  - Richert KA
+AD  - Stanford Early Life Stress Research Program, Department of Psychiatry and
+      Behavioral Sciences, Stanford University School of Medicine, Palo Alto,
+      California 94305-5719, USA.
+FAU - Carrion, Victor G
+AU  - Carrion VG
+FAU - Karchemskiy, Asya
+AU  - Karchemskiy A
+FAU - Reiss, Allan L
+AU  - Reiss AL
+LA  - eng
+GR  - MH01142/MH/NIMH NIH HHS/United States
+GR  - MH63803/MH/NIMH NIH HHS/United States
+PT  - Journal Article
+PT  - Research Support, N.I.H., Extramural
+PT  - Research Support, Non-U.S. Gov't
+PL  - United States
+TA  - Depress Anxiety
+JT  - Depression and anxiety
+JID - 9708816
+SB  - IM
+MH  - Adolescent
+MH  - Automatic Data Processing
+MH  - Child
+MH  - Female
+MH  - Frontal Lobe/anatomy & histology
+MH  - Humans
+MH  - *Magnetic Resonance Imaging
+MH  - Male
+MH  - Prefrontal Cortex/*anatomy & histology
+MH  - Questionnaires
+MH  - Severity of Illness Index
+MH  - Software
+MH  - Stress Disorders, Post-Traumatic/*diagnosis/*psychology
+EDAT- 2005/10/26 09:00
+MHDA- 2006/06/14 09:00
+CRDT- 2005/10/26 09:00
+AID - 10.1002/da.20131 [doi]
+PST - ppublish
+SO  - Depress Anxiety. 2006;23(1):17-25.
+
+PMID- 15506886
+OWN - NLM
+STAT- MEDLINE
+DA  - 20041027
+DCOM- 20050114
+LR  - 20131121
+IS  - 0735-7044 (Print)
+IS  - 0735-7044 (Linking)
+VI  - 118
+IP  - 5
+DP  - 2004 Oct
+TI  - Complementary tasks to measure working memory in distinct prefrontal cortex
+      subregions in rats.
+PG  - 1042-51
+AB  - Acquisition of odor-guided or visually-guided delayed win-shift behavior was
+      evaluated in rats after lidocaine-induced inactivation within the agranular
+      insular area of the prefrontal cortex (PFC) or the prelimbic area of the PFC.
+      Additional sites and tasks were used to control for neuroanatomical and
+      behavioral specificity of lidocaine inactivation of the agranular insular and
+      prelimbic areas. Results showed that acquisition of the odor-guided delayed
+      win-shift task was dependent on the agranular insular area, whereas acquisition
+      of the visually-guided version was dependent on the prelimbic area. This
+      dissociation suggests that the stimulus modality used is critical for revealing
+      working memory functions of different PFC subregions. The described methods
+      provide a complementary means to study working memory in PFC subregions using a
+      radial-arm maze.
+CI  - Copyright 2004 APA.
+FAU - Di Pietro, Nina C
+AU  - Di Pietro NC
+AD  - Laboratory of Behavioral Neuroscience, Department of Psychology and Program in
+      Neuroscience, Boston University, Boston, MA 02215, USA.
+FAU - Black, Yolanda D
+AU  - Black YD
+FAU - Green-Jordan, Kristen
+AU  - Green-Jordan K
+FAU - Eichenbaum, Howard B
+AU  - Eichenbaum HB
+FAU - Kantak, Kathleen M
+AU  - Kantak KM
+LA  - eng
+GR  - DA11716/DA/NIDA NIH HHS/United States
+PT  - Comparative Study
+PT  - Journal Article
+PT  - Research Support, U.S. Gov't, P.H.S.
+PL  - United States
+TA  - Behav Neurosci
+JT  - Behavioral neuroscience
+JID - 8302411
+RN  - 98PI200987 (Lidocaine)
+SB  - IM
+MH  - Animals
+MH  - Conditioning (Psychology)/drug effects/*physiology
+MH  - Lidocaine/pharmacology
+MH  - Male
+MH  - Memory/drug effects/*physiology
+MH  - Photic Stimulation/methods
+MH  - Prefrontal Cortex/drug effects/*physiology
+MH  - Rats
+MH  - Rats, Wistar
+EDAT- 2004/10/28 09:00
+MHDA- 2005/01/15 09:00
+CRDT- 2004/10/28 09:00
+AID - 2004-19432-017 [pii]
+AID - 10.1037/0735-7044.118.5.1042 [doi]
+PST - ppublish
+SO  - Behav Neurosci. 2004 Oct;118(5):1042-51.
+
+PMID- 12849765
+OWN - NLM
+STAT- MEDLINE
+DA  - 20030709
+DCOM- 20030924
+LR  - 20091111
+IS  - 0028-3932 (Print)
+IS  - 0028-3932 (Linking)
+VI  - 41
+IP  - 11
+DP  - 2003
+TI  - The contributions of lesion laterality and lesion volume to decision-making
+      impairment following frontal lobe damage.
+PG  - 1474-83
+AB  - Lesions to prefrontal cortex (PFC) in humans can severely disrupt everyday
+      decision-making, with concomitant effects on social and occupational functioning.
+      Forty-six patients with unilateral lesions to prefrontal cortex and 21 healthy
+      control subjects were administered three neuropsychological measures of
+      decision-making: the Iowa Gambling Task, the Cambridge Gamble Task, and the Risk 
+      Task. Magnetic resonance imaging (MRI) scans were acquired from 40 patients, with
+      region of interest (ROI) mapping of prefrontal subregions. The frontal patients
+      showed only limited damage in medial and orbital prefrontal cortex, but greater
+      damage in lateral prefrontal regions of interest. Patients with right frontal
+      lesions preferred the risky decks on the Iowa Gambling Task, and differed
+      significantly from left frontal and control subjects. Within the right frontal
+      group, the preference for the risky decks was correlated with the total lesion
+      volume and the volume of damage outside of the ventromedial prefrontal region.
+      Right and left frontal groups did not differ significantly on the Cambridge
+      Gamble Task or the Risk Task, and performance was not associated with lesion
+      volume. The results indicate a laterality effect on the Iowa Gambling Task, and
+      the contribution of prefrontal regions outside the ventromedial region to task
+      performance. The Cambridge Gamble Task and Risk Task were less sensitive to the
+      effects of unilateral frontal lobe lesions, and may be more selectively
+      associated with ventral prefrontal damage.
+FAU - Clark, Luke
+AU  - Clark L
+AD  - Department of Experimental Psychology, University of Cambridge, Downing Street,
+      Cambridge CB2 3EB, UK. lc260@cam.ac.uk
+FAU - Manes, Facundo
+AU  - Manes F
+FAU - Antoun, Nagui
+AU  - Antoun N
+FAU - Sahakian, Barbara J
+AU  - Sahakian BJ
+FAU - Robbins, Trevor W
+AU  - Robbins TW
+LA  - eng
+PT  - Clinical Trial
+PT  - Controlled Clinical Trial
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+PL  - England
+TA  - Neuropsychologia
+JT  - Neuropsychologia
+JID - 0020713
+SB  - IM
+MH  - Adult
+MH  - Aged
+MH  - Analysis of Variance
+MH  - Brain Injuries/pathology/*physiopathology/psychology
+MH  - Cognition Disorders/pathology/*physiopathology/psychology
+MH  - Decision Making/physiology
+MH  - Female
+MH  - Functional Laterality/*physiology
+MH  - Gambling/*psychology
+MH  - Humans
+MH  - Magnetic Resonance Imaging
+MH  - Male
+MH  - Middle Aged
+MH  - Neuropsychological Tests
+MH  - Prefrontal Cortex/injuries/pathology/*physiopathology
+EDAT- 2003/07/10 05:00
+MHDA- 2003/09/25 05:00
+CRDT- 2003/07/10 05:00
+AID - S0028393203000812 [pii]
+PST - ppublish
+SO  - Neuropsychologia. 2003;41(11):1474-83.
+
+PMID- 11707089
+OWN - NLM
+STAT- MEDLINE
+DA  - 20011114
+DCOM- 20020115
+LR  - 20071114
+IS  - 1053-8119 (Print)
+IS  - 1053-8119 (Linking)
+VI  - 14
+IP  - 6
+DP  - 2001 Dec
+TI  - Prefrontal contributions to executive control: fMRI evidence for functional
+      distinctions within lateral Prefrontal cortex.
+PG  - 1337-47
+AB  - The prefrontal cortex (PFC) plays a fundamental role in internally guided
+      behavior. Although it is generally accepted that PFC subserves working memory and
+      executive control operations, it remains unclear whether the subregions within
+      lateral PFC support distinct executive control processes. An event-related fMRI
+      study was implemented to test the hypothesis that ventrolateral and dorsolateral 
+      PFC are functionally distinct, as well as to assess whether functional
+      specialization exists within ventrolateral PFC. Participants performed two
+      executive control tasks that differed in the types of control processes required.
+      During rote rehearsal, participants covertly rehearsed three words in the order
+      presented, thus requiring phonological access and maintenance. During elaborative
+      rehearsal, participants made semantic comparisons between three words held in
+      working memory, reordering them from least to most desirable. Thus, in addition
+      to maintenance, elaborative rehearsal required goal-relevant coding of items in
+      working memory ("monitoring") and selection from among the items to implement
+      their reordering. Results revealed that left posterior ventrolateral PFC was
+      active during performance of both tasks, whereas right dorsolateral PFC was
+      differentially engaged during elaborative rehearsal. The temporal characteristics
+      of the hemodynamic responses further suggested that dorsolateral activation
+      lagged ventrolateral activation. Finally, differential activation patterns were
+      observed within left ventrolateral PFC, distinguishing between posterior and
+      anterior regions. These data suggest that anatomically separable subregions
+      within lateral PFC may be functionally distinct and are consistent with models
+      that posit a hierarchical relationship between dorsolateral and ventrolateral
+      regions such that the former monitors and selects goal-relevant representations
+      being maintained by the latter.
+CI  - Copyright 2001 Academic Press.
+FAU - Wagner, A D
+AU  - Wagner AD
+AD  - Department of Brain and Cognitive Sciences, Massachusetts Institute of
+      Technology, Cambridge, Massachusetts 02139, USA.
+FAU - Maril, A
+AU  - Maril A
+FAU - Bjork, R A
+AU  - Bjork RA
+FAU - Schacter, D L
+AU  - Schacter DL
+LA  - eng
+GR  - DC04466/DC/NIDCD NIH HHS/United States
+GR  - MH60941/MH/NIMH NIH HHS/United States
+GR  - NS26985/NS/NINDS NIH HHS/United States
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+PT  - Research Support, U.S. Gov't, P.H.S.
+PL  - United States
+TA  - Neuroimage
+JT  - NeuroImage
+JID - 9215515
+SB  - IM
+MH  - Adolescent
+MH  - Adult
+MH  - Female
+MH  - Humans
+MH  - *Magnetic Resonance Imaging
+MH  - Male
+MH  - Mental Recall/*physiology
+MH  - Phonetics
+MH  - Practice (Psychology)
+MH  - Prefrontal Cortex/*physiology
+MH  - Reaction Time/physiology
+MH  - Reading
+MH  - Semantics
+MH  - Serial Learning/physiology
+MH  - Verbal Learning/*physiology
+EDAT- 2001/11/15 10:00
+MHDA- 2002/01/16 10:01
+CRDT- 2001/11/15 10:00
+AID - 10.1006/nimg.2001.0936 [doi]
+AID - S1053-8119(01)90936-X [pii]
+PST - ppublish
+SO  - Neuroimage. 2001 Dec;14(6):1337-47.
+
+PMID- 10231131
+OWN - NLM
+STAT- MEDLINE
+DA  - 19990622
+DCOM- 19990622
+LR  - 20131121
+IS  - 0887-4476 (Print)
+IS  - 0887-4476 (Linking)
+VI  - 32
+IP  - 2
+DP  - 1999 May
+TI  - Repeated amphetamine administration alters AMPA receptor subunit expression in
+      rat nucleus accumbens and medial prefrontal cortex.
+PG  - 119-31
+AB  - Glutamate is critical for the induction and maintenance of behavioral
+      sensitization and associated neuroadaptations in the mesocorticolimbic dopamine
+      (DA) system. We have shown previously [Lu et al. (1997) Synapse 26:269-280] that 
+      repeated amphetamine administration alters AMPA receptor subunit mRNA levels in
+      rat nucleus accumbens (NAc) and medial prefrontal cortex (PFC). The present study
+      determined if amphetamine elicits corresponding changes in AMPA receptor subunit 
+      immunolabeling. Rats were injected with amphetamine sulphate (5 mg/kg/day) or
+      saline for 5 days and perfused 3 or 14 days after the last injection. AMPA
+      receptor subunit immunolabeling was quantified using autoradiographic
+      immunocytochemistry. In the NAc, GluR1 and GluR2 immunolabeling were unchanged
+      after 3 days of withdrawal, but both were decreased significantly after 14 days
+      of withdrawal (GluR1, 85.5+/-2.6% of control group, P<0.01; GluR2, 79.2+/-3.2%,
+      P<0.01). Analysis of core and shell subregions at the 14-day withdrawal time
+      indicated that GluR1 immunolabeling decreased significantly in shell, while GluR2
+      immunolabeling decreased significantly in both core and shell. No changes in
+      GluR2/3, GluR2/4, or GluR4 immunolabeling in NAc were found at either withdrawal 
+      time. In the PFC, GluR1 immunolabeling increased after 3 days of withdrawal
+      (115.3+/-7.0%, P<0.01) but returned to control levels after 14 days. The present 
+      results correspond well with our previous findings at the mRNA level. These
+      alterations in AMPA receptor expression may account for previously described
+      changes in the electrophysiological responsiveness of NAc and PFC neurons to
+      glutamate and AMPA. Along with alterations in DA function, they may contribute to
+      drug-induced dysregulation of reward-related neurotransmission.
+FAU - Lu, W
+AU  - Lu W
+AD  - Department of Neuroscience, Finch University of Health Sciences/The Chicago
+      Medical School, North Chicago, Illinois 60064, USA.
+FAU - Wolf, M E
+AU  - Wolf ME
+LA  - eng
+GR  - DA09621/DA/NIDA NIH HHS/United States
+PT  - Journal Article
+PT  - Research Support, U.S. Gov't, P.H.S.
+PL  - UNITED STATES
+TA  - Synapse
+JT  - Synapse (New York, N.Y.)
+JID - 8806914
+RN  - 0 (Dopamine Uptake Inhibitors)
+RN  - 0 (RNA, Messenger)
+RN  - 0 (Receptors, AMPA)
+RN  - 0 (glutamate receptor ionotropic, AMPA 1)
+RN  - 0 (glutamate receptor ionotropic, AMPA 2)
+RN  - 0 (glutamate receptor ionotropic, AMPA 3)
+RN  - 0 (glutamate receptor ionotropic, AMPA 4)
+RN  - CK833KGX7E (Amphetamine)
+SB  - IM
+MH  - Amphetamine/*pharmacology
+MH  - Animals
+MH  - Behavior, Animal/physiology
+MH  - Brain Chemistry/drug effects
+MH  - Dopamine Uptake Inhibitors/*pharmacology
+MH  - Gene Expression/drug effects
+MH  - Immunohistochemistry
+MH  - Interneurons/chemistry/drug effects
+MH  - Male
+MH  - Nucleus Accumbens/*chemistry/cytology/drug effects
+MH  - Prefrontal Cortex/*chemistry/cytology/drug effects
+MH  - RNA, Messenger/analysis
+MH  - Rats
+MH  - Rats, Sprague-Dawley
+MH  - Receptors, AMPA/analysis/*genetics
+EDAT- 1999/05/07 02:02
+MHDA- 2000/06/20 09:00
+CRDT- 1999/05/07 02:02
+AID - 10.1002/(SICI)1098-2396(199905)32:2<119::AID-SYN5>3.0.CO;2-F [pii]
+AID - 10.1002/(SICI)1098-2396(199905)32:2<119::AID-SYN5>3.0.CO;2-F [doi]
+PST - ppublish
+SO  - Synapse. 1999 May;32(2):119-31.
+
+PMID- 932641
+OWN - NLM
+STAT- MEDLINE
+DA  - 19760901
+DCOM- 19760901
+LR  - 20100622
+IS  - 0022-1007 (Print)
+IS  - 0022-1007 (Linking)
+VI  - 144
+IP  - 1
+DP  - 1976 Jul 1
+TI  - Genetic control of specific immune suppression. III. Mapping of H-2 complex
+      complementing genes controlling immune suppression by the random copolymer
+      L-glutamic acid50-L-tyrosine50 (GT).
+PG  - 272-6
+AB  - Earlier studies from our laboratory demonstrated that the terpolymer of
+      L-glutamic acid, L-alanine, and L-tyrpsine (GAT) stimulated the development of T 
+      cells capable of specifically suppressing the antibody responses in vivo and in
+      vitro of nonresponder strains (bearing the H-2(s), H-2(q), and H-2(p) haplotypes)
+      to GAT complexed with an immunogenic carrier, methylated bovine serum albumin,
+      MBSA (1,2). We then extended these findings to another antigen, the copolymer of 
+      L-glutamic acid and L-tyrosine (GT). None of 19 inbred or congenic resistant
+      mouse strains developed antibody responses to GT after immunization with this
+      synthetic polypeptide in adjuvants. All the strains investigated, however,
+      developed IgG plaque-forming cells (PFC) primary responses to GT complexed with
+      MBSA (3). This permitted us to determine that: (a) preimmunization with GT
+      suppressed the response to GT-MBSA in certain but not in all strains; (b) the
+      suppression could be transferred by thymocytes and spleen cells from GT-primed
+      animals; (c) the development of GT-specific suppressor cells is under dominant
+      control of H-2- linked gene(s) which have been designated specific immune
+      suppressor genes (Is genes); (d) the Is genes are antigen specific since GAT-MBSA
+      responses are suppressed by GAT in strains carrying the H-2(q) haplotype, while
+      GT-MBSA responses are not suppressed by the related polymer GT in these same
+      strains (3,4). The experiments reported in this study map the Is genes
+      responsible for GT-specific suppression within the H-2 complex. The data indicate
+      that the K and D loci are not concerned with GT-specific suppression, and that
+      this phenomenon is controlled by complementing or interacting genes which map on 
+      either side of cross-over events between the IB and IC subregions.
+FAU - Debre, P
+AU  - Debre P
+FAU - Waltenbaugh, C
+AU  - Waltenbaugh C
+FAU - Dorf, M
+AU  - Dorf M
+FAU - Benacerraf, B
+AU  - Benacerraf B
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, U.S. Gov't, P.H.S.
+PL  - UNITED STATES
+TA  - J Exp Med
+JT  - The Journal of experimental medicine
+JID - 2985109R
+RN  - 0 (Histocompatibility Antigens)
+RN  - 0 (Peptides)
+SB  - AIM
+SB  - IM
+MH  - Animals
+MH  - Antibody Formation
+MH  - Chromosome Mapping
+MH  - *Genes
+MH  - Genetic Complementation Test
+MH  - *Histocompatibility Antigens
+MH  - *Immunosuppression
+MH  - Mice
+MH  - Mice, Inbred Strains
+MH  - Peptides/immunology
+PMC - PMC2190362
+OID - NLM: PMC2190362
+EDAT- 1976/07/01
+MHDA- 1976/07/01 00:01
+CRDT- 1976/07/01 00:00
+PST - ppublish
+SO  - J Exp Med. 1976 Jul 1;144(1):272-6.

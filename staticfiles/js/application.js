@@ -68,7 +68,11 @@ angular
     'core.services',
     'pubmed.services',
     'associationMap.services',
-    'argument.services'
+    'argument.services',
+    'paper.services',
+    'collection.services',
+    'user.services',
+    'exploreState.services',
   ]);
 
 angular
@@ -82,6 +86,19 @@ angular
 
 angular
   .module('argument.services', ['core.services']);
+
+angular
+  .module('paper.services', ['core.services']);
+
+angular
+  .module('collection.services', ['core.services']);
+
+angular
+  .module('user.services', ['core.services']);
+
+angular
+  .module('exploreState.services', ['exploreState.services']);
+
 angular.module('mainModule')
     .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
         $stateProvider
@@ -646,6 +663,53 @@ function AssociationMap(Core) {
      return _.findWhere(associationMap, {sourceType: sourceType, targetType: targetType, sourceId: sourceId.toString(), targetId: targetId}) != undefined;
   }
 }
+/*
+ * This service handles information related to the active collection, including its name, as well as 
+ * the list of evidence
+ */
+angular
+  .module('collection.services')
+  .factory('Collection', Collection);
+
+Collection.$inject = ['$cookies', '$http', 'Core'];
+
+  function Collection($cookies, $http, Core) {
+    var topics = null;
+    var collectionId = 13;
+    var Collection = {
+      allTopics: allTopics,
+    };
+
+    return Collection;
+
+    ////////////////////
+
+    function allTopics(callback) {
+      if (topics === null) {
+        Core.getEvidenceCollection(collectionId, function(response) {
+          topics = response.data.map(function(topic) {
+            return {
+              id: topic.index,
+              terms: JSON.parse(topic.terms).map(function(termTuple) {
+                return {
+                  term: termTuple[0],
+                  prob: termTuple[1]
+                }
+              }),
+              evidenceCount: topic.document_count
+            }
+          });
+          callback(topics);
+        }, function() {
+          console.log('server error when retrieving data for collection ' + collectionId);
+          console.log(errorResponse);
+        })
+      }
+      else {
+        callback(topics);
+      }
+    }
+  }
   angular
     .module('core.services')
     .factory('Core', Core);
@@ -844,6 +908,142 @@ function AssociationMap(Core) {
     }
 
   }
+/*
+ * This service handles information related to the active collection, including its name, as well as 
+ * the list of evidence
+ */
+angular
+  .module('exploreState.services')
+  .factory('ExploreState', ExploreState);
+
+User.$inject = ['$cookies', '$http', 'Core'];
+
+function ExploreState($cookies, $http, Core) {
+  var _selectedTerms = [];
+  var _selectedTopic = null;
+  var _candidateEvidence = null;
+  var _selectedSearchTitle = null;
+  var ExploreState = {
+    selectedTerms: selectedTerms,
+    selectedTopic: selectedTopic,
+    candidateEvidence: candidateEvidence,
+    selectedSearchTitle: selectedSearchTitle
+  };
+
+  return ExploreState;
+
+  ////////////////////
+
+  function selectedTerms() {
+    return _selectedTerms;
+  }
+
+  function selectedTopic(topic) {
+    if (arguments.length === 0) {
+      return _selectedTopic;
+    }
+    else {
+      _selectedTopic = topic;
+    }
+  }
+
+  function candidateEvidence(evidence) {
+    if (arguments.length === 0) {
+      return _candidateEvidence;
+    }
+    else {
+      _candidateEvidence = evidence;
+    }
+  }
+
+  function selectedSearchTitle(title) {
+    if (arguments.length === 0) {
+      return _selectedSearchTitle;
+    }
+    else {
+      _selectedSearchTitle = title;
+    }
+  }
+}
+// This service handles information related to individual publication, e.g. its citation information, additional information about author, venue etc.
+ angular
+    .module('paper.services')
+    .factory('Paper', Paper);
+
+  Paper.$inject = ['$cookies', '$http', 'Core'];
+
+  function Paper($cookies, $http, Core) {
+    var evidence = null;
+    var citationMap = null;
+    var mapInitialized = false;
+    var Paper = {
+      getCitationsForPaper: getCitationsForPaper,
+      getReferencesForPaper: getReferencesForPaper,
+      initializeCitationMap: initializeCitationMap,
+      getCitationMap: getCitationMap
+    };
+
+    return Paper;
+
+    ////////////////////
+
+    function getCitationMap(collectionId, successFn, errorFn) {
+      $http.get('api/v1/service/paper/allCitations/' + collectionId + '/')
+        .then(successFn, errorFn);
+    }
+
+    function initializeCitationMap(collectionId, userId, response) {
+      Core.getAllEvidenceForUser(collectionId, function(evidenceResponse) {
+        evidence = evidenceResponse.data;
+        // Process the metadata and mark the bookmarked ones
+        Core.getAllEvidenceForUser(userId, function(userResponse) {
+          var userEvidence = userResponse.data;
+          var bookmarkedEvidenceIds = userEvidence.map(function(e) { return e.id; })
+          evidence.forEach(function(e) {
+            if (typeof e.metadata == 'string') {
+              e.metadata = JSON.parse(e.metadata);
+            }
+            e.bookmarked = bookmarkedEvidenceIds.indexOf(e.id) > -1;
+          })
+        });
+        getCitationMap(collectionId, function(citationMapResponse) {
+          citationMap = citationMapResponse.data;
+        }, function(errorResponse) {
+          console.log(errorResponse);
+        })
+      }, function(errorResponse) {
+        console.log(errorResponse);
+      })
+    }
+
+    function getCitationsForPaper(eid) {
+      var citationIds = _.filter(citationMap, function(d) {
+        return d.citation_id == eid;
+      }).map(function(d) {
+        return d.paper_id;
+      });
+      var citations = citationIds.map(function(citationId) {
+        return _.find(evidence, function(d) {
+          return d.id === citationId;
+        })
+      });
+//      console.log(citations);
+      return citations;
+    }
+
+    function getReferencesForPaper(eid) {
+      var referenceIds = _.filter(citationMap, function(d) {
+        return d.paper_id == eid;
+      }).map(function(d) {
+        return d.citation_id;
+      });
+      return referenceIds.map(function(referenceId) {
+        return _.find(evidence, function(d) {
+          return d.id === referenceId;
+        })
+      });
+    }
+  }
   angular
     .module('pubmed.services')
     .factory('Pubmed', Pubmed);
@@ -885,6 +1085,124 @@ function AssociationMap(Core) {
     }
 
   }
+/*
+ * This service handles information related to the active collection, including its name, as well as 
+ * the list of evidence
+ */
+angular
+  .module('user.services')
+  .factory('User', User);
+
+User.$inject = ['$cookies', '$http', 'Core'];
+
+function User($cookies, $http, Core) {
+  var _userId = null;
+  var _activeCollection = null;
+  var _collections = null;
+  var _proposals = null;
+  var _evidence = null;
+  var _evidenceIdMap = {};
+  var User = {
+    updateSessionInfo: updateSessionInfo,
+    userId: userId,
+    activeCollection: activeCollection,
+    proposals: proposals,
+    evidence: evidence,
+  };
+
+  return User;
+
+  ////////////////////
+
+  function updateSessionInfo(rawUserId, rawCollectionId, callback) {
+    var userId = parseInt(rawUserId);
+    var collectionId = parseInt(rawCollectionId);
+
+    if (!isNaN(userId)) {
+      _userId = userId;
+    }
+
+    if (!isNaN(collectionId)) {
+      if (_collections === null) {
+        Core.getCollectionList(function(response) {
+          _collections = response.data.map(function(d) {
+            return {
+              id: parseInt(d.collection_id),
+              name: d.collection_name
+            };
+          });
+          updateActiveCollection(collectionId);
+          callback(_userId, _activeCollection);
+        });
+      }
+      else {
+        updateActiveCollection(collectionId);
+        callback(_userId, _activeCollection);        
+      }
+    }      
+    else {
+      callback(_userId, _activeCollection);
+    }
+  }
+
+  function updateActiveCollection(collectionId) {
+    _activeCollection = {
+      id: collectionId,
+      name: _.find(_collections, function(c) {
+        return c.id === collectionId;
+      }).name
+    };    
+  }
+
+  function userId(newUserId) {
+    return _userId;
+  }
+
+  function activeCollection(newCollectionId, callback) {
+    return _activeCollection;
+  }
+
+  // TODO: check that _userId is initialized; currently relying on the caller
+  // to do the right thing
+  function proposals(callback) {
+    if (_proposals === null) {
+      Core.getAllTextsForUser(_userId, function(response) {
+        _proposals = response.data;
+        callback(_proposals);
+      }, function(response) {
+        console.log('server error when retrieving textsfor user ' + _userId);
+        console.log(response);
+      });
+    }
+    else {
+      callback(_proposals);
+    }
+  }
+
+  function evidence(callback) {
+    if (_evidence === null) {
+      // TODO: if later we want to get topics for these evidence, be mindful that there are 
+      // two types of evidence - personal and bookmarked - and they will require 
+      // different handlings
+      Core.getAllEvidenceForUser(_userId, function(response) {
+          // This includes both user created and bookmarked evidence; they are not necessarily cited.
+          // TODO: apply default sorting.
+          _evidence = response.data;
+          _evidence.forEach(function(e){
+            e.metadata = JSON.parse(e.metadata);
+            _evidenceIdMap[e.id]= e;
+          })
+          callback(_evidence, _evidenceIdMap);
+        }, function(response) {
+          console.log('server error when retrieving evidence for user' + $scope.userId);
+          console.log(response);
+        });    
+    }
+    else {
+      callback(_evidence, _evidenceIdMap);
+    }
+  }
+}
 (function () {
   'use strict';
 
@@ -2088,47 +2406,30 @@ angular.module('v1.controllers')
   }]);
 
 angular.module('explore.v2.controllers')
-  .controller('ExploreController', ['$scope', '$stateParams', '$modal', 'Core', 'AssociationMap', 'Pubmed', 'TermTopic', 'Logger',
-    function($scope, $stateParams, $modal, Core, AssociationMap, Pubmed, TermTopic, Logger) {
+  .controller('ExploreController', ['$scope', '$stateParams', '$modal', 'Core', 'AssociationMap', 'Pubmed', 'TermTopic', 'Logger', 'Collection', 'User', 'ExploreState',
+    function($scope, $stateParams, $modal, Core, AssociationMap, Pubmed, TermTopic, Logger, Collection, User, ExploreState) {
 
     var topTermContainer = null;
     var topTopicContainer = null;
     var termTopicConnectionContainer = null;
     var topicNeighborContainer = null;
+    var proposalThumbnailsContainer = null;
     var termColorMap = d3.scale.category10();
+    var proposals = null;
 
     var defaultFill = '#ccc';
-
-    var userId = parseInt($stateParams.userId);
-    var collectionId = parseInt($stateParams.collectionId);
-
-    Core.getCollectionList(function(response) {
-      $scope.collections = response.data.map(function(d) {
-        return {
-          id: parseInt(d.collection_id),
-          name: d.collection_name
-        };
-      });
-
-      $scope.userId = userId;
-      $scope.collectionId = collectionId;
-      $scope.collectionName = _.find($scope.collections, function(c) {
-        return c.id === collectionId;
-      }).name;
-    });
 
     var termBatchSize = 30;
     var topicBatchSize = 30;
 
     $scope.selectedEvidence = null;
-    $scope.selectedTerms = [];
+    $scope.selectedTerms = ExploreState.selectedTerms();
     $scope.selectedWords = [];
-    $scope.selectedTopic = null;
+    $scope.selectedTopic = ExploreState.selectedTopic();
 
-    $scope.candidateEvidence = [];
-    $scope.searchTitle = '';
-
+    $scope.candidateEvidence = ExploreState.candidateEvidence();
     $scope.selected = {};
+    $scope.selected.searchTitle = ExploreState.selectedSearchTitle();
 
     $scope.loadingEvidence = true;
     $scope.loadingTopicEvidence = false;
@@ -2139,42 +2440,30 @@ angular.module('explore.v2.controllers')
     $scope.numTerms = 0;
     $scope.numTopics = 0;
 
-    Logger.logAction(userId, 'load explore view', 'v2','1', 'explore', {
-      collectionId: collectionId
-    }, function(response) {
-      console.log('action logged: load explore view');
-    });
-
-    Core.getEvidenceCollection(collectionId, function(response) {
-      $scope.loadingEvidence = false;
-      $scope.topics = response.data.map(function(topic) {
-        return {
-          id: topic.index,
-          terms: JSON.parse(topic.terms).map(function(termTuple) {
-            return {
-              term: termTuple[0],
-              prob: termTuple[1]
-            }
-          }),
-          evidenceCount: topic.document_count
-        }
+    $scope.selectSearchTitle = function(title) {
+      Logger.logAction($scope.userId, 'select title by search', 'v2','1', 'explore', {
+        evidence: title.id
+      }, function(response) {
+        console.log('action logged: select title by search');
       });
-      TermTopic.initialize($scope.topics);
-      $scope.terms = TermTopic.getAllTerms();
-      $scope.selected.searchTerm = $scope.terms[0];
-      $scope.numTerms = TermTopic.numOfTerms();
-      $scope.numTopics = TermTopic.numOfTopics();
-      visualizeTopicTermDistribution();
-//      visualizeTopicTermGraph();
-//      visualizeTopicTermMatrix($scope.topics);
-    }, function(errorResponse) {
-      console.log('server error when retrieving data for user ' + userId);
-      console.log(errorResponse);
-    });
+
+      ExploreState.selectedSearchTitle(title);
+      if (title.topic !== -1) {
+        $scope.selectedTopic = _.find($scope.topics, function(t) {
+          return t.id === title.topic;
+        });
+        ExploreState.selectedTopic($scope.selectedTopic);
+        for (var i = 0; i < 5; ++i) {
+          $scope.selectedTerms.push($scope.selectedTopic.terms[i].term);
+        }
+        console.log(ExploreState.selectedTerms());
+        $scope.updateTermTopicOrdering(false, true);
+      }
+    }
 
     $scope.updateTermTopicOrdering = function(manualUpdate, scrollToStart) {
       if (manualUpdate) {
-        Logger.logAction(userId, 'reorder term and topics given selected terms', 'v2','1', 'explore', {
+        Logger.logAction($scope.userId, 'reorder term and topics given selected terms', 'v2','1', 'explore', {
           numSelectedTerms: $scope.selectedTerms.length
         }, function(response) {
           console.log('action logged: reorder term and topics given selected terms');
@@ -2195,8 +2484,37 @@ angular.module('explore.v2.controllers')
       updateConnectionStrokes();
     };
 
+    User.updateSessionInfo($stateParams.userId, $stateParams.collectionId, function(userId, collection) {
+      $scope.userId = userId;
+      $scope.collection = collection;
+
+      Logger.logAction($scope.userId, 'load explore view', 'v2','1', 'explore', {
+        collectionId: $scope.collection.id
+      }, function(response) {
+        console.log('action logged: load explore view');
+      });
+
+      User.proposals(function(_proposals) {
+        proposals = _proposals;
+        loadEvidence();
+      })
+    });
+
+    function loadEvidence() {
+      Collection.allTopics(function(topics) {
+        $scope.loadingEvidence = false;
+        $scope.topics = topics;
+        TermTopic.initialize($scope.topics);
+        $scope.terms = TermTopic.getAllTerms();
+        $scope.selected.searchTerm = $scope.terms[0];
+        $scope.numTerms = TermTopic.numOfTerms();
+        $scope.numTopics = TermTopic.numOfTopics();
+        visualizeTopicTermDistribution();
+      });
+    }
+
     $scope.clearSelectedTerms = function() {
-      Logger.logAction(userId, 'clear selected terms', 'v2','1', 'explore', {
+      Logger.logAction($scope.userId, 'clear selected terms', 'v2','1', 'explore', {
         numSelectedTerms: $scope.selectedTerms.length
       }, function(response) {
         console.log('action logged: clear selected terms');
@@ -2206,40 +2524,22 @@ angular.module('explore.v2.controllers')
     }
 
     $scope.searchEvidenceByTitle = function() {
-      Logger.logAction(userId, 'search evidence by title', 'v2','1', 'explore', {
+      Logger.logAction($scope.userId, 'search evidence by title', 'v2','1', 'explore', {
         query: $scope.searchTitle
       }, function(response) {
         console.log('action logged: search evidence by title');
       });
 
-      Core.getEvidenceByTitle(collectionId, userId, $scope.searchTitle, true, 1, function(response) {
+      Core.getEvidenceByTitle($scope.collection.id, $scope.userId, $scope.searchTitle, true, 1, function(response) {
         $scope.candidateEvidence = response.data;
         $scope.selected.searchTitle = $scope.candidateEvidence[0];
         $scope.selectSearchTitle($scope.selected.searchTitle);
+        ExploreState.candidateEvidence($scope.candidateEvidence);
       });
     };
 
-    $scope.selectSearchTitle = function(title) {
-      Logger.logAction(userId, 'select title by search', 'v2','1', 'explore', {
-        evidence: title.id
-      }, function(response) {
-        console.log('action logged: select title by search');
-      });
-
-      if (title.topic !== -1) {
-        $scope.selectedTopic = _.find($scope.topics, function(t) {
-          return t.id === title.topic;
-        });
-        console.log($scope.selectedTopic)
-        for (var i = 0; i < 5; ++i) {
-          $scope.selectedTerms.push($scope.selectedTopic.terms[i].term);
-        }
-        $scope.updateTermTopicOrdering(false, true);
-      }
-    }
-
     $scope.selectSearchTerm = function(term) {
-      Logger.logAction(userId, 'select search term', 'v2','1', 'explore', {
+      Logger.logAction($scope.userId, 'select search term', 'v2','1', 'explore', {
       }, function(response) {
         console.log('action logged: select search term');
       });
@@ -2251,7 +2551,7 @@ angular.module('explore.v2.controllers')
     $scope.showNextTerms = function() {
       if (TermTopic.numOfTerms() > $scope.termStartIndex + termBatchSize) {
 
-        Logger.logAction(userId, 'scroll terms', 'v2','1', 'explore', {
+        Logger.logAction($scope.userId, 'scroll terms', 'v2','1', 'explore', {
           direction: 'forward'
         }, function(response) {
           console.log('action logged: scroll terms');
@@ -2265,7 +2565,7 @@ angular.module('explore.v2.controllers')
     $scope.showPrevTerms = function() {
       if ($scope.termStartIndex - termBatchSize >= 0) {
 
-        Logger.logAction(userId, 'scroll terms', 'v2','1', 'explore', {
+        Logger.logAction($scope.userId, 'scroll terms', 'v2','1', 'explore', {
           direction: 'backward'
         }, function(response) {
           console.log('action logged: scroll terms');
@@ -2307,7 +2607,7 @@ angular.module('explore.v2.controllers')
     }
 
     $scope.selectEvidence = function(evidence) {
-      Logger.logAction(userId, 'select evidence', 'v2', '1', 'explore', {
+      Logger.logAction($scope.userId, 'select evidence', 'v2', '1', 'explore', {
         evidence: evidence.id,
       }, function(response) {
         console.log('action logged: select evidence');
@@ -2329,16 +2629,15 @@ angular.module('explore.v2.controllers')
 
     $scope.updateBookmark = function(e) {
       console.log('update bookmark')
-      console.log(e.bookmarked)
       if (!e.bookmarked) {
-        Logger.logAction(userId, 'bookmark evidence', 'v2', '1', 'explore', {
+        Logger.logAction($scope.userId, 'bookmark evidence', 'v2', '1', 'explore', {
           evidence: e.id,
           topic: $scope.selectedTopic.id,
           numDocuments: $scope.evidence.length
         }, function(response) {
           console.log('action logged: bookmark evidence');
         });
-        Core.addBookmark(userId, e.id, function(response) {
+        Core.addBookmark($scope.userId, e.id, function(response) {
           e.bookmarked = true;
           console.log('bookmark evidence success');
         }, function(errorResponse) {
@@ -2346,14 +2645,14 @@ angular.module('explore.v2.controllers')
         });   
       } 
       else {
-        Logger.logAction(userId, 'remove evidence bookmark', 'v2', '1', 'explore', {
+        Logger.logAction($scope.userId, 'remove evidence bookmark', 'v2', '1', 'explore', {
           evidence: e.id,
           topic: $scope.selectedTopic.id,
           numDocuments: $scope.evidence.length
         }, function(response) {
           console.log('action logged: remove evidence bookmark');
         });
-        Core.deleteBookmark(userId, e.id, function(response) {
+        Core.deleteBookmark($scope.userId, e.id, function(response) {
           e.bookmarked = false;
           console.log('remove bookmark evidence success');
         }, function(errorResponse) {
@@ -2379,10 +2678,11 @@ angular.module('explore.v2.controllers')
         .attr('width', params.width + params.margin.left + params.margin.right)
         .attr('height', params.height + params.margin.top + params.margin.bottom);
 
+/*
       canvas.append('text')
         .text('Similar topics')
         .attr('font-size', 18)
-        .attr('transform', 'translate(1150, 20)');
+        .attr('transform', 'translate(1150, 20)'); */
 
       canvas.append('text')
         .text('# of docs')
@@ -2402,11 +2702,17 @@ angular.module('explore.v2.controllers')
       topTermContainer = configSvgContainer(canvas.append('svg'), 300, params.height, params.margin.left, params.margin.top);
       termTopicConnectionContainer = configSvgContainer(canvas.append('svg'), 100, params.height, params.margin.left + 300, params.margin.top);
       topTopicContainer = configSvgContainer(canvas.append('svg'), 650, params.height, params.margin.left + 400, params.margin.top);
-      topicNeighborContainer = configSvgContainer(canvas.append('svg'), 600, params.height + 30, params.margin.left + 1050, params.margin.top - 30);
+//      topicNeighborContainer = configSvgContainer(canvas.append('svg'), 600, params.height + 30, params.margin.left + 1050, params.margin.top - 30);
+//      proposalThumbnailsContainer = configSvgContainer(canvas.append('svg'), 600, params.height + 30, params.margin.left + 1050, params.margin.top - 30);
+      proposalThumbnailsContainer = d3.select('#selected-thumbnail')
 
       visualizeTopTerms(topTermContainer, 300, 600, terms);
       visualizeTermTopicConnections(termTopicConnectionContainer, 100, 600, terms, topics, termTopicConnections);
       visualizeTopTopics(topTopicContainer, 650, 600, topics);
+      visualizeProposalThumbnails(proposalThumbnailsContainer, 600, 600);
+      if ($scope.selectedTopic !== null) setSelectedTopic($scope.selectedTopic);
+      if ($scope.selected.searchTitle !== null) $scope.selectSearchTitle($scope.selected.searchTitle);
+      updateTermTopicFills();
     }
 
     function configSvgContainer(container, width, height, x, y) {
@@ -2460,7 +2766,7 @@ angular.module('explore.v2.controllers')
         .attr('transform', 'translate(20, 0)') // Space between rectangles and texts
         .on('click', function(d) {
           if ($scope.selectedTerms.indexOf(d.term) >= 0) {
-            Logger.logAction(userId, 'deselect term', 'v2','1', 'explore', {
+            Logger.logAction($scope.userId, 'deselect term', 'v2','1', 'explore', {
               term: d.term,
               numSelectedTerms: $scope.selectedTerms.length,
               topicCount: d.properties.topicCount,
@@ -2471,7 +2777,7 @@ angular.module('explore.v2.controllers')
             $scope.selectedTerms = _.without($scope.selectedTerms, d.term);
           }
           else {
-            Logger.logAction(userId, 'select term', 'v2','1', 'explore', {
+            Logger.logAction($scope.userId, 'select term', 'v2','1', 'explore', {
               term: d.term,
               numSelectedTerms: $scope.selectedTerms.length,
               topicCount: d.properties.topicCount,
@@ -2576,7 +2882,9 @@ angular.module('explore.v2.controllers')
         .attr('transform', 'translate(-50, 0)')
         .attr('rx', 5)
         .attr('fill', 'steelblue')
-        .attr('opacity', 0)
+        .attr('opacity', 0, function(d) {
+          return ($scope.selectedTopic !== null && d.id === $scope.selectedTopic.id) ? highlightOpacity : 0;
+        })
         .on('mouseover', function(d) {
           d3.selectAll('.topic-background').attr('opacity', 0);
           d3.select('#topic-bg-' + d.id)
@@ -2592,7 +2900,7 @@ angular.module('explore.v2.controllers')
           });          
         })
         .on('click', function(d) {
-          Logger.logAction(userId, 'select topic', 'v2','1', 'explore', {
+          Logger.logAction($scope.userId, 'select topic', 'v2','1', 'explore', {
             topic: d.id,
             target: 'individual topic'
           }, function(response) {
@@ -2628,11 +2936,11 @@ angular.module('explore.v2.controllers')
 
       var probSum = 1;
       // Hack alert!!!
-      if (collectionId === 12) probSum = 0.2;
-      if (collectionId === 13) probSum = 0.5;
-      if (collectionId === 15) probSum = 0.7;
-      if (collectionId === 16) probSum = 0.2;
-      if (collectionId === 17) probSum = 0.25;
+      if ($scope.collection.id === 12) probSum = 0.2;
+      if ($scope.collection.id === 13) probSum = 0.5;
+      if ($scope.collection.id === 15) probSum = 0.7;
+      if ($scope.collection.id === 16) probSum = 0.2;
+      if ($scope.collection.id === 17) probSum = 0.25;
 
       var term = topic.selectAll('g')
         .data(function(d, i) {
@@ -2666,7 +2974,7 @@ angular.module('explore.v2.controllers')
         .on('click', function(d) {
           // TODO: cannot easily count topic count here, will add if necessary
           if ($scope.selectedTerms.indexOf(d.term) >= 0) {
-            Logger.logAction(userId, 'deselect term', 'v2','1', 'explore', {
+            Logger.logAction($scope.userId, 'deselect term', 'v2','1', 'explore', {
               term: d.term,
               numSelectedTerms: $scope.selectedTerms.length,
               prob: d.prob,
@@ -2678,7 +2986,7 @@ angular.module('explore.v2.controllers')
             $scope.selectedTerms = _.without($scope.selectedTerms, d.term);
           }
           else {
-            Logger.logAction(userId, 'select term', 'v2','1', 'explore', {
+            Logger.logAction($scope.userId, 'select term', 'v2','1', 'explore', {
               term: d.term,
               numSelectedTerms: $scope.selectedTerms.length,
               prob: d.prob,
@@ -2708,13 +3016,14 @@ angular.module('explore.v2.controllers')
 
     function setSelectedTopic(d) {
       $scope.selectedTopic = d;
+      ExploreState.selectedTopic($scope.selectedTopic);      
       $scope.selectedEvidence = null;
-      visualizeTopicNeighborMatrix(topicNeighborContainer, 600, 600, d);
+//      visualizeTopicNeighborMatrix(topicNeighborContainer, 600, 600, d);
       $scope.selectedDocumentTerms = _.object(_.range(10).map(function(num) {
         return [num, false];
       }));
       $scope.loadingTopicEvidence = true;
-      Core.getEvidenceByTopic(collectionId, d.id, userId, function(response) {
+      Core.getEvidenceByTopic($scope.collection.id, d.id, $scope.userId, function(response) {
         $scope.evidence = response.data.evidence;
         var bookmarkedEvidence = response.data.evidenceBookmarks.map(function(b) {
           return b.evidence;
@@ -3370,17 +3679,146 @@ angular.module('explore.v2.controllers')
       }); 
     }
 
-    function visualizeProposalThumbnails() {
+    // WIP
+    function visualizeProposalThumbnails(container, width, height) {
       // 1. An index containing thumbnails
       // 2. An area for selected / enlarged thumbnail
 
       // Implementation steps:
       // 1. Get user texts
       // 2. Assigns gray rectangles / dimmed texts / highlighted texts according to distance 
-      // to each selected texts
+      // to each selected texts..OK, we will assign rectangles to every word. Keep track of 
+      // the length of previous words to know when to wrap lines. Length of the rectangle need 
+      // to be a function of the words. Words will be layered on top of rectangles depending 
+      // all distance to keywords. So, looks like we need to precompute the distance to keywords.
 
       // TODO: substitute this with user selections in focus mode
-      var focusKeywords = ['evaluate', 'insight'];
+      var focusKeywords = ['evaluate', 'interaction'];
+      console.log(proposals);
+
+      // Construct "word" objects
+      var words = proposals[1].content.split('\n')
+        .map(function(paragraph) {
+          var contents = paragraph.split(' ').map(function(word) {
+            return {
+              text: word,
+              distanceToKeyword: focusKeywords.indexOf(word) > -1 ? 0 : 10,
+              totalCharBefore: 0,
+              length: word.length
+            };
+          });
+          return {
+            length: 0,
+            prevParagraphLength: 0,
+            contents: contents,
+          }
+        });
+
+      // Compute distance to keywords
+      words.forEach(function(paragraph) {
+        var contents = paragraph.contents;
+        for (var i = 0; i < contents.length; ++i) {
+          var word = contents[i];
+          if (word.distanceToKeyword === 0) {
+            [1,2,3,4,5].forEach(function(offset) {
+              if (i-offset >= 0) {
+                contents[i-offset].distanceToKeyword = offset;
+              }
+              if (i+offset < paragraph.contents.length) {
+                contents[i+offset].distanceToKeyword = offset;
+              }
+            })
+          }
+        }
+      });
+
+      // Assign length to words
+      words.forEach(function(paragraph) {
+        var accumulatedChar = 0;
+        var contents = paragraph.contents;
+        contents.forEach(function(word) {
+          if (word.distanceToKeyword < 6) {
+            word.length = word.length * 3;
+          }
+          word.totalCharBefore = accumulatedChar;
+          accumulatedChar += word.length + 1;
+        });
+        paragraph.length = accumulatedChar;
+      });
+
+      var accumParaLength = 0;
+      for (var i = 0; i < words.length; ++i) {
+        words[i].prevParagraphLength = accumParaLength;
+        accumParaLength += words[i].length;
+      }
+      $scope.thumbnailContent = words;
+
+      var paragraphGroups = container.selectAll('.paragraph')
+        .data(words)
+        .enter()
+        .append('p')
+        .attr('class', 'paragraph')
+        .style('line-height', '90%');
+
+      paragraphGroups
+        .selectAll('.word-text')
+        .data(function(d) { return d.contents; })
+        .enter()
+        .append('span')
+        .attr('class', 'word-text')
+        .text(function(d) {
+          return d.text + ' ';
+        })
+        .style('opacity', function(d) {
+          return d.distanceToKeyword > 6 ? 0.3 : (1 - 0.1 * d.distanceToKeyword);          
+        })
+        .style('color', function(d) {
+          var index = focusKeywords.indexOf(d.text);
+          if (index >= 0) {
+            return termColorMap(index);  
+          }
+          else {        
+            return d.distanceToKeyword > 6 ? '#ccc' : 'black';      
+          }   
+        })
+        .style('font-size', function(d) {
+          return d.distanceToKeyword > 6 ? '6px' : '12px';                    
+        })
+        .style('background', function(d) {
+          return d.distanceToKeyword > 6 ? '#ccc' : '#fff';                              
+        })
+        .on('mouseover', function(d) {
+          if (d.distanceToKeyword > 6) return;
+          d3.select(this).style('font-size', '14px');
+        })
+        .on('mouseout', function(d) {
+          if (d.distanceToKeyword > 6) return;
+          if ($scope.selectedTerms.indexOf(d.text) === -1) {
+            d3.select(this).style('font-size', '12px');
+          };
+        })
+        .on('click', function(d) {
+          if ($scope.selectedTerms.indexOf(d.text) > -1) {
+            $scope.selectedTerms = _.without($scope.selectedTerms, d.text);
+          }
+          else {
+            var textTerms = $scope.terms.map(function(t) { return t.term; });
+            if (textTerms.indexOf(d.text) > -1) {
+              $scope.selectedTerms.push(d.text);        
+            }    
+          }
+          d3.selectAll('.word-text')
+            .filter(function(d) {
+              return d.distanceToKeyword <= 6;
+            })
+            .style('font-size', function(d) {
+              return $scope.selectedTerms.indexOf(d.text) > -1 ? '14px' : '12px';
+            })
+            .style('font-weight', function(d) {
+              return $scope.selectedTerms.indexOf(d.text) > -1 ? 800 : 400;              
+            });
+          $scope.updateTermTopicOrdering();
+        });
     }
 
     // Deprecated
@@ -3467,8 +3905,8 @@ angular.module('explore.v2.controllers')
   }]);
 
 angular.module('focus.v2.controllers')
-  .controller('FocusController', ['$scope', '$stateParams', '$modal', 'Core','AssociationMap', 'Argument', 'Logger', 'Bibtex',
-  function($scope, $stateParams, $modal, Core, AssociationMap, Argument, Logger, Bibtex) {      
+  .controller('FocusController', ['$scope', '$stateParams', '$modal', 'Core','AssociationMap', 'Argument', 'Logger', 'Bibtex', 'Paper', 'User',
+  function($scope, $stateParams, $modal, Core, AssociationMap, Argument, Logger, Bibtex, Paper, User) {      
     $scope.selectedText = {
       title: ''
     };
@@ -3495,100 +3933,9 @@ angular.module('focus.v2.controllers')
       'bookmarked': {active: false}
     };
 
-    var blob = null;
-
-    var userId = parseInt($stateParams.userId);
-    var collectionId = parseInt($stateParams.collectionId);
-
-    Core.getCollectionList(function(response) {
-      $scope.collections = response.data.map(function(d) {
-        return {
-          id: parseInt(d.collection_id),
-          name: d.collection_name
-        };
-      });
-
-      $scope.userId = userId;
-      $scope.collectionId = collectionId;
-      $scope.collectionName = _.find($scope.collections, function(c) {
-        return c.id === collectionId;
-      }).name;
-    });
-
-    $scope.evidence = null;
-    var textEvidenceAssociations = null;
-    var evidenceIdMap = {};
-    var isDebug = true;
-
-    AssociationMap.initialize(userId, function() {
-      textEvidenceAssociations = AssociationMap.getAssociationsOfType('evidence', 'text');
-      console.log(textEvidenceAssociations)
-      updateCitedEvidence();
-    });
-
-    // TODO: if later we want to get topics for these evidence, be mindful that there are 
-    // two types of evidence - personal and bookmarked - and they will require 
-    // different handlings
-    Core.getAllEvidenceForUser(userId, function(response) {
-        // This includes both usercreated and bookmarked evidence; they are not necessarily cited.
-        // TODO: apply default sorting.
-        $scope.evidence = response.data;
-
-        $scope.evidence.forEach(function(e){
-          e.metadata = JSON.parse(e.metadata);
-          evidenceIdMap[e.id]= e;
-        })
-          updateCitedEvidence();
-          loadTexts();
-      }, function(response) {
-        console.log('server error when retrieving evidence for user' + userId);
-        console.log(response);
-      });
-
-    var newParagraphIndex = -1;
-
-    $scope.$watch(function() {
-      return d3.selectAll('.text-paragraph')[0].length;
-    }, function(newValue, oldValue) {
-      if (isDebug)
-        console.log('watch on # of .text-paragraph executing...')
-      var el =document.getElementById('ap-' +newParagraphIndex);
-      if (el !== null && newValue > oldValue){
-        el.innerText = '';
-        el.focus();
-      }
-    })
-
-    // Check if the current text have changed every 10 secondsand save the contents.
-    // if there are changes,  
-    setInterval(function(){
-      if ($scope.hasUnsavedChanges) {
-        $scope.saveText();
-      }
-    }, 5000);
-
-    function loadTexts() {
-      Core.getAllTextsForUser(userId, function(response) {
-        $scope.texts = response.data;
-        if ($scope.texts.length > 0) {
-          $scope.selectText($scope.texts[0], false);
-        }
-        $scope.loadingTexts = false;
-        Logger.logAction(userId, 'load focus view', 'v2','1', 'focus', {
-          numProposals: $scope.texts.length
-        }, function(response) {
-          if (isDebug)
-            console.log('action logged: load view');
-        });
-      }, function(response) {
-        console.log('server error when retrieving textsfor user ' + userId);
-        console.log(response);
-      });
-    }
-
     $scope.selectText = function(text, userInitiated) {
       if (userInitiated) {
-        Logger.logAction(userId, 'select proposal', 'v2','1', 'focus', {
+        Logger.logAction($scope.userId, 'select proposal', 'v2','1', 'focus', {
           proposal: text.id,
           contentLength: text.content.split(' ').length
         }, function(response) {
@@ -3610,6 +3957,73 @@ angular.module('focus.v2.controllers')
       });
       updateCitedEvidence();
     };
+
+    var blob = null;
+    var textEvidenceAssociations = null;
+    var evidenceIdMap = null;
+    var isDebug = true;
+    $scope.evidence = null;
+
+    User.updateSessionInfo($stateParams.userId, $stateParams.collectionId, function(userId, collection) {
+      $scope.userId = userId;
+      $scope.collection = collection;
+
+      Paper.initializeCitationMap($scope.collection.id, $scope.userId);
+
+      AssociationMap.initialize($scope.userId, function() {
+        textEvidenceAssociations = AssociationMap.getAssociationsOfType('evidence', 'text');
+        updateCitedEvidence();
+      });
+
+      loadEvidence();
+    });
+
+    // Check if the current text have changed every 10 secondsand save the contents.
+    // if there are changes,  
+    setInterval(function(){
+      if ($scope.hasUnsavedChanges) {
+        $scope.saveText();
+      }
+    }, 5000);
+
+    function loadEvidence() {
+      User.evidence(function(evidence, idMap) {
+        $scope.evidence = evidence;
+        evidenceIdMap = idMap;
+        updateCitedEvidence();
+        loadTexts();
+      });
+
+      var newParagraphIndex = -1;
+
+      $scope.$watch(function() {
+        return d3.selectAll('.text-paragraph')[0].length;
+      }, function(newValue, oldValue) {
+        if (isDebug)
+          console.log('watch on # of .text-paragraph executing...')
+        var el =document.getElementById('ap-' +newParagraphIndex);
+        if (el !== null && newValue > oldValue){
+          el.innerText = '';
+          el.focus();
+        }
+      })
+    }
+
+    function loadTexts() {
+      User.proposals(function(proposals) {
+        $scope.texts = proposals;
+        if ($scope.texts.length > 0) {
+          $scope.selectText($scope.texts[0], false);
+        }
+        $scope.loadingTexts = false;
+        Logger.logAction($scope.userId, 'load focus view', 'v2','1', 'focus', {
+          numProposals: $scope.texts.length
+        }, function(response) {
+          if (isDebug)
+            console.log('action logged: load view');
+        });
+      });
+    }
 
     // TODO: known bug: if 1) add a new paragraph at the end of the proposal (it's fine if the paragraph is added in the middle), 
     // 2) download the proposal, then the new paragraph will beome invisible in the text area 
@@ -3660,7 +4074,7 @@ angular.module('focus.v2.controllers')
 
     $scope.selectEvidence = function(evidence, sourceList, userInitiated) {
       if (userInitiated) {
-        Logger.logAction(userId, 'select evidence', 'v2', '1', 'focus', {
+        Logger.logAction($scope.userId, 'select evidence', 'v2', '1', 'focus', {
           evidence: evidence.id,
           sourceList: sourceList
         }, function(response) {
@@ -3684,7 +4098,7 @@ angular.module('focus.v2.controllers')
 
     $scope.selectParagraph = function(index, clickTarget) {
       if (index!== $scope.selectedParagraph) {          
-        Logger.logAction(userId, 'select paragraph', 'v2', '1', 'focus', {
+        Logger.logAction($scope.userId, 'select paragraph', 'v2', '1', 'focus', {
           proposal: $scope.selectedText.id,
           paragraph: index,
           clickTarget: clickTarget
@@ -3699,14 +4113,14 @@ angular.module('focus.v2.controllers')
     };
 
     $scope.bookmarkEvidence = function(e, source) {
-      Logger.logAction(userId, 'bookmark evidence', 'v2', '1', 'focus', {
+      Logger.logAction($scope.userId, 'bookmark evidence', 'v2', '1', 'focus', {
         evidence: e.id,
         numDocuments: $scope.evidence.length,
         source: source
       }, function(response) {
         console.log('action logged: bookmark evidence');
       });
-      Core.addBookmark(userId, e.id, function(response) {
+      Core.addBookmark($scope.userId, e.id, function(response) {
         $scope.evidence.push(e);
         e.bookmarked = true;
         console.log('bookmark evidence success');
@@ -3716,14 +4130,14 @@ angular.module('focus.v2.controllers')
     }
 
     $scope.unbookmarkEvidence = function(e, source) {
-      Logger.logAction(userId, 'remove evidence bookmark', 'v2', '1', 'focus', {
+      Logger.logAction($scope.userId, 'remove evidence bookmark', 'v2', '1', 'focus', {
         evidence: e.id,
         numDocuments: $scope.evidence.length,
         source: source
       }, function(response) {
         console.log('action logged: remove evidence bookmark');
       });
-      Core.deleteBookmark(userId, e.id, function(response) {
+      Core.deleteBookmark($scope.userId, e.id, function(response) {
         $scope.evidence = _.without($scope.evidence, e);
         e.bookmarked = false;
         console.log('remove evidence bookmark success');
@@ -3737,7 +4151,7 @@ angular.module('focus.v2.controllers')
       if (AssociationMap.hasAssociation('evidence', 'text', evidence.id, textParaId)) {
         return;
       }
-      Logger.logAction(userId, 'cite evidence', 'v2', '1', 'focus', {          
+      Logger.logAction($scope.userId, 'cite evidence', 'v2', '1', 'focus', {          
         proposal: $scope.selectedText.id,
         paragraph: $scope.selectedParagraph,
         evidence: evidence.id,
@@ -3747,7 +4161,7 @@ angular.module('focus.v2.controllers')
           console.log('action logged: cite evidence');
       });        
       //Add association
-      AssociationMap.addAssociation(userId,'evidence', 'text', evidence.id, textParaId, function(association) {
+      AssociationMap.addAssociation($scope.userId,'evidence', 'text', evidence.id, textParaId, function(association) {
         // Add evidence to the list of cited evidence
         var index = $scope.citedEvidence.map(function(e) {
           return e.id;
@@ -3771,7 +4185,7 @@ angular.module('focus.v2.controllers')
     $scope.unciteEvidence = function(evidence, sourceList) {
       console.log('unciting')
       var textParaId = $scope.selectedText.id+ '-' + $scope.selectedParagraph;
-      Logger.logAction(userId, 'uncite evidence', 'v2', '1', 'focus', {
+      Logger.logAction($scope.userId, 'uncite evidence', 'v2', '1', 'focus', {
         proposal: $scope.selectedText.id,
         paragraph: $scope.selectedParagraph,
         evidence: evidence.id,
@@ -3781,7 +4195,7 @@ angular.module('focus.v2.controllers')
           console.log('action logged: uncite evidence');
       });        
       //Add association
-      AssociationMap.removeAssociation(userId,'evidence', 'text', evidence.id, textParaId, function(association) {
+      AssociationMap.removeAssociation($scope.userId,'evidence', 'text', evidence.id, textParaId, function(association) {
         // Add evidence to the list of cited evidence
         var index = $scope.citedEvidence.map(function(e) {
           return e.id;
@@ -3797,7 +4211,7 @@ angular.module('focus.v2.controllers')
     }
 
     $scope.showCitation = function(citation) {        
-      Logger.logAction(userId, 'show citation', 'v2', '1', 'focus', {
+      Logger.logAction($scope.userId, 'show citation', 'v2', '1', 'focus', {
         proposal: $scope.selectedText.id,
         paragraph: $scope.selectedParagraph,          
         citation: citation.evidence.id
@@ -3811,7 +4225,7 @@ angular.module('focus.v2.controllers')
     }
 
     $scope.openUploadBibtexWindow = function() {
-      Logger.logAction(userId, 'open upload bibtex window', 'v2', '1', 'focus', {
+      Logger.logAction($scope.userId, 'open upload bibtex window', 'v2', '1', 'focus', {
       }, function(response) {
         if (isDebug)
           console.log('action logged: open upload bibtex window');       
@@ -3822,10 +4236,10 @@ angular.module('focus.v2.controllers')
         controller: 'UploadBibtexModalController',          
         resolve: {
           userId: function() {
-            return userId;
+            return $scope.userId;
           },
           collectionId: function() {
-            return collectionId;
+            return $scope.collection.id;
           },
           existingEvidence: function() {
             return $scope.evidence.map(function(e) {
@@ -3857,7 +4271,7 @@ angular.module('focus.v2.controllers')
             return;
           }
           var evidence = evidenceList[evidenceIndex];
-          Core.postEvidenceByUserId(userId, evidence.title, evidence.abstract, JSON.stringify(evidence.metadata), 
+          Core.postEvidenceByUserId($scope.userId, evidence.title, evidence.abstract, JSON.stringify(evidence.metadata), 
             function(response) {
               // TODO: probably more efficient to deal with this server side
               if ($scope.evidence.indexOf(response.data[0]) > -1 || storedEvidence.indexOf(response.data[0]) > -1) {
@@ -3885,7 +4299,7 @@ angular.module('focus.v2.controllers')
     };    
 
     $scope.addTextEntry = function() {
-      Logger.logAction(userId, 'initiate proposal creation', 'v2','1', 'focus', {
+      Logger.logAction($scope.userId, 'initiate proposal creation', 'v2','1', 'focus', {
         totalProposals: $scope.texts.length
       }, function(response) {
         if (isDebug)
@@ -3910,13 +4324,13 @@ angular.module('focus.v2.controllers')
             return $scope.evidence;
           },
           userId: function() {
-            return userId;
+            return $scope.userId;
           }          
         }
       });
 
       modalInstance.result.then(function (newEntry){          
-        Logger.logAction(userId, 'proposal created', 'v2','1', 'focus', {            
+        Logger.logAction($scope.userId, 'proposal created', 'v2','1', 'focus', {            
           proposal: newEntry.id,
           contentLength: newEntry.content.split(' ').length,            
           totalProposals: $scope.texts.length          
@@ -3982,7 +4396,7 @@ angular.module('focus.v2.controllers')
 
     $scope.checkEnter= function(i, e){        
       if (e.keyCode === 13) {         
-        Logger.logAction(userId, 'create new paragraph', 'v2', '1', 'focus', {
+        Logger.logAction($scope.userId, 'create new paragraph', 'v2', '1', 'focus', {
           proposal: $scope.selectedText.id,           
           totalParagraphs: $scope.activeParagraphs.length
         }, function(response) {
@@ -4021,7 +4435,7 @@ angular.module('focus.v2.controllers')
       }
       else {
         if (e.keyCode === 8)
-        Logger.logAction(userId, 'edit paragraph', 'v2', '1', 'focus', {
+        Logger.logAction($scope.userId, 'edit paragraph', 'v2', '1', 'focus', {
           proposal:$scope.selectedText.id,
           paragraph: $scope.selectedParagraph
         }, function(response) {
@@ -4137,7 +4551,7 @@ angular.module('focus.v2.controllers')
     };
 
     $scope.downloadText = function() {
-      Logger.logAction(userId, 'download proposal', 'v2', '1', 'focus', {
+      Logger.logAction($scope.userId, 'download proposal', 'v2', '1', 'focus', {
         length:$scope.selectedText.content.split(' ').length,
         totalProposals: $scope.texts.length
       }, function(response) {
@@ -4147,7 +4561,7 @@ angular.module('focus.v2.controllers')
     };
 
     $scope.deleteText = function() {
-      Logger.logAction(userId, 'initiate proposal deletion', 'v2', '1', 'focus', {
+      Logger.logAction($scope.userId, 'initiate proposal deletion', 'v2', '1', 'focus', {
         length:$scope.selectedText.content.split(' ').length,
         totalProposals: $scope.texts.length
       }, function(response) {
@@ -4169,14 +4583,14 @@ angular.module('focus.v2.controllers')
             return 'text';
           },
           userId: function() {
-            return userId;            
+            return $scope.userId;            
           }          
         }
       });
   
       var target = $scope.texts;       
       modalInstance.result.then(function (deletedEntryId) {          
-        Logger.logAction(userId, 'proposal deleted', 'v2','1', 'focus', {
+        Logger.logAction($scope.userId, 'proposal deleted', 'v2','1', 'focus', {
           length: $scope.selectedText.content.split(' ').length,          
           totalProposals: $scope.texts.length   
         },function(response) {
@@ -4229,7 +4643,7 @@ angular.module('focus.v2.controllers')
       }).join('\n');
 
       if (userInitiated) {
-        Logger.logAction(userId, 'save proposal', 'v2','1', 'focus', {
+        Logger.logAction($scope.userId, 'save proposal', 'v2','1', 'focus', {
           proposal: $scope.selectedText.id,
           contentLength: newContent.split(' ').length
         }, function(response) {
@@ -4238,7 +4652,7 @@ angular.module('focus.v2.controllers')
         });
       }
 
-      Core.postTextByUserId(userId, $scope.selectedText.title, newContent, false, $scope.selectedText.id, function(response){           
+      Core.postTextByUserId($scope.userId, $scope.selectedText.title, newContent, false, $scope.selectedText.id, function(response){           
         $scope.texts.forEach(function(t) {             
           if (t.id === response.data[0].id){
             t.content = newContent;
@@ -4266,14 +4680,13 @@ angular.module('focus.v2.controllers')
         console.log('updating evidence recommendations..');        
       $scope.loadingRecommendedEvidence = true;        
 
-      Argument.getEvidenceRecommendation(text, collectionId, function(response) {
+      Argument.getEvidenceRecommendation(text, $scope.collection.id, function(response) {
         $scope.recommendedEvidence = response.data.evidence;
         var bookmarkedEvidenceIds = $scope.evidence === null ? [] : $scope.evidence.map(function(e) { return e.id; })
         $scope.recommendedEvidence.forEach(function(e) {
           e.metadata = JSON.parse(e.metadata);
           if ($scope.evidence !== null) {
             e.bookmarked = bookmarkedEvidenceIds.indexOf(e.id) > -1;
-            console.log(e.bookmarked)
           }
           else {
             e.bookmarked = false;
@@ -4296,6 +4709,9 @@ angular.module('focus.v2.controllers')
   }
       
 }]);
+
+
+
 angular.module('landing.v2.controllers')
   .controller('LandingController', ['$scope', '$modal', 'Core', 'AssociationMap', 'Pubmed', 'TermTopic', 'Logger',
     function($scope, $modal, Core, AssociationMap, Pubmed, TermTopic, Logger) {
@@ -4328,6 +4744,234 @@ angular.module('v2.controllers')
   .controller('BaselineController', ['$scope', '$modal', 'Core', 'AssociationMap', 'Argument', 'Pubmed', 'Bibtex',
     function($scope, $modal, Core, AssociationMap, Argument, Pubmed, Bibtex) {
   }]);
+
+angular.module('focus.v2.controllers')
+  .directive('evidenceRecommendationDirective', ['Paper', function(Paper) {
+    // WIP
+    // Implementation plan: 
+    // 1. Server side: Add an API that returns the number of 
+    // 2. Vis: need information: 1) # of bookmarked evidence that cites the current paper; 2) # of bookmarked evidence that is cited
+    // by the current paper; 3) total # of cites / citations among the dataset
+    // Need to be able to get the year range for all the references and citations given a list of recommendations
+    function randomIntFromInterval(min,max) {
+      return Math.floor(Math.random()*(max-min+1)+min);
+    }
+
+    function generateRandomRefsCites(evidenceYear) {
+      var numRefs = randomIntFromInterval(15, 40);
+      var numCites = randomIntFromInterval(10, 200);
+      var refs = [];
+      var cites = [];
+      for (var i = 0; i < numRefs; ++i) {
+        refs.push({
+          metadata: {DATE: randomIntFromInterval(1990, evidenceYear-1)},
+          bookmarked: randomIntFromInterval(0, 5)
+        })
+      }
+      for (var j = 0; j < numCites; ++j) {
+        cites.push({
+          metadata: {DATE: randomIntFromInterval(evidenceYear+1, 2016)},
+          bookmarked: randomIntFromInterval(0, 5)
+        })
+      }
+      return {
+        refs: refs,
+        cites: cites
+      }
+    }
+
+    function countDates(eArray, targetMap, minYear, maxYear, evidence) {
+      for (var i = minYear; i <= maxYear; ++i) {
+        targetMap.total[i] = 0;
+        targetMap.bookmarked[i] = 0;
+      }
+//      console.log(targetMap)
+      eArray.forEach(function(e) {
+        if (typeof e.metadata == 'string') {
+          e.metadata = JSON.parse(e.metadata);
+        }
+        var date = getEvidenceDate(e);
+        if (date === 0) return;
+        targetMap.total[date] += 1;
+        if (e.bookmarked === 0) {
+          targetMap.bookmarked[date] += 1;
+        }
+      })
+    }
+
+    function getEvidenceDate(evidence) {
+      var evidenceYear = 0;
+      if (evidence.metadata.DATE !== undefined) {
+        evidenceYear = parseInt(evidence.metadata.DATE);
+      }
+      else if (evidence.metadata.YEAR !== undefined) {
+        evidenceYear = parseInt(evidence.metadata.YEAR);        
+      }
+      return evidenceYear;
+    }
+
+    function drawBar(svg, dateScale, paperCountScale, paperMap, type, color, offset) {
+      var years = _.keys(paperMap).map(function(d) {
+        return parseInt(d);
+      })
+      svg.selectAll('.' + type + '-line')
+        .data(years)
+        .enter()
+        .append('line')
+        .attr('class', type + '-line')
+        .attr('x2', function(d) { return dateScale(d) + offset; })
+        .attr('x1', function(d) { return dateScale(d) + offset; })
+        .attr('y2', function(d) { return paperCountScale(paperMap[d]); })
+        .attr('y1', function(d) { return paperCountScale(0); })
+        .attr('stroke', color)
+        .attr('stroke-width', 4);
+      return;
+    }
+
+    function drawPointer(svg, svgHeight) {
+      svg.append('line')
+        .attr('id', 'pointer')
+        .attr('x1', -1)
+        .attr('x2', -1)
+        .attr('y1', 0)
+        .attr('y2', svgHeight)
+        .attr('stroke', 'black')
+        .attr('stroke-width', 1);
+    }
+
+    function updatePointer(svg, x, dateScale, citationInfo, evidenceYear) {
+      svg.select('#pointer')
+        .attr('x1', x)
+        .attr('x2', x);
+      var infoText = '';
+      if (x !== -1) {
+        year = Math.floor(dateScale.invert(x));
+        if (year < evidenceYear) {
+          totalPaper = citationInfo.references.total[year];          
+          bookmarkedPaper = citationInfo.references.bookmarked[year]; 
+          infoText += 'References from ' + year + ':';
+          infoText += totalPaper + ' (bookmarked ' + bookmarkedPaper + ')';
+        }
+        else if (year > evidenceYear) {
+          totalPaper = citationInfo.citations.total[year];
+          bookmarkedPaper = citationInfo.citations.bookmarked[year];
+          infoText += 'Citations from ' + year + ':';
+          infoText += totalPaper + ' (bookmarked ' + bookmarkedPaper + ')';
+        }
+        else {
+          infoText += 'Paper published in ' + year
+        }
+      }
+      svg.select('#dateInfo')
+        .text(infoText);
+    }
+
+    function drawLine(svg, dateScale, paperCountScale, paperMap, type, color, fillArea) {
+      var line = d3.svg.line()
+        .x(function(d) { return dateScale(d); })
+        .y(function(d) { return paperCountScale(paperMap[d]); })
+        .interpolate("basis");
+      var years = _.keys(paperMap).map(function(d) {
+        return parseInt(d);
+      })
+      svg.selectAll('.' + type + '-circle')
+        .data(years)
+        .enter()
+        .append('circle')
+        .attr('class', type + '-circle')
+        .attr('r', 1)
+        .attr('fill', color)
+        .attr('cx', function(d) {
+          return dateScale(d);
+        })
+        .attr('cy', function(d) {
+          return paperCountScale(paperMap[d]);
+        });
+
+      svg.append('path')      
+        .datum(years)  
+        .attr('d', line)
+        .attr('stroke', color)
+        .attr('fill', 'none')
+      if (fillArea) {
+        var area = d3.svg.area()
+          .y0(paperCountScale(0))
+          .x(function(d) { return dateScale(d); })
+          .y1(function(d) { return paperCountScale(paperMap[d]); })
+        svg.append('path')      
+          .datum(years)  
+          .attr('d', area)
+          .attr('fill', color);
+        }
+      }
+
+    return function(scope, element, attrs) {
+      var svgWidth = 300;
+      var svgHeight = 50;
+      var svg = d3.select(element[0]).append('svg')
+        .attr('width', svgWidth)
+        .attr('height', svgHeight + 20)
+        .attr('transform', 'translate(10, 0)');
+
+      var dummyCiteInfo = {
+        citations: {
+          total: {},
+          bookmarked: {},
+          // The keys should come in the same order in citations and references
+          topics: {}
+        },
+        references: {
+          total:{},
+          bookmarked: {},
+          topics: {}
+        }
+      };
+      // Lets's initialize the dummy cite info randomly for now
+      var evidenceYear = getEvidenceDate(scope.e);
+      var refs = Paper.getReferencesForPaper(scope.e.id);
+      var cites = Paper.getCitationsForPaper(scope.e.id);
+      countDates(cites, dummyCiteInfo.citations, Math.min(2016, evidenceYear+1), 2016, evidenceYear);
+      countDates(refs, dummyCiteInfo.references, 1990, Math.max(1990, evidenceYear-1), evidenceYear);
+      var dateScale = d3.scale.linear()
+        .domain([1990, 2016])
+        .range([5, svgWidth-5]);
+      var paperCountScale = d3.scale.pow().exponent(0.8)
+        .domain([30, 0])
+        .range([10, svgHeight-10]);
+      // Now we can start visualizing...
+      drawPointer(svg, svgHeight);
+      drawLine(svg, dateScale, paperCountScale, dummyCiteInfo.citations.total, 'cite-total', 'grey', false);
+      drawBar(svg, dateScale, paperCountScale, dummyCiteInfo.references.total, 'ref-total', 'grey', -2);
+      drawLine(svg, dateScale, paperCountScale, dummyCiteInfo.citations.bookmarked, 'cite-bookmarked', 'steelblue', true);
+      drawBar(svg, dateScale, paperCountScale, dummyCiteInfo.references.bookmarked, 'ref-bookmarked', 'steelblue', 2);
+      svg.on('mousemove', function(d) {
+        updatePointer(svg, d3.mouse(this)[0], dateScale, dummyCiteInfo, evidenceYear);
+      });
+      svg.on('mouseout', function(d) {
+        updatePointer(svg, -1);
+      })
+      svg.selectAll('#this-paper')
+        .data([scope.e])
+        .enter()
+        .append('circle')
+        .attr('r', 4)
+        .attr('fill', 'crimson')
+        .attr('cx', dateScale(evidenceYear))
+        .attr('cy', svgHeight / 2)
+        .attr('uib-tooltip', 'Hello')
+        .attr('tooltip-append-to-body', true)
+        .attr('tooltip-placement', 'right');
+
+      svg.append('text')
+        .attr('id', 'dateInfo')
+        .attr('transform', 'translate(20, ' + (svgHeight + 1) + ')')
+        .text(function(d) {
+          return '';
+        })
+        .attr('font-size', 10);
+    };
+  }]);
+
 
 angular
   .module('termTopic.services')
@@ -4531,12 +5175,12 @@ function TermTopic(Core) {
   }
 
   function getUniqueTerms(topics) {
-    return _.uniq(_.flatten(topics.map(function(t) {
+    return _.without(_.uniq(_.flatten(topics.map(function(t) {
       var termTuples = t.terms;
       return termTuples.map(function(tuple) {
         return tuple.term;
       })
-    })));
+    }))), 'other terms');
   }
 
   function getTermTopicCount(terms, topics) {
@@ -4549,6 +5193,7 @@ function TermTopic(Core) {
       for (var j in termTuples) {
         var term = termTuples[j].term;
         var prob = termTuples[j].prob;
+        if (term === 'other terms') continue;
         if (prob < minTermTopicProb) {
           minTermTopicProb = prob;
         }
@@ -4635,11 +5280,11 @@ angular.module('mainModule').run(['$templateCache', function($templateCache) {
 }]);
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('core/v2/explore.v2.html',
-        "<div id=\"main-header\" class=\"row\">\n  <div class=\"col-md-2\" style=\"margin-top:6px;margin-bottom:6px\">\n    <span style=\"font-size:18px; cursor:pointer\" ui-sref=\"v2\">ThoughtFlow<sup>alpha</sup></span>\n  </div>\n  <div class=\"col-md-10 text-right\" style=\"margin-top:4px;\">\n    <span class=\"main-header-text\">User ID: </span>\n    <span style=\"font-weight:lighter;padding-right:15px;\">{{userId}}</span>\n    <span class=\"main-header-text\">Document collection: </span>\n    <span style=\"font-weight:lighter\">{{collectionName}}</span>\n    <button class=\"btn btn-default\" ui-sref=\"v2.focus({userId: userId, collectionId: collectionId})\" style=\"margin-left:30px\">Write</button>\n  </div>\n</div>\n\n<div class=\"center row v2\" id=\"explore\">\n  <div class=\"loading\" ng-if=\"loadingEvidence\">\n    <div class=\"loader-container\">\n      <div class=\"loader\"></div>\n      <div class=\"loading-text\"><p>{{loadingStatement}}</p></div>\n    </div>\n  </div>\n\n  <div class=\"row\" id=\"options\" style=\"margin:20px 20px 20px 50px\">\n    <div class=\"col-md-3\">\n      <span>Search for term: </span>\n      <ui-select ng-model=\"selected.searchTerm\" on-select=\"selectSearchTerm($item)\">\n          <ui-select-match>\n              <span ng-bind=\"$select.selected.term\"></span>\n          </ui-select-match>\n          <ui-select-choices repeat=\"t in (terms | filter: $select.search) track by t.origIndex\">\n              <span ng-bind=\"t.term\"></span>\n          </ui-select-choices>\n      </ui-select>\n    </div>\n    <div class=\"col-md-3\">\n      <span>Search for paper: </span>\n      <div class=\"row\">\n         <div class=\"input-group\">\n            <input type=\"text\" class=\"form-control\" placeholder=\"Search for...\" ng-model=\"searchTitle\">\n            <span class=\"input-group-btn\">\n              <button class=\"btn btn-default\" type=\"button\" ng-click=\"searchEvidenceByTitle()\">Search</button>\n            </span>\n          </div>      \n      </div>\n      <div class=\"row\">\n        <ui-select ng-model=\"selected.searchTitle\" on-select=\"selectSearchTitle($item)\">\n            <ui-select-match placeholder=\"Use the search above to get a list of relevant titles\">\n                <span ng-bind=\"$select.selected.title\"></span>\n            </ui-select-match>\n            <ui-select-choices repeat=\"t in (candidateEvidence | filter: $select.search) track by t.id\">\n                <span ng-bind=\"t.title\"></span>\n            </ui-select-choices>\n        </ui-select>\n      </div>\n    </div>\n  </div>\n\n  <div id=\"vis\">\n    <div id=\"headers\" class=\"row\" style=\"width:760px;margin:30px 0px 0px 75px;\">\n      <h4 class=\"col-md-6\">Terms ({{numTerms}} total)</h4>\n      <h4 class=\"col-md-6\">Topics ({{numTopics}} total)</h4>\n    </div>\n    <div class=\"control\">\n      <button uib-tooltip=\"Scroll term list down\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\"\n        class=\"btn btn-default btn-xs\" ng-click=\"showNextTerms()\"><img class=\"btn-img-default\" src=\"/static/img/caret-down-icon.png\"></button>\n      <button uib-tooltip=\"Scroll term list up\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\"\n        class=\"btn btn-default btn-xs\" ng-click=\"showPrevTerms()\"><img class=\"btn-img-default\" src=\"/static/img/caret-up-icon.png\"></button>\n      <button uib-tooltip=\"Clear selected terms\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\"\n        class=\"btn btn-default btn-xs\" ng-click=\"clearSelectedTerms()\"><img class=\"btn-img-default\" src=\"/static/img/eraser-icon.png\"></button>\n      <button uib-tooltip=\"Reorder based on selected terms\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\"\n        class=\"btn btn-default btn-xs\" ng-click=\"updateTermTopicOrdering(true, true)\"><img class=\"btn-img-default\" src=\"/static/img/shuffle-icon.png\"></button>\n    </div>\n    <svg id=\"topic-term-dist\" style=\"width:1850px;height:700x\">\n    </svg>\n    <div class=\"control\">\n      <p style=\"margin:10px 0 10px 5px;font-size:16px\"><span style=\"font-variant:small-caps\">Selected topic:</span> <span style=\"padding:3px;\" ng-repeat=\"t in selectedTopic.terms | limitTo:10\" id=\"topic-term-$index\" class=\"selected-topic-term\" ng-class=\"{dark:$index%2==0,active:hover}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\" ng-click=\"selectTermToFilterDocuments(t.term, $index)\">    {{t.term}}   </span><span style=\"font-size:12px;font-weight:500\">(# of documents: {{selectedTopic.evidenceCount}})</span></p>\n    </div>\n  </div>\n\n  <div id=\"evidence-col container\" style=\"width:95%;margin-left:50px\">\n    <div class=\"loading\" ng-if=\"loadingTopicEvidence\">\n      <div class=\"loader-container\">\n        <div class=\"spinner\">\n          <div class=\"rect1\"></div>\n          <div class=\"rect2\"></div>\n          <div class=\"rect3\"></div>\n          <div class=\"rect4\"></div>\n          <div class=\"rect5\"></div>\n        </div>\n      </div>\n    </div>\n    <div class=\"panel panel-default\">\n      <div class=\"panel-heading\">\n        <h4 class=\"panel-title\" style=\"margin-bottom:0px\">Documents with the selected topic</h4> \n      </div>\n      <div class=\"panel-body body\">\n        <div class=\"row\">\n          <div class=\"col-md-6\" id=\"documents\">\n            <div ng-if=\"selectedTopic===null\" style=\"margin-top:170px\">\n              <p class=\"text-center\" ><i>Select a topic to view associated documents here.</i></p>\n            </div>\n            <div>\n              <div class=\"animate-repeat document-entry row\" ng-repeat=\"e in evidence\" ng-class=\"{active: hover || e.id == selectedEvidence.id, bookmarked: e.bookmarked}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\">\n                <div class=\"col-md-9\" ng-click=\"selectEvidence(e)\">\n                  <p>\n                    <span ng-switch on=\"e.bookmarked\">\n                      <img ng-switch-when=\"false\" class=\"btn-img-default\" src=\"/static/img/bookmark-no-icon.png\" \n                        uib-tooltip=\"Not bookmarked\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\" ng-click=\"updateBookmark(e)\" style=\"cursor:pointer; cursor:hand;\"/>\n                      <img ng-switch-when=\"true\" class=\"btn-img-default\" src=\"/static/img/bookmark-yes-icon.png\"\n                        uib-tooltip=\"Bookmarked\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\" ng-click=\"updateBookmark(e)\" style=\"cursor:pointer; cursor:hand;\"/>\n                    </span>                    \n<!--                    <input type=\"checkbox\" ng-model=\"e.bookmarked\" ng-click=\"updateBookmark(e)\"> -->\n                    <span style=\"font-weight:300\"> {{e.title}}</span>\n                  </p>\n                </div>\n                <div class=\"col-md-1\">\n                   <div ng-if=\"evidenceSourceMap[e.id] === 1\">\n                     <img  src=\"/static/img/link-icon.svg\" style=\"width:15px; height:15px\"></img>\n                     <span>{{countTextsReferencingEvidence(e)}}</span>\n                   </div>\n                   <div ng-if=\"evidenceSourceMap[e.id] === 0\"><span class=\"label label-default\">Search result</span></div> \n                </div>\n                <div class=\"col-md-2\">\n                   <svg id=\"doc-decorator-$index\" class=\"doc-decorator\" style=\"width:100px;height:30px;\"></svg>\n                </div>\n              </div>\n            </div>\n          </div>\n          <div class=\"col-md-6\" id=\"details\">\n            <div ng-if=\"selectedEvidence===null\" style=\"margin-top:170px\">\n              <p class=\"text-center\" ><i>Select a document to view its metadata here.</i></p>\n            </div>\n            <div ng-if=\"selectedEvidence!==null\">\n              <div class=\"row\" style=\"margin:10px\">\n                <button class=\"btn btn-default btn-xs col-md-12\" ng-class=\"{'btn-success': showCitingTexts}\" ng-disabled=\"associationInactive('evidence')\" ng-click=\"toggleShowCitingTexts()\">Who cited me?</button>\n              </div>\n              <p>\n                <b><span class=\"small-cap-text\">Authors</span></b>: \n                <span class=\"thin-text\">{{selectedEvidence.metadata.AUTHOR}}</span>\n              </p>\n              <p>\n                <b><span class=\"small-cap-text\">Affiliation</span></b>: \n                <span class=\"thin-text\">{{selectedEvidence.metadata.AFFILIATION}}</span>\n              </p>\n              <p>\n                <b><span class=\"small-cap-text\">Publication date</span></b>: \n                <span class=\"thin-text\">{{selectedEvidence.metadata.DATE}}</span>\n              </p>\n              <p>\n                <b><span class=\"small-cap-text\">Journal</span></b>: \n                <span class=\"thin-text\">{{selectedEvidence.metadata.JOURNAL}}</span>\n              </p>\n              <p\n              ><b><span class=\"small-cap-text\">Abstract</span></b>:</p>\n              <span style=\"font-size:13px\" ng-repeat=\"w in selectedWords track by $index\" ng-class=\"{'is-topic-term': isTopicTerm(w)}\">{{w}} </span>\n            </div>\n          </div>\n        </div>\n      </div>\n<!--      <div class=\"panel-footer\">\n        <div class=\"btn-group btn-group-sm\" role=\"group\">\n          <button class=\"btn btn-primary\" ng-disabled=\"selectedEvidence===null\" ng-click=\"bookmarkEvidence(selectedEvidence)\" title=\"Bookmark this publication\">Bookmark</button>\n          <button class=\"btn btn-danger\" ng-disabled=\"selectedEvidence===null\" ng-click=\"deleteEntry('evidence')\">Delete</button>\n        </div>\n      </div> -->\n    </div>\n  </div>\n</div>");
+        "<div id=\"main-header\" class=\"row\">\n  <div class=\"col-md-2\" style=\"margin-top:6px;margin-bottom:6px\">\n    <span style=\"font-size:18px; cursor:pointer\" ui-sref=\"v2\">ThoughtFlow<sup>alpha</sup></span>\n  </div>\n  <div class=\"col-md-10 text-right\" style=\"margin-top:4px;\">\n    <span class=\"main-header-text\">User ID: </span>\n    <span style=\"font-weight:lighter;padding-right:15px;\">{{userId}}</span>\n    <span class=\"main-header-text\">Document collection: </span>\n    <span style=\"font-weight:lighter\">{{collection.name}}</span>\n    <button class=\"btn btn-default\" ui-sref=\"v2.focus({userId: userId, collectionId: collection.id})\" style=\"margin-left:30px\">Write</button>\n  </div>\n</div>\n\n<div class=\"center row v2\" id=\"explore\">\n  <div class=\"loading\" ng-if=\"loadingEvidence\">\n    <div class=\"loader-container\">\n      <div class=\"loader\"></div>\n      <div class=\"loading-text\"><p>{{loadingStatement}}</p></div>\n    </div>\n  </div>\n\n  <div class=\"row\" id=\"options\" style=\"margin:20px 20px 20px 50px\">\n    <div class=\"col-md-3\">\n      <span>Search for term: </span>\n      <ui-select ng-model=\"selected.searchTerm\" on-select=\"selectSearchTerm($item)\">\n          <ui-select-match>\n              <span ng-bind=\"$select.selected.term\"></span>\n          </ui-select-match>\n          <ui-select-choices repeat=\"t in (terms | filter: $select.search) track by t.origIndex\">\n              <span ng-bind=\"t.term\"></span>\n          </ui-select-choices>\n      </ui-select>\n    </div>\n    <div class=\"col-md-3\">\n      <span>Search for paper: </span>\n      <div class=\"row\">\n         <div class=\"input-group\">\n            <input type=\"text\" class=\"form-control\" placeholder=\"Search for...\" ng-model=\"searchTitle\">\n            <span class=\"input-group-btn\">\n              <button class=\"btn btn-default\" type=\"button\" ng-click=\"searchEvidenceByTitle()\">Search</button>\n            </span>\n          </div>      \n      </div>\n      <div class=\"row\">\n        <ui-select ng-model=\"selected.searchTitle\" on-select=\"selectSearchTitle($item)\">\n            <ui-select-match placeholder=\"Use the search above to get a list of relevant titles\">\n                <span ng-bind=\"$select.selected.title\"></span>\n            </ui-select-match>\n            <ui-select-choices repeat=\"t in (candidateEvidence | filter: $select.search) track by t.id\">\n                <span ng-bind=\"t.title\"></span>\n            </ui-select-choices>\n        </ui-select>\n      </div>\n    </div>\n  </div>\n\n  <div id=\"vis\">\n    <div id=\"headers\" class=\"row\" style=\"width:760px;margin:30px 0px 0px 75px;\">\n      <h4 class=\"col-md-6\">Terms ({{numTerms}} total)</h4>\n      <h4 class=\"col-md-6\">Topics ({{numTopics}} total)</h4>\n    </div>\n    <div class=\"control\">\n      <button uib-tooltip=\"Scroll term list down\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\"\n        class=\"btn btn-default btn-xs\" ng-click=\"showNextTerms()\"><img class=\"btn-img-default\" src=\"/static/img/caret-down-icon.png\"></button>\n      <button uib-tooltip=\"Scroll term list up\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\"\n        class=\"btn btn-default btn-xs\" ng-click=\"showPrevTerms()\"><img class=\"btn-img-default\" src=\"/static/img/caret-up-icon.png\"></button>\n      <button uib-tooltip=\"Clear selected terms\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\"\n        class=\"btn btn-default btn-xs\" ng-click=\"clearSelectedTerms()\"><img class=\"btn-img-default\" src=\"/static/img/eraser-icon.png\"></button>\n      <button uib-tooltip=\"Reorder based on selected terms\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\"\n        class=\"btn btn-default btn-xs\" ng-click=\"updateTermTopicOrdering(true, true)\"><img class=\"btn-img-default\" src=\"/static/img/shuffle-icon.png\"></button>\n    </div>\n    <svg id=\"topic-term-dist\" style=\"width:1850px;height:700x;\">\n    </svg>\n    <div id=\"proposal-thumbnail\" style=\"width:600px;height:600px;position:absolute;top: 290px;left:1150px;\">\n      <div id=\"selected-thumbnail\" style=\"width:400px;height:600px;overflow-y:auto;\"></div>\n<!--      <div >\n        <p ng-repeat=\"paragraph in thumbnailContent\">\n          <span ng-repeat=\"word in paragraph.contents\" class=\"thumbnail-text\">{{word.text}} </span>\n        </p>\n      </div> -->\n    </div>\n    <div class=\"control\">\n      <p style=\"margin:10px 0 10px 5px;font-size:16px\"><span style=\"font-variant:small-caps\">Selected topic:</span> <span style=\"padding:3px;\" ng-repeat=\"t in selectedTopic.terms | limitTo:10\" id=\"topic-term-$index\" class=\"selected-topic-term\" ng-class=\"{dark:$index%2==0,active:hover}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\" ng-click=\"selectTermToFilterDocuments(t.term, $index)\">    {{t.term}}   </span><span style=\"font-size:12px;font-weight:500\">(# of documents: {{selectedTopic.evidenceCount}})</span></p>\n    </div>\n  </div>\n\n  <div id=\"evidence-col container\" style=\"width:95%;margin-left:50px\">\n    <div class=\"loading\" ng-if=\"loadingTopicEvidence\">\n      <div class=\"loader-container\">\n        <div class=\"spinner\">\n          <div class=\"rect1\"></div>\n          <div class=\"rect2\"></div>\n          <div class=\"rect3\"></div>\n          <div class=\"rect4\"></div>\n          <div class=\"rect5\"></div>\n        </div>\n      </div>\n    </div>\n    <div class=\"panel panel-default\">\n      <div class=\"panel-heading\">\n        <h4 class=\"panel-title\" style=\"margin-bottom:0px\">Documents with the selected topic</h4> \n      </div>\n      <div class=\"panel-body body\">\n        <div class=\"row\">\n          <div class=\"col-md-6\" id=\"documents\">\n            <div ng-if=\"selectedTopic===null\" style=\"margin-top:170px\">\n              <p class=\"text-center\" ><i>Select a topic to view associated documents here.</i></p>\n            </div>\n            <div>\n              <div class=\"animate-repeat document-entry row\" ng-repeat=\"e in evidence\" ng-class=\"{active: hover || e.id == selectedEvidence.id, bookmarked: e.bookmarked}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\">\n                <div class=\"col-md-9\" ng-click=\"selectEvidence(e)\">\n                  <p>\n                    <span ng-switch on=\"e.bookmarked\">\n                      <img ng-switch-when=\"false\" class=\"btn-img-default\" src=\"/static/img/bookmark-no-icon.png\" \n                        uib-tooltip=\"Not bookmarked\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\" ng-click=\"updateBookmark(e)\" style=\"cursor:pointer; cursor:hand;\"/>\n                      <img ng-switch-when=\"true\" class=\"btn-img-default\" src=\"/static/img/bookmark-yes-icon.png\"\n                        uib-tooltip=\"Bookmarked\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\" ng-click=\"updateBookmark(e)\" style=\"cursor:pointer; cursor:hand;\"/>\n                    </span>                    \n<!--                    <input type=\"checkbox\" ng-model=\"e.bookmarked\" ng-click=\"updateBookmark(e)\"> -->\n                    <span style=\"font-weight:300\"> {{e.title}}</span>\n                  </p>\n                </div>\n                <div class=\"col-md-1\">\n                   <div ng-if=\"evidenceSourceMap[e.id] === 1\">\n                     <img  src=\"/static/img/link-icon.svg\" style=\"width:15px; height:15px\"></img>\n                     <span>{{countTextsReferencingEvidence(e)}}</span>\n                   </div>\n                   <div ng-if=\"evidenceSourceMap[e.id] === 0\"><span class=\"label label-default\">Search result</span></div> \n                </div>\n                <div class=\"col-md-2\">\n                   <svg id=\"doc-decorator-$index\" class=\"doc-decorator\" style=\"width:100px;height:30px;\"></svg>\n                </div>\n              </div>\n            </div>\n          </div>\n          <div class=\"col-md-6\" id=\"details\">\n            <div ng-if=\"selectedEvidence===null\" style=\"margin-top:170px\">\n              <p class=\"text-center\" ><i>Select a document to view its metadata here.</i></p>\n            </div>\n            <div ng-if=\"selectedEvidence!==null\">\n              <div class=\"row\" style=\"margin:10px\">\n                <button class=\"btn btn-default btn-xs col-md-12\" ng-class=\"{'btn-success': showCitingTexts}\" ng-disabled=\"associationInactive('evidence')\" ng-click=\"toggleShowCitingTexts()\">Who cited me?</button>\n              </div>\n              <p>\n                <b><span class=\"small-cap-text\">Authors</span></b>: \n                <span class=\"thin-text\">{{selectedEvidence.metadata.AUTHOR}}</span>\n              </p>\n              <p>\n                <b><span class=\"small-cap-text\">Affiliation</span></b>: \n                <span class=\"thin-text\">{{selectedEvidence.metadata.AFFILIATION}}</span>\n              </p>\n              <p>\n                <b><span class=\"small-cap-text\">Publication date</span></b>: \n                <span class=\"thin-text\">{{selectedEvidence.metadata.DATE}}</span>\n              </p>\n              <p>\n                <b><span class=\"small-cap-text\">Journal</span></b>: \n                <span class=\"thin-text\">{{selectedEvidence.metadata.JOURNAL}}</span>\n              </p>\n              <p\n              ><b><span class=\"small-cap-text\">Abstract</span></b>:</p>\n              <span style=\"font-size:13px\" ng-repeat=\"w in selectedWords track by $index\" ng-class=\"{'is-topic-term': isTopicTerm(w)}\">{{w}} </span>\n            </div>\n          </div>\n        </div>\n      </div>\n<!--      <div class=\"panel-footer\">\n        <div class=\"btn-group btn-group-sm\" role=\"group\">\n          <button class=\"btn btn-primary\" ng-disabled=\"selectedEvidence===null\" ng-click=\"bookmarkEvidence(selectedEvidence)\" title=\"Bookmark this publication\">Bookmark</button>\n          <button class=\"btn btn-danger\" ng-disabled=\"selectedEvidence===null\" ng-click=\"deleteEntry('evidence')\">Delete</button>\n        </div>\n      </div> -->\n    </div>\n  </div>\n</div>");
 }]);
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('core/v2/focus.v2.html',
-        "<div id=\"main-header\" class=\"row\">\n  <div class=\"col-md-2\" style=\"margin-top:6px;margin-bottom:6px\">\n    <span style=\"font-size:18px; cursor:pointer\" ui-sref=\"v2\">ThoughtFlow<sup>alpha</sup></span>\n  </div>\n  <div class=\"col-md-10 text-right\" style=\"margin-top:4px;\">\n    <span class=\"main-header-text\">User ID: </span>\n    <span style=\"font-weight:lighter;padding-right:15px;\">{{userId}}</span>\n    <span class=\"main-header-text\">Document collection: </span>\n    <span style=\"font-weight:lighter\">{{collectionName}}</span>\n    <button class=\"btn btn-default\" ui-sref=\"v2.explore({userId: userId, collectionId: collectionId})\" style=\"margin-left:30px\">Explore</button>\n  </div>\n</div>\n\n<div class=\"row v2\" id=\"focus\" style=\"height:900px;padding:15px\">\n  <div class=\"loading\" ng-if=\"loadingTexts\">\n    <div class=\"loader-container\">\n      <div class=\"loader\"></div>\n      <div class=\"loading-text\"><p>{{loadingStatement}}</p></div>\n    </div>\n  </div>\n  <div class=\"col-md-2\" id=\"argument-list\" style=\"border-bottom: solid 1px #ccc;height:1014px;overflow-y:auto\">\n    <h4>Proposals</h4>\n    <table class=\"table\">\n      <tr ng-repeat=\"t in texts\" ng-class=\"{active: hover || t.id == selectedText.id}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\">\n        <td ng-click=\"selectText(t)\">\n          <p>{{t.title}}</p>\n          <svg class=\"topic-info\" id=\"topic-info-{{t.id}}\" width=\"150\" height=\"25\"></svg>\n          <div ng-if=\"selectedText===t\" style=\"margin-left:70%\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\">\n              <a download=\"{{selectedText.title}}.txt\" ng-href=\"{{proposalUrl}}\"><img style=\"width:20px; height:20px\"src=\"/static/img/download-icon.png\"/></a>\n              <a ng-click=\"deleteText()\"><img style=\"width:20px; height:20px\"src=\"/static/img/trash-icon.svg\"/></a>\n            </div>  \n          </div>\n        </td>\n      </tr>\n    </table>\n    <div class=\"btn-group btn-group-xs\" role=\"group\">\n      <button class=\"btn btn-default\" ng-click=\"addTextEntry()\"><img style=\"width:20px; height:20px\"src=\"/static/img/plus-icon.png\">Add new proposal</button>\n    </div>\n  </div>\n  <div class=\"col-md-7\" style=\"border-left:solid 1px #ccc;border-bottom: solid 1px #ccc;height:1014px;overflow-y:auto\">\n    <div>\n      <h4 style=\"display:inline-block\">{{selectedText.title}}</h4>\n      <div style=\"display:inline-block;margin-left:40px\" ng-switch on=\"savingStatus\"\n        uib-tooltip=\"Changes are auto-saved every 5 seconds\"\n        tooltip-placement=\"right\" tooltip-trigger=\"mouseenter\"\n      >\n        <div ng-switch-when=\"saved\">\n          <button class=\"btn btn-default btn-xs disabled\"><span style=\"padding:0px 5px 0px 5px\">Saved</span></button>\n        </div>\n        <div ng-switch-when=\"unsaved\">\n          <button class=\"btn btn-primary btn-xs\" ng-click=\"saveText(true)\"><span style=\"padding:0px 5px 0px 5px\">Save</span></button>\n        </div>\n        <div ng-switch-when=\"saving\">\n          <button class=\"btn btn-default btn-xs disabled\"><span style=\"padding:0px 5px 0px 5px\">Saving...</span></button>\n        </div>\n        <div ng-switch-when=\"failed\">\n          <button class=\"btn btn-danger btn-xs disabled\"><span style=\"padding:0px 5px 0px 5px\">Error occurred while saving!</span></button>\n        </div>\n      </div>\n    </div>\n    <div ng-repeat=\"p in activeParagraphs\">\n      <p class=\"text-paragraph\" contenteditable=\"true\" ng-keydown=\"checkEnter($index, $event)\" ng-keyup=\"hasMadeChanges($index, $event)\" ng-click=\"selectParagraph($index, 'text')\" class=\"activeParagraph\" id=\"ap-{{$index}}\" style=\"outline:0\"><span class=\"thin-text\" style=\"font-size:15px\">{{p.text}}</span></p>\n      <div style=\"width:15%;height:150px;display:inline-block;float:right\">\n        <div>\n          <p style=\"font-size:10px\" ng-click=\"selectParagraph($index, 'topic')\">Topic: {{paragraphInformation[$index].topicString}}</p>\n          <br/>\n          <p style=\"font-size:10px\">Cited: <span ng-repeat=\"c in paragraphCitation[$index] | orderBy:'index'\">[<a ng-click=\"showCitation(c)\">{{c.index+1}}</a>] </span></p>\n        </div>\n      </div>\n      <div style=\"clear:both\"></div>        \n    </div>\n  </div>\n  <div class=\"col-md-3\" style=\"border-left: solid 1px #ccc;border-bottom: solid 1px #ccc;height:1014px\">\n    <div class=\"container\" style=\"width:100%;\">\n      <div class=\"row\">\n        <div class=\"col-md-7\">\n          <h4>Citations</h4>\n        </div>\n        <div class=\"col-md-5\">\n          <div style=\"padding-top:5px\">\n            <button class=\"btn btn-default btn-xs\" ng-click=\"openUploadBibtexWindow()\"><img style=\"width:20px; height:20px\"src=\"/static/img/plus-icon.png\"> Upload bibtex file\n          </div>\n        </div>\n      </div>\n    </div>\n    <uib-tabset>\n      <uib-tab heading=\"Recommended\" active=\"citationTabs['recommended'].active\">\n        <div class=\"loading\" ng-if=\"loadingRecommendedEvidence\">\n          <div class=\"loader-container\">\n            <div class=\"spinner\">\n              <div class=\"rect1\"></div>\n              <div class=\"rect2\"></div>\n              <div class=\"rect3\"></div>\n              <div class=\"rect4\"></div>\n              <div class=\"rect5\"></div>\n            </div>\n          </div>\n        </div>\n        <div id=\"recommendedEvidence\" class=\"citation-container\">\n          <div class=\"animate-repeat document-entry row\" ng-repeat=\"e in recommendedEvidence\" ng-class=\"{active: hover || e.id == selectedEvidence.id}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\" ng-click=\"selectEvidence(e, 'recommended', true)\">\n            <div class=\"col-md-10\">\n              <p class=\"citation-entry\"><span>{{$index+1}}. </span><span class=\"thin-text\">{{e.title}}</span></p>\n            </div>          \n            <div class=\"col-md-2\" style=\"margin:10px 0 0 0\">\n              <img ng-if=\"!e.bookmarked\" class=\"btn-img-default\" src=\"/static/img/bookmark-no-icon.png\" \n                uib-tooltip=\"Not in your bookmark\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\" ng-click=\"bookmarkEvidence(e, 'recommendation')\" style=\"cursor:pointer; cursor:hand;\"/>\n              <img ng-if=\"e.bookmarked\" class=\"btn-img-default\" src=\"/static/img/bookmark-yes-icon.png\"\n                uib-tooltip=\"From your bookmark\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\" ng-click=\"unbookmarkEvidence(e, 'recommendation')\" style=\"cursor:pointer; cursor:hand;\"/>\n              <div ng-if=\"selectedEvidence===e\" && selectedParagraph!==-1>\n                <img class=\"btn-img-default\" src=\"/static/img/link-icon.svg\"\n                  uib-tooltip=\"Cite\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\" ng-click=\"citeEvidence(e, 'recommended')\"\n                  style=\"cursor:pointer; cursor:hand;\"/>\n              </div>  \n            </div>\n          </div>\n        </div>        \n      </uib-tab>\n      <uib-tab heading=\"Cited\" active=\"citationTabs['cited'].active\">\n        <div id=\"citedEvidence\" class=\"citation-container\">\n          <div class=\"animate-repeat document-entry row\" ng-repeat=\"e in citedEvidence\" ng-class=\"{active: hover || e.id == selectedEvidence.id}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\" ng-click=\"selectEvidence(e, 'cited', true)\">\n            <div class=\"col-md-10\">\n              <p class=\"citation-entry\"><span>{{$index+1}}. </span><span class=\"thin-text\">{{e.title}}</span></p>\n            </div>\n            <div class=\"col-md-2\" style=\"margin:10px 0 0 0\">\n              <div ng-switch on=\"selectedEvidenceCiteStatus\" ng-if=\"selectedEvidence===e && selectedParagraph !== -1\">\n                <div ng-switch-when=\"uncited\">\n                <img class=\"btn-img-default\" src=\"/static/img/link-icon.svg\"\n                  uib-tooltip=\"Cite\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\" ng-click=\"citeEvidence(e, 'cited')\"\n                  style=\"cursor:pointer; cursor:hand;\"/>\n                </div>\n                <div ng-switch-when=\"cited\" class=\"btn-group btn-group-xs\" role=\"group\">\n                  <button class=\"btn btn-danger\" ng-class=\"{disabled: selectedParagraph===-1}\" ng-click=\"unciteEvidence(e, 'cited')\"\n                    uib-tooltip=\"Uncite\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\"\n                    ><img class=\"btn-img-default\" src=\"/static/img/uncite-icon.png\"</button>\n                </div>\n              </div>\n            </div>                        \n          </div>\n        </div>        \n      </uib-tab>\n      <uib-tab heading=\"Bookmarked\" active=\"citationTabs['bookmarked'].active\">\n        <div id=\"bookmarkedEvidence\" class=\"citation-container\">\n          <div class=\"container animate-repeat document-entry\" ng-repeat=\"e in evidence\" ng-class=\"{active: hover || e.id == selectedEvidence.id}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\">\n            <div class=\"row\" ng-click=\"selectEvidence(e, 'bookmarked', true)\">\n              <p class=\"col-md-10 citation-entry\"><span>{{$index+1}}. </span><span class=\"thin-text\">{{e.title}}</span></p>\n              <div class=\"col-md-2\" style=\"padding-top:5px\">\n                <div ng-if=\"e.abstract.length===0\">\n                  <img style=\"width:15px; height:15px\"src=\"/static/img/warning-icon.png\"\n                    uib-tooltip=\"No abstract found.\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\"/>\n                </div>\n                <div ng-if=\"selectedEvidence===e && selectedParagraph !== -1\" class=\"btn-group btn-group-xs\" role=\"group\">\n                  <img class=\"btn-img-default\" src=\"/static/img/link-icon.svg\"\n                    uib-tooltip=\"Cite\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\" ng-click=\"citeEvidence(e, 'bookmarked')\"\n                    style=\"cursor:pointer; cursor:hand;\"/>\n                </div>  \n              </div>\n            </div>          \n          </div>\n        </div>            \n      </uib-tab>\n    </uib-tabset>\n    <div id=\"details\" style=\"margin:10px;height:329px\">\n      <h4>Selected citation</h4>\n      <div ng-if=\"selectedEvidence===null\" style=\"300px\">\n        <p style=\"width:70%;margin:auto;padding-top:100px\">\n          <i>Please select a citation to see its details.</i>\n        </p>\n      </div>\n      <div ng-if=\"selectedEvidence!==null\" style=\"overflow-y:scroll;height:300px;\">\n        <div class=\"row\" style=\"margin:10px\">\n          <button class=\"btn btn-default btn-xs col-md-12\" ng-class=\"{'btn-success': showCitingTexts}\" ng-disabled=\"associationInactive('evidence')\" ng-click=\"toggleShowCitingTexts()\">Who cited me?</button>\n        </div>\n        <p>\n          <b><span class=\"small-cap-text\">Authors</span></b>: \n          <span class=\"thin-text\">{{selectedEvidence.metadata.AUTHOR}}</span>\n        </p>\n        <p>\n          <b><span class=\"small-cap-text\">Affiliation</span></b>: \n          <span class=\"thin-text\">{{selectedEvidence.metadata.AFFILIATION}}</span>\n        </p>\n        <p>\n          <b><span class=\"small-cap-text\">Publication date</span></b>: \n          <span class=\"thin-text\">{{selectedEvidence.metadata.DATE}}</span>\n        </p>\n        <p><b><span class=\"small-cap-text\">Abstract</span></b>:</p>\n        <span style=\"font-size:13px\" ng-repeat=\"w in selectedWords track by $index\" ng-class=\"{'is-topic-term': isTopicTerm(w)}\">{{w}} </span>\n      </div>\n  </div>\n</div>");
+        "<div id=\"main-header\" class=\"row\">\n  <div class=\"col-md-2\" style=\"margin-top:6px;margin-bottom:6px\">\n    <span style=\"font-size:18px; cursor:pointer\" ui-sref=\"v2\">ThoughtFlow<sup>alpha</sup></span>\n  </div>\n  <div class=\"col-md-10 text-right\" style=\"margin-top:4px;\">\n    <span class=\"main-header-text\">User ID: </span>\n    <span style=\"font-weight:lighter;padding-right:15px;\">{{userId}}</span>\n    <span class=\"main-header-text\">Document collection: </span>\n    <span style=\"font-weight:lighter\">{{collectionName}}</span>\n    <button class=\"btn btn-default\" ui-sref=\"v2.explore({userId: userId, collectionId: collection.id})\" style=\"margin-left:30px\">Explore</button>\n  </div>\n</div>\n\n<div class=\"row v2\" id=\"focus\" style=\"height:900px;padding:15px\">\n  <div class=\"loading\" ng-if=\"loadingTexts\">\n    <div class=\"loader-container\">\n      <div class=\"loader\"></div>\n      <div class=\"loading-text\"><p>{{loadingStatement}}</p></div>\n    </div>\n  </div>\n  <div class=\"col-md-2\" id=\"argument-list\" style=\"border-bottom: solid 1px #ccc;height:1014px;overflow-y:auto\">\n    <h4>Proposals</h4>\n    <table class=\"table\">\n      <tr ng-repeat=\"t in texts\" ng-class=\"{active: hover || t.id == selectedText.id}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\">\n        <td ng-click=\"selectText(t)\">\n          <p>{{t.title}}</p>\n          <svg class=\"topic-info\" id=\"topic-info-{{t.id}}\" width=\"150\" height=\"25\"></svg>\n          <div ng-if=\"selectedText===t\" style=\"margin-left:70%\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\">\n              <a download=\"{{selectedText.title}}.txt\" ng-href=\"{{proposalUrl}}\"><img style=\"width:20px; height:20px\"src=\"/static/img/download-icon.png\"/></a>\n              <a ng-click=\"deleteText()\"><img style=\"width:20px; height:20px\"src=\"/static/img/trash-icon.svg\"/></a>\n            </div>  \n          </div>\n        </td>\n      </tr>\n    </table>\n    <div class=\"btn-group btn-group-xs\" role=\"group\">\n      <button class=\"btn btn-default\" ng-click=\"addTextEntry()\"><img style=\"width:20px; height:20px\"src=\"/static/img/plus-icon.png\">Add new proposal</button>\n    </div>\n  </div>\n  <div class=\"col-md-7\" style=\"border-left:solid 1px #ccc;border-bottom: solid 1px #ccc;height:1014px;overflow-y:auto\">\n    <div>\n      <h4 style=\"display:inline-block\">{{selectedText.title}}</h4>\n      <div style=\"display:inline-block;margin-left:40px\" ng-switch on=\"savingStatus\"\n        uib-tooltip=\"Changes are auto-saved every 5 seconds\"\n        tooltip-placement=\"right\" tooltip-trigger=\"mouseenter\"\n      >\n        <div ng-switch-when=\"saved\">\n          <button class=\"btn btn-default btn-xs disabled\"><span style=\"padding:0px 5px 0px 5px\">Saved</span></button>\n        </div>\n        <div ng-switch-when=\"unsaved\">\n          <button class=\"btn btn-primary btn-xs\" ng-click=\"saveText(true)\"><span style=\"padding:0px 5px 0px 5px\">Save</span></button>\n        </div>\n        <div ng-switch-when=\"saving\">\n          <button class=\"btn btn-default btn-xs disabled\"><span style=\"padding:0px 5px 0px 5px\">Saving...</span></button>\n        </div>\n        <div ng-switch-when=\"failed\">\n          <button class=\"btn btn-danger btn-xs disabled\"><span style=\"padding:0px 5px 0px 5px\">Error occurred while saving!</span></button>\n        </div>\n      </div>\n    </div>\n    <div ng-repeat=\"p in activeParagraphs\">\n      <p class=\"text-paragraph\" contenteditable=\"true\" ng-keydown=\"checkEnter($index, $event)\" ng-keyup=\"hasMadeChanges($index, $event)\" ng-click=\"selectParagraph($index, 'text')\" class=\"activeParagraph\" id=\"ap-{{$index}}\" style=\"outline:0\"><span class=\"thin-text\" style=\"font-size:15px\">{{p.text}}</span></p>\n      <div style=\"width:15%;height:150px;display:inline-block;float:right\">\n        <div>\n          <p style=\"font-size:10px\" ng-click=\"selectParagraph($index, 'topic')\">Topic: {{paragraphInformation[$index].topicString}}</p>\n          <br/>\n          <p style=\"font-size:10px\">Cited: <span ng-repeat=\"c in paragraphCitation[$index] | orderBy:'index'\">[<a ng-click=\"showCitation(c)\">{{c.index+1}}</a>] </span></p>\n        </div>\n      </div>\n      <div style=\"clear:both\"></div>        \n    </div>\n  </div>\n  <div class=\"col-md-3\" style=\"border-left: solid 1px #ccc;border-bottom: solid 1px #ccc;height:1014px\">\n    <div class=\"container\" style=\"width:100%;\">\n      <div class=\"row\">\n        <div class=\"col-md-7\">\n          <h4>Citations</h4>\n        </div>\n        <div class=\"col-md-5\">\n          <div style=\"padding-top:5px\">\n            <button class=\"btn btn-default btn-xs\" ng-click=\"openUploadBibtexWindow()\"><img style=\"width:20px; height:20px\"src=\"/static/img/plus-icon.png\"> Upload bibtex file\n          </div>\n        </div>\n      </div>\n    </div>\n    <uib-tabset>\n      <uib-tab heading=\"Recommended\" active=\"citationTabs['recommended'].active\">\n        <div class=\"loading\" ng-if=\"loadingRecommendedEvidence\">\n          <div class=\"loader-container\">\n            <div class=\"spinner\">\n              <div class=\"rect1\"></div>\n              <div class=\"rect2\"></div>\n              <div class=\"rect3\"></div>\n              <div class=\"rect4\"></div>\n              <div class=\"rect5\"></div>\n            </div>\n          </div>\n        </div>\n        <div id=\"recommendedEvidence\" class=\"citation-container\">\n          <div class=\"animate-repeat document-entry row\" ng-repeat=\"e in recommendedEvidence\" ng-class=\"{active: hover || e.id == selectedEvidence.id}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\" ng-click=\"selectEvidence(e, 'recommended', true)\" evidence-recommendation-directive>\n            <div class=\"col-md-10\">\n              <p class=\"citation-entry\"><span>{{$index+1}}. </span><span class=\"thin-text\">{{e.title}}</span></p>\n            </div>          \n            <div class=\"col-md-2\" style=\"margin:10px 0 0 0\">\n              <img ng-if=\"!e.bookmarked\" class=\"btn-img-default\" src=\"/static/img/bookmark-no-icon.png\" \n                uib-tooltip=\"Not in your bookmark\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\" ng-click=\"bookmarkEvidence(e, 'recommendation')\" style=\"cursor:pointer; cursor:hand;\"/>\n              <img ng-if=\"e.bookmarked\" class=\"btn-img-default\" src=\"/static/img/bookmark-yes-icon.png\"\n                uib-tooltip=\"From your bookmark\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\" ng-click=\"unbookmarkEvidence(e, 'recommendation')\" style=\"cursor:pointer; cursor:hand;\"/>\n              <div ng-if=\"selectedEvidence===e\" && selectedParagraph!==-1>\n                <img class=\"btn-img-default\" src=\"/static/img/link-icon.svg\"\n                  uib-tooltip=\"Cite\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\" ng-click=\"citeEvidence(e, 'recommended')\"\n                  style=\"cursor:pointer; cursor:hand;\"/>\n              </div>  \n            </div>\n          </div>\n        </div>        \n      </uib-tab>\n      <uib-tab heading=\"Cited\" active=\"citationTabs['cited'].active\">\n        <div id=\"citedEvidence\" class=\"citation-container\">\n          <div class=\"animate-repeat document-entry row\" ng-repeat=\"e in citedEvidence\" ng-class=\"{active: hover || e.id == selectedEvidence.id}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\" ng-click=\"selectEvidence(e, 'cited', true)\">\n            <div class=\"col-md-10\">\n              <p class=\"citation-entry\"><span>{{$index+1}}. </span><span class=\"thin-text\">{{e.title}}</span></p>\n            </div>\n            <div class=\"col-md-2\" style=\"margin:10px 0 0 0\">\n              <div ng-switch on=\"selectedEvidenceCiteStatus\" ng-if=\"selectedEvidence===e && selectedParagraph !== -1\">\n                <div ng-switch-when=\"uncited\">\n                <img class=\"btn-img-default\" src=\"/static/img/link-icon.svg\"\n                  uib-tooltip=\"Cite\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\" ng-click=\"citeEvidence(e, 'cited')\"\n                  style=\"cursor:pointer; cursor:hand;\"/>\n                </div>\n                <div ng-switch-when=\"cited\" class=\"btn-group btn-group-xs\" role=\"group\">\n                  <button class=\"btn btn-danger\" ng-class=\"{disabled: selectedParagraph===-1}\" ng-click=\"unciteEvidence(e, 'cited')\"\n                    uib-tooltip=\"Uncite\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\"\n                    ><img class=\"btn-img-default\" src=\"/static/img/uncite-icon.png\"</button>\n                </div>\n              </div>\n            </div>                        \n          </div>\n        </div>        \n      </uib-tab>\n      <uib-tab heading=\"Bookmarked\" active=\"citationTabs['bookmarked'].active\">\n        <div id=\"bookmarkedEvidence\" class=\"citation-container\">\n          <div class=\"container animate-repeat document-entry\" ng-repeat=\"e in evidence\" ng-class=\"{active: hover || e.id == selectedEvidence.id}\" ng-mouseenter=\"hover=true\" ng-mouseleave=\"hover=false\">\n            <div class=\"row\" ng-click=\"selectEvidence(e, 'bookmarked', true)\">\n              <p class=\"col-md-10 citation-entry\"><span>{{$index+1}}. </span><span class=\"thin-text\">{{e.title}}</span></p>\n              <div class=\"col-md-2\" style=\"padding-top:5px\">\n                <div ng-if=\"e.abstract.length===0\">\n                  <img style=\"width:15px; height:15px\"src=\"/static/img/warning-icon.png\"\n                    uib-tooltip=\"No abstract found.\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\"/>\n                </div>\n                <div ng-if=\"selectedEvidence===e && selectedParagraph !== -1\" class=\"btn-group btn-group-xs\" role=\"group\">\n                  <img class=\"btn-img-default\" src=\"/static/img/link-icon.svg\"\n                    uib-tooltip=\"Cite\" tooltip-placement=\"top\" tooltip-trigger=\"mouseenter\" ng-click=\"citeEvidence(e, 'bookmarked')\"\n                    style=\"cursor:pointer; cursor:hand;\"/>\n                </div>  \n              </div>\n            </div>          \n          </div>\n        </div>            \n      </uib-tab>\n    </uib-tabset>\n    <div id=\"details\" style=\"margin:10px;height:329px\">\n      <h4>Selected citation</h4>\n      <div ng-if=\"selectedEvidence===null\" style=\"300px\">\n        <p style=\"width:70%;margin:auto;padding-top:100px\">\n          <i>Please select a citation to see its details.</i>\n        </p>\n      </div>\n      <div ng-if=\"selectedEvidence!==null\" style=\"overflow-y:scroll;height:300px;\">\n        <div class=\"row\" style=\"margin:10px\">\n          <button class=\"btn btn-default btn-xs col-md-12\" ng-class=\"{'btn-success': showCitingTexts}\" ng-disabled=\"associationInactive('evidence')\" ng-click=\"toggleShowCitingTexts()\">Who cited me?</button>\n        </div>\n        <p>\n          <b><span class=\"small-cap-text\">Authors</span></b>: \n          <span class=\"thin-text\">{{selectedEvidence.metadata.AUTHOR}}</span>\n        </p>\n        <p>\n          <b><span class=\"small-cap-text\">Affiliation</span></b>: \n          <span class=\"thin-text\">{{selectedEvidence.metadata.AFFILIATION}}</span>\n        </p>\n        <p>\n          <b><span class=\"small-cap-text\">Publication date</span></b>: \n          <span class=\"thin-text\">{{selectedEvidence.metadata.DATE}}</span>\n        </p>\n        <p><b><span class=\"small-cap-text\">Abstract</span></b>:</p>\n        <span style=\"font-size:13px\" ng-repeat=\"w in selectedWords track by $index\" ng-class=\"{'is-topic-term': isTopicTerm(w)}\">{{w}} </span>\n      </div>\n  </div>\n</div>");
 }]);
 angular.module('mainModule').run(['$templateCache', function($templateCache) {
     $templateCache.put('core/v2/landing.v2.html',

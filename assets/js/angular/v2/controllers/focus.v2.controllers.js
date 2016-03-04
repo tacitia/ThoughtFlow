@@ -1,6 +1,6 @@
 angular.module('focus.v2.controllers')
-  .controller('FocusController', ['$scope', '$stateParams', '$modal', 'Core','AssociationMap', 'Argument', 'Logger', 'Bibtex',
-  function($scope, $stateParams, $modal, Core, AssociationMap, Argument, Logger, Bibtex) {      
+  .controller('FocusController', ['$scope', '$stateParams', '$modal', 'Core','AssociationMap', 'Argument', 'Logger', 'Bibtex', 'Paper', 'User',
+  function($scope, $stateParams, $modal, Core, AssociationMap, Argument, Logger, Bibtex, Paper, User) {      
     $scope.selectedText = {
       title: ''
     };
@@ -27,100 +27,9 @@ angular.module('focus.v2.controllers')
       'bookmarked': {active: false}
     };
 
-    var blob = null;
-
-    var userId = parseInt($stateParams.userId);
-    var collectionId = parseInt($stateParams.collectionId);
-
-    Core.getCollectionList(function(response) {
-      $scope.collections = response.data.map(function(d) {
-        return {
-          id: parseInt(d.collection_id),
-          name: d.collection_name
-        };
-      });
-
-      $scope.userId = userId;
-      $scope.collectionId = collectionId;
-      $scope.collectionName = _.find($scope.collections, function(c) {
-        return c.id === collectionId;
-      }).name;
-    });
-
-    $scope.evidence = null;
-    var textEvidenceAssociations = null;
-    var evidenceIdMap = {};
-    var isDebug = true;
-
-    AssociationMap.initialize(userId, function() {
-      textEvidenceAssociations = AssociationMap.getAssociationsOfType('evidence', 'text');
-      console.log(textEvidenceAssociations)
-      updateCitedEvidence();
-    });
-
-    // TODO: if later we want to get topics for these evidence, be mindful that there are 
-    // two types of evidence - personal and bookmarked - and they will require 
-    // different handlings
-    Core.getAllEvidenceForUser(userId, function(response) {
-        // This includes both usercreated and bookmarked evidence; they are not necessarily cited.
-        // TODO: apply default sorting.
-        $scope.evidence = response.data;
-
-        $scope.evidence.forEach(function(e){
-          e.metadata = JSON.parse(e.metadata);
-          evidenceIdMap[e.id]= e;
-        })
-          updateCitedEvidence();
-          loadTexts();
-      }, function(response) {
-        console.log('server error when retrieving evidence for user' + userId);
-        console.log(response);
-      });
-
-    var newParagraphIndex = -1;
-
-    $scope.$watch(function() {
-      return d3.selectAll('.text-paragraph')[0].length;
-    }, function(newValue, oldValue) {
-      if (isDebug)
-        console.log('watch on # of .text-paragraph executing...')
-      var el =document.getElementById('ap-' +newParagraphIndex);
-      if (el !== null && newValue > oldValue){
-        el.innerText = '';
-        el.focus();
-      }
-    })
-
-    // Check if the current text have changed every 10 secondsand save the contents.
-    // if there are changes,  
-    setInterval(function(){
-      if ($scope.hasUnsavedChanges) {
-        $scope.saveText();
-      }
-    }, 5000);
-
-    function loadTexts() {
-      Core.getAllTextsForUser(userId, function(response) {
-        $scope.texts = response.data;
-        if ($scope.texts.length > 0) {
-          $scope.selectText($scope.texts[0], false);
-        }
-        $scope.loadingTexts = false;
-        Logger.logAction(userId, 'load focus view', 'v2','1', 'focus', {
-          numProposals: $scope.texts.length
-        }, function(response) {
-          if (isDebug)
-            console.log('action logged: load view');
-        });
-      }, function(response) {
-        console.log('server error when retrieving textsfor user ' + userId);
-        console.log(response);
-      });
-    }
-
     $scope.selectText = function(text, userInitiated) {
       if (userInitiated) {
-        Logger.logAction(userId, 'select proposal', 'v2','1', 'focus', {
+        Logger.logAction($scope.userId, 'select proposal', 'v2','1', 'focus', {
           proposal: text.id,
           contentLength: text.content.split(' ').length
         }, function(response) {
@@ -142,6 +51,73 @@ angular.module('focus.v2.controllers')
       });
       updateCitedEvidence();
     };
+
+    var blob = null;
+    var textEvidenceAssociations = null;
+    var evidenceIdMap = null;
+    var isDebug = true;
+    $scope.evidence = null;
+
+    User.updateSessionInfo($stateParams.userId, $stateParams.collectionId, function(userId, collection) {
+      $scope.userId = userId;
+      $scope.collection = collection;
+
+      Paper.initializeCitationMap($scope.collection.id, $scope.userId);
+
+      AssociationMap.initialize($scope.userId, function() {
+        textEvidenceAssociations = AssociationMap.getAssociationsOfType('evidence', 'text');
+        updateCitedEvidence();
+      });
+
+      loadEvidence();
+    });
+
+    // Check if the current text have changed every 10 secondsand save the contents.
+    // if there are changes,  
+    setInterval(function(){
+      if ($scope.hasUnsavedChanges) {
+        $scope.saveText();
+      }
+    }, 5000);
+
+    function loadEvidence() {
+      User.evidence(function(evidence, idMap) {
+        $scope.evidence = evidence;
+        evidenceIdMap = idMap;
+        updateCitedEvidence();
+        loadTexts();
+      });
+
+      var newParagraphIndex = -1;
+
+      $scope.$watch(function() {
+        return d3.selectAll('.text-paragraph')[0].length;
+      }, function(newValue, oldValue) {
+        if (isDebug)
+          console.log('watch on # of .text-paragraph executing...')
+        var el =document.getElementById('ap-' +newParagraphIndex);
+        if (el !== null && newValue > oldValue){
+          el.innerText = '';
+          el.focus();
+        }
+      })
+    }
+
+    function loadTexts() {
+      User.proposals(function(proposals) {
+        $scope.texts = proposals;
+        if ($scope.texts.length > 0) {
+          $scope.selectText($scope.texts[0], false);
+        }
+        $scope.loadingTexts = false;
+        Logger.logAction($scope.userId, 'load focus view', 'v2','1', 'focus', {
+          numProposals: $scope.texts.length
+        }, function(response) {
+          if (isDebug)
+            console.log('action logged: load view');
+        });
+      });
+    }
 
     // TODO: known bug: if 1) add a new paragraph at the end of the proposal (it's fine if the paragraph is added in the middle), 
     // 2) download the proposal, then the new paragraph will beome invisible in the text area 
@@ -192,7 +168,7 @@ angular.module('focus.v2.controllers')
 
     $scope.selectEvidence = function(evidence, sourceList, userInitiated) {
       if (userInitiated) {
-        Logger.logAction(userId, 'select evidence', 'v2', '1', 'focus', {
+        Logger.logAction($scope.userId, 'select evidence', 'v2', '1', 'focus', {
           evidence: evidence.id,
           sourceList: sourceList
         }, function(response) {
@@ -216,7 +192,7 @@ angular.module('focus.v2.controllers')
 
     $scope.selectParagraph = function(index, clickTarget) {
       if (index!== $scope.selectedParagraph) {          
-        Logger.logAction(userId, 'select paragraph', 'v2', '1', 'focus', {
+        Logger.logAction($scope.userId, 'select paragraph', 'v2', '1', 'focus', {
           proposal: $scope.selectedText.id,
           paragraph: index,
           clickTarget: clickTarget
@@ -231,14 +207,14 @@ angular.module('focus.v2.controllers')
     };
 
     $scope.bookmarkEvidence = function(e, source) {
-      Logger.logAction(userId, 'bookmark evidence', 'v2', '1', 'focus', {
+      Logger.logAction($scope.userId, 'bookmark evidence', 'v2', '1', 'focus', {
         evidence: e.id,
         numDocuments: $scope.evidence.length,
         source: source
       }, function(response) {
         console.log('action logged: bookmark evidence');
       });
-      Core.addBookmark(userId, e.id, function(response) {
+      Core.addBookmark($scope.userId, e.id, function(response) {
         $scope.evidence.push(e);
         e.bookmarked = true;
         console.log('bookmark evidence success');
@@ -248,14 +224,14 @@ angular.module('focus.v2.controllers')
     }
 
     $scope.unbookmarkEvidence = function(e, source) {
-      Logger.logAction(userId, 'remove evidence bookmark', 'v2', '1', 'focus', {
+      Logger.logAction($scope.userId, 'remove evidence bookmark', 'v2', '1', 'focus', {
         evidence: e.id,
         numDocuments: $scope.evidence.length,
         source: source
       }, function(response) {
         console.log('action logged: remove evidence bookmark');
       });
-      Core.deleteBookmark(userId, e.id, function(response) {
+      Core.deleteBookmark($scope.userId, e.id, function(response) {
         $scope.evidence = _.without($scope.evidence, e);
         e.bookmarked = false;
         console.log('remove evidence bookmark success');
@@ -269,7 +245,7 @@ angular.module('focus.v2.controllers')
       if (AssociationMap.hasAssociation('evidence', 'text', evidence.id, textParaId)) {
         return;
       }
-      Logger.logAction(userId, 'cite evidence', 'v2', '1', 'focus', {          
+      Logger.logAction($scope.userId, 'cite evidence', 'v2', '1', 'focus', {          
         proposal: $scope.selectedText.id,
         paragraph: $scope.selectedParagraph,
         evidence: evidence.id,
@@ -279,7 +255,7 @@ angular.module('focus.v2.controllers')
           console.log('action logged: cite evidence');
       });        
       //Add association
-      AssociationMap.addAssociation(userId,'evidence', 'text', evidence.id, textParaId, function(association) {
+      AssociationMap.addAssociation($scope.userId,'evidence', 'text', evidence.id, textParaId, function(association) {
         // Add evidence to the list of cited evidence
         var index = $scope.citedEvidence.map(function(e) {
           return e.id;
@@ -303,7 +279,7 @@ angular.module('focus.v2.controllers')
     $scope.unciteEvidence = function(evidence, sourceList) {
       console.log('unciting')
       var textParaId = $scope.selectedText.id+ '-' + $scope.selectedParagraph;
-      Logger.logAction(userId, 'uncite evidence', 'v2', '1', 'focus', {
+      Logger.logAction($scope.userId, 'uncite evidence', 'v2', '1', 'focus', {
         proposal: $scope.selectedText.id,
         paragraph: $scope.selectedParagraph,
         evidence: evidence.id,
@@ -313,7 +289,7 @@ angular.module('focus.v2.controllers')
           console.log('action logged: uncite evidence');
       });        
       //Add association
-      AssociationMap.removeAssociation(userId,'evidence', 'text', evidence.id, textParaId, function(association) {
+      AssociationMap.removeAssociation($scope.userId,'evidence', 'text', evidence.id, textParaId, function(association) {
         // Add evidence to the list of cited evidence
         var index = $scope.citedEvidence.map(function(e) {
           return e.id;
@@ -329,7 +305,7 @@ angular.module('focus.v2.controllers')
     }
 
     $scope.showCitation = function(citation) {        
-      Logger.logAction(userId, 'show citation', 'v2', '1', 'focus', {
+      Logger.logAction($scope.userId, 'show citation', 'v2', '1', 'focus', {
         proposal: $scope.selectedText.id,
         paragraph: $scope.selectedParagraph,          
         citation: citation.evidence.id
@@ -343,7 +319,7 @@ angular.module('focus.v2.controllers')
     }
 
     $scope.openUploadBibtexWindow = function() {
-      Logger.logAction(userId, 'open upload bibtex window', 'v2', '1', 'focus', {
+      Logger.logAction($scope.userId, 'open upload bibtex window', 'v2', '1', 'focus', {
       }, function(response) {
         if (isDebug)
           console.log('action logged: open upload bibtex window');       
@@ -354,10 +330,10 @@ angular.module('focus.v2.controllers')
         controller: 'UploadBibtexModalController',          
         resolve: {
           userId: function() {
-            return userId;
+            return $scope.userId;
           },
           collectionId: function() {
-            return collectionId;
+            return $scope.collection.id;
           },
           existingEvidence: function() {
             return $scope.evidence.map(function(e) {
@@ -389,7 +365,7 @@ angular.module('focus.v2.controllers')
             return;
           }
           var evidence = evidenceList[evidenceIndex];
-          Core.postEvidenceByUserId(userId, evidence.title, evidence.abstract, JSON.stringify(evidence.metadata), 
+          Core.postEvidenceByUserId($scope.userId, evidence.title, evidence.abstract, JSON.stringify(evidence.metadata), 
             function(response) {
               // TODO: probably more efficient to deal with this server side
               if ($scope.evidence.indexOf(response.data[0]) > -1 || storedEvidence.indexOf(response.data[0]) > -1) {
@@ -417,7 +393,7 @@ angular.module('focus.v2.controllers')
     };    
 
     $scope.addTextEntry = function() {
-      Logger.logAction(userId, 'initiate proposal creation', 'v2','1', 'focus', {
+      Logger.logAction($scope.userId, 'initiate proposal creation', 'v2','1', 'focus', {
         totalProposals: $scope.texts.length
       }, function(response) {
         if (isDebug)
@@ -442,13 +418,13 @@ angular.module('focus.v2.controllers')
             return $scope.evidence;
           },
           userId: function() {
-            return userId;
+            return $scope.userId;
           }          
         }
       });
 
       modalInstance.result.then(function (newEntry){          
-        Logger.logAction(userId, 'proposal created', 'v2','1', 'focus', {            
+        Logger.logAction($scope.userId, 'proposal created', 'v2','1', 'focus', {            
           proposal: newEntry.id,
           contentLength: newEntry.content.split(' ').length,            
           totalProposals: $scope.texts.length          
@@ -514,7 +490,7 @@ angular.module('focus.v2.controllers')
 
     $scope.checkEnter= function(i, e){        
       if (e.keyCode === 13) {         
-        Logger.logAction(userId, 'create new paragraph', 'v2', '1', 'focus', {
+        Logger.logAction($scope.userId, 'create new paragraph', 'v2', '1', 'focus', {
           proposal: $scope.selectedText.id,           
           totalParagraphs: $scope.activeParagraphs.length
         }, function(response) {
@@ -553,7 +529,7 @@ angular.module('focus.v2.controllers')
       }
       else {
         if (e.keyCode === 8)
-        Logger.logAction(userId, 'edit paragraph', 'v2', '1', 'focus', {
+        Logger.logAction($scope.userId, 'edit paragraph', 'v2', '1', 'focus', {
           proposal:$scope.selectedText.id,
           paragraph: $scope.selectedParagraph
         }, function(response) {
@@ -669,7 +645,7 @@ angular.module('focus.v2.controllers')
     };
 
     $scope.downloadText = function() {
-      Logger.logAction(userId, 'download proposal', 'v2', '1', 'focus', {
+      Logger.logAction($scope.userId, 'download proposal', 'v2', '1', 'focus', {
         length:$scope.selectedText.content.split(' ').length,
         totalProposals: $scope.texts.length
       }, function(response) {
@@ -679,7 +655,7 @@ angular.module('focus.v2.controllers')
     };
 
     $scope.deleteText = function() {
-      Logger.logAction(userId, 'initiate proposal deletion', 'v2', '1', 'focus', {
+      Logger.logAction($scope.userId, 'initiate proposal deletion', 'v2', '1', 'focus', {
         length:$scope.selectedText.content.split(' ').length,
         totalProposals: $scope.texts.length
       }, function(response) {
@@ -701,14 +677,14 @@ angular.module('focus.v2.controllers')
             return 'text';
           },
           userId: function() {
-            return userId;            
+            return $scope.userId;            
           }          
         }
       });
   
       var target = $scope.texts;       
       modalInstance.result.then(function (deletedEntryId) {          
-        Logger.logAction(userId, 'proposal deleted', 'v2','1', 'focus', {
+        Logger.logAction($scope.userId, 'proposal deleted', 'v2','1', 'focus', {
           length: $scope.selectedText.content.split(' ').length,          
           totalProposals: $scope.texts.length   
         },function(response) {
@@ -761,7 +737,7 @@ angular.module('focus.v2.controllers')
       }).join('\n');
 
       if (userInitiated) {
-        Logger.logAction(userId, 'save proposal', 'v2','1', 'focus', {
+        Logger.logAction($scope.userId, 'save proposal', 'v2','1', 'focus', {
           proposal: $scope.selectedText.id,
           contentLength: newContent.split(' ').length
         }, function(response) {
@@ -770,7 +746,7 @@ angular.module('focus.v2.controllers')
         });
       }
 
-      Core.postTextByUserId(userId, $scope.selectedText.title, newContent, false, $scope.selectedText.id, function(response){           
+      Core.postTextByUserId($scope.userId, $scope.selectedText.title, newContent, false, $scope.selectedText.id, function(response){           
         $scope.texts.forEach(function(t) {             
           if (t.id === response.data[0].id){
             t.content = newContent;
@@ -798,14 +774,13 @@ angular.module('focus.v2.controllers')
         console.log('updating evidence recommendations..');        
       $scope.loadingRecommendedEvidence = true;        
 
-      Argument.getEvidenceRecommendation(text, collectionId, function(response) {
+      Argument.getEvidenceRecommendation(text, $scope.collection.id, function(response) {
         $scope.recommendedEvidence = response.data.evidence;
         var bookmarkedEvidenceIds = $scope.evidence === null ? [] : $scope.evidence.map(function(e) { return e.id; })
         $scope.recommendedEvidence.forEach(function(e) {
           e.metadata = JSON.parse(e.metadata);
           if ($scope.evidence !== null) {
             e.bookmarked = bookmarkedEvidenceIds.indexOf(e.id) > -1;
-            console.log(e.bookmarked)
           }
           else {
             e.bookmarked = false;
@@ -828,3 +803,5 @@ angular.module('focus.v2.controllers')
   }
       
 }]);
+
+

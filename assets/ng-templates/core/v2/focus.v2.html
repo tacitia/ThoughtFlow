@@ -7,7 +7,7 @@
     <span style="font-weight:lighter;padding-right:15px;">{{userId}}</span>
     <span class="main-header-text">Document collection: </span>
     <span style="font-weight:lighter">{{collectionName}}</span>
-    <button class="btn btn-default" ui-sref="v2.explore({userId: userId, collectionId: collectionId})" style="margin-left:30px">Explore</button>
+    <button class="btn btn-default" ui-sref="v2.explore({userId: userId, collectionId: collection.id})" style="margin-left:30px">Explore</button>
   </div>
 </div>
 
@@ -98,7 +98,7 @@
           </div>
         </div>
         <div id="recommendedEvidence" class="citation-container">
-          <div class="animate-repeat document-entry row" ng-repeat="e in recommendedEvidence" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectEvidence(e, 'recommended', true)">
+          <div class="animate-repeat document-entry row" ng-repeat="e in recommendedEvidence" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectEvidence(e, 'recommended', true)" evidence-recommendation-directive>
             <div class="col-md-10">
               <p class="citation-entry"><span>{{$index+1}}. </span><span class="thin-text">{{e.title}}</span></p>
             </div>          

@@ -6,8 +6,8 @@
     <span class="main-header-text">User ID: </span>
     <span style="font-weight:lighter;padding-right:15px;">{{userId}}</span>
     <span class="main-header-text">Document collection: </span>
-    <span style="font-weight:lighter">{{collectionName}}</span>
-    <button class="btn btn-default" ui-sref="v2.focus({userId: userId, collectionId: collectionId})" style="margin-left:30px">Write</button>
+    <span style="font-weight:lighter">{{collection.name}}</span>
+    <button class="btn btn-default" ui-sref="v2.focus({userId: userId, collectionId: collection.id})" style="margin-left:30px">Write</button>
   </div>
 </div>
 
@@ -69,8 +69,16 @@
       <button uib-tooltip="Reorder based on selected terms" tooltip-placement="top" tooltip-trigger="mouseenter"
         class="btn btn-default btn-xs" ng-click="updateTermTopicOrdering(true, true)"><img class="btn-img-default" src="/static/img/shuffle-icon.png"></button>
     </div>
-    <svg id="topic-term-dist" style="width:1850px;height:700x">
+    <svg id="topic-term-dist" style="width:1850px;height:700x;">
     </svg>
+    <div id="proposal-thumbnail" style="width:600px;height:600px;position:absolute;top: 290px;left:1150px;">
+      <div id="selected-thumbnail" style="width:400px;height:600px;overflow-y:auto;"></div>
+<!--      <div >
+        <p ng-repeat="paragraph in thumbnailContent">
+          <span ng-repeat="word in paragraph.contents" class="thumbnail-text">{{word.text}} </span>
+        </p>
+      </div> -->
+    </div>
     <div class="control">
       <p style="margin:10px 0 10px 5px;font-size:16px"><span style="font-variant:small-caps">Selected topic:</span> <span style="padding:3px;" ng-repeat="t in selectedTopic.terms | limitTo:10" id="topic-term-$index" class="selected-topic-term" ng-class="{dark:$index%2==0,active:hover}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectTermToFilterDocuments(t.term, $index)">    {{t.term}}   </span><span style="font-size:12px;font-weight:500">(# of documents: {{selectedTopic.evidenceCount}})</span></p>
     </div>

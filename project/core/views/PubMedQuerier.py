@@ -49,7 +49,7 @@ def get_related_evidence(title):
 	# TODO: fix this...
 	except UnicodeEncodeError:
 		print 'title cannot be printed - containing unicode encode error'
-		return []
+		return [], {}, 0
 	fetch = metapub.PubMedFetcher()
 	pmids = fetch.pmids_for_query(title)
 	if len(pmids) == 1:
@@ -57,30 +57,31 @@ def get_related_evidence(title):
 		if edit_distance(article.title, title) <= len(title) * 0.1:
 			print 'matched title: ' + article.title
 			related_pmids = fetch.related_pmids(pmids[0])
-			return _merge_related_pmids(related_pmids, fetch)
+			return _merge_related_pmids(pmids[0], related_pmids, fetch)
 	elif len(pmids) > 1:
 		for i in range(min(20, len(pmids))):
 			article = fetch.article_by_pmid(pmids[i])
 			if edit_distance(article.title, title) <= len(title) * 0.1:
 				print 'matched title: ' + article.title
 				related_pmids = fetch.related_pmids(pmids[i])
-				return _merge_related_pmids(related_pmids, fetch)
+				return _merge_related_pmids(pmids[i], related_pmids, fetch)
 
 	print 'no match found'
-	return []
+	return [], {}, 0
 
-def _merge_related_pmids(related_pmids, fetch):
+def _merge_related_pmids(main_pmid, related_pmids, fetch):
 	results = []
-	if 'five' in related_pmids:
-		results += related_pmids['five']
-	if 'refs' in related_pmids:
-		results += related_pmids['refs']
-	if 'alsoviewed' in related_pmids:
-		results += related_pmids['alsoviewed']
-	if 'reviews' in related_pmids:
-		results += related_pmids['reviews']
-	if 'citedin' in related_pmids and related_pmids['citedin'] < 200:
-		results += related_pmids['citedin']
+	citation_map = {}
+	types = ['five', 'refs', 'alsoviewed', 'reviews', 'citedin']
+	for type in types:
+		if type in related_pmids:
+			neighbors = related_pmids[type]
+			results += neighbors
+			if type is 'refs':
+				citation_map[str(main_pmid) + '-refs'] = neighbors
+			elif type is 'citedin':
+				citation_map[str(main_pmid) + '-citedin'] = neighbors
+
 	results = list(set(results))
 	articles = []
 	for pmid in results:
@@ -91,7 +92,7 @@ def _merge_related_pmids(related_pmids, fetch):
 		except metapub.exceptions.InvalidPMID:
 			print ("Exception: ", sys.exc_info()[0])
 			continue
-	return articles
+	return articles, citation_map, main_pmid
 
 
 # Takes the query and 

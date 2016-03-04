@@ -1,45 +1,28 @@
 angular.module('explore.v2.controllers')
-  .controller('ExploreController', ['$scope', '$stateParams', '$modal', 'Core', 'AssociationMap', 'Pubmed', 'TermTopic', 'Logger',
-    function($scope, $stateParams, $modal, Core, AssociationMap, Pubmed, TermTopic, Logger) {
+  .controller('ExploreController', ['$scope', '$stateParams', '$modal', 'Core', 'AssociationMap', 'Pubmed', 'TermTopic', 'Logger', 'Collection', 'User', 'ExploreState',
+    function($scope, $stateParams, $modal, Core, AssociationMap, Pubmed, TermTopic, Logger, Collection, User, ExploreState) {
 
     var topTermContainer = null;
     var topTopicContainer = null;
     var termTopicConnectionContainer = null;
     var topicNeighborContainer = null;
+    var proposalThumbnailsContainer = null;
     var termColorMap = d3.scale.category10();
+    var proposals = null;
 
     var defaultFill = '#ccc';
-
-    var userId = parseInt($stateParams.userId);
-    var collectionId = parseInt($stateParams.collectionId);
-
-    Core.getCollectionList(function(response) {
-      $scope.collections = response.data.map(function(d) {
-        return {
-          id: parseInt(d.collection_id),
-          name: d.collection_name
-        };
-      });
-
-      $scope.userId = userId;
-      $scope.collectionId = collectionId;
-      $scope.collectionName = _.find($scope.collections, function(c) {
-        return c.id === collectionId;
-      }).name;
-    });
 
     var termBatchSize = 30;
     var topicBatchSize = 30;
 
     $scope.selectedEvidence = null;
-    $scope.selectedTerms = [];
+    $scope.selectedTerms = ExploreState.selectedTerms();
     $scope.selectedWords = [];
-    $scope.selectedTopic = null;
+    $scope.selectedTopic = ExploreState.selectedTopic();
 
-    $scope.candidateEvidence = [];
-    $scope.searchTitle = '';
-
+    $scope.candidateEvidence = ExploreState.candidateEvidence();
     $scope.selected = {};
+    $scope.selected.searchTitle = ExploreState.selectedSearchTitle();
 
     $scope.loadingEvidence = true;
     $scope.loadingTopicEvidence = false;
@@ -50,42 +33,30 @@ angular.module('explore.v2.controllers')
     $scope.numTerms = 0;
     $scope.numTopics = 0;
 
-    Logger.logAction(userId, 'load explore view', 'v2','1', 'explore', {
-      collectionId: collectionId
-    }, function(response) {
-      console.log('action logged: load explore view');
-    });
-
-    Core.getEvidenceCollection(collectionId, function(response) {
-      $scope.loadingEvidence = false;
-      $scope.topics = response.data.map(function(topic) {
-        return {
-          id: topic.index,
-          terms: JSON.parse(topic.terms).map(function(termTuple) {
-            return {
-              term: termTuple[0],
-              prob: termTuple[1]
-            }
-          }),
-          evidenceCount: topic.document_count
-        }
+    $scope.selectSearchTitle = function(title) {
+      Logger.logAction($scope.userId, 'select title by search', 'v2','1', 'explore', {
+        evidence: title.id
+      }, function(response) {
+        console.log('action logged: select title by search');
       });
-      TermTopic.initialize($scope.topics);
-      $scope.terms = TermTopic.getAllTerms();
-      $scope.selected.searchTerm = $scope.terms[0];
-      $scope.numTerms = TermTopic.numOfTerms();
-      $scope.numTopics = TermTopic.numOfTopics();
-      visualizeTopicTermDistribution();
-//      visualizeTopicTermGraph();
-//      visualizeTopicTermMatrix($scope.topics);
-    }, function(errorResponse) {
-      console.log('server error when retrieving data for user ' + userId);
-      console.log(errorResponse);
-    });
+
+      ExploreState.selectedSearchTitle(title);
+      if (title.topic !== -1) {
+        $scope.selectedTopic = _.find($scope.topics, function(t) {
+          return t.id === title.topic;
+        });
+        ExploreState.selectedTopic($scope.selectedTopic);
+        for (var i = 0; i < 5; ++i) {
+          $scope.selectedTerms.push($scope.selectedTopic.terms[i].term);
+        }
+        console.log(ExploreState.selectedTerms());
+        $scope.updateTermTopicOrdering(false, true);
+      }
+    }
 
     $scope.updateTermTopicOrdering = function(manualUpdate, scrollToStart) {
       if (manualUpdate) {
-        Logger.logAction(userId, 'reorder term and topics given selected terms', 'v2','1', 'explore', {
+        Logger.logAction($scope.userId, 'reorder term and topics given selected terms', 'v2','1', 'explore', {
           numSelectedTerms: $scope.selectedTerms.length
         }, function(response) {
           console.log('action logged: reorder term and topics given selected terms');
@@ -106,8 +77,37 @@ angular.module('explore.v2.controllers')
       updateConnectionStrokes();
     };
 
+    User.updateSessionInfo($stateParams.userId, $stateParams.collectionId, function(userId, collection) {
+      $scope.userId = userId;
+      $scope.collection = collection;
+
+      Logger.logAction($scope.userId, 'load explore view', 'v2','1', 'explore', {
+        collectionId: $scope.collection.id
+      }, function(response) {
+        console.log('action logged: load explore view');
+      });
+
+      User.proposals(function(_proposals) {
+        proposals = _proposals;
+        loadEvidence();
+      })
+    });
+
+    function loadEvidence() {
+      Collection.allTopics(function(topics) {
+        $scope.loadingEvidence = false;
+        $scope.topics = topics;
+        TermTopic.initialize($scope.topics);
+        $scope.terms = TermTopic.getAllTerms();
+        $scope.selected.searchTerm = $scope.terms[0];
+        $scope.numTerms = TermTopic.numOfTerms();
+        $scope.numTopics = TermTopic.numOfTopics();
+        visualizeTopicTermDistribution();
+      });
+    }
+
     $scope.clearSelectedTerms = function() {
-      Logger.logAction(userId, 'clear selected terms', 'v2','1', 'explore', {
+      Logger.logAction($scope.userId, 'clear selected terms', 'v2','1', 'explore', {
         numSelectedTerms: $scope.selectedTerms.length
       }, function(response) {
         console.log('action logged: clear selected terms');
@@ -117,40 +117,22 @@ angular.module('explore.v2.controllers')
     }
 
     $scope.searchEvidenceByTitle = function() {
-      Logger.logAction(userId, 'search evidence by title', 'v2','1', 'explore', {
+      Logger.logAction($scope.userId, 'search evidence by title', 'v2','1', 'explore', {
         query: $scope.searchTitle
       }, function(response) {
         console.log('action logged: search evidence by title');
       });
 
-      Core.getEvidenceByTitle(collectionId, userId, $scope.searchTitle, true, 1, function(response) {
+      Core.getEvidenceByTitle($scope.collection.id, $scope.userId, $scope.searchTitle, true, 1, function(response) {
         $scope.candidateEvidence = response.data;
         $scope.selected.searchTitle = $scope.candidateEvidence[0];
         $scope.selectSearchTitle($scope.selected.searchTitle);
+        ExploreState.candidateEvidence($scope.candidateEvidence);
       });
     };
 
-    $scope.selectSearchTitle = function(title) {
-      Logger.logAction(userId, 'select title by search', 'v2','1', 'explore', {
-        evidence: title.id
-      }, function(response) {
-        console.log('action logged: select title by search');
-      });
-
-      if (title.topic !== -1) {
-        $scope.selectedTopic = _.find($scope.topics, function(t) {
-          return t.id === title.topic;
-        });
-        console.log($scope.selectedTopic)
-        for (var i = 0; i < 5; ++i) {
-          $scope.selectedTerms.push($scope.selectedTopic.terms[i].term);
-        }
-        $scope.updateTermTopicOrdering(false, true);
-      }
-    }
-
     $scope.selectSearchTerm = function(term) {
-      Logger.logAction(userId, 'select search term', 'v2','1', 'explore', {
+      Logger.logAction($scope.userId, 'select search term', 'v2','1', 'explore', {
       }, function(response) {
         console.log('action logged: select search term');
       });
@@ -162,7 +144,7 @@ angular.module('explore.v2.controllers')
     $scope.showNextTerms = function() {
       if (TermTopic.numOfTerms() > $scope.termStartIndex + termBatchSize) {
 
-        Logger.logAction(userId, 'scroll terms', 'v2','1', 'explore', {
+        Logger.logAction($scope.userId, 'scroll terms', 'v2','1', 'explore', {
           direction: 'forward'
         }, function(response) {
           console.log('action logged: scroll terms');
@@ -176,7 +158,7 @@ angular.module('explore.v2.controllers')
     $scope.showPrevTerms = function() {
       if ($scope.termStartIndex - termBatchSize >= 0) {
 
-        Logger.logAction(userId, 'scroll terms', 'v2','1', 'explore', {
+        Logger.logAction($scope.userId, 'scroll terms', 'v2','1', 'explore', {
           direction: 'backward'
         }, function(response) {
           console.log('action logged: scroll terms');
@@ -218,7 +200,7 @@ angular.module('explore.v2.controllers')
     }
 
     $scope.selectEvidence = function(evidence) {
-      Logger.logAction(userId, 'select evidence', 'v2', '1', 'explore', {
+      Logger.logAction($scope.userId, 'select evidence', 'v2', '1', 'explore', {
         evidence: evidence.id,
       }, function(response) {
         console.log('action logged: select evidence');
@@ -240,16 +222,15 @@ angular.module('explore.v2.controllers')
 
     $scope.updateBookmark = function(e) {
       console.log('update bookmark')
-      console.log(e.bookmarked)
       if (!e.bookmarked) {
-        Logger.logAction(userId, 'bookmark evidence', 'v2', '1', 'explore', {
+        Logger.logAction($scope.userId, 'bookmark evidence', 'v2', '1', 'explore', {
           evidence: e.id,
           topic: $scope.selectedTopic.id,
           numDocuments: $scope.evidence.length
         }, function(response) {
           console.log('action logged: bookmark evidence');
         });
-        Core.addBookmark(userId, e.id, function(response) {
+        Core.addBookmark($scope.userId, e.id, function(response) {
           e.bookmarked = true;
           console.log('bookmark evidence success');
         }, function(errorResponse) {
@@ -257,14 +238,14 @@ angular.module('explore.v2.controllers')
         });   
       } 
       else {
-        Logger.logAction(userId, 'remove evidence bookmark', 'v2', '1', 'explore', {
+        Logger.logAction($scope.userId, 'remove evidence bookmark', 'v2', '1', 'explore', {
           evidence: e.id,
           topic: $scope.selectedTopic.id,
           numDocuments: $scope.evidence.length
         }, function(response) {
           console.log('action logged: remove evidence bookmark');
         });
-        Core.deleteBookmark(userId, e.id, function(response) {
+        Core.deleteBookmark($scope.userId, e.id, function(response) {
           e.bookmarked = false;
           console.log('remove bookmark evidence success');
         }, function(errorResponse) {
@@ -290,10 +271,11 @@ angular.module('explore.v2.controllers')
         .attr('width', params.width + params.margin.left + params.margin.right)
         .attr('height', params.height + params.margin.top + params.margin.bottom);
 
+/*
       canvas.append('text')
         .text('Similar topics')
         .attr('font-size', 18)
-        .attr('transform', 'translate(1150, 20)');
+        .attr('transform', 'translate(1150, 20)'); */
 
       canvas.append('text')
         .text('# of docs')
@@ -313,11 +295,17 @@ angular.module('explore.v2.controllers')
       topTermContainer = configSvgContainer(canvas.append('svg'), 300, params.height, params.margin.left, params.margin.top);
       termTopicConnectionContainer = configSvgContainer(canvas.append('svg'), 100, params.height, params.margin.left + 300, params.margin.top);
       topTopicContainer = configSvgContainer(canvas.append('svg'), 650, params.height, params.margin.left + 400, params.margin.top);
-      topicNeighborContainer = configSvgContainer(canvas.append('svg'), 600, params.height + 30, params.margin.left + 1050, params.margin.top - 30);
+//      topicNeighborContainer = configSvgContainer(canvas.append('svg'), 600, params.height + 30, params.margin.left + 1050, params.margin.top - 30);
+//      proposalThumbnailsContainer = configSvgContainer(canvas.append('svg'), 600, params.height + 30, params.margin.left + 1050, params.margin.top - 30);
+      proposalThumbnailsContainer = d3.select('#selected-thumbnail')
 
       visualizeTopTerms(topTermContainer, 300, 600, terms);
       visualizeTermTopicConnections(termTopicConnectionContainer, 100, 600, terms, topics, termTopicConnections);
       visualizeTopTopics(topTopicContainer, 650, 600, topics);
+      visualizeProposalThumbnails(proposalThumbnailsContainer, 600, 600);
+      if ($scope.selectedTopic !== null) setSelectedTopic($scope.selectedTopic);
+      if ($scope.selected.searchTitle !== null) $scope.selectSearchTitle($scope.selected.searchTitle);
+      updateTermTopicFills();
     }
 
     function configSvgContainer(container, width, height, x, y) {
@@ -371,7 +359,7 @@ angular.module('explore.v2.controllers')
         .attr('transform', 'translate(20, 0)') // Space between rectangles and texts
         .on('click', function(d) {
           if ($scope.selectedTerms.indexOf(d.term) >= 0) {
-            Logger.logAction(userId, 'deselect term', 'v2','1', 'explore', {
+            Logger.logAction($scope.userId, 'deselect term', 'v2','1', 'explore', {
               term: d.term,
               numSelectedTerms: $scope.selectedTerms.length,
               topicCount: d.properties.topicCount,
@@ -382,7 +370,7 @@ angular.module('explore.v2.controllers')
             $scope.selectedTerms = _.without($scope.selectedTerms, d.term);
           }
           else {
-            Logger.logAction(userId, 'select term', 'v2','1', 'explore', {
+            Logger.logAction($scope.userId, 'select term', 'v2','1', 'explore', {
               term: d.term,
               numSelectedTerms: $scope.selectedTerms.length,
               topicCount: d.properties.topicCount,
@@ -487,7 +475,9 @@ angular.module('explore.v2.controllers')
         .attr('transform', 'translate(-50, 0)')
         .attr('rx', 5)
         .attr('fill', 'steelblue')
-        .attr('opacity', 0)
+        .attr('opacity', 0, function(d) {
+          return ($scope.selectedTopic !== null && d.id === $scope.selectedTopic.id) ? highlightOpacity : 0;
+        })
         .on('mouseover', function(d) {
           d3.selectAll('.topic-background').attr('opacity', 0);
           d3.select('#topic-bg-' + d.id)
@@ -503,7 +493,7 @@ angular.module('explore.v2.controllers')
           });          
         })
         .on('click', function(d) {
-          Logger.logAction(userId, 'select topic', 'v2','1', 'explore', {
+          Logger.logAction($scope.userId, 'select topic', 'v2','1', 'explore', {
             topic: d.id,
             target: 'individual topic'
           }, function(response) {
@@ -539,11 +529,11 @@ angular.module('explore.v2.controllers')
 
       var probSum = 1;
       // Hack alert!!!
-      if (collectionId === 12) probSum = 0.2;
-      if (collectionId === 13) probSum = 0.5;
-      if (collectionId === 15) probSum = 0.7;
-      if (collectionId === 16) probSum = 0.2;
-      if (collectionId === 17) probSum = 0.25;
+      if ($scope.collection.id === 12) probSum = 0.2;
+      if ($scope.collection.id === 13) probSum = 0.5;
+      if ($scope.collection.id === 15) probSum = 0.7;
+      if ($scope.collection.id === 16) probSum = 0.2;
+      if ($scope.collection.id === 17) probSum = 0.25;
 
       var term = topic.selectAll('g')
         .data(function(d, i) {
@@ -577,7 +567,7 @@ angular.module('explore.v2.controllers')
         .on('click', function(d) {
           // TODO: cannot easily count topic count here, will add if necessary
           if ($scope.selectedTerms.indexOf(d.term) >= 0) {
-            Logger.logAction(userId, 'deselect term', 'v2','1', 'explore', {
+            Logger.logAction($scope.userId, 'deselect term', 'v2','1', 'explore', {
               term: d.term,
               numSelectedTerms: $scope.selectedTerms.length,
               prob: d.prob,
@@ -589,7 +579,7 @@ angular.module('explore.v2.controllers')
             $scope.selectedTerms = _.without($scope.selectedTerms, d.term);
           }
           else {
-            Logger.logAction(userId, 'select term', 'v2','1', 'explore', {
+            Logger.logAction($scope.userId, 'select term', 'v2','1', 'explore', {
               term: d.term,
               numSelectedTerms: $scope.selectedTerms.length,
               prob: d.prob,
@@ -619,13 +609,14 @@ angular.module('explore.v2.controllers')
 
     function setSelectedTopic(d) {
       $scope.selectedTopic = d;
+      ExploreState.selectedTopic($scope.selectedTopic);      
       $scope.selectedEvidence = null;
-      visualizeTopicNeighborMatrix(topicNeighborContainer, 600, 600, d);
+//      visualizeTopicNeighborMatrix(topicNeighborContainer, 600, 600, d);
       $scope.selectedDocumentTerms = _.object(_.range(10).map(function(num) {
         return [num, false];
       }));
       $scope.loadingTopicEvidence = true;
-      Core.getEvidenceByTopic(collectionId, d.id, userId, function(response) {
+      Core.getEvidenceByTopic($scope.collection.id, d.id, $scope.userId, function(response) {
         $scope.evidence = response.data.evidence;
         var bookmarkedEvidence = response.data.evidenceBookmarks.map(function(b) {
           return b.evidence;
@@ -1281,17 +1272,146 @@ angular.module('explore.v2.controllers')
       }); 
     }
 
-    function visualizeProposalThumbnails() {
+    // WIP
+    function visualizeProposalThumbnails(container, width, height) {
       // 1. An index containing thumbnails
       // 2. An area for selected / enlarged thumbnail
 
       // Implementation steps:
       // 1. Get user texts
       // 2. Assigns gray rectangles / dimmed texts / highlighted texts according to distance 
-      // to each selected texts
+      // to each selected texts..OK, we will assign rectangles to every word. Keep track of 
+      // the length of previous words to know when to wrap lines. Length of the rectangle need 
+      // to be a function of the words. Words will be layered on top of rectangles depending 
+      // all distance to keywords. So, looks like we need to precompute the distance to keywords.
 
       // TODO: substitute this with user selections in focus mode
-      var focusKeywords = ['evaluate', 'insight'];
+      var focusKeywords = ['evaluate', 'interaction'];
+      console.log(proposals);
+
+      // Construct "word" objects
+      var words = proposals[1].content.split('\n')
+        .map(function(paragraph) {
+          var contents = paragraph.split(' ').map(function(word) {
+            return {
+              text: word,
+              distanceToKeyword: focusKeywords.indexOf(word) > -1 ? 0 : 10,
+              totalCharBefore: 0,
+              length: word.length
+            };
+          });
+          return {
+            length: 0,
+            prevParagraphLength: 0,
+            contents: contents,
+          }
+        });
+
+      // Compute distance to keywords
+      words.forEach(function(paragraph) {
+        var contents = paragraph.contents;
+        for (var i = 0; i < contents.length; ++i) {
+          var word = contents[i];
+          if (word.distanceToKeyword === 0) {
+            [1,2,3,4,5].forEach(function(offset) {
+              if (i-offset >= 0) {
+                contents[i-offset].distanceToKeyword = offset;
+              }
+              if (i+offset < paragraph.contents.length) {
+                contents[i+offset].distanceToKeyword = offset;
+              }
+            })
+          }
+        }
+      });
+
+      // Assign length to words
+      words.forEach(function(paragraph) {
+        var accumulatedChar = 0;
+        var contents = paragraph.contents;
+        contents.forEach(function(word) {
+          if (word.distanceToKeyword < 6) {
+            word.length = word.length * 3;
+          }
+          word.totalCharBefore = accumulatedChar;
+          accumulatedChar += word.length + 1;
+        });
+        paragraph.length = accumulatedChar;
+      });
+
+      var accumParaLength = 0;
+      for (var i = 0; i < words.length; ++i) {
+        words[i].prevParagraphLength = accumParaLength;
+        accumParaLength += words[i].length;
+      }
+      $scope.thumbnailContent = words;
+
+      var paragraphGroups = container.selectAll('.paragraph')
+        .data(words)
+        .enter()
+        .append('p')
+        .attr('class', 'paragraph')
+        .style('line-height', '90%');
+
+      paragraphGroups
+        .selectAll('.word-text')
+        .data(function(d) { return d.contents; })
+        .enter()
+        .append('span')
+        .attr('class', 'word-text')
+        .text(function(d) {
+          return d.text + ' ';
+        })
+        .style('opacity', function(d) {
+          return d.distanceToKeyword > 6 ? 0.3 : (1 - 0.1 * d.distanceToKeyword);          
+        })
+        .style('color', function(d) {
+          var index = focusKeywords.indexOf(d.text);
+          if (index >= 0) {
+            return termColorMap(index);  
+          }
+          else {        
+            return d.distanceToKeyword > 6 ? '#ccc' : 'black';      
+          }   
+        })
+        .style('font-size', function(d) {
+          return d.distanceToKeyword > 6 ? '6px' : '12px';                    
+        })
+        .style('background', function(d) {
+          return d.distanceToKeyword > 6 ? '#ccc' : '#fff';                              
+        })
+        .on('mouseover', function(d) {
+          if (d.distanceToKeyword > 6) return;
+          d3.select(this).style('font-size', '14px');
+        })
+        .on('mouseout', function(d) {
+          if (d.distanceToKeyword > 6) return;
+          if ($scope.selectedTerms.indexOf(d.text) === -1) {
+            d3.select(this).style('font-size', '12px');
+          };
+        })
+        .on('click', function(d) {
+          if ($scope.selectedTerms.indexOf(d.text) > -1) {
+            $scope.selectedTerms = _.without($scope.selectedTerms, d.text);
+          }
+          else {
+            var textTerms = $scope.terms.map(function(t) { return t.term; });
+            if (textTerms.indexOf(d.text) > -1) {
+              $scope.selectedTerms.push(d.text);        
+            }    
+          }
+          d3.selectAll('.word-text')
+            .filter(function(d) {
+              return d.distanceToKeyword <= 6;
+            })
+            .style('font-size', function(d) {
+              return $scope.selectedTerms.indexOf(d.text) > -1 ? '14px' : '12px';
+            })
+            .style('font-weight', function(d) {
+              return $scope.selectedTerms.indexOf(d.text) > -1 ? 800 : 400;              
+            });
+          $scope.updateTermTopicOrdering();
+        });
     }
 
     // Deprecated

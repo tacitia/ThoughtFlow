@@ -3,7 +3,7 @@ from core.views import TextView, ConceptView, EvidenceView, DeleteEntryView, Use
 from core.views import ConceptGrowthView, EvidenceSearchView, TermExtractionView
 from core.views import association, updateAssociation, deleteAssociation, deleteAssociationById, retrieveEvidenceTextTopics, addBookmark, deleteBookmark
 from core.views import loadBatchResults, createOnlineLDA, loadOnlineLDA, createSimilarityMatrix, cacheTopics
-from core.views import getEvidenceRecommendation, getEvidenceByTopic, searchEvidenceByTitle
+from core.views import getEvidenceRecommendation, getEvidenceByTopic, searchEvidenceByTitle, getCitationsForPaper, getReferencesForPaper, getCitationMap, completeCitationInfo
 from core.views import getEvidenceCollection
 from core.views import loadXploreData, augmentCollection
 from core.views import getNewUserId, initializeNewCollection, getCollectionList, insertDefaultCollections
@@ -40,6 +40,9 @@ urlpatterns = [
     url(r'^api/v1/service/getNewUserId/$', getNewUserId, name='getNewUserId'),
     url(r'^api/v1/service/initializeNewCollection/$', initializeNewCollection, name='initializeNewCollection'),
     url(r'^api/v1/service/getCollectionList/$', getCollectionList, name='getCollectionList'),
+    url(r'^api/v1/service/paper/citations/(?P<collection_id>\d+)/(?P<evidence_id>\d+)/$', getCitationsForPaper, name='getCitationsForPaper'),
+    url(r'^api/v1/service/paper/references/$', getReferencesForPaper, name='getReferencesForPaper'),
+    url(r'^api/v1/service/paper/allCitations/(?P<collection_id>\d+)/$', getCitationMap, name='getCitationMap'),
 
     # For batch data retrieval
     url(r'^api/v1/data/user-data/(?P<user_id>\d+)/$', UserDataView.as_view(), name='get_data_for_user'),
@@ -53,7 +56,9 @@ urlpatterns = [
     url(r'^api/v1/ad-hoc/cacheTopics/(?P<collection_id>\d+)/$', cacheTopics, name='cacheTopics'),
     url(r'^api/v1/ad-hoc/loadXploreData/$', loadXploreData, name='loadXploreData'),
     url(r'^api/v1/ad-hoc/augmentCollection/(?P<collection_id>\d+)/(?P<seed_level>\d+)/$', augmentCollection, name='augmentCollection'),
+    url(r'^api/v1/ad-hoc/completeCitationInfo/(?P<collection_id>\d+)/$', completeCitationInfo, name='completeCitationInfo'),
     url(r'^api/v1/ad-hoc/insertDefaultCollections/$', insertDefaultCollections, name='insertDefaultCollections'),
+
 
     url(r'^.*$', views.index, name='index')
 ]

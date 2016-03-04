@@ -1,0 +1,381 @@
+
+PMID- 26529524
+OWN - NLM
+STAT- In-Data-Review
+DA  - 20151104
+IS  - 1941-0506 (Electronic)
+IS  - 1077-2626 (Linking)
+VI  - 22
+IP  - 1
+DP  - 2016 Jan
+TI  - How do People Make Sense of Unfamiliar Visualizations?: A Grounded Model of
+      Novice's Information Visualization Sensemaking.
+PG  - 499-508
+LID - 10.1109/TVCG.2015.2467195 [doi]
+AB  - In this paper, we would like to investigate how people make sense of unfamiliar
+      information visualizations. In order to achieve the research goal, we conducted a
+      qualitative study by observing 13 participants when they endeavored to make sense
+      of three unfamiliar visualizations (i.e., a parallel-coordinates plot, a chord
+      diagram, and a treemap) that they encountered for the first time. We collected
+      data including audio/video record of think-aloud sessions and semi-structured
+      interview; and analyzed the data using the grounded theory method. The primary
+      result of this study is a grounded model of NOvice's information Vlsualization
+      Sensemaking (NOVIS model), which consists of the five major cognitive activities:
+      encountering visualization, constructing a frame, exploring visualization,
+      questioning the frame, and floundering on visualization. We introduce the NOVIS
+      model by explaining the five activities with representative quotes from our
+      participants. We also explore the dynamics in the model. Lastly, we compare with 
+      other existing models and share further research directions that arose from our
+      observations.
+FAU - Lee, Sukwon
+AU  - Lee S
+FAU - Kim, Sung-Hee
+AU  - Kim SH
+FAU - Hung, Ya-Hsin
+AU  - Hung YH
+FAU - Lam, Heidi
+AU  - Lam H
+FAU - Kang, Youn-Ah
+AU  - Kang YA
+FAU - Yi, Ji Soo
+AU  - Yi JS
+LA  - eng
+PT  - Journal Article
+PL  - United States
+TA  - IEEE Trans Vis Comput Graph
+JT  - IEEE transactions on visualization and computer graphics
+JID - 9891704
+SB  - IM
+EDAT- 2015/11/04 06:00
+MHDA- 2015/11/04 06:00
+CRDT- 2015/11/04 06:00
+AID - 10.1109/TVCG.2015.2467195 [doi]
+PST - ppublish
+SO  - IEEE Trans Vis Comput Graph. 2016 Jan;22(1):499-508. doi:
+      10.1109/TVCG.2015.2467195.
+
+PMID- 24051774
+OWN - NLM
+STAT- MEDLINE
+DA  - 20130920
+DCOM- 20140502
+IS  - 1941-0506 (Electronic)
+IS  - 1077-2626 (Linking)
+VI  - 19
+IP  - 12
+DP  - 2013 Dec
+TI  - Interactive exploration of implicit and explicit relations in faceted datasets.
+PG  - 2080-9
+LID - 10.1109/TVCG.2013.167 [doi]
+AB  - Many datasets, such as scientific literature collections, contain multiple
+      heterogeneous facets which derive implicit relations, as well as explicit
+      relational references between data items. The exploration of this data is
+      challenging not only because of large data scales but also the complexity of
+      resource structures and semantics. In this paper, we present PivotSlice, an
+      interactive visualization technique which provides efficient faceted browsing as 
+      well as flexible capabilities to discover data relationships. With the metaphor
+      of direct manipulation, PivotSlice allows the user to visually and logically
+      construct a series of dynamic queries over the data, based on a multi-focus and
+      multi-scale tabular view that subdivides the entire dataset into several
+      meaningful parts with customized semantics. PivotSlice further facilitates the
+      visual exploration and sensemaking process through features including live search
+      and integration of online data, graphical interaction histories and smoothly
+      animated visual state transitions. We evaluated PivotSlice through a qualitative 
+      lab study with university researchers and report the findings from our
+      observations and interviews. We also demonstrate the effectiveness of PivotSlice 
+      using a scenario of exploring a repository of information visualization
+      literature.
+FAU - Zhao, Jian
+AU  - Zhao J
+AD  - University of Toronto.
+FAU - Collins, Christopher
+AU  - Collins C
+FAU - Chevalier, Fanny
+AU  - Chevalier F
+FAU - Balakrishnan, Ravin
+AU  - Balakrishnan R
+LA  - eng
+PT  - Journal Article
+PL  - United States
+TA  - IEEE Trans Vis Comput Graph
+JT  - IEEE transactions on visualization and computer graphics
+JID - 9891704
+SB  - IM
+MH  - *Algorithms
+MH  - *Computer Graphics
+MH  - Data Mining/*methods
+MH  - *Database Management Systems
+MH  - *Databases, Factual
+MH  - *User-Computer Interface
+EDAT- 2013/09/21 06:00
+MHDA- 2014/05/03 06:00
+CRDT- 2013/09/21 06:00
+AID - 10.1109/TVCG.2013.167 [doi]
+PST - ppublish
+SO  - IEEE Trans Vis Comput Graph. 2013 Dec;19(12):2080-9. doi: 10.1109/TVCG.2013.167.
+
+PMID- 23981395
+OWN - NLM
+STAT- MEDLINE
+DA  - 20130828
+DCOM- 20140414
+IS  - 1741-2811 (Electronic)
+IS  - 1460-4582 (Linking)
+VI  - 19
+IP  - 3
+DP  - 2013 Sep
+TI  - Making sense of personal health information: challenges for information
+      visualization.
+PG  - 198-217
+LID - 10.1177/1460458212465213 [doi]
+AB  - This article presents a systematic review of the literature on information
+      visualization for making sense of personal health information. Based on this
+      review, five application themes were identified: treatment planning, examination 
+      of patients' medical records, representation of pedigrees and family history,
+      communication and shared decision making, and life management and health
+      monitoring. While there are recognized design challenges associated with each of 
+      these themes, such as how best to represent data visually and integrate
+      qualitative and quantitative information, other challenges and opportunities have
+      received little attention to date. In this article, we highlight, in particular, 
+      the opportunities for supporting people in better understanding their own
+      illnesses and making sense of their health conditions in order to manage them
+      more effectively.
+FAU - Faisal, Sarah
+AU  - Faisal S
+AD  - UCL Interaction Centre, London, UK. s.faisal@cs.ucl.ac.uk
+FAU - Blandford, Ann
+AU  - Blandford A
+FAU - Potts, Henry W W
+AU  - Potts HW
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+PT  - Review
+PL  - England
+TA  - Health Informatics J
+JT  - Health informatics journal
+JID - 100883604
+SB  - IM
+MH  - *Audiovisual Aids
+MH  - *Communication
+MH  - Decision Making
+MH  - Genetic Predisposition to Disease
+MH  - Goals
+MH  - Health Behavior
+MH  - Health Literacy
+MH  - Humans
+MH  - Life Style
+MH  - *Medical Records
+MH  - Patient Care Planning/*organization & administration
+MH  - Patient Participation/*methods
+OTO - NOTNLM
+OT  - Information visualization
+OT  - personal health care
+OT  - sensemaking
+EDAT- 2013/08/29 06:00
+MHDA- 2014/04/15 06:00
+CRDT- 2013/08/29 06:00
+AID - 19/3/198 [pii]
+AID - 10.1177/1460458212465213 [doi]
+PST - ppublish
+SO  - Health Informatics J. 2013 Sep;19(3):198-217. doi: 10.1177/1460458212465213.
+
+PMID- 23267206
+OWN - NLM
+STAT- PubMed-not-MEDLINE
+DA  - 20130927
+DCOM- 20140226
+IS  - 1941-0506 (Electronic)
+IS  - 1077-2626 (Linking)
+VI  - 19
+IP  - 10
+DP  - 2013 Oct
+TI  - Combining computational analyses and interactive visualization for document
+      exploration and sensemaking in jigsaw.
+PG  - 1646-63
+AB  - Investigators across many disciplines and organizations must sift through large
+      collections of text documents to understand and piece together information.
+      Whether they are fighting crime, curing diseases, deciding what car to buy, or
+      researching a new field, inevitably investigators will encounter text documents. 
+      Taking a visual analytics approach, we integrate multiple text analysis
+      algorithms with a suite of interactive visualizations to provide a flexible and
+      powerful environment that allows analysts to explore collections of documents
+      while sensemaking. Our particular focus is on the process of integrating
+      automated analyses with interactive visualizations in a smooth and fluid manner. 
+      We illustrate this integration through two example scenarios: an academic
+      researcher examining InfoVis and VAST conference papers and a consumer exploring 
+      car reviews while pondering a purchase decision. Finally, we provide lessons
+      learned toward the design and implementation of visual analytics systems for
+      document exploration and understanding.
+FAU - Gorg, Carsten
+AU  - Gorg C
+AD  - Computational Bioscience Program, University of Colorado, Mail Stop 8303, 12801 E
+      17th Ave, Aurora, CO 80045, USA. Carsten.Goerg@ucdenver.edu
+FAU - Liu, Zhicheng
+AU  - Liu Z
+FAU - Kihm, Jaeyeon
+AU  - Kihm J
+FAU - Choo, Jaegul
+AU  - Choo J
+FAU - Park, Haesun
+AU  - Park H
+FAU - Stasko, John
+AU  - Stasko J
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, U.S. Gov't, Non-P.H.S.
+PL  - United States
+TA  - IEEE Trans Vis Comput Graph
+JT  - IEEE transactions on visualization and computer graphics
+JID - 9891704
+EDAT- 2012/12/26 06:00
+MHDA- 2012/12/26 06:01
+CRDT- 2012/12/26 06:00
+AID - E3F60F77-6F5F-4DA9-8093-C16D0F06CBDD [doi]
+PST - ppublish
+SO  - IEEE Trans Vis Comput Graph. 2013 Oct;19(10):1646-63.
+
+PMID- 26357200
+OWN - NLM
+STAT- In-Data-Review
+DA  - 20150911
+IS  - 1941-0506 (Electronic)
+IS  - 1077-2626 (Linking)
+VI  - 18
+IP  - 12
+DP  - 2012 Dec
+TI  - The User Puzzle&#8212;Explaining the Interaction with Visual Analytics Systems.
+PG  - 2908-16
+LID - 10.1109/TVCG.2012.273 [doi]
+AB  - Visual analytics emphasizes the interplay between visualization, analytical
+      procedures performed by computers and human perceptual and cognitive activities. 
+      Human reasoning is an important element in this context. There are several
+      theories in psychology and HCI explaining open-ended and exploratory reasoning.
+      Five of these theories (sensemaking theories, gestalt theories, distributed
+      cognition, graph comprehension theories and skill-rule-knowledge models) are
+      described in this paper. We discuss their relevance for visual analytics. In
+      order to do this more systematically, we developed a schema of categories
+      relevant for visual analytics research and evaluation. All these theories have
+      strengths but also weaknesses in explaining interaction with visual analytics
+      systems. A possibility to overcome the weaknesses would be to combine two or more
+      of these theories.
+FAU - Pohl, M
+AU  - Pohl M
+FAU - Smuc, M
+AU  - Smuc M
+FAU - Mayr, E
+AU  - Mayr E
+LA  - eng
+PT  - Journal Article
+PL  - United States
+TA  - IEEE Trans Vis Comput Graph
+JT  - IEEE transactions on visualization and computer graphics
+JID - 9891704
+SB  - IM
+EDAT- 2012/12/01 00:00
+MHDA- 2012/12/01 00:00
+CRDT- 2015/09/11 06:00
+AID - 10.1109/TVCG.2012.273 [doi]
+PST - ppublish
+SO  - IEEE Trans Vis Comput Graph. 2012 Dec;18(12):2908-16. doi: 10.1109/TVCG.2012.273.
+
+PMID- 26357197
+OWN - NLM
+STAT- In-Data-Review
+DA  - 20150911
+IS  - 1941-0506 (Electronic)
+IS  - 1077-2626 (Linking)
+VI  - 18
+IP  - 12
+DP  - 2012 Dec
+TI  - Semantic Interaction for Sensemaking: Inferring Analytical Reasoning for Model
+      Steering.
+PG  - 2879-88
+LID - 10.1109/TVCG.2012.260 [doi]
+AB  - Visual analytic tools aim to support the cognitively demanding task of
+      sensemaking. Their success often depends on the ability to leverage capabilities 
+      of mathematical models, visualization, and human intuition through flexible,
+      usable, and expressive interactions. Spatially clustering data is one effective
+      metaphor for users to explore similarity and relationships between information,
+      adjusting the weighting of dimensions or characteristics of the dataset to
+      observe the change in the spatial layout. Semantic interaction is an approach to 
+      user interaction in such spatializations that couples these parametric
+      modifications of the clustering model with users' analytic operations on the data
+      (e.g., direct document movement in the spatialization, highlighting text, search,
+      etc.). In this paper, we present results of a user study exploring the ability of
+      semantic interaction in a visual analytic prototype, ForceSPIRE, to support
+      sensemaking. We found that semantic interaction captures the analytical reasoning
+      of the user through keyword weighting, and aids the user in co-creating a
+      spatialization based on the user's reasoning and intuition.
+FAU - Endert, A
+AU  - Endert A
+FAU - Fiaux, P
+AU  - Fiaux P
+FAU - North, C
+AU  - North C
+LA  - eng
+PT  - Journal Article
+PL  - United States
+TA  - IEEE Trans Vis Comput Graph
+JT  - IEEE transactions on visualization and computer graphics
+JID - 9891704
+SB  - IM
+EDAT- 2012/12/01 00:00
+MHDA- 2012/12/01 00:00
+CRDT- 2015/09/11 06:00
+AID - 10.1109/TVCG.2012.260 [doi]
+PST - ppublish
+SO  - IEEE Trans Vis Comput Graph. 2012 Dec;18(12):2879-88. doi: 10.1109/TVCG.2012.260.
+
+PMID- 17968054
+OWN - NLM
+STAT- PubMed-not-MEDLINE
+DA  - 20071030
+DCOM- 20071214
+IS  - 1077-2626 (Print)
+IS  - 1077-2626 (Linking)
+VI  - 13
+IP  - 6
+DP  - 2007 Nov-Dec
+TI  - AdaptiviTree: adaptive tree visualization for tournament-style brackets.
+PG  - 1113-20
+AB  - Online pick'em games, such as the recent NCAA college basketball March Madness
+      tournament, form a large and rapidly growing industry. In these games, players
+      make predictions on a tournament bracket that defines which competitors play each
+      other and how they proceed toward a single champion. Throughout the course of the
+      tournament, players monitor the brackets to track progress and to compare
+      predictions made by multiple players. This is often a complex sensemaking task.
+      The classic bracket visualization was designed for use on paper and utilizes an
+      incrementally additive system in which the winner of each match-up is rewritten
+      in the next round as the tournament progresses. Unfortunately, this
+      representation requires a significant amount of space and makes it relatively
+      difficult to get a quick overview of the tournament state since competitors take 
+      arbitrary paths through the static bracket. In this paper, we present
+      AdaptiviTree, a novel visualization that adaptively deforms the representation of
+      the tree and uses its shape to convey outcome information. AdaptiviTree not only 
+      provides a more compact and understandable representation, but also allows
+      overlays that display predictions as well as other statistics. We describe
+      results from a lab study we conducted to explore the efficacy of AdaptiviTree, as
+      well as from a deployment of the system in a recent real-world sports tournament.
+FAU - Tan, Desney
+AU  - Tan D
+AD  - Microsoft Research, One Microsoft Way, Redmond, WA 98052, USA.
+      desney@microsoft.com
+FAU - Smith, Greg
+AU  - Smith G
+FAU - Lee, Bongshin
+AU  - Lee B
+FAU - Robertson, George
+AU  - Robertson G
+LA  - eng
+PT  - Journal Article
+PL  - United States
+TA  - IEEE Trans Vis Comput Graph
+JT  - IEEE transactions on visualization and computer graphics
+JID - 9891704
+EDAT- 2007/10/31 09:00
+MHDA- 2007/10/31 09:01
+CRDT- 2007/10/31 09:00
+AID - 10.1109/TVCG.2007.70537 [doi]
+PST - ppublish
+SO  - IEEE Trans Vis Comput Graph. 2007 Nov-Dec;13(6):1113-20.

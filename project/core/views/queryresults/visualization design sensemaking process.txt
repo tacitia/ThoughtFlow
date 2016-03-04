@@ -1,0 +1,55 @@
+
+PMID- 23267206
+OWN - NLM
+STAT- PubMed-not-MEDLINE
+DA  - 20130927
+DCOM- 20140226
+IS  - 1941-0506 (Electronic)
+IS  - 1077-2626 (Linking)
+VI  - 19
+IP  - 10
+DP  - 2013 Oct
+TI  - Combining computational analyses and interactive visualization for document
+      exploration and sensemaking in jigsaw.
+PG  - 1646-63
+AB  - Investigators across many disciplines and organizations must sift through large
+      collections of text documents to understand and piece together information.
+      Whether they are fighting crime, curing diseases, deciding what car to buy, or
+      researching a new field, inevitably investigators will encounter text documents. 
+      Taking a visual analytics approach, we integrate multiple text analysis
+      algorithms with a suite of interactive visualizations to provide a flexible and
+      powerful environment that allows analysts to explore collections of documents
+      while sensemaking. Our particular focus is on the process of integrating
+      automated analyses with interactive visualizations in a smooth and fluid manner. 
+      We illustrate this integration through two example scenarios: an academic
+      researcher examining InfoVis and VAST conference papers and a consumer exploring 
+      car reviews while pondering a purchase decision. Finally, we provide lessons
+      learned toward the design and implementation of visual analytics systems for
+      document exploration and understanding.
+FAU - Gorg, Carsten
+AU  - Gorg C
+AD  - Computational Bioscience Program, University of Colorado, Mail Stop 8303, 12801 E
+      17th Ave, Aurora, CO 80045, USA. Carsten.Goerg@ucdenver.edu
+FAU - Liu, Zhicheng
+AU  - Liu Z
+FAU - Kihm, Jaeyeon
+AU  - Kihm J
+FAU - Choo, Jaegul
+AU  - Choo J
+FAU - Park, Haesun
+AU  - Park H
+FAU - Stasko, John
+AU  - Stasko J
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, U.S. Gov't, Non-P.H.S.
+PL  - United States
+TA  - IEEE Trans Vis Comput Graph
+JT  - IEEE transactions on visualization and computer graphics
+JID - 9891704
+EDAT- 2012/12/26 06:00
+MHDA- 2012/12/26 06:01
+CRDT- 2012/12/26 06:00
+AID - E3F60F77-6F5F-4DA9-8093-C16D0F06CBDD [doi]
+PST - ppublish
+SO  - IEEE Trans Vis Comput Graph. 2013 Oct;19(10):1646-63.

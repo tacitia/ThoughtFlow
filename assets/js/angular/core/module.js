@@ -3,7 +3,11 @@ angular
     'core.services',
     'pubmed.services',
     'associationMap.services',
-    'argument.services'
+    'argument.services',
+    'paper.services',
+    'collection.services',
+    'user.services',
+    'exploreState.services',
   ]);
 
 angular
@@ -17,3 +21,15 @@ angular
 
 angular
   .module('argument.services', ['core.services']);
+
+angular
+  .module('paper.services', ['core.services']);
+
+angular
+  .module('collection.services', ['core.services']);
+
+angular
+  .module('user.services', ['core.services']);
+
+angular
+  .module('exploreState.services', ['exploreState.services']);
