@@ -3,6 +3,7 @@
 *.mm
 *.index
 project/core/batchresults/
+project/core/views/batchresults/
 *.npy
 *.sim
 project/core/queryresults/
