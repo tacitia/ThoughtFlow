@@ -438,6 +438,11 @@ angular.module('focus.v2.controllers')
       });      
     }
 
+    // WIP: this function needs to do 
+    function updateTextAge() {
+
+    } 
+
     function updateCitedEvidence() {        
       if (textEvidenceAssociations === null || _.size(evidenceIdMap) === 0) return;
 
