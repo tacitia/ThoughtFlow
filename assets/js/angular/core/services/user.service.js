@@ -15,17 +15,63 @@ function User($cookies, $http, Core) {
   var _proposals = null;
   var _evidence = null;
   var _evidenceIdMap = {};
+  var _activeProposal = null;
+  var _activeParagraphs = null;
+  var _paragraphCitation = null;
+  var _activeProposalTextAges = [];
+  var _selectedEvidence = null;
+  var _selectedParagraph = -1;
+  var _citedEvidence = null;
+
   var User = {
     updateSessionInfo: updateSessionInfo,
     userId: userId,
     activeCollection: activeCollection,
     proposals: proposals,
     evidence: evidence,
+    activeProposal: activeProposal,
+    activeParagraphs: activeParagraphs,
+    paragraphCitation: paragraphCitation,
+    selectedEvidence: selectedEvidence,
+    selectedParagraph: selectedParagraph,
+    citedEvidence: citedEvidence,
+    evidenceIdMap: evidenceIdMap,
   };
 
   return User;
 
   ////////////////////
+
+  function evidenceIdMap() {
+    return _evidenceIdMap;
+  }
+
+  function citedEvidence(evidence) {
+    if (arguments.length === 0) {
+      return _citedEvidence;
+    }
+    else {
+      _citedEvidence = evidence;
+    }    
+  }  
+
+  function selectedEvidence(evidence) {
+    if (arguments.length === 0) {
+      return _selectedEvidence;
+    }
+    else {
+      _selectedEvidence = evidence;
+    }    
+  }
+
+  function selectedParagraph(paragraphIndex) {
+    if (arguments.length === 0) {
+      return _selectedParagraph;
+    }
+    else {
+      _selectedParagraph = paragraphIndex;
+    }    
+  }
 
   function updateSessionInfo(rawUserId, rawCollectionId, callback) {
     var userId = parseInt(rawUserId);
@@ -81,6 +127,7 @@ function User($cookies, $http, Core) {
     if (_proposals === null) {
       Core.getAllTextsForUser(_userId, function(response) {
         _proposals = response.data;
+        _activeProposal = _proposals.length > 0 ? _proposals[0] : null;
         callback(_proposals);
       }, function(response) {
         console.log('server error when retrieving textsfor user ' + _userId);
@@ -89,6 +136,33 @@ function User($cookies, $http, Core) {
     }
     else {
       callback(_proposals);
+    }
+  }
+
+  function activeProposal(proposal) {
+    if (arguments.length === 0) {
+      return _activeProposal;
+    }
+    else {
+      _activeProposal = proposal;
+    }
+  }
+
+  function activeParagraphs(paragraphs) {
+    if (arguments.length === 0) {
+      return _activeParagraphs;
+    }
+    else {
+      _activeParagraphs = paragraphs;
+    }
+  }
+
+  function paragraphCitation(citations) {
+    if (arguments.length === 0) {
+      return _paragraphCitation;
+    }
+    else {
+      _paragraphCitation = citations;
     }
   }
 

@@ -112,6 +112,9 @@
                   uib-tooltip="Cite" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="citeEvidence(e, 'recommended')"
                   style="cursor:pointer; cursor:hand;"/>
               </div>  
+              <div ng-if="selectedEvidence===e">
+                <button class="btn btn-link" ui-sref="v2.explore({userId: userId, collectionId: collection.id})">Explore</button>
+              </div>  
             </div>
           </div>
         </div>        

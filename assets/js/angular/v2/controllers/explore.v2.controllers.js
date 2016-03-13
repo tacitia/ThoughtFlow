@@ -8,21 +8,21 @@ angular.module('explore.v2.controllers')
     var topicNeighborContainer = null;
     var proposalThumbnailsContainer = null;
     var termColorMap = d3.scale.category10();
-    var proposals = null;
+    var isDebug = true;
+    $scope.proposals = null;
 
     var defaultFill = '#ccc';
 
     var termBatchSize = 30;
     var topicBatchSize = 30;
 
-    $scope.selectedEvidence = null;
+    $scope.selectedEvidence = User.selectedEvidence();
     $scope.selectedTerms = ExploreState.selectedTerms();
     $scope.selectedWords = [];
     $scope.selectedTopic = ExploreState.selectedTopic();
 
     $scope.candidateEvidence = ExploreState.candidateEvidence();
     $scope.selected = {};
-    $scope.selected.searchTitle = ExploreState.selectedSearchTitle();
 
     $scope.loadingEvidence = true;
     $scope.loadingTopicEvidence = false;
@@ -33,9 +33,11 @@ angular.module('explore.v2.controllers')
     $scope.numTerms = 0;
     $scope.numTopics = 0;
 
-    $scope.selectSearchTitle = function(title) {
+    $scope.selectSearchTitle = function(title, callSource) {
+      var source = callSource === undefined ? 'default' : callSource;
       Logger.logAction($scope.userId, 'select title by search', 'v2','1', 'explore', {
-        evidence: title.id
+        evidence: title.id,
+        source: source
       }, function(response) {
         console.log('action logged: select title by search');
       });
@@ -51,6 +53,7 @@ angular.module('explore.v2.controllers')
         }
         console.log(ExploreState.selectedTerms());
         $scope.updateTermTopicOrdering(false, true);
+        $scope.selectedEvidence = title;
       }
     }
 
@@ -88,7 +91,7 @@ angular.module('explore.v2.controllers')
       });
 
       User.proposals(function(_proposals) {
-        proposals = _proposals;
+        $scope.proposals = _proposals;
         loadEvidence();
       })
     });
@@ -103,6 +106,17 @@ angular.module('explore.v2.controllers')
         $scope.numTerms = TermTopic.numOfTerms();
         $scope.numTopics = TermTopic.numOfTopics();
         visualizeTopicTermDistribution();
+        if (User.selectedEvidence() === null) {
+          $scope.selected.searchTitle = ExploreState.selectedSearchTitle();
+        }
+        else {
+          Core.getEvidenceByTitle($scope.collection.id, $scope.userId, User.selectedEvidence().title, true, 1, function(response) {
+            $scope.candidateEvidence = response.data;
+            $scope.selected.searchTitle = $scope.candidateEvidence[0];
+            $scope.selectSearchTitle($scope.selected.searchTitle);
+            ExploreState.candidateEvidence($scope.candidateEvidence);
+          });      
+    }
       });
     }
 
@@ -139,6 +153,47 @@ angular.module('explore.v2.controllers')
       $scope.selectedTerms.push(term.term);
       $scope.termStartIndex = 0;
       $scope.updateTermTopicOrdering(false, true);
+    };
+
+    $scope.citeEvidence = function (evidence, sourceList) {
+      var textParaId = User.activeProposal().id+ '-' + User.selectedParagraph();
+      if (AssociationMap.hasAssociation('evidence', 'text', evidence.id, textParaId)) {
+        return;
+      }
+      Logger.logAction($scope.userId, 'cite evidence', 'v2', '1', 'explore', {          
+        proposal: User.activeProposal().id,
+        paragraph: User.selectedParagraph(),
+        evidence: evidence.id,
+        sourceList: sourceList        
+      }, function(response) {
+        if (isDebug)
+          console.log('action logged: cite evidence');
+      });        
+      //Add association
+      $scope.updateBookmark(evidence);
+      AssociationMap.addAssociation($scope.userId,'evidence', 'text', evidence.id, textParaId, function(association) {
+        // Add evidence to the list of cited evidence
+        var index = User.citedEvidence().map(function(e) {
+          return e.id;
+        }).indexOf(evidence.id);          
+        if (index === -1) {
+          User.citedEvidence().push(evidence);
+          index = User.citedEvidence().length - 1;     
+          User.evidenceIdMap()[evidence.id] = evidence;
+        }
+        // Add the association to text evidence association for book-keeping (since we need to update the association entry
+        // when new paragraphs are added)
+        // TODO: double check if it's ok for us to skip the following step - I think we are since textEvidenceAssociations is 
+        // created every time the focus view is loaded
+        /*
+        textEvidenceAssociations.push(association); */
+        User.paragraphCitation()[User.selectedParagraph()].push({            
+          index: index,
+          evidence: evidence
+        });
+        // TODO: double check that it is fine to not update proposal for download here
+        // prepareProposalDownload();
+      });          
     };
 
     $scope.showNextTerms = function() {
@@ -297,14 +352,17 @@ angular.module('explore.v2.controllers')
       topTopicContainer = configSvgContainer(canvas.append('svg'), 650, params.height, params.margin.left + 400, params.margin.top);
 //      topicNeighborContainer = configSvgContainer(canvas.append('svg'), 600, params.height + 30, params.margin.left + 1050, params.margin.top - 30);
 //      proposalThumbnailsContainer = configSvgContainer(canvas.append('svg'), 600, params.height + 30, params.margin.left + 1050, params.margin.top - 30);
-      proposalThumbnailsContainer = d3.select('#selected-thumbnail')
+      thumbnailSidebarContainer = configSvgContainer(canvas.select('#thumbnail-sidebar'), 60, params.height, params.margin.left + 1050, params.margin.top);
+      proposalThumbnailsContainer = d3.select('#selected-thumbnail');
 
       visualizeTopTerms(topTermContainer, 300, 600, terms);
       visualizeTermTopicConnections(termTopicConnectionContainer, 100, 600, terms, topics, termTopicConnections);
       visualizeTopTopics(topTopicContainer, 650, 600, topics);
-      visualizeProposalThumbnails(proposalThumbnailsContainer, 600, 600);
+//      visualizeThumbnailSidebar(thumbnailSidebarContainer, 60, 600);
+//      visualizeProposalThumbnails(proposalThumbnailsContainer, 600, 600);
       if ($scope.selectedTopic !== null) setSelectedTopic($scope.selectedTopic);
-      if ($scope.selected.searchTitle !== null) $scope.selectSearchTitle($scope.selected.searchTitle);
+      if ($scope.selected.searchTitle !== null && $scope.selected.searchTitle !== undefined) 
+        $scope.selectSearchTitle($scope.selected.searchTitle);
       updateTermTopicFills();
     }
 
@@ -357,6 +415,47 @@ angular.module('explore.v2.controllers')
         .attr('height', y.rangeBand())
         .attr('fill', '#ccc')
         .attr('transform', 'translate(20, 0)') // Space between rectangles and texts
+        .on('mouseover', function(d, i) {
+          if ($scope.selectedTerms.indexOf(d.term) >= 0) return;
+          d3.select(this).attr('fill', '#a6bddb');
+          d3.selectAll('.connection')
+            .filter(function(curve) {
+              return $scope.selectedTerms.indexOf(curve.term.term) < 0;
+            })
+            .attr('stroke', function(curve, i) {
+              return curve.term.term === d.term ? '#a6bddb' : '#ccc';
+            })
+            .attr('stroke-width', function(curve, i) {
+              return curve.term.term === d.term ? 2 : 1;
+            })
+            .attr('opacity', function(curve, i) {
+              return curve.term.term === d.term ? 0.75 : 0.25;
+            });
+          topTopicContainer.selectAll('.topic-term-selector')
+            .attr('fill', function(topicTerm, i) {
+              if ($scope.selectedTerms.indexOf(topicTerm.term) >= 0) {
+                return termColorMap(topicTerm.term);
+              }
+              else if (topicTerm.term === d.term) {
+                return '#a6bddb';
+              }
+              else {
+                return '#ccc';
+              }
+            });
+        })
+        .on('mouseout', function(d, i) {
+          if ($scope.selectedTerms.indexOf(d.term) >= 0) return;
+//          d3.select(this).attr('fill', '#ccc');
+          updateTermTopicFills();
+          d3.selectAll('.connection')
+            .filter(function(curve) {
+              return $scope.selectedTerms.indexOf(curve.term.term) < 0;
+            })
+            .attr('stroke', '#ccc')
+            .attr('stroke-width', 1)
+            .attr('opacity', 0.5);
+        })
         .on('click', function(d) {
           if ($scope.selectedTerms.indexOf(d.term) >= 0) {
             Logger.logAction($scope.userId, 'deselect term', 'v2','1', 'explore', {
@@ -394,9 +493,7 @@ angular.module('explore.v2.controllers')
           if ($scope.selectedTerms.indexOf(d.term) >= 0) {
             return termColorMap(d.term);
           }
-          else {
-            return '#ccc';
-          }
+          else { return '#ccc'; }
         });
       topTopicContainer.selectAll('.topic-term-selector')
         .attr('fill', function(d, i) {
@@ -419,8 +516,11 @@ angular.module('explore.v2.controllers')
             return '#ccc';
           }          
         })
+        .attr('stroke-width', function(d, i) {
+          return ($scope.selectedTerms.length === 0 || $scope.selectedTerms.indexOf(d.term.term) >= 0) ? 2 : 1;
+        })
         .attr('opacity', function(d, i) {
-          return ($scope.selectedTerms.length === 0 || $scope.selectedTerms.indexOf(d.term.term) >= 0) ? 1 : 0;
+          return ($scope.selectedTerms.length === 0 || $scope.selectedTerms.indexOf(d.term.term) >= 0) ? 0.75 : 0.25;
         });
     }
 
@@ -651,7 +751,8 @@ angular.module('explore.v2.controllers')
       var line = d3.svg.line()
         .x(function(d) { return d.x; })
         .y(function(d) { return d.y; })
-        .interpolate('basis');
+        .interpolate('bundle')
+        .tension(1);
 
       var curve = container.selectAll('.connection')
         .data(connections, function(d, i) {
@@ -664,7 +765,9 @@ angular.module('explore.v2.controllers')
         .append('path')
         .attr('class', 'connection')
         .attr('fill', 'none')
-        .attr('stroke', '#ccc');
+        .attr('stroke', '#ccc')
+        .attr('stroke-with', 1)
+        .attr('opacity', 0.5);
 
       curve
         .attr('d', function(d) {
@@ -1270,148 +1373,6 @@ angular.module('explore.v2.controllers')
           }
         }
       }); 
-    }
-
-    // WIP
-    function visualizeProposalThumbnails(container, width, height) {
-      // 1. An index containing thumbnails
-      // 2. An area for selected / enlarged thumbnail
-
-      // Implementation steps:
-      // 1. Get user texts
-      // 2. Assigns gray rectangles / dimmed texts / highlighted texts according to distance 
-      // to each selected texts..OK, we will assign rectangles to every word. Keep track of 
-      // the length of previous words to know when to wrap lines. Length of the rectangle need 
-      // to be a function of the words. Words will be layered on top of rectangles depending 
-      // all distance to keywords. So, looks like we need to precompute the distance to keywords.
-
-      // TODO: substitute this with user selections in focus mode
-      var focusKeywords = ['evaluate', 'interaction'];
-      console.log(proposals);
-
-      // Construct "word" objects
-      var words = proposals[1].content.split('\n')
-        .map(function(paragraph) {
-          var contents = paragraph.split(' ').map(function(word) {
-            return {
-              text: word,
-              distanceToKeyword: focusKeywords.indexOf(word) > -1 ? 0 : 10,
-              totalCharBefore: 0,
-              length: word.length
-            };
-          });
-          return {
-            length: 0,
-            prevParagraphLength: 0,
-            contents: contents,
-          }
-        });
-
-      // Compute distance to keywords
-      words.forEach(function(paragraph) {
-        var contents = paragraph.contents;
-        for (var i = 0; i < contents.length; ++i) {
-          var word = contents[i];
-          if (word.distanceToKeyword === 0) {
-            [1,2,3,4,5].forEach(function(offset) {
-              if (i-offset >= 0) {
-                contents[i-offset].distanceToKeyword = offset;
-              }
-              if (i+offset < paragraph.contents.length) {
-                contents[i+offset].distanceToKeyword = offset;
-              }
-            })
-          }
-        }
-      });
-
-      // Assign length to words
-      words.forEach(function(paragraph) {
-        var accumulatedChar = 0;
-        var contents = paragraph.contents;
-        contents.forEach(function(word) {
-          if (word.distanceToKeyword < 6) {
-            word.length = word.length * 3;
-          }
-          word.totalCharBefore = accumulatedChar;
-          accumulatedChar += word.length + 1;
-        });
-        paragraph.length = accumulatedChar;
-      });
-
-      var accumParaLength = 0;
-      for (var i = 0; i < words.length; ++i) {
-        words[i].prevParagraphLength = accumParaLength;
-        accumParaLength += words[i].length;
-      }
-      $scope.thumbnailContent = words;
-
-      var paragraphGroups = container.selectAll('.paragraph')
-        .data(words)
-        .enter()
-        .append('p')
-        .attr('class', 'paragraph')
-        .style('line-height', '90%');
-
-      paragraphGroups
-        .selectAll('.word-text')
-        .data(function(d) { return d.contents; })
-        .enter()
-        .append('span')
-        .attr('class', 'word-text')
-        .text(function(d) {
-          return d.text + ' ';
-        })
-        .style('opacity', function(d) {
-          return d.distanceToKeyword > 6 ? 0.3 : (1 - 0.1 * d.distanceToKeyword);          
-        })
-        .style('color', function(d) {
-          var index = focusKeywords.indexOf(d.text);
-          if (index >= 0) {
-            return termColorMap(index);  
-          }
-          else {        
-            return d.distanceToKeyword > 6 ? '#ccc' : 'black';      
-          }   
-        })
-        .style('font-size', function(d) {
-          return d.distanceToKeyword > 6 ? '6px' : '12px';                    
-        })
-        .style('background', function(d) {
-          return d.distanceToKeyword > 6 ? '#ccc' : '#fff';                              
-        })
-        .on('mouseover', function(d) {
-          if (d.distanceToKeyword > 6) return;
-          d3.select(this).style('font-size', '14px');
-        })
-        .on('mouseout', function(d) {
-          if (d.distanceToKeyword > 6) return;
-          if ($scope.selectedTerms.indexOf(d.text) === -1) {
-            d3.select(this).style('font-size', '12px');
-          };
-        })
-        .on('click', function(d) {
-          if ($scope.selectedTerms.indexOf(d.text) > -1) {
-            $scope.selectedTerms = _.without($scope.selectedTerms, d.text);
-          }
-          else {
-            var textTerms = $scope.terms.map(function(t) { return t.term; });
-            if (textTerms.indexOf(d.text) > -1) {
-              $scope.selectedTerms.push(d.text);        
-            }    
-          }
-          d3.selectAll('.word-text')
-            .filter(function(d) {
-              return d.distanceToKeyword <= 6;
-            })
-            .style('font-size', function(d) {
-              return $scope.selectedTerms.indexOf(d.text) > -1 ? '14px' : '12px';
-            })
-            .style('font-weight', function(d) {
-              return $scope.selectedTerms.indexOf(d.text) > -1 ? 800 : 400;              
-            });
-          $scope.updateTermTopicOrdering();
-        });
     }
 
     // Deprecated

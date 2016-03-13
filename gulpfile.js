@@ -37,7 +37,8 @@ var packages_includes = [
     bower_dir + '/d3/d3.min.js',
     bower_dir + '/angular-file-upload/dist/angular-file-upload.min.js',
     bower_dir + '/angular-ui-select/dist/select.min.js',
-    bower_dir + '/angular-sanitize/angular-sanitize.min.js'
+    bower_dir + '/angular-sanitize/angular-sanitize.min.js',
+    bower_dir + '/d3-tip/index.js'
 //    bower_dir + '/jquery/dist/jquery.js',
 //    bower_dir + '/bootstrap/dist/js/bootstrap.js',
 ];

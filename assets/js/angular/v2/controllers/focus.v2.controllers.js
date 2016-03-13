@@ -1,9 +1,6 @@
 angular.module('focus.v2.controllers')
   .controller('FocusController', ['$scope', '$stateParams', '$modal', 'Core','AssociationMap', 'Argument', 'Logger', 'Bibtex', 'Paper', 'User',
   function($scope, $stateParams, $modal, Core, AssociationMap, Argument, Logger, Bibtex, Paper, User) {      
-    $scope.selectedText = {
-      title: ''
-    };
     $scope.selectedParagraph = -1;
     $scope.selectedEvidence = null;
     $scope.selectedWords= [];
@@ -14,6 +11,8 @@ angular.module('focus.v2.controllers')
     $scope.citedEvidence = [];
     $scope.paragraphInformation =[];
     $scope.paragraphCitation = [];
+
+    $scope.editHistory = [];
 
     $scope.loadingTexts = true;
     $scope.loadingStatement = 'Retrieving proposals and bookmarked evidence...';
@@ -27,6 +26,9 @@ angular.module('focus.v2.controllers')
       'bookmarked': {active: false}
     };
 
+    var currentText = '';
+    var previousText = '';
+
     $scope.selectText = function(text, userInitiated) {
       if (userInitiated) {
         Logger.logAction($scope.userId, 'select proposal', 'v2','1', 'focus', {
@@ -39,6 +41,7 @@ angular.module('focus.v2.controllers')
       }
 
       $scope.selectedText = text;
+      User.activeProposal($scope.selectedText);
       $scope.paragraphInformation= [];
       $scope.paragraphCitation = [];
       $scope.activeParagraphs = _.filter(text.content.split('\n'), function(text){
@@ -46,9 +49,19 @@ angular.module('focus.v2.controllers')
       }).map(function(p, i) {
         $scope.paragraphInformation.push({});
         $scope.paragraphCitation.push([]);
+        $scope.editHistory.push([]);
         updateRecommendedCitations(p, i);
-        return {text: p};
+        var timestamps = [];
+        p.split('').forEach(function() {
+          timestamps.push(new Date());
+        });
+        return {
+          text: p,
+          timestamps: timestamps
+        };
       });
+      User.activeParagraphs($scope.activeParagraphs);
+      User.paragraphCitation($scope.paragraphCitation);
       updateCitedEvidence();
     };
 
@@ -100,14 +113,14 @@ angular.module('focus.v2.controllers')
           el.innerText = '';
           el.focus();
         }
-      })
+      });
     }
 
     function loadTexts() {
       User.proposals(function(proposals) {
         $scope.texts = proposals;
         if ($scope.texts.length > 0) {
-          $scope.selectText($scope.texts[0], false);
+          $scope.selectText(User.activeProposal(), false);
         }
         $scope.loadingTexts = false;
         Logger.logAction($scope.userId, 'load focus view', 'v2','1', 'focus', {
@@ -178,6 +191,7 @@ angular.module('focus.v2.controllers')
       }
 
       $scope.selectedEvidence = evidence;
+      User.selectedEvidence($scope.selectedEvidence);
       $scope.selectedWords = evidence.abstract.split(' ');
 
       var textParaId = $scope.selectedText.id+ '-' + $scope.selectedParagraph;
@@ -202,6 +216,7 @@ angular.module('focus.v2.controllers')
         });
 
         $scope.selectedParagraph =index;
+//        currentParagraph = $scope.activeParagraphs[$scope.selectedParagraph];
         updateRecommendedCitations($scope.activeParagraphs[index].text, index);
       }      
     };
@@ -438,12 +453,69 @@ angular.module('focus.v2.controllers')
       });      
     }
 
-    // WIP: this function needs to do 
-    function updateTextAge() {
-
+    // WIP: this function needs to do the following:
+    // 1. for every user keystroke, figure out which words is being updated 
+    // 2. update the timestamp for the corresponding word
+    // We could use a diff here. Every time the user makes a change (not necessarily changing one character), 
+    // we compute the diff, and figure out indexes for the words that have been changed; then we update the timestamp
+    // in the corresponding container
+    function updateTextAge(paraIndex) {
+      var currentText = document.getElementById('ap-' + paraIndex).innerText;
+      var startDiffPos = 0;
+      var prevChars = previousText.split('');
+      var currentChars = currentText.split('');
+      var maxTextLength = Math.max(prevChars.length, currentChars.length);
+      var minTextLength = Math.min(prevChars.length, currentChars.length);
+      for (var i = 0; i < maxTextLength; ++i) {
+        if (prevChars[i] !== currentChars[i]) {
+          startDiffPos = i;
+          break;
+        }
+      }
+      var endDiffPosPrev = prevChars.length;
+      var endDiffPosNow = currentChars.length;
+      for (var delta = 0; delta < minTextLength; ++delta) {
+        if (prevChars[endDiffPosPrev-delta] !== currentChars[endDiffPosNow-delta]) {
+          endDiffPosPrev -= delta;
+          endDiffPosNow -= delta;
+          break;
+        }
+      }
+      // everything was changed in place
+      if (endDiffPosPrev === endDiffPosNow) {
+        for (var counter = endDiffPosPrev; counter < endDiffPosNow; ++counter) {
+          $scope.activeParagraphs[paraIndex].timestamps[counter] = new Date();
+        }
+      }
+      else if (endDiffPosPrev > endDiffPosNow) {// some characters are deleted
+        $scope.activeParagraphs[paraIndex].timestamps.splice(endDiffPosNow, endDiffPosPrev - endDiffPosNow);
+        if (startDiffPos <= endDiffPosNow) {
+          for (var counter = startDiffPos; counter < endDiffPosPrev; ++counter) {
+            $scope.activeParagraphs[paraIndex].timestamps[counter] = new Date();
+          }
+        }
+      }
+      else { // some characters were added
+        for (var counter = endDiffPosPrev; counter < endDiffPosNow; ++counter) {
+          $scope.activeParagraphs[paraIndex].timestamps.splice(counter, 0, new Date());
+        }
+        if (startDiffPos <= endDiffPosPrev) {
+          for (var counter = startDiffPos; counter < endDiffPosPrev; ++counter) {
+            $scope.activeParagraphs[paraIndex].timestamps[counter] = new Date();
+          }
+        }
+      }
+//      User.activeParagraphs($scope.activeParagraphs);
+      console.log(previousText);
+      console.log(currentText);
+      console.log(startDiffPos);
+      console.log(endDiffPosPrev);
+      console.log(endDiffPosNow);
+      console.log($scope.activeParagraphs[paraIndex].timestamps.length);
     } 
 
     function updateCitedEvidence() {        
+      if ($scope.selectedText === undefined) return;
       if (textEvidenceAssociations === null || _.size(evidenceIdMap) === 0) return;
 
       $scope.citedEvidence = _.without(_.uniq(_.filter(textEvidenceAssociations, function(a) {  
@@ -457,6 +529,8 @@ angular.module('focus.v2.controllers')
         }
         return evidenceIdMap[a.sourceId];
       })), undefined);
+
+      User.citedEvidence($scope.citedEvidence);
 
       // Identify citations for each paragraph
       textEvidenceAssociations.forEach(function(a) {          
@@ -533,7 +607,7 @@ angular.module('focus.v2.controllers')
         // TODO: update citedEvidence, textEvidenceAssociations
       }
       else {
-        if (e.keyCode === 8)
+        previousText = document.getElementById('ap-' + i).innerText;
         Logger.logAction($scope.userId, 'edit paragraph', 'v2', '1', 'focus', {
           proposal:$scope.selectedText.id,
           paragraph: $scope.selectedParagraph
@@ -548,20 +622,49 @@ angular.module('focus.v2.controllers')
       }
     };
 
+    function compareString( s1, s2, splitChar ){
+        if ( typeof splitChar == "undefined" ){
+            splitChar = " ";
+        }
+        var string1 = new Array();
+        var string2 = new Array();
+
+        string1 = s1.split( splitChar );
+        string2 = s2.split( splitChar );
+        var diff = new Array();
+
+        if(s1.length>s2.length){
+            var long = string1;
+        }
+        else {
+            var long = string2;
+        }
+        for(x=0;x<long.length;x++){
+            if(string1[x]!=string2[x]){
+                diff.push(string2[x]);
+            }
+        }
+
+        return diff;    
+    }
+
     function updateParagraphs(newParagraphIndex, i, add) {
       if (add) {
-        $scope.activeParagraphs.splice(newParagraphIndex, 0, {text: ''});
+        $scope.activeParagraphs.splice(newParagraphIndex, 0, {text: '', timestamps: []});
         $scope.paragraphInformation.splice(newParagraphIndex, 0,{});         
         $scope.paragraphCitation.splice(newParagraphIndex, 0, []);
+        $scope.editHistory.splice(newParagraphIndex, 0, []);
         updateRecommendedCitations($scope.activeParagraphs[i].text, i);
       }
       else {
         $scope.activeParagraphs.splice(i, 1);
         $scope.paragraphInformation.splice(i, 1);
         $scope.paragraphCitation.splice(i, 1);
+        $scope.editHistory.splice(i, 1);
         updateRecommendedCitations($scope.activeParagraphs[newParagraphIndex].text, newParagraphIndex);
       }
       $scope.selectedParagraph = newParagraphIndex; 
+//      currentParagraph = $scope.activeParagraphs[$scope.selectedParagraph];
     }
 
     function updateTextEvidenceAssociations(startIndex, shiftRight) {
@@ -646,7 +749,11 @@ angular.module('focus.v2.controllers')
     $scope.hasMadeChanges = function(i,e) {       
       $scope.savingStatus = 'unsaved';
       $scope.hasUnsavedChanges = true;
-      $scope.activeParagraphs[i].text = document.getElementById('ap-' + i).innerText;      
+      $scope.activeParagraphs[i].text = document.getElementById('ap-' + i).innerText;
+
+//      previousText = currentParagraph.text;
+//      currentParagraph = $scope.activeParagraphs[i];
+      updateTextAge(i)
     };
 
     $scope.downloadText = function() {
