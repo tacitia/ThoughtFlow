@@ -35,6 +35,7 @@ def construct_maps():
       index = ''
       title = ''
       venue = ''
+      abstract = ''
 
   return index_title_map, index_include_map
 
@@ -66,11 +67,11 @@ def getCitations():
       continue
     else:
       print counter
-      print citations
       index = ''
       title = ''
 
-  return entries
+  print len(citations)
+  return citations
 
 def getEntries():
   entries = []

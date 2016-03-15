@@ -24,7 +24,7 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.views import View
 
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 import GoogleScholarQuerier
 
 names = {}
@@ -122,9 +122,29 @@ def getRefsAndCitedin(pmid, citation_map):
 
 def completeCitationInfoAMiner(collection_id):
     rawCitations = AMinerParser.getCitations()
+    counter = 0
+    duplicates = 0
     for c in rawCitations:
-        paper = Evidence.objects.get(title=c['paper'],created_by=collection_id)
-        citation = Evidence.objects.get(title=c['citation'],created_by=collection_id)
+        counter += 1
+        print counter
+        if counter < 135:
+            continue
+        try:
+            paper = Evidence.objects.get(title=c['paper'],created_by=collection_id)
+        except MultipleObjectsReturned:
+            duplicates += 1
+            print 'duplicate title'
+            print c['paper']
+            print duplicates
+            continue
+        try:
+            citation = Evidence.objects.get(title=c['citation'],created_by=collection_id)
+        except MultipleObjectsReturned:
+            duplicates += 1
+            print 'duplicate title'
+            print c['citation']
+            print duplicates
+            continue        
         Citation.objects.get_or_create(paper_id=paper.id, citation_id=citation.id, collection_id=collection_id)
     return
 
