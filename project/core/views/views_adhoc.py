@@ -123,14 +123,14 @@ def getRefsAndCitedin(pmid, citation_map):
 def completeCitationInfoAMiner(collection_id):
     rawCitations = AMinerParser.getCitations()
     for c in rawCitations:
-        paper = Evidence.objects.filter(title=c['paper'],created_by=collection_id)
-        citation = Evidence.objects.filter(title=c['citation'],created_by=collection_id)
+        paper = Evidence.objects.get(title=c['paper'],created_by=collection_id)
+        citation = Evidence.objects.get(title=c['citation'],created_by=collection_id)
         Citation.objects.get_or_create(paper_id=paper.id, citation_id=citation.id, collection_id=collection_id)
     return
 
 def completeCitationInfo(request, collection_id):
     if request.method == 'GET':
-        if collection_id == 18:
+        if collection_id == '18':
             completeCitationInfoAMiner(collection_id)
         else:
             evidence = Evidence.objects.filter(created_by=collection_id)

@@ -3,8 +3,8 @@ import sys, json
 import pprint
 import os
 
-#paper_file = open('core/views/AMiner/AMiner-Paper.txt')
-paper_file = open('AMiner/AMiner-Paper.txt')
+paper_file = open('core/views/AMiner/AMiner-Paper.txt')
+#paper_file = open('AMiner/AMiner-Paper.txt')
 
 def construct_maps():
   index_title_map = {}
@@ -36,10 +36,10 @@ def construct_maps():
       title = ''
       venue = ''
 
-  return index_title_map, 
+  return index_title_map, index_include_map
 
 def getCitations():
-  index_title_map = construct_maps()
+  index_title_map, index_include_map = construct_maps()
   citations = []
 #  out_file = open('core/views/AMiner/AMiner-Citation-HCI.txt', 'w')
   index = ''
@@ -130,6 +130,6 @@ def getEntries():
       abstract = ''
   return entries
 
-getCitations()
+# getCitations()
 # pp = pprint.PrettyPrinter(indent=4)
 # pp.pprint(getEntries())
