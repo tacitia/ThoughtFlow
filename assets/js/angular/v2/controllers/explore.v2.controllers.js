@@ -97,7 +97,9 @@ angular.module('explore.v2.controllers')
     });
 
     function loadEvidence() {
-      Collection.allTopics(function(topics) {
+      Collection
+        .id($scope.collection.id)
+        .allTopics(function(topics) {
         $scope.loadingEvidence = false;
         $scope.topics = topics;
         TermTopic.initialize($scope.topics);

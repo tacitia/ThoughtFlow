@@ -8,6 +8,7 @@ import random
 import TermExtractor
 import TopicModeler
 import XploreParser
+import AMinerParser
 from itertools import chain
 from nltk.metrics import edit_distance
 
@@ -72,6 +73,20 @@ def cacheTopics(request, collection_id):
 
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)    
 
+def loadCHIData(request):
+    user_id = 18
+    Evidence.objects.filter(created_by=user_id).delete()
+    if request.method == 'GET':
+        entries = AMinerParser.getEntries()
+#        counter = 0
+        for e in entries:
+#            counter += 1
+#            if counter <= 9907:
+#                continue
+            evidence = Evidence.objects.create_evidence(e['title'], e['abstract'], serializePaperMetadata(e['index'], e['authors'], e['venue'], e['date'], e['affiliations']), user_id, 0)
+        
+        return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)        
+
 def loadXploreData(request):
     user_id = 13
     Evidence.objects.filter(created_by=user_id).delete()
@@ -105,28 +120,41 @@ def getRefsAndCitedin(pmid, citation_map):
         citedin = citation_map[citedin_key]
     return refs, citedin
 
+def completeCitationInfoAMiner(collection_id):
+    rawCitations = AMinerParser.getCitations()
+    for c in rawCitations:
+        paper = Evidence.objects.filter(title=c['paper'],created_by=collection_id)
+        citation = Evidence.objects.filter(title=c['citation'],created_by=collection_id)
+        Citation.objects.get_or_create(paper_id=paper.id, citation_id=citation.id, collection_id=collection_id)
+    return
+
 def completeCitationInfo(request, collection_id):
     if request.method == 'GET':
-        evidence = Evidence.objects.filter(created_by=collection_id)
-        start = 243
-        counter = 1
-        for e in evidence:
-            if counter < start:
-                counter += 1
-                continue
-            print '>> Processing entry ' + str(counter) + ' out of ' + str(evidence.count())
-            unicodeTitle = e.title.encode('utf-8')    
-            related_evidence, citation_map, pmid = PubMedQuerier.get_related_evidence(unicodeTitle)
-            refs, citedin = getRefsAndCitedin(pmid, citation_map)
-            print 'found ' + str(len(refs)) + ' ref, ' + str(len(citedin)) + ' citedin'
-            for re in related_evidence:
-                re_objects = Evidence.objects.filter(title=re.title,created_by=collection_id)
-                for re_object in re_objects:
-                    if re.pmid in refs:
-                        Citation.objects.get_or_create(paper_id=e.id, citation_id=re_object.id, collection_id=collection_id)
-                    if re.pmid in citedin:
-                        Citation.objects.get_or_create(paper_id=re_object.id, citation_id=e.id, collection_id=collection_id) 
-            counter += 1           
+        if collection_id == 18:
+            completeCitationInfoAMiner(collection_id)
+        else:
+            evidence = Evidence.objects.filter(created_by=collection_id)
+            start = 243
+            counter = 1
+            for e in evidence:
+                if counter < start:
+                    counter += 1
+                    continue
+                print '>> Processing entry ' + str(counter) + ' out of ' + str(evidence.count())
+                unicodeTitle = e.title.encode('utf-8')    
+                related_evidence, citation_map, pmid = PubMedQuerier.get_related_evidence(unicodeTitle)
+                refs, citedin = getRefsAndCitedin(pmid, citation_map)
+                print 'found ' + str(len(refs)) + ' ref, ' + str(len(citedin)) + ' citedin'
+                for re in related_evidence:
+                    re_objects = Evidence.objects.filter(title=re.title,created_by=collection_id)
+                    # here paper_id cites citation_id
+                    for re_object in re_objects:
+                        if re.pmid in refs:
+                            Citation.objects.get_or_create(paper_id=e.id, citation_id=re_object.id, collection_id=collection_id)
+                        if re.pmid in citedin:
+                            Citation.objects.get_or_create(paper_id=re_object.id, citation_id=e.id, collection_id=collection_id) 
+                counter += 1      
+        return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
 
 def augmentCollection(request, collection_id, seed_level):
     if request.method == 'GET':
@@ -192,7 +220,7 @@ def createOnlineLDA(request, collection_id):
         evidencePks = [e['id'] for e in loaded_evidence]
         name = Collection.objects.get(collection_id=collection_id).collection_name
         numDocs = len(loaded_evidence)
-        evidenceTopicMap, topics = TopicModeler.create_online_lda(abstracts, evidencePks, name, math.ceil(numDocs / 10))
+        evidenceTopicMap, topics = TopicModeler.create_online_lda(abstracts, evidencePks, name, math.ceil(numDocs / 50))
 #        saveTopicsForEvidence(evidenceTopicMap, collection_id)
 
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)

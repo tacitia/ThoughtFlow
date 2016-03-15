@@ -10,8 +10,9 @@ Collection.$inject = ['$cookies', '$http', 'Core'];
 
   function Collection($cookies, $http, Core) {
     var topics = null;
-    var collectionId = 13;
+    var _id = 13;
     var Collection = {
+      id: id,
       allTopics: allTopics,
     };
 
@@ -19,9 +20,19 @@ Collection.$inject = ['$cookies', '$http', 'Core'];
 
     ////////////////////
 
+    function id(id) {
+      if (arguments.length === 0) {
+        return _id;
+      }
+      else {
+        _id = id;
+        return this;
+      }    
+    }  
+
     function allTopics(callback) {
       if (topics === null) {
-        Core.getEvidenceCollection(collectionId, function(response) {
+        Core.getEvidenceCollection(_id, function(response) {
           topics = response.data.map(function(topic) {
             return {
               id: topic.index,
@@ -36,7 +47,7 @@ Collection.$inject = ['$cookies', '$http', 'Core'];
           });
           callback(topics);
         }, function() {
-          console.log('server error when retrieving data for collection ' + collectionId);
+          console.log('server error when retrieving data for collection ' + _id);
           console.log(errorResponse);
         })
       }

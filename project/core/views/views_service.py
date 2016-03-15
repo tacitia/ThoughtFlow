@@ -256,9 +256,11 @@ def getTopicsForDocuments(documentIds, documents):
 def getEvidenceCollection(request, collection_id):
     if request.method == 'GET':
         evidence_count = Evidence.objects.filter(created_by=collection_id).count()
-
+        print 'getEvidenceCollection'
+        print collection_id
         print evidence_count
         topics = Topic.objects.filter(collection_id=int(collection_id))
+        print topics
         serialized_json = serializers.serialize('json', topics)
         topics_json = flattenSerializedJson(serialized_json)
         print topics_json

@@ -5,7 +5,7 @@ from core.views import association, updateAssociation, deleteAssociation, delete
 from core.views import loadBatchResults, createOnlineLDA, loadOnlineLDA, createSimilarityMatrix, cacheTopics
 from core.views import getEvidenceRecommendation, getEvidenceByTopic, searchEvidenceByTitle, getCitationsForPaper, getReferencesForPaper, getCitationMap, completeCitationInfo
 from core.views import getEvidenceCollection
-from core.views import loadXploreData, augmentCollection
+from core.views import loadXploreData, loadCHIData, augmentCollection
 from core.views import getNewUserId, initializeNewCollection, getCollectionList, insertDefaultCollections
 
 import views
@@ -55,6 +55,7 @@ urlpatterns = [
     url(r'^api/v1/ad-hoc/createSimilarityMatrix/$', createSimilarityMatrix, name='createSimilarityMatrix'),
     url(r'^api/v1/ad-hoc/cacheTopics/(?P<collection_id>\d+)/$', cacheTopics, name='cacheTopics'),
     url(r'^api/v1/ad-hoc/loadXploreData/$', loadXploreData, name='loadXploreData'),
+    url(r'^api/v1/ad-hoc/loadCHIData/$', loadCHIData, name='loadCHIData'),
     url(r'^api/v1/ad-hoc/augmentCollection/(?P<collection_id>\d+)/(?P<seed_level>\d+)/$', augmentCollection, name='augmentCollection'),
     url(r'^api/v1/ad-hoc/completeCitationInfo/(?P<collection_id>\d+)/$', completeCitationInfo, name='completeCitationInfo'),
     url(r'^api/v1/ad-hoc/insertDefaultCollections/$', insertDefaultCollections, name='insertDefaultCollections'),
