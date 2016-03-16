@@ -29,6 +29,14 @@ angular.module('focus.v2.controllers')
     var currentText = '';
     var previousText = '';
 
+    $scope.logStateTransition = function() {
+      Logger.logAction($scope.userId, 'explore recommended citation', 'v2','1', 'focus', {
+      }, function(response) {
+        if (isDebug)
+          console.log('action logged: explore recommended citation');
+      });      
+    }
+
     $scope.selectText = function(text, userInitiated) {
       if (userInitiated) {
         Logger.logAction($scope.userId, 'select proposal', 'v2','1', 'focus', {

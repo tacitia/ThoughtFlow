@@ -38,18 +38,18 @@ angular.module('focus.v2.controllers')
         targetMap.total[i] = 0;
         targetMap.bookmarked[i] = 0;
       }
-//      console.log(targetMap)
       eArray.forEach(function(e) {
         if (typeof e.metadata == 'string') {
           e.metadata = JSON.parse(e.metadata);
         }
         var date = getEvidenceDate(e);
-        if (date === 0) return;
+        if (date === 0 || date < minYear || date > maxYear) return;
         targetMap.total[date] += 1;
         if (e.bookmarked === 0) {
           targetMap.bookmarked[date] += 1;
         }
       })
+      return _.max(_.values(targetMap.total));
     }
 
     function getEvidenceDate(evidence) {
@@ -166,7 +166,8 @@ angular.module('focus.v2.controllers')
         .attr('height', svgHeight + 20)
         .attr('transform', 'translate(10, 0)');
 
-      var dummyCiteInfo = {
+
+      var citeInfo = {
         citations: {
           total: {},
           bookmarked: {},
@@ -179,26 +180,26 @@ angular.module('focus.v2.controllers')
           topics: {}
         }
       };
-      // Lets's initialize the dummy cite info randomly for now
+
       var evidenceYear = getEvidenceDate(scope.e);
       var refs = Paper.getReferencesForPaper(scope.e.id);
       var cites = Paper.getCitationsForPaper(scope.e.id);
-      countDates(cites, dummyCiteInfo.citations, Math.min(2016, evidenceYear+1), 2016, evidenceYear);
-      countDates(refs, dummyCiteInfo.references, 1990, Math.max(1990, evidenceYear-1), evidenceYear);
+      var maxCountCite = countDates(cites, citeInfo.citations, Math.min(2016, evidenceYear+1), 2016, evidenceYear);
+      var maxCountRef = countDates(refs, citeInfo.references, 1985, Math.max(1985, evidenceYear-1), evidenceYear);
       var dateScale = d3.scale.linear()
-        .domain([1990, 2016])
+        .domain([1985, 2016])
         .range([5, svgWidth-5]);
-      var paperCountScale = d3.scale.pow().exponent(0.8)
-        .domain([30, 0])
+      var paperCountScale = d3.scale.pow().exponent(1)
+        .domain([Math.max(maxCountCite, maxCountRef), 0])
         .range([10, svgHeight-10]);
       // Now we can start visualizing...
       drawPointer(svg, svgHeight);
-      drawLine(svg, dateScale, paperCountScale, dummyCiteInfo.citations.total, 'cite-total', 'grey', false);
-      drawBar(svg, dateScale, paperCountScale, dummyCiteInfo.references.total, 'ref-total', 'grey', -2);
-      drawLine(svg, dateScale, paperCountScale, dummyCiteInfo.citations.bookmarked, 'cite-bookmarked', 'steelblue', true);
-      drawBar(svg, dateScale, paperCountScale, dummyCiteInfo.references.bookmarked, 'ref-bookmarked', 'steelblue', 2);
+      drawLine(svg, dateScale, paperCountScale, citeInfo.citations.total, 'cite-total', 'grey', false);
+      drawBar(svg, dateScale, paperCountScale, citeInfo.references.total, 'ref-total', 'grey', -2);
+      drawLine(svg, dateScale, paperCountScale, citeInfo.citations.bookmarked, 'cite-bookmarked', 'steelblue', true);
+      drawBar(svg, dateScale, paperCountScale, citeInfo.references.bookmarked, 'ref-bookmarked', 'steelblue', 2);
       svg.on('mousemove', function(d) {
-        updatePointer(svg, d3.mouse(this)[0], dateScale, dummyCiteInfo, evidenceYear);
+        updatePointer(svg, d3.mouse(this)[0], dateScale, citeInfo, evidenceYear);
       });
       svg.on('mouseout', function(d) {
         updatePointer(svg, -1);
@@ -210,7 +211,7 @@ angular.module('focus.v2.controllers')
         .attr('r', 4)
         .attr('fill', 'crimson')
         .attr('cx', dateScale(evidenceYear))
-        .attr('cy', svgHeight / 2)
+        .attr('cy', paperCountScale(0))
         .attr('uib-tooltip', 'Hello')
         .attr('tooltip-append-to-body', true)
         .attr('tooltip-placement', 'right');

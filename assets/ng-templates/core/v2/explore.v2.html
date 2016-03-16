@@ -94,87 +94,160 @@
         </div>
       </div>
     </div>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title" style="margin-bottom:0px">Documents with the selected topic</h4> 
-      </div>
-      <div class="panel-body body">
-        <div class="row">
-          <div class="col-md-6" id="documents">
-            <div ng-if="selectedTopic===null" style="margin-top:170px">
-              <p class="text-center" ><i>Select a topic to view associated documents here.</i></p>
-            </div>
-            <div>
-              <div class="animate-repeat document-entry row" ng-repeat="e in evidence" ng-class="{active: hover || e.id == selectedEvidence.id, bookmarked: e.bookmarked}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectEvidence(e)">
-                <div class="col-md-9">
+    <uib-tabset>
+      <uib-tab heading="Documents with the selected topic" active="true">    
+        <div class="panel panel-default">
+          <div class="panel-body body">
+            <div class="row">
+              <div class="col-md-6" id="documents">
+                <div ng-if="selectedTopic===null" style="margin-top:170px">
+                  <p class="text-center" ><i>Select a topic to view associated documents here.</i></p>
+                </div>
+                <div>
+                  <div class="animate-repeat document-entry row" ng-repeat="e in evidence" ng-class="{active: hover || e.id == selectedEvidence.id, bookmarked: e.bookmarked}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectEvidence(e)">
+                    <div class="col-md-9">
+                      <p>
+                        <span ng-switch on="e.bookmarked">
+                          <img ng-switch-when="false" class="btn-img-default" src="/static/img/bookmark-no-icon.png" 
+                            uib-tooltip="Not bookmarked" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="updateBookmark(e)" style="cursor:pointer; cursor:hand;"/>
+                          <img ng-switch-when="true" class="btn-img-default" src="/static/img/bookmark-yes-icon.png"
+                            uib-tooltip="Bookmarked" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="updateBookmark(e)" style="cursor:pointer; cursor:hand;"/>
+                        </span>                    
+    <!--                    <input type="checkbox" ng-model="e.bookmarked" ng-click="updateBookmark(e)"> -->
+                        <span style="font-weight:300"> {{e.title}}</span>
+                      </p>
+                    </div>
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-1">
+                      <img class="btn-img-default" ng-if="selectedEvidence.id===e.id && User.selectedParagraph()!==-1" src="/static/img/link-icon.svg"
+                      uib-tooltip="Cite" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="citeEvidence(e, 'topic')"
+                      style="cursor:pointer; cursor:hand;"/>
+                    </div>
+    <!--                <div class="col-md-1">
+                       <div ng-if="evidenceSourceMap[e.id] === 1">
+                         <img  src="/static/img/link-icon.svg" style="width:15px; height:15px"></img>
+                         <span>{{countTextsReferencingEvidence(e)}}</span>
+                       </div>
+                       <div ng-if="evidenceSourceMap[e.id] === 0"><span class="label label-default">Search result</span></div> 
+                    </div>
+                    <div class="col-md-2">
+                       <svg id="doc-decorator-$index" class="doc-decorator" style="width:100px;height:30px;"></svg>
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6" id="details">
+                <div ng-if="selectedEvidence===null" style="margin-top:170px">
+                  <p class="text-center" ><i>Select a document to view its metadata here.</i></p>
+                </div>
+                <div ng-if="selectedEvidence!==null">
+                  <div class="row" style="margin:10px">
+                    <button class="btn btn-default btn-xs col-md-12" ng-class="{'btn-success': showCitingTexts}" ng-disabled="associationInactive('evidence')" ng-click="toggleShowCitingTexts()">Who cited me?</button>
+                  </div>
                   <p>
-                    <span ng-switch on="e.bookmarked">
-                      <img ng-switch-when="false" class="btn-img-default" src="/static/img/bookmark-no-icon.png" 
-                        uib-tooltip="Not bookmarked" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="updateBookmark(e)" style="cursor:pointer; cursor:hand;"/>
-                      <img ng-switch-when="true" class="btn-img-default" src="/static/img/bookmark-yes-icon.png"
-                        uib-tooltip="Bookmarked" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="updateBookmark(e)" style="cursor:pointer; cursor:hand;"/>
-                    </span>                    
-<!--                    <input type="checkbox" ng-model="e.bookmarked" ng-click="updateBookmark(e)"> -->
-                    <span style="font-weight:300"> {{e.title}}</span>
+                    <b><span class="small-cap-text">Authors</span></b>: 
+                    <span class="thin-text">{{selectedEvidence.metadata.AUTHOR}}</span>
                   </p>
+                  <p>
+                    <b><span class="small-cap-text">Affiliation</span></b>: 
+                    <span class="thin-text">{{selectedEvidence.metadata.AFFILIATION}}</span>
+                  </p>
+                  <p>
+                    <b><span class="small-cap-text">Publication date</span></b>: 
+                    <span class="thin-text">{{selectedEvidence.metadata.DATE}}</span>
+                  </p>
+                  <p>
+                    <b><span class="small-cap-text">Journal</span></b>: 
+                    <span class="thin-text">{{selectedEvidence.metadata.JOURNAL}}</span>
+                  </p>
+                  <p
+                  ><b><span class="small-cap-text">Abstract</span></b>:</p>
+                  <span style="font-size:13px" ng-repeat="w in selectedWords track by $index" ng-class="{'is-topic-term': isTopicTerm(w)}">{{w}} </span>
                 </div>
-                <div class="col-md-2">
-                </div>
-                <div class="col-md-1">
-                  <img class="btn-img-default" ng-if="selectedEvidence.id===e.id && User.selectedParagraph()!==-1" src="/static/img/link-icon.svg"
-                  uib-tooltip="Cite" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="citeEvidence(e, 'topic')"
-                  style="cursor:pointer; cursor:hand;"/>
-                </div>
-<!--                <div class="col-md-1">
-                   <div ng-if="evidenceSourceMap[e.id] === 1">
-                     <img  src="/static/img/link-icon.svg" style="width:15px; height:15px"></img>
-                     <span>{{countTextsReferencingEvidence(e)}}</span>
-                   </div>
-                   <div ng-if="evidenceSourceMap[e.id] === 0"><span class="label label-default">Search result</span></div> 
-                </div>
-                <div class="col-md-2">
-                   <svg id="doc-decorator-$index" class="doc-decorator" style="width:100px;height:30px;"></svg>
-                </div> -->
               </div>
             </div>
           </div>
-          <div class="col-md-6" id="details">
-            <div ng-if="selectedEvidence===null" style="margin-top:170px">
-              <p class="text-center" ><i>Select a document to view its metadata here.</i></p>
+    <!--      <div class="panel-footer">
+            <div class="btn-group btn-group-sm" role="group">
+              <button class="btn btn-primary" ng-disabled="selectedEvidence===null" ng-click="bookmarkEvidence(selectedEvidence)" title="Bookmark this publication">Bookmark</button>
+              <button class="btn btn-danger" ng-disabled="selectedEvidence===null" ng-click="deleteEntry('evidence')">Delete</button>
             </div>
-            <div ng-if="selectedEvidence!==null">
-              <div class="row" style="margin:10px">
-                <button class="btn btn-default btn-xs col-md-12" ng-class="{'btn-success': showCitingTexts}" ng-disabled="associationInactive('evidence')" ng-click="toggleShowCitingTexts()">Who cited me?</button>
+          </div> -->
+        </div>
+      </uib-tab>
+      <uib-tab>  
+        <uib-tab-heading>
+          <span>Citations / References of the selected document</span>
+          <span class="label label-pill label-default" uib-tooltip="bookmarked / total # of documents" tooltip-placement="top" tooltip-trigger="mouseenter">{{selectedEvidenceCounts.relatedBookmarked}}/{{selectedEvidenceCounts.relatedTotal}}</span>
+        </uib-tab-heading>
+        <div class="panel panel-default">
+          <div class="panel-body body">
+            <div class="row">
+              <div class="col-md-6" id="documents">
+                <div ng-if="selectedEvidence===null" style="margin-top:170px">
+                  <p class="text-center" ><i>Select a document to view its references and citations here.</i></p>
+                </div>
+                <div>
+                  <div class="animate-repeat document-entry row" ng-repeat="e in relatedEvidence" ng-class="{active: hover || e.evidence.id == selectedRelatedEvidence.id, bookmarked: e.evidence.bookmarked}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectRelatedEvidence(e.evidence)">
+                    <div class="col-md-9">
+                      <p>
+                        <span ng-switch on="e.evidence.bookmarked">
+                          <img ng-switch-when="false" class="btn-img-default" src="/static/img/bookmark-no-icon.png" 
+                            uib-tooltip="Not bookmarked" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="updateBookmark(e.evidence)" style="cursor:pointer; cursor:hand;"/>
+                          <img ng-switch-when="true" class="btn-img-default" src="/static/img/bookmark-yes-icon.png"
+                            uib-tooltip="Bookmarked" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="updateBookmark(e.evidence)" style="cursor:pointer; cursor:hand;"/>
+                        </span>                    
+                        <span style="font-weight:300"> {{e.evidence.title}}</span>
+                      </p>
+                    </div>
+                    <div class="col-md-2">
+                      <span ng-switch on="e.relation">
+                        <span class="label label-success" ng-switch-when="citation">citation</span>
+                        <span class="label label-info" ng-switch-when="reference">reference</span>
+                      </span>                        
+                    </div>
+                    <div class="col-md-1">
+                      <img class="btn-img-default" ng-if="selectedRelatedEvidence.id===e.evidence.id && User.selectedParagraph()!==-1" src="/static/img/link-icon.svg"
+                      uib-tooltip="Cite" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="citeEvidence(e.evidence, 'topic')"
+                      style="cursor:pointer; cursor:hand;"/>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <p>
-                <b><span class="small-cap-text">Authors</span></b>: 
-                <span class="thin-text">{{selectedEvidence.metadata.AUTHOR}}</span>
-              </p>
-              <p>
-                <b><span class="small-cap-text">Affiliation</span></b>: 
-                <span class="thin-text">{{selectedEvidence.metadata.AFFILIATION}}</span>
-              </p>
-              <p>
-                <b><span class="small-cap-text">Publication date</span></b>: 
-                <span class="thin-text">{{selectedEvidence.metadata.DATE}}</span>
-              </p>
-              <p>
-                <b><span class="small-cap-text">Journal</span></b>: 
-                <span class="thin-text">{{selectedEvidence.metadata.JOURNAL}}</span>
-              </p>
-              <p
-              ><b><span class="small-cap-text">Abstract</span></b>:</p>
-              <span style="font-size:13px" ng-repeat="w in selectedWords track by $index" ng-class="{'is-topic-term': isTopicTerm(w)}">{{w}} </span>
+              <div class="col-md-6" id="details">
+                <div ng-if="selectedRelatedEvidence===null" style="margin-top:170px">
+                  <p class="text-center" ><i>Select a document to view its metadata here.</i></p>
+                </div>
+                <div ng-if="selectedRelatedEvidence!==null">
+                  <div class="row" style="margin:10px">
+                    <button class="btn btn-default btn-xs col-md-12" ng-class="{'btn-success': showCitingTexts}" ng-disabled="associationInactive('evidence')" ng-click="toggleShowCitingTexts()">Who cited me?</button>
+                  </div>
+                  <p>
+                    <b><span class="small-cap-text">Authors</span></b>: 
+                    <span class="thin-text">{{selectedEvidence.metadata.AUTHOR}}</span>
+                  </p>
+                  <p>
+                    <b><span class="small-cap-text">Affiliation</span></b>: 
+                    <span class="thin-text">{{selectedEvidence.metadata.AFFILIATION}}</span>
+                  </p>
+                  <p>
+                    <b><span class="small-cap-text">Publication date</span></b>: 
+                    <span class="thin-text">{{selectedEvidence.metadata.DATE}}</span>
+                  </p>
+                  <p>
+                    <b><span class="small-cap-text">Journal</span></b>: 
+                    <span class="thin-text">{{selectedEvidence.metadata.JOURNAL}}</span>
+                  </p>
+                  <p
+                  ><b><span class="small-cap-text">Abstract</span></b>:</p>
+                  <span style="font-size:13px" ng-repeat="w in selectedWords track by $index">{{w}} </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-<!--      <div class="panel-footer">
-        <div class="btn-group btn-group-sm" role="group">
-          <button class="btn btn-primary" ng-disabled="selectedEvidence===null" ng-click="bookmarkEvidence(selectedEvidence)" title="Bookmark this publication">Bookmark</button>
-          <button class="btn btn-danger" ng-disabled="selectedEvidence===null" ng-click="deleteEntry('evidence')">Delete</button>
-        </div>
-      </div> -->
-    </div>
+      </uib-tab>
+    </uib-tabset>
   </div>
 </div>

@@ -1,6 +1,6 @@
 angular.module('explore.v2.controllers')
-  .controller('ExploreController', ['$scope', '$stateParams', '$modal', 'Core', 'AssociationMap', 'Pubmed', 'TermTopic', 'Logger', 'Collection', 'User', 'ExploreState',
-    function($scope, $stateParams, $modal, Core, AssociationMap, Pubmed, TermTopic, Logger, Collection, User, ExploreState) {
+  .controller('ExploreController', ['$scope', '$stateParams', '$modal', 'Core', 'AssociationMap', 'Pubmed', 'TermTopic', 'Logger', 'Collection', 'User', 'ExploreState', 'Paper',
+    function($scope, $stateParams, $modal, Core, AssociationMap, Pubmed, TermTopic, Logger, Collection, User, ExploreState, Paper) {
 
     var topTermContainer = null;
     var topTopicContainer = null;
@@ -17,9 +17,17 @@ angular.module('explore.v2.controllers')
     var topicBatchSize = 30;
 
     $scope.selectedEvidence = User.selectedEvidence();
+    $scope.selectedRelatedEvidence = null;
     $scope.selectedTerms = ExploreState.selectedTerms();
     $scope.selectedWords = [];
     $scope.selectedTopic = ExploreState.selectedTopic();
+
+    $scope.selectedEvidenceCounts = {
+      bookmarked: 0,
+      total: 0,
+      relatedBookmarked: 0,
+      relatedTotal: 0
+    };
 
     $scope.candidateEvidence = ExploreState.candidateEvidence();
     $scope.selected = {};
@@ -54,6 +62,7 @@ angular.module('explore.v2.controllers')
         console.log(ExploreState.selectedTerms());
         $scope.updateTermTopicOrdering(false, true);
         $scope.selectedEvidence = title;
+        updateRelatedEvidence(title);
       }
     }
 
@@ -264,6 +273,18 @@ angular.module('explore.v2.controllers')
       });
 
       $scope.selectedEvidence = evidence;
+      $scope.selectedWords = evidence.abstract.split(' ');
+      updateRelatedEvidence(evidence);
+    }
+
+    $scope.selectRelatedEvidence = function(evidence) {
+      Logger.logAction($scope.userId, 'select related evidence', 'v2', '1', 'explore', {
+        evidence: evidence.id,
+      }, function(response) {
+        console.log('action logged: select related evidence');
+      });
+
+      $scope.selectedRelatedEvidence = evidence;
       $scope.selectedWords = evidence.abstract.split(' ');
     }
 
@@ -736,7 +757,29 @@ angular.module('explore.v2.controllers')
       }, function(errorResponse) {
         console.log(errorResponse);
       })      
-    } 
+    }
+
+    function updateRelatedEvidence(evidence) {
+      var citations = Paper.getCitationsForPaper(evidence.id);
+      var references = Paper.getReferencesForPaper(evidence.id);
+      $scope.selectedEvidenceCounts.relatedBookmarked = 0;
+      $scope.selectedEvidenceCounts.relatedTotal = citations.length + references.length;
+      $scope.relatedEvidence = [];
+      citations.forEach(function(d) {
+        $scope.relatedEvidence.push({
+          evidence: d,
+          relation: 'citation'
+        });
+        if (d.bookmarked) $scope.selectedEvidenceCounts.relatedBookmarked += 1;
+      });
+      references.forEach(function(d) {
+        $scope.relatedEvidence.push({
+          evidence: d,
+          relation: 'reference'
+        });
+        if (d.bookmarked) $scope.selectedEvidenceCounts.relatedBookmarked += 1;
+      })      
+    }
 
     function visualizeTermTopicConnections(container, width, height, terms, topics, connections) {
 
@@ -936,7 +979,7 @@ angular.module('explore.v2.controllers')
             .attr('fill', '#ccc');          
         })
         .on('click', function(d, i) {
-          Logger.logAction(userId, 'select topic', 'v2','1', 'explore', {
+          Logger.logAction($scope.userId, 'select topic', 'v2','1', 'explore', {
             topic: d.id,
             target: 'neighbor topic matrix'
           }, function(response) {
@@ -1242,7 +1285,7 @@ angular.module('explore.v2.controllers')
           numSelectedDocTerms += 1;
         }
       }
-      Logger.logAction(userId, 'select term to filter documents', 'v2','1', 'explore', {
+      Logger.logAction($scope.userId, 'select term to filter documents', 'v2','1', 'explore', {
         topic: $scope.selectedTopic.id,
         numSelectedTerms: numSelectedDocTerms,
         numDocuments: $scope.evidence.length
