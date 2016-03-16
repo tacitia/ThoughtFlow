@@ -118,6 +118,7 @@
                       </p>
                     </div>
                     <div class="col-md-2">
+                       <svg id="doc-decorator-$index" class="doc-decorator" style="width:100px;height:30px;"></svg>
                     </div>
                     <div class="col-md-1">
                       <img class="btn-img-default" ng-if="selectedEvidence.id===e.id && User.selectedParagraph()!==-1" src="/static/img/link-icon.svg"
@@ -130,9 +131,6 @@
                          <span>{{countTextsReferencingEvidence(e)}}</span>
                        </div>
                        <div ng-if="evidenceSourceMap[e.id] === 0"><span class="label label-default">Search result</span></div> 
-                    </div>
-                    <div class="col-md-2">
-                       <svg id="doc-decorator-$index" class="doc-decorator" style="width:100px;height:30px;"></svg>
                     </div> -->
                   </div>
                 </div>
@@ -187,6 +185,9 @@
               <div class="col-md-6" id="documents">
                 <div ng-if="selectedEvidence===null" style="margin-top:170px">
                   <p class="text-center" ><i>Select a document to view its references and citations here.</i></p>
+                </div>
+                <div ng-if="relatedEvidence.length===0" style="margin-top:170px">
+                  <p class="text-center" ><i>No references or citations available for the selected evidence.</i></p>
                 </div>
                 <div>
                   <div class="animate-repeat document-entry row" ng-repeat="e in relatedEvidence" ng-class="{active: hover || e.evidence.id == selectedRelatedEvidence.id, bookmarked: e.evidence.bookmarked}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectRelatedEvidence(e.evidence)">
