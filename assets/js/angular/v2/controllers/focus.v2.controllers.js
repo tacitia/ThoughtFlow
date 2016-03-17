@@ -895,11 +895,10 @@ angular.module('focus.v2.controllers')
         console.log('updating evidence recommendations..');        
       $scope.loadingRecommendedEvidence = true;        
 
-      Argument.getEvidenceRecommendation(text, $scope.collection.id, function(response) {
-        $scope.recommendedEvidence = response.data.evidence;
+      Argument.getEvidenceRecommendation(text, $scope.collection.id, function(results) {
+        $scope.recommendedEvidence = results.evidence;
         var bookmarkedEvidenceIds = $scope.evidence === null ? [] : $scope.evidence.map(function(e) { return e.id; })
         $scope.recommendedEvidence.forEach(function(e) {
-          e.metadata = JSON.parse(e.metadata);
           if ($scope.evidence !== null) {
             e.bookmarked = bookmarkedEvidenceIds.indexOf(e.id) > -1;
           }
@@ -907,9 +906,9 @@ angular.module('focus.v2.controllers')
             e.bookmarked = false;
           }
         })
-        $scope.paragraphInformation[index].topic = response.data.topics[0];
-        if (response.data.topics[0].terms !== '') {
-          $scope.paragraphInformation[index].topicString = response.data.topics[0].terms.map(function(term) {
+        $scope.paragraphInformation[index].topic = results.topic;
+        if (results.topic.terms !== '') {
+          $scope.paragraphInformation[index].topicString = results.topic.terms.map(function(term) {
             return term[0];
           }).join(' ');
         }
