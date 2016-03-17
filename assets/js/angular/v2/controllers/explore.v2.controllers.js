@@ -2,6 +2,8 @@ angular.module('explore.v2.controllers')
   .controller('ExploreController', ['$scope', '$stateParams', '$modal', 'Core', 'AssociationMap', 'Pubmed', 'TermTopic', 'Logger', 'Collection', 'User', 'ExploreState', 'Paper', 'Bookmark',
     function($scope, $stateParams, $modal, Core, AssociationMap, Pubmed, TermTopic, Logger, Collection, User, ExploreState, Paper, Bookmark) {
 
+    $scope.userService = User;
+
     var topTermContainer = null;
     var topTopicContainer = null;
     var termTopicConnectionContainer = null;

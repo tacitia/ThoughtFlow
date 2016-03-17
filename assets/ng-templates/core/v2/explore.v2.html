@@ -121,7 +121,7 @@
                        <svg id="doc-decorator-$index" class="doc-decorator" style="width:100px;height:30px;"></svg>
                     </div>
                     <div class="col-md-1">
-                      <img class="btn-img-default" ng-if="selectedEvidence.id===e.id && User.selectedParagraph()!==-1" src="/static/img/link-icon.svg"
+                      <img class="btn-img-default" ng-if="selectedEvidence.id===e.id && userService.selectedParagraph()!==-1" src="/static/img/link-icon.svg"
                       uib-tooltip="Cite" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="citeEvidence(e, 'topic')"
                       style="cursor:pointer; cursor:hand;"/>
                     </div>
@@ -226,19 +226,19 @@
                   </div>
                   <p>
                     <b><span class="small-cap-text">Authors</span></b>: 
-                    <span class="thin-text">{{selectedEvidence.metadata.AUTHOR}}</span>
+                    <span class="thin-text">{{selectedRelatedEvidence.metadata.AUTHOR}}</span>
                   </p>
                   <p>
                     <b><span class="small-cap-text">Affiliation</span></b>: 
-                    <span class="thin-text">{{selectedEvidence.metadata.AFFILIATION}}</span>
+                    <span class="thin-text">{{selectedRelatedEvidence.metadata.AFFILIATION}}</span>
                   </p>
                   <p>
                     <b><span class="small-cap-text">Publication date</span></b>: 
-                    <span class="thin-text">{{selectedEvidence.metadata.DATE}}</span>
+                    <span class="thin-text">{{selectedRelatedEvidence.metadata.DATE}}</span>
                   </p>
                   <p>
                     <b><span class="small-cap-text">Journal</span></b>: 
-                    <span class="thin-text">{{selectedEvidence.metadata.JOURNAL}}</span>
+                    <span class="thin-text">{{selectedRelatedEvidence.metadata.JOURNAL}}</span>
                   </p>
                   <p
                   ><b><span class="small-cap-text">Abstract</span></b>:</p>
