@@ -44,6 +44,7 @@ function User($cookies, $http, Core) {
     }
     else {
       _citedEvidence = evidence;
+      return this;
     }    
   }  
 
@@ -53,6 +54,7 @@ function User($cookies, $http, Core) {
     }
     else {
       _selectedEvidence = evidence;
+      return this;
     }    
   }
 

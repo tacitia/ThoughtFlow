@@ -83,7 +83,6 @@ function TermTopic(Core) {
     if (selectedTerms !== undefined && selectedTerms.length > 0) {
       // Get all topics containing the selected terms
       var keyTopics = _.flatten(selectedTerms.map(function(term) {
-        console.log(termTopicMap[term])
         return termTopicMap[term].topics.map(function(topic) {
           return topicIdMap[topic.id];
         })

@@ -72,7 +72,7 @@ angular.module('focus.v2.controllers')
       markers
         .attr('transform', function(d, i) {
           var left = 1;
-          var top = Math.floor(paragraphs[d.groupIndex].timestamps.length * charWidth / previewWidth) * (charHeight+1) - (i+1) * 7;
+          var top = computeParagraphPreviewHeight(d.groupIndex) - (i+1) * 7;
           return 'translate(' + left + ',' + top + ')';
         })
         .on('mouseover', function(d, i) {

@@ -26,7 +26,7 @@
           <ui-select-match>
               <span ng-bind="$select.selected.term"></span>
           </ui-select-match>
-          <ui-select-choices repeat="t in (terms | filter: $select.search) track by t.origIndex">
+          <ui-select-choices repeat="t in (terms | filter: $select.search | limitTo: 100) track by t.origIndex">
               <span ng-bind="t.term"></span>
           </ui-select-choices>
       </ui-select>
