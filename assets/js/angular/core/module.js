@@ -5,6 +5,7 @@ angular
     'associationMap.services',
     'argument.services',
     'paper.services',
+    'bookmark.services',
     'collection.services',
     'user.services',
     'exploreState.services',
@@ -24,6 +25,9 @@ angular
 
 angular
   .module('paper.services', ['core.services']);
+
+angular
+  .module('bookmark.services', ['core.services']);
 
 angular
   .module('collection.services', ['core.services']);

@@ -292,14 +292,11 @@ angular.module('focus.v2.controllers')
 
     function visualize(container, width, height, scope) {
       if (scope.proposals === null) return;
-      var words = processWordsDistance(scope.proposals[1].content);
+//      var words = processWordsDistance(scope.proposals[0].content);
       visualizeTextAge(container);
     }
     
     return function(scope, element, attrs) {
-      console.log(element)
-      console.log(scope)
-      console.log(attrs)
       visualize(d3.select(element[0]), 600, 600, scope);
     };    
   

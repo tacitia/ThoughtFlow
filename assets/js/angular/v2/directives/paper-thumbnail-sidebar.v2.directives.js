@@ -10,7 +10,8 @@ angular.module('focus.v2.controllers')
 
     function computeParagraphPreviewHeight(i) {
       var paragraphs = User.activeParagraphs();
-      return Math.floor(paragraphs[i].timestamps.length * charWidth / previewWidth) * (charHeight+1);
+      var height = Math.floor(paragraphs[i].timestamps.length * charWidth / previewWidth) * (charHeight+1);
+      return Math.max(height, 50);
     }
 
     function drawParagraphSelector(group) {
@@ -114,7 +115,8 @@ angular.module('focus.v2.controllers')
         .attr('transform', function(d, i) {
           var top = 20;
           for (var j = 0; j < i; ++j) {
-            top += Math.floor(paragraphs[j].timestamps.length * charWidth / previewWidth) * (charHeight+1) + 5;
+            top += computeParagraphPreviewHeight(j) + 5;
+//            top += Math.floor(paragraphs[j].timestamps.length * charWidth / previewWidth) * (charHeight+1) + 5;
           }
           return 'translate(20, ' + top + ')';
         });
@@ -146,7 +148,8 @@ angular.module('focus.v2.controllers')
         .attr('transform', function(d, i) {
           var top = 20;
           for (var j = 0; j < i; ++j) {
-            top += Math.floor(paragraphs[j].timestamps.length * charWidth / previewWidth) * (charHeight+1) + 5;
+            top += computeParagraphPreviewHeight(j) + 5;
+//            top += Math.floor(paragraphs[j].timestamps.length * charWidth / previewWidth) * (charHeight+1) + 5;
           }
           return 'translate(0, ' + top + ')';
         });
@@ -172,9 +175,6 @@ angular.module('focus.v2.controllers')
     }
     
     return function(scope, element, attrs) {
-      console.log(element)
-      console.log(scope)
-      console.log(attrs)
       visualize(d3.select(element[0]), 60, 600, scope);
       scope.$watch(function () {
           return User.paragraphCitation();

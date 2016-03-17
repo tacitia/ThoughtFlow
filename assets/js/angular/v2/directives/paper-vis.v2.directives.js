@@ -98,18 +98,22 @@ angular.module('focus.v2.controllers')
         .attr('x2', x);
       var infoText = '';
       if (x !== -1) {
-        year = Math.floor(dateScale.invert(x));
+        year = Math.ceil(dateScale.invert(x));
         if (year < evidenceYear) {
           totalPaper = citationInfo.references.total[year];          
           bookmarkedPaper = citationInfo.references.bookmarked[year]; 
           infoText += 'References from ' + year + ':';
-          infoText += totalPaper + ' (bookmarked ' + bookmarkedPaper + ')';
+          infoText += totalPaper + ' (bookmarked ' + bookmarkedPaper + ')';     
         }
         else if (year > evidenceYear) {
           totalPaper = citationInfo.citations.total[year];
           bookmarkedPaper = citationInfo.citations.bookmarked[year];
           infoText += 'Citations from ' + year + ':';
           infoText += totalPaper + ' (bookmarked ' + bookmarkedPaper + ')';
+          svg.selectAll('.cite-total-circle').attr('r', 1);
+          svg.selectAll('.cite-bookmarked-circle').attr('r', 1);  
+          svg.select('#cite-total-circle-' + year).attr('r', 2);          
+          svg.select('#cite-bookmarked-circle-' + year).attr('r', 2);     
         }
         else {
           infoText += 'Paper published in ' + year
@@ -123,7 +127,7 @@ angular.module('focus.v2.controllers')
       var line = d3.svg.line()
         .x(function(d) { return dateScale(d); })
         .y(function(d) { return paperCountScale(paperMap[d]); })
-        .interpolate("basis");
+        .interpolate("linear");
       var years = _.keys(paperMap).map(function(d) {
         return parseInt(d);
       })
@@ -132,8 +136,12 @@ angular.module('focus.v2.controllers')
         .enter()
         .append('circle')
         .attr('class', type + '-circle')
+        .attr('id', function(d) {
+          return type + '-circle-' + d ;
+        })
         .attr('r', 1)
-        .attr('fill', color)
+        .attr('stroke', 'steelblue')
+        .attr('fill', 'white')
         .attr('cx', function(d) {
           return dateScale(d);
         })

@@ -1,6 +1,6 @@
 angular.module('focus.v2.controllers')
-  .controller('FocusController', ['$scope', '$stateParams', '$modal', 'Core','AssociationMap', 'Argument', 'Logger', 'Bibtex', 'Paper', 'User',
-  function($scope, $stateParams, $modal, Core, AssociationMap, Argument, Logger, Bibtex, Paper, User) {      
+  .controller('FocusController', ['$scope', '$stateParams', '$modal', 'Core','AssociationMap', 'Argument', 'Logger', 'Bibtex', 'Paper', 'User', 'Bookmark',
+  function($scope, $stateParams, $modal, Core, AssociationMap, Argument, Logger, Bibtex, Paper, User, Bookmark) {      
     $scope.selectedParagraph = -1;
     $scope.selectedEvidence = null;
     $scope.selectedWords= [];
@@ -102,12 +102,14 @@ angular.module('focus.v2.controllers')
     }, 5000);
 
     function loadEvidence() {
-      User.evidence(function(evidence, idMap) {
-        $scope.evidence = evidence;
-        evidenceIdMap = idMap;
-        updateCitedEvidence();
-        loadTexts();
-      });
+      Bookmark
+        .userId($scope.userId)
+        .evidence(function(evidence, idMap) {
+          $scope.evidence = evidence;
+          evidenceIdMap = idMap;
+          updateCitedEvidence();
+          loadTexts();
+        });
 
       var newParagraphIndex = -1;
 
@@ -162,6 +164,7 @@ angular.module('focus.v2.controllers')
       content += '\nReferences\n'
       for (var i = 0; i < $scope.citedEvidence.length; ++i) {
         var evidence = $scope.citedEvidence[i];
+        if (evidence.metadata === undefined) continue;
         content += (i+1) + '. ';
         content += evidence.metadata.AUTHOR + ' ';
         content += evidence.title + '. ';
@@ -229,6 +232,10 @@ angular.module('focus.v2.controllers')
       }      
     };
 
+    $scope.flipBookmark = function(e, source) {
+      Bookmark.flipBookmark(e, 'focus', source);
+    }
+
     $scope.bookmarkEvidence = function(e, source) {
       Logger.logAction($scope.userId, 'bookmark evidence', 'v2', '1', 'focus', {
         evidence: e.id,
@@ -285,8 +292,8 @@ angular.module('focus.v2.controllers')
         }).indexOf(evidence.id);          
         if (index === -1) {
           $scope.citedEvidence.push(evidence);
-          index =$scope.citedEvidence.length - 1;     
-          evidenceIdMap[evidence.id] = evidence;
+          index = $scope.citedEvidence.length - 1;     
+          Bookmark.addBookmark(evidence, 'focus', 'cite');
         }
         // Add the association to text evidence association for book-keeping (since we need to update the association entry
         // when new paragraphs are added)
@@ -514,12 +521,6 @@ angular.module('focus.v2.controllers')
         }
       }
 //      User.activeParagraphs($scope.activeParagraphs);
-      console.log(previousText);
-      console.log(currentText);
-      console.log(startDiffPos);
-      console.log(endDiffPosPrev);
-      console.log(endDiffPosNow);
-      console.log($scope.activeParagraphs[paraIndex].timestamps.length);
     } 
 
     function updateCitedEvidence() {        

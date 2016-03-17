@@ -109,9 +109,9 @@
                       <p>
                         <span ng-switch on="e.bookmarked">
                           <img ng-switch-when="false" class="btn-img-default" src="/static/img/bookmark-no-icon.png" 
-                            uib-tooltip="Not bookmarked" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="updateBookmark(e)" style="cursor:pointer; cursor:hand;"/>
+                            uib-tooltip="Not bookmarked" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="flipBookmark(e, 'selected topic')" style="cursor:pointer;"/>
                           <img ng-switch-when="true" class="btn-img-default" src="/static/img/bookmark-yes-icon.png"
-                            uib-tooltip="Bookmarked" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="updateBookmark(e)" style="cursor:pointer; cursor:hand;"/>
+                            uib-tooltip="Bookmarked" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="flipBookmark(e, 'selected topic')" style="cursor:pointer;"/>
                         </span>                    
     <!--                    <input type="checkbox" ng-model="e.bookmarked" ng-click="updateBookmark(e)"> -->
                         <span style="font-weight:300"> {{e.title}}</span>
@@ -195,9 +195,9 @@
                       <p>
                         <span ng-switch on="e.evidence.bookmarked">
                           <img ng-switch-when="false" class="btn-img-default" src="/static/img/bookmark-no-icon.png" 
-                            uib-tooltip="Not bookmarked" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="updateBookmark(e.evidence)" style="cursor:pointer; cursor:hand;"/>
+                            uib-tooltip="Not bookmarked" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="flipBookmark(e.evidence, 'selected document')" style="cursor:pointer;"/>
                           <img ng-switch-when="true" class="btn-img-default" src="/static/img/bookmark-yes-icon.png"
-                            uib-tooltip="Bookmarked" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="updateBookmark(e.evidence)" style="cursor:pointer; cursor:hand;"/>
+                            uib-tooltip="Bookmarked" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="flipBookmark(e.evidence, 'selected document')" style="cursor:pointer;"/>
                         </span>                    
                         <span style="font-weight:300"> {{e.evidence.title}}</span>
                       </p>

@@ -1,6 +1,6 @@
 angular.module('explore.v2.controllers')
-  .controller('ExploreController', ['$scope', '$stateParams', '$modal', 'Core', 'AssociationMap', 'Pubmed', 'TermTopic', 'Logger', 'Collection', 'User', 'ExploreState', 'Paper',
-    function($scope, $stateParams, $modal, Core, AssociationMap, Pubmed, TermTopic, Logger, Collection, User, ExploreState, Paper) {
+  .controller('ExploreController', ['$scope', '$stateParams', '$modal', 'Core', 'AssociationMap', 'Pubmed', 'TermTopic', 'Logger', 'Collection', 'User', 'ExploreState', 'Paper', 'Bookmark',
+    function($scope, $stateParams, $modal, Core, AssociationMap, Pubmed, TermTopic, Logger, Collection, User, ExploreState, Paper, Bookmark) {
 
     var topTermContainer = null;
     var topTopicContainer = null;
@@ -109,25 +109,28 @@ angular.module('explore.v2.controllers')
       Collection
         .id($scope.collection.id)
         .allTopics(function(topics) {
-        $scope.loadingEvidence = false;
-        $scope.topics = topics;
-        TermTopic.initialize($scope.topics);
-        $scope.terms = TermTopic.getAllTerms();
-        $scope.selected.searchTerm = $scope.terms[0];
-        $scope.numTerms = TermTopic.numOfTerms();
-        $scope.numTopics = TermTopic.numOfTopics();
-        visualizeTopicTermDistribution();
-        if (User.selectedEvidence() === null) {
-          $scope.selected.searchTitle = ExploreState.selectedSearchTitle();
-        }
-        else {
-          Core.getEvidenceByTitle($scope.collection.id, $scope.userId, User.selectedEvidence().title, true, 1, function(response) {
-            $scope.candidateEvidence = response.data;
-            $scope.selected.searchTitle = $scope.candidateEvidence[0];
-            $scope.selectSearchTitle($scope.selected.searchTitle);
-            ExploreState.candidateEvidence($scope.candidateEvidence);
-          });      
-    }
+          $scope.loadingEvidence = false;
+          $scope.topics = topics;
+          TermTopic.initialize($scope.topics);
+          $scope.terms = TermTopic.getAllTerms();
+          $scope.selected.searchTerm = $scope.terms[0];
+          $scope.numTerms = TermTopic.numOfTerms();
+          $scope.numTopics = TermTopic.numOfTopics();
+          visualizeTopicTermDistribution();
+          if (User.selectedEvidence() === null) {
+            $scope.selected.searchTitle = ExploreState.selectedSearchTitle();
+          }
+          else {
+            Core.getEvidenceByTitle($scope.collection.id, $scope.userId, User.selectedEvidence().title, true, 1, function(response) {
+              $scope.candidateEvidence = response.data;
+              $scope.selected.searchTitle = $scope.candidateEvidence[0];
+              $scope.selectSearchTitle($scope.selected.searchTitle);
+              ExploreState.candidateEvidence($scope.candidateEvidence);
+            });      
+          }
+          Bookmark
+            .userId($scope.userId)
+            .evidence(function(evidence, idMap) {});
       });
     }
 
@@ -181,7 +184,7 @@ angular.module('explore.v2.controllers')
           console.log('action logged: cite evidence');
       });        
       //Add association
-      $scope.updateBookmark(evidence);
+      $scope.flipBookmark(evidence);
       AssociationMap.addAssociation($scope.userId,'evidence', 'text', evidence.id, textParaId, function(association) {
         // Add evidence to the list of cited evidence
         var index = User.citedEvidence().map(function(e) {
@@ -190,7 +193,7 @@ angular.module('explore.v2.controllers')
         if (index === -1) {
           User.citedEvidence().push(evidence);
           index = User.citedEvidence().length - 1;     
-          User.evidenceIdMap()[evidence.id] = evidence;
+          Bookmark.evidenceIdMap()[evidence.id] = evidence;
         }
         // Add the association to text evidence association for book-keeping (since we need to update the association entry
         // when new paragraphs are added)
@@ -298,38 +301,8 @@ angular.module('explore.v2.controllers')
       });
     };
 
-    $scope.updateBookmark = function(e) {
-      console.log('update bookmark')
-      if (!e.bookmarked) {
-        Logger.logAction($scope.userId, 'bookmark evidence', 'v2', '1', 'explore', {
-          evidence: e.id,
-          topic: $scope.selectedTopic.id,
-          numDocuments: $scope.evidence.length
-        }, function(response) {
-          console.log('action logged: bookmark evidence');
-        });
-        Core.addBookmark($scope.userId, e.id, function(response) {
-          e.bookmarked = true;
-          console.log('bookmark evidence success');
-        }, function(errorResponse) {
-          console.log(errorResponse);
-        });   
-      } 
-      else {
-        Logger.logAction($scope.userId, 'remove evidence bookmark', 'v2', '1', 'explore', {
-          evidence: e.id,
-          topic: $scope.selectedTopic.id,
-          numDocuments: $scope.evidence.length
-        }, function(response) {
-          console.log('action logged: remove evidence bookmark');
-        });
-        Core.deleteBookmark($scope.userId, e.id, function(response) {
-          e.bookmarked = false;
-          console.log('remove bookmark evidence success');
-        }, function(errorResponse) {
-          console.log(errorResponse);
-        });  
-      }   
+    $scope.flipBookmark = function(e, source) {
+      Bookmark.flipBookmark(e, 'explore', source); 
     }
 
     function visualizeTopicTermDistribution(topics) {

@@ -13,8 +13,6 @@ function User($cookies, $http, Core) {
   var _activeCollection = null;
   var _collections = null;
   var _proposals = null;
-  var _evidence = null;
-  var _evidenceIdMap = {};
   var _activeProposal = null;
   var _activeParagraphs = null;
   var _paragraphCitation = null;
@@ -28,23 +26,17 @@ function User($cookies, $http, Core) {
     userId: userId,
     activeCollection: activeCollection,
     proposals: proposals,
-    evidence: evidence,
     activeProposal: activeProposal,
     activeParagraphs: activeParagraphs,
     paragraphCitation: paragraphCitation,
     selectedEvidence: selectedEvidence,
     selectedParagraph: selectedParagraph,
     citedEvidence: citedEvidence,
-    evidenceIdMap: evidenceIdMap,
   };
 
   return User;
 
   ////////////////////
-
-  function evidenceIdMap() {
-    return _evidenceIdMap;
-  }
 
   function citedEvidence(evidence) {
     if (arguments.length === 0) {
@@ -163,30 +155,6 @@ function User($cookies, $http, Core) {
     }
     else {
       _paragraphCitation = citations;
-    }
-  }
-
-  function evidence(callback) {
-    if (_evidence === null) {
-      // TODO: if later we want to get topics for these evidence, be mindful that there are 
-      // two types of evidence - personal and bookmarked - and they will require 
-      // different handlings
-      Core.getAllEvidenceForUser(_userId, function(response) {
-          // This includes both user created and bookmarked evidence; they are not necessarily cited.
-          // TODO: apply default sorting.
-          _evidence = response.data;
-          _evidence.forEach(function(e){
-            e.metadata = JSON.parse(e.metadata);
-            _evidenceIdMap[e.id]= e;
-          })
-          callback(_evidence, _evidenceIdMap);
-        }, function(response) {
-          console.log('server error when retrieving evidence for user' + $scope.userId);
-          console.log(response);
-        });    
-    }
-    else {
-      callback(_evidence, _evidenceIdMap);
     }
   }
 }

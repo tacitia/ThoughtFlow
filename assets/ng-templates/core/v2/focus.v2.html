@@ -104,9 +104,9 @@
             </div>          
             <div class="col-md-2" style="margin:10px 0 0 0">
               <img ng-if="!e.bookmarked" class="btn-img-default" src="/static/img/bookmark-no-icon.png" 
-                uib-tooltip="Not in your bookmark" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="bookmarkEvidence(e, 'recommendation')" style="cursor:pointer;"/>
+                uib-tooltip="Not in your bookmark" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="flipBookmark(e, 'recommendation')" style="cursor:pointer;"/>
               <img ng-if="e.bookmarked" class="btn-img-default" src="/static/img/bookmark-yes-icon.png"
-                uib-tooltip="From your bookmark" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="unbookmarkEvidence(e, 'recommendation')" style="cursor:pointer; cursor:hand;"/>
+                uib-tooltip="From your bookmark" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="flipBookmark(e, 'recommendation')" style="cursor:pointer;"/>
               <div ng-if="selectedEvidence===e" && selectedParagraph!==-1>
                 <img class="btn-img-default" src="/static/img/link-icon.svg"
                   uib-tooltip="Cite" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="citeEvidence(e, 'recommended')"
@@ -152,6 +152,9 @@
                   <img style="width:15px; height:15px"src="/static/img/warning-icon.png"
                     uib-tooltip="No abstract found." tooltip-placement="top" tooltip-trigger="mouseenter"/>
                 </div>
+              <div ng-if="selectedEvidence===e">
+                <img style="width:20px; height:20px" src="/static/img/right-arrows-icon.svg" ui-sref="v2.explore({userId: userId, collectionId: collection.id})" uib-tooltip="Explore" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="logStateTransition()" style="cursor:pointer;"/>
+              </div>
                 <div ng-if="selectedEvidence===e && selectedParagraph !== -1" class="btn-group btn-group-xs" role="group">
                   <img class="btn-img-default" src="/static/img/link-icon.svg"
                     uib-tooltip="Cite" tooltip-placement="top" tooltip-trigger="mouseenter" ng-click="citeEvidence(e, 'bookmarked')"
