@@ -60,7 +60,8 @@
     function addBookmark(e, view, source) {
       logBookmarkUpdate(e, 'bookmark evidence', view, source);
       Core.addBookmark(_userId, e.id, function(response) {
-        _evidence.push(e);
+        var index = _evidence.indexOf(e);
+        if (index < 0) _evidence.push(e);
         _evidenceIdMap[e.id] = evidence
         e.bookmarked = true;
         console.log('bookmark evidence success');
