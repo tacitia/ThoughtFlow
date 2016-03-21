@@ -759,7 +759,11 @@ angular.module('focus.v2.controllers')
       $scope.savingStatus = 'unsaved';
       $scope.hasUnsavedChanges = true;
       $scope.activeParagraphs[i].text = document.getElementById('ap-' + i).innerText;
-
+      // Hacky: relying on the assumption that the value equality test fails only when the user enters anything in the new 
+      // paragraph for the firs time.
+      if (document.getElementById('ap-' + i).childNodes[0].nodeValue !== '') {
+        document.getElementById('ap-' + i).childNodes[0].nodeValue = '';
+      }
 //      previousText = currentParagraph.text;
 //      currentParagraph = $scope.activeParagraphs[i];
       updateTextAge(i)
