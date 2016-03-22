@@ -43,6 +43,18 @@ angular.module('explore.v2.controllers')
     $scope.numTerms = 0;
     $scope.numTopics = 0;
 
+    $scope.$watch(function() {
+      return d3.selectAll('.evidence')[0].length;
+    }, function(newValue, oldValue) {
+      if ($scope.selectedEvidence !== undefined) {
+        var index = _.findIndex($scope.evidence, function(d) {
+          return d.title === $scope.selectedEvidence.title;
+        });
+        var eo = document.getElementById('evidence-' + index);
+        if (eo !== null) eo.scrollIntoView();        
+      }
+    });
+
     $scope.selectSearchTitle = function(title, callSource) {
       var source = callSource === undefined ? 'default' : callSource;
       Logger.logAction($scope.userId, 'select title by search', 'v2','1', 'explore', {
@@ -54,16 +66,20 @@ angular.module('explore.v2.controllers')
 
       ExploreState.selectedSearchTitle(title);
       if (title.topic !== -1) {
+        var topic = _.find($scope.topics, function(t) {
+          return t.id === title.topic;
+        });
+        selectTopic(topic, 'auto - search title', title);
+        /*
         $scope.selectedTopic = _.find($scope.topics, function(t) {
           return t.id === title.topic;
         });
-        ExploreState.selectedTopic($scope.selectedTopic);
+        ExploreState.selectedTopic($scope.selectedTopic); */
         for (var i = 0; i < 5; ++i) {
           $scope.selectedTerms.push($scope.selectedTopic.terms[i].term);
         }
         console.log(ExploreState.selectedTerms());
         $scope.updateTermTopicOrdering(false, true);
-        $scope.selectedEvidence = title;
         updateRelatedEvidence(title);
       }
     }
@@ -153,7 +169,7 @@ angular.module('explore.v2.controllers')
         console.log('action logged: search evidence by title');
       });
 
-      Core.getEvidenceByTitle($scope.collection.id, $scope.userId, $scope.searchTitle, true, 1, function(response) {
+      Core.getEvidenceByTitle($scope.collection.id, $scope.userId, $scope.searchTitle, true, 25, function(response) {
         $scope.candidateEvidence = response.data;
         $scope.selected.searchTitle = $scope.candidateEvidence[0];
         $scope.selectSearchTitle($scope.selected.searchTitle);
@@ -558,6 +574,21 @@ angular.module('explore.v2.controllers')
       visualizeIndividualTopic(newTopics, width-50, y, numDocScale);
     }
 
+    function selectTopic(d, source, selectedEvidence) {
+      var highlightOpacity = 0.3;
+      Logger.logAction($scope.userId, 'select topic', 'v2','1', 'explore', {
+        topic: d.id,
+        target: 'individual topic',
+        source: source
+      }, function(response) {
+        console.log('action logged: select topic');
+      });
+
+      d3.selectAll('.topic-background').attr('opacity', 0);
+      d3.select('#topic-bg-' + d.id).attr('opacity', highlightOpacity);        
+      setSelectedTopic(d, selectedEvidence);
+    }
+
     function visualizeIndividualTopic(topic, width, y, numDocScale) {
 
       var termWidth = width - 10;
@@ -591,16 +622,7 @@ angular.module('explore.v2.controllers')
           });          
         })
         .on('click', function(d) {
-          Logger.logAction($scope.userId, 'select topic', 'v2','1', 'explore', {
-            topic: d.id,
-            target: 'individual topic'
-          }, function(response) {
-            console.log('action logged: select topic');
-          });
-
-          d3.selectAll('.topic-background').attr('opacity', 0);
-          d3.select('#topic-bg-' + d.id).attr('opacity', highlightOpacity);        
-          setSelectedTopic(d);
+          selectTopic(d, 'direct');
         });
 
       topic.append('circle')
@@ -705,10 +727,10 @@ angular.module('explore.v2.controllers')
         });      
     }
 
-    function setSelectedTopic(d) {
+    function setSelectedTopic(d, evidence) {
       $scope.selectedTopic = d;
       ExploreState.selectedTopic($scope.selectedTopic);      
-      $scope.selectedEvidence = null;
+      $scope.selectedEvidence = evidence === undefined ? null : evidence;
 //      visualizeTopicNeighborMatrix(topicNeighborContainer, 600, 600, d);
       $scope.selectedDocumentTerms = _.object(_.range(10).map(function(num) {
         return [num, false];

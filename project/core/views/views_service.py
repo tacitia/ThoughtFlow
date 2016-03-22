@@ -392,6 +392,8 @@ def searchEvidenceByTitle(request):
         pprint.pprint(evidence)
         for e in evidence:
             e['dist'] = edit_distance(title, e['title'])
+        print 'result limit'
+        print result_limit
         evidence = sorted(evidence, key=lambda e:e['dist'])[:result_limit]
         for e in evidence:
             e['topic'] = -1

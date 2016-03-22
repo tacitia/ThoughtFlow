@@ -104,7 +104,7 @@
                   <p class="text-center" ><i>Select a topic to view associated documents here.</i></p>
                 </div>
                 <div>
-                  <div class="animate-repeat document-entry row" ng-repeat="e in evidence" ng-class="{active: hover || e.id == selectedEvidence.id, bookmarked: e.bookmarked}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectEvidence(e)">
+                  <div class="animate-repeat document-entry row evidence" ng-repeat="e in evidence" ng-class="{active: hover || e.id == selectedEvidence.id, bookmarked: e.bookmarked}" id="evidence-{{$index}}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectEvidence(e)">
                     <div class="col-md-9">
                       <p>
                         <span ng-switch on="e.bookmarked">
