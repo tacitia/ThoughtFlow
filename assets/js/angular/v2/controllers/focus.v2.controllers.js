@@ -525,7 +525,11 @@ angular.module('focus.v2.controllers')
 
     function updateCitedEvidence() {        
       if ($scope.selectedText === undefined) return;
-      if (textEvidenceAssociations === null || _.size(evidenceIdMap) === 0) return;
+      if (textEvidenceAssociations === null || _.size(evidenceIdMap) === 0) {
+        $scope.citedEvidence = [];
+        User.citedEvidence($scope.citedEvidence);
+        return;
+      }
 
       $scope.citedEvidence = _.without(_.uniq(_.filter(textEvidenceAssociations, function(a) {  
         var textId = a.targetId.toString().split('-');
