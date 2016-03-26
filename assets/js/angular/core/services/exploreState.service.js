@@ -12,11 +12,13 @@ function ExploreState($cookies, $http, Core) {
   var _selectedTerms = [];
   var _selectedTopic = null;
   var _candidateEvidence = null;
+  var _candidateEvidenceTopics = null;
   var _selectedSearchTitle = null;
   var ExploreState = {
     selectedTerms: selectedTerms,
     selectedTopic: selectedTopic,
     candidateEvidence: candidateEvidence,
+    candidateEvidenceTopics: candidateEvidenceTopics,
     selectedSearchTitle: selectedSearchTitle
   };
 
@@ -43,6 +45,15 @@ function ExploreState($cookies, $http, Core) {
     }
     else {
       _candidateEvidence = evidence;
+    }
+  }
+
+  function candidateEvidenceTopics(evidenceTopics) {
+    if (arguments.length === 0) {
+      return _candidateEvidenceTopics;
+    }
+    else {
+      _candidateEvidenceTopics = evidenceTopics;
     }
   }
 

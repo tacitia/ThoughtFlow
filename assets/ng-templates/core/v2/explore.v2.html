@@ -43,7 +43,7 @@
       </div>
     </div>
     <div class="col-md-5">
-      <div class="row" style="margin-top:20px;">
+<!--      <div class="row" style="margin-top:20px;">
         <ui-select ng-model="selected.searchTitle" on-select="selectSearchTitle($item)">
             <ui-select-match placeholder="Use the search to the left to get a list of relevant titles">
                 <span ng-bind="$select.selected.title"></span>
@@ -52,7 +52,7 @@
                 <span ng-bind="t.title"></span>
             </ui-select-choices>
         </ui-select>
-      </div>
+      </div> -->
     </div>
   </div>
 
@@ -74,6 +74,11 @@
     <svg id="topic-term-dist" style="width:1850px;height:700x;">
       <svg id="thumbnail-sidebar" paper-thumbnail-sidebar-directive></svg>
     </svg>
+    <div style="width:260px;height:580px;position:absolute;top:260px;left:800px;overflow-y:auto;">
+      <div style="border-radius: 5px;border: #ccc solid 1px;padding: 5px;margin-bottom:5px" ng-repeat="topicTuple in candidateEvidenceTopics">
+        <p class="search-entry" ng-repeat="e in candidateEvidence | filter:evidenceHasTopic(topicTuple[0])" ng-class="{active: hover || e.id == selectedEvidence.id}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-click="selectSearchTitle(e)">{{e.title}}</p>
+      </div>
+    </div>
     <div id="proposal-thumbnail" style="width:600px;height:580px;position:absolute;top:280px;left:1150px;">
       <div id="selected-thumbnail" style="width:400px;height:580px;overflow-y:auto;" paper-thumbnail-directive></div>
     </div>

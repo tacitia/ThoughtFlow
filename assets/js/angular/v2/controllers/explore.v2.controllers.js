@@ -18,6 +18,10 @@ angular.module('explore.v2.controllers')
     var termBatchSize = 30;
     var topicBatchSize = 30;
 
+    var termColumnWidth = 200;
+    var topicColumnWidth = 500;
+    var connectionColumnWidth = 50;
+
     $scope.selectedEvidence = User.selectedEvidence();
     $scope.selectedRelatedEvidence = null;
     $scope.selectedTerms = ExploreState.selectedTerms();
@@ -32,6 +36,7 @@ angular.module('explore.v2.controllers')
     };
 
     $scope.candidateEvidence = ExploreState.candidateEvidence();
+    $scope.candidateEvidenceTopics = ExploreState.candidateEvidenceTopics();
     $scope.selected = {};
 
     $scope.loadingEvidence = true;
@@ -46,7 +51,7 @@ angular.module('explore.v2.controllers')
     $scope.$watch(function() {
       return d3.selectAll('.evidence')[0].length;
     }, function(newValue, oldValue) {
-      if ($scope.selectedEvidence !== undefined) {
+      if ($scope.selectedEvidence !== undefined && $scope.selectedEvidence !== null) {
         var index = _.findIndex($scope.evidence, function(d) {
           return d.title === $scope.selectedEvidence.title;
         });
@@ -65,7 +70,7 @@ angular.module('explore.v2.controllers')
       });
 
       ExploreState.selectedSearchTitle(title);
-      if (title.topic !== -1) {
+      if (title.topic !== -1 && ($scope.selectedTopic === null || $scope.selectedTopic.id != title.topic)) {
         var topic = _.find($scope.topics, function(t) {
           return t.id === title.topic;
         });
@@ -75,13 +80,22 @@ angular.module('explore.v2.controllers')
           return t.id === title.topic;
         });
         ExploreState.selectedTopic($scope.selectedTopic); */
+        $scope.selectedTerms.length = 0;
         for (var i = 0; i < 5; ++i) {
           $scope.selectedTerms.push($scope.selectedTopic.terms[i].term);
         }
         console.log(ExploreState.selectedTerms());
         $scope.updateTermTopicOrdering(false, true);
-        updateRelatedEvidence(title);
       }
+      else if ($scope.selectedTopic !== null && $scope.selectedTopic.id == title.topic) {
+        $scope.selectEvidence(title);
+        var index = _.findIndex($scope.evidence, function(d) {
+          return d.title === $scope.selectedEvidence.title;
+        });
+        var eo = document.getElementById('evidence-' + index);
+        if (eo !== null) eo.scrollIntoView();   
+      }
+      updateRelatedEvidence(title);
     }
 
     $scope.updateTermTopicOrdering = function(manualUpdate, scrollToStart) {
@@ -100,9 +114,9 @@ angular.module('explore.v2.controllers')
       var topicsAndConnections = TermTopic.getTopTopics(terms, topicBatchSize, $scope.selectedTerms);
       var topics = topicsAndConnections.topics;
       var connections = topicsAndConnections.termTopicConnections;      
-      visualizeTopTerms(topTermContainer, 300, 600, terms);
-      visualizeTopTopics(topTopicContainer, 650, 600, topics);
-      visualizeTermTopicConnections(termTopicConnectionContainer, 100, 600, terms, topics, connections);
+      visualizeTopTerms(topTermContainer, termColumnWidth, 600, terms);
+      visualizeTopTopics(topTopicContainer, topicColumnWidth, 600, topics);
+      visualizeTermTopicConnections(termTopicConnectionContainer, connectionColumnWidth, 600, terms, topics, connections);
       updateTermTopicFills();
       updateConnectionStrokes();
     };
@@ -140,16 +154,40 @@ angular.module('explore.v2.controllers')
           }
           else {
             Core.getEvidenceByTitle($scope.collection.id, $scope.userId, User.selectedEvidence().title, true, 1, function(response) {
-              $scope.candidateEvidence = response.data;
-              $scope.selected.searchTitle = $scope.candidateEvidence[0];
-              $scope.selectSearchTitle($scope.selected.searchTitle);
-              ExploreState.candidateEvidence($scope.candidateEvidence);
+              updateCandidateEvidence(response.data);
             });      
           }
           Bookmark
             .userId($scope.userId)
             .evidence(function(evidence, idMap) {});
       });
+    }
+
+    function updateCandidateEvidence(evidence) {
+      $scope.candidateEvidence = evidence;
+      $scope.selected.searchTitle = $scope.candidateEvidence[0];
+//      $scope.selectSearchTitle($scope.selected.searchTitle);
+      ExploreState.candidateEvidence($scope.candidateEvidence);
+      console.log($scope.candidateEvidence);
+      var topics = {}
+      evidence.forEach(function(e) {
+        if (topics[e.topic] === undefined) {
+          topics[e.topic] = 0;
+        }
+        topics[e.topic] += 1;
+      });
+      $scope.candidateEvidenceTopics = _.sortBy(_.pairs(topics).map(function(t) {
+        return [parseInt(t[0]), t[1]];
+      }), function(tuple) {
+        return -tuple[1];
+      });
+      ExploreState.candidateEvidenceTopics($scope.candidateEvidenceTopics);
+    }
+
+    $scope.evidenceHasTopic = function(topic) {
+        return function(evidence) {
+            return evidence.topic == topic;
+        }
     }
 
     $scope.clearSelectedTerms = function() {
@@ -170,10 +208,7 @@ angular.module('explore.v2.controllers')
       });
 
       Core.getEvidenceByTitle($scope.collection.id, $scope.userId, $scope.searchTitle, true, 25, function(response) {
-        $scope.candidateEvidence = response.data;
-        $scope.selected.searchTitle = $scope.candidateEvidence[0];
-        $scope.selectSearchTitle($scope.selected.searchTitle);
-        ExploreState.candidateEvidence($scope.candidateEvidence);
+        updateCandidateEvidence(response.data);
       });
     };
 
@@ -361,17 +396,17 @@ angular.module('explore.v2.controllers')
       var topics = topicAndConnections.topics;
       var termTopicConnections = topicAndConnections.termTopicConnections;
 
-      topTermContainer = configSvgContainer(canvas.append('svg'), 300, params.height, params.margin.left, params.margin.top);
-      termTopicConnectionContainer = configSvgContainer(canvas.append('svg'), 100, params.height, params.margin.left + 300, params.margin.top);
-      topTopicContainer = configSvgContainer(canvas.append('svg'), 650, params.height, params.margin.left + 400, params.margin.top);
+      topTermContainer = configSvgContainer(canvas.append('svg'), termColumnWidth, params.height, params.margin.left, params.margin.top);
+      termTopicConnectionContainer = configSvgContainer(canvas.append('svg'), connectionColumnWidth, params.height, params.margin.left + 200, params.margin.top);
+      topTopicContainer = configSvgContainer(canvas.append('svg'), topicColumnWidth, params.height, params.margin.left + 250, params.margin.top);
 //      topicNeighborContainer = configSvgContainer(canvas.append('svg'), 600, params.height + 30, params.margin.left + 1050, params.margin.top - 30);
 //      proposalThumbnailsContainer = configSvgContainer(canvas.append('svg'), 600, params.height + 30, params.margin.left + 1050, params.margin.top - 30);
       thumbnailSidebarContainer = configSvgContainer(canvas.select('#thumbnail-sidebar'), 60, params.height, params.margin.left + 1050, params.margin.top);
       proposalThumbnailsContainer = d3.select('#selected-thumbnail');
 
-      visualizeTopTerms(topTermContainer, 300, 600, terms);
-      visualizeTermTopicConnections(termTopicConnectionContainer, 100, 600, terms, topics, termTopicConnections);
-      visualizeTopTopics(topTopicContainer, 650, 600, topics);
+      visualizeTopTerms(topTermContainer, termColumnWidth, 600, terms);
+      visualizeTermTopicConnections(termTopicConnectionContainer, connectionColumnWidth, 600, terms, topics, termTopicConnections);
+      visualizeTopTopics(topTopicContainer, topicColumnWidth, 600, topics);
 //      visualizeThumbnailSidebar(thumbnailSidebarContainer, 60, 600);
 //      visualizeProposalThumbnails(proposalThumbnailsContainer, 600, 600);
       if ($scope.selectedTopic !== null) setSelectedTopic($scope.selectedTopic);
@@ -817,8 +852,8 @@ angular.module('explore.v2.controllers')
           var topicPos = 9 + topicY(topicIndexMap[d.topic.id]);
           var points = [
             {x: 0, y: termPos},
-            {x: 50, y: termPos},
-            {x: 50, y: topicPos},
+            {x: 30, y: termPos},
+            {x: 30, y: topicPos},
             {x: 100, y: topicPos}
           ]; 
           return line(points);

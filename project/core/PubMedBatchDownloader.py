@@ -9,4 +9,4 @@ def download(query):
 	pipe = subprocess.Popen(['perl', perl_path, query, savefile, '-1', logfile], stdin=subprocess.PIPE)
 	pipe.wait()
 
-download('virtual reality')
+download('"cognitive effort"')

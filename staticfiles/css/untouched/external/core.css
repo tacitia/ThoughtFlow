@@ -189,6 +189,16 @@ body, html {
   background-color: #b15928;
 }
 
+.search-entry {
+  font-size: 12px;
+  padding: 2px;
+  margin: 0px;
+}
+
+.search-entry.active {
+  background-color: #f5f5f5;
+}
+
 #documents {
   overflow-x: hidden;
   overflow-y: auto;
