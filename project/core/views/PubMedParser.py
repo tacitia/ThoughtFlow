@@ -111,7 +111,7 @@ def load_evidence(filename, skip_no_abstract=False, user_id=0):
 							'JOURNAL': current_entry['JT'],
 							'DATE': current_entry['DP'],
 							'AFFILIATION': current_entry['AD']
-						}), user_id)
+						}), user_id, 0)
 						print '>> loaded ' + current_entry['TI']
 						loaded_evidence.append(evidence)
 						for k in current_entry['OT']:
