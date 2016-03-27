@@ -55,14 +55,14 @@ def get_related_evidence(title):
 	if len(pmids) == 1:
 		article = fetch.article_by_pmid(pmids[0])
 		if edit_distance(article.title, title) <= len(title) * 0.1:
-			print 'matched title: ' + article.title
+			print 'matched title: ' + article.title.encode('utf-8')
 			related_pmids = fetch.related_pmids(pmids[0])
 			return _merge_related_pmids(pmids[0], related_pmids, fetch)
 	elif len(pmids) > 1:
 		for i in range(min(20, len(pmids))):
 			article = fetch.article_by_pmid(pmids[i])
 			if edit_distance(article.title, title) <= len(title) * 0.1:
-				print 'matched title: ' + article.title
+				print 'matched title: ' + article.title.encode('utf-8')
 				related_pmids = fetch.related_pmids(pmids[i])
 				return _merge_related_pmids(pmids[i], related_pmids, fetch)
 

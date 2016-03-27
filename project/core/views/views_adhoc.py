@@ -182,7 +182,7 @@ def augmentCollection(request, collection_id, seed_level):
             return HttpResponse(json.dumps({warning: 'Collection already exists! Try with another collection id.'}), status=status.HTTP_304_NOT_MODIFIED)
         seeds = Evidence.objects.filter(Q(created_by=collection_id)&~Q(abstract='')&Q(augmentation=seed_level))
         counter = 0
-        start = 35
+        start = 39
         for e in seeds:
             counter += 1
             if counter < start:
