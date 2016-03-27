@@ -124,7 +124,7 @@ def generate_dictionary(texts, name, numDocs):
   dictionary = gensim.corpora.Dictionary(texts)
   numDocs = len(texts)
   print numDocs
-  dictionary.filter_extremes(no_below=4, no_above=0.3, keep_n=100000)
+  dictionary.filter_extremes(no_below=20, no_above=0.3, keep_n=100000)
   dictionary.save(name + '.dict')
   print 'dictionary information: '
   print dictionary
