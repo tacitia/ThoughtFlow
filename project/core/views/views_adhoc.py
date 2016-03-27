@@ -205,7 +205,7 @@ def loadBatchResults(request):
     if request.method == 'GET':
         print '>> loading batch result request...'
         current_dir = os.path.dirname(os.path.realpath(__file__))
-        query = 'virtual reality'
+        query = '"cognitive effort"'
         f = os.path.join(current_dir, 'batchresults', query + '.txt')
         PubMedParser.load_evidence(f, True, 12)
         
