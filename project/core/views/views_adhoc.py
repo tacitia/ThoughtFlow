@@ -154,12 +154,12 @@ def completeCitationInfo(request, collection_id):
             completeCitationInfoAMiner(collection_id)
         else:
             evidence = Evidence.objects.filter(created_by=collection_id)
-            start = 243
+#            start = 243
             counter = 1
             for e in evidence:
-                if counter < start:
-                    counter += 1
-                    continue
+#                if counter < start:
+#                    counter += 1
+#                    continue
                 print '>> Processing entry ' + str(counter) + ' out of ' + str(evidence.count())
                 unicodeTitle = e.title.encode('utf-8')    
                 related_evidence, citation_map, pmid = PubMedQuerier.get_related_evidence(unicodeTitle)
@@ -182,14 +182,19 @@ def augmentCollection(request, collection_id, seed_level):
             return HttpResponse(json.dumps({warning: 'Collection already exists! Try with another collection id.'}), status=status.HTTP_304_NOT_MODIFIED)
         seeds = Evidence.objects.filter(Q(created_by=collection_id)&~Q(abstract='')&Q(augmentation=seed_level))
         counter = 0
+        start = 35
         for e in seeds:
             counter += 1
+            if counter < start:
+                continue
             print 'processing entry #' + str(counter) + ' out of ' + str(seeds.count())
             unicodeTitle = e.title.encode('utf-8')
             related_evidence, citation_map, pmid = PubMedQuerier.get_related_evidence(unicodeTitle)
             print 'found ' + str(len(related_evidence)) + ' related evidence for ' + unicodeTitle
             refs, citedin = getRefsAndCitedin(pmid, citation_map)    
             for re in related_evidence:
+                if not re.title:
+                    continue
                 re_object = Evidence.objects.create_evidence(re.title, re.abstract, serializePaperMetadata(re.pmid,re.authors_str,re.journal,re.year,''), collection_id, int(seed_level)+1)          
                 if re.pmid in refs:
                     Citation.objects.get_or_create(paper_id=e.id, citation_id=re_object.id, collection_id=collection_id)
