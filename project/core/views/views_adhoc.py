@@ -154,7 +154,7 @@ def completeCitationInfo(request, collection_id):
             completeCitationInfoAMiner(collection_id)
         else:
             evidence = Evidence.objects.filter(created_by=collection_id)
-            start = 444
+            start = 546
             counter = 1
             for e in evidence:
                 if counter < start:
@@ -176,7 +176,7 @@ def completeCitationInfo(request, collection_id):
                                 print e.id
                                 print re_object.id
                         if re.pmid in citedin:
-                            try:
+                            try:a
                                 Citation.objects.get_or_create(paper_id=re_object.id, citation_id=e.id, collection_id=collection_id) 
                             except MultipleObjectsReturned:
                                 print re_object.id                                
