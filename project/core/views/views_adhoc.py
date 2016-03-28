@@ -154,7 +154,7 @@ def completeCitationInfo(request, collection_id):
             completeCitationInfoAMiner(collection_id)
         else:
             evidence = Evidence.objects.filter(created_by=collection_id)
-            start = 130
+            start = 413
             counter = 1
             for e in evidence:
                 if counter < start:
