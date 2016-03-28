@@ -170,9 +170,17 @@ def completeCitationInfo(request, collection_id):
                     # here paper_id cites citation_id
                     for re_object in re_objects:
                         if re.pmid in refs:
-                            Citation.objects.get_or_create(paper_id=e.id, citation_id=re_object.id, collection_id=collection_id)
+                            try:
+                                Citation.objects.get_or_create(paper_id=e.id, citation_id=re_object.id, collection_id=collection_id)
+                            except MultipleObjectsReturned:
+                                print e.id
+                                print re_object.id
                         if re.pmid in citedin:
-                            Citation.objects.get_or_create(paper_id=re_object.id, citation_id=e.id, collection_id=collection_id) 
+                            try:
+                                Citation.objects.get_or_create(paper_id=re_object.id, citation_id=e.id, collection_id=collection_id) 
+                            except MultipleObjectsReturned:
+                                print re_object.id                                
+                                print e.id
                 counter += 1      
         return HttpResponse(json.dumps({}), status=status.HTTP_200_OK)
 
