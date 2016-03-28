@@ -154,12 +154,12 @@ def completeCitationInfo(request, collection_id):
             completeCitationInfoAMiner(collection_id)
         else:
             evidence = Evidence.objects.filter(created_by=collection_id)
-#            start = 243
+            start = 130
             counter = 1
             for e in evidence:
-#                if counter < start:
-#                    counter += 1
-#                    continue
+                if counter < start:
+                    counter += 1
+                    continue
                 print '>> Processing entry ' + str(counter) + ' out of ' + str(evidence.count())
                 unicodeTitle = e.title.encode('utf-8')    
                 related_evidence, citation_map, pmid = PubMedQuerier.get_related_evidence(unicodeTitle)
