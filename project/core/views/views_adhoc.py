@@ -176,7 +176,7 @@ def completeCitationInfo(request, collection_id):
                                 print e.id
                                 print re_object.id
                         if re.pmid in citedin:
-                            try:a
+                            try:
                                 Citation.objects.get_or_create(paper_id=re_object.id, citation_id=e.id, collection_id=collection_id) 
                             except MultipleObjectsReturned:
                                 print re_object.id                                
